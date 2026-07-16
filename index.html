@@ -23135,6 +23135,59 @@ let hvSearchRegExp = false;
 let hvSearchInSelection = false;
 let hvSearchSelectionStart = 0;
 let hvSearchSelectionEnd = 0;
+let hvSearchIndexedText = null;
+let hvSearchLineOffsets = [0];
+
+function hvGetSearchLineOffsets(){
+  const text =
+    hvCodeEditor.value || '';
+
+  if(text === hvSearchIndexedText){
+    return hvSearchLineOffsets;
+  }
+
+  const offsets = [0];
+
+  for(let index = 0; index < text.length; index++){
+    if(text.charCodeAt(index) === 10){
+      offsets.push(index + 1);
+    }
+  }
+
+  hvSearchIndexedText = text;
+  hvSearchLineOffsets = offsets;
+  return hvSearchLineOffsets;
+}
+
+function hvFindSearchLineIndex(offsets, offset){
+  let low = 0;
+  let high = Math.max(0, offsets.length - 1);
+
+  while(low <= high){
+    const middle = (low + high) >> 1;
+
+    if(offsets[middle] <= offset){
+      low = middle + 1;
+    } else {
+      high = middle - 1;
+    }
+  }
+
+  return Math.max(0, high);
+}
+
+function hvGetSearchLineHeight(){
+  const styles =
+    getComputedStyle(hvCodeEditor);
+
+  const fontSize =
+    parseFloat(styles.fontSize) || 14;
+
+  return Math.max(
+    1,
+    Math.round(parseFloat(styles.lineHeight) || (fontSize + 10))
+  );
+}
 
 function hvEscapeSearchRegex(value){
 
@@ -23273,7 +23326,12 @@ function hvApplySearchModeChange(){
   window.hvLiveSearchSelectionEnd = hvSearchSelectionEnd;
   hvBuildMatches(true);
   hvRefreshLiveSearchHighlight();
-  hvUpdateSearchCounter();
+
+  if(hvMatches.length){
+    hvSelectMatch(0, false);
+  } else {
+    hvUpdateSearchCounter();
+  }
 }
 
 function hvRefreshLiveSearchHighlight(){
@@ -23332,6 +23390,10 @@ function hvOpenSearchBar(){
 
   hvBuildMatches(true);
   hvRefreshLiveSearchHighlight();
+
+  if(hvMatches.length){
+    hvSelectMatch(0, false);
+  }
 
 }
 
@@ -23447,19 +23509,45 @@ function hvBuildMatches(resetCurrent = false){
 
 function hvScrollToMatch(match){
 
-  const offsets =
-    hvEnsureEditorLineIndex();
+  if(!match || !hvCodeEditor){
+    return;
+  }
 
-  const line =
-    hvFindLineIndexForOffset(offsets, match.start) + 1;
+  const offsets =
+    hvGetSearchLineOffsets();
+
+  const lineIndex =
+    hvFindSearchLineIndex(offsets, match.start);
 
   const lineHeight =
-    hvGetEditorLineHeight();
+    hvGetSearchLineHeight();
 
-  hvCodeEditor.scrollTop =
-    Math.max(0, (line - 4) * lineHeight);
+  const styles =
+    getComputedStyle(hvCodeEditor);
 
-  if(typeof window.hvSyncHighlightScroll === 'function'){
+  const paddingTop =
+    parseFloat(styles.paddingTop) || 0;
+
+  const viewportHeight =
+    Math.max(lineHeight, hvCodeEditor.clientHeight);
+
+  const matchTop =
+    paddingTop + (lineIndex * lineHeight);
+
+  const maximumScrollTop =
+    Math.max(0, hvCodeEditor.scrollHeight - viewportHeight);
+
+  const centeredScrollTop =
+    matchTop - ((viewportHeight - lineHeight) / 2);
+
+  hvCodeEditor.scrollTop = Math.min(
+    maximumScrollTop,
+    Math.max(0, centeredScrollTop)
+  );
+
+  if(typeof window.hvUpdateHighlight === 'function'){
+    window.hvUpdateHighlight(true);
+  } else if(typeof window.hvSyncHighlightScroll === 'function'){
     window.hvSyncHighlightScroll();
   }
 
@@ -23488,18 +23576,18 @@ function hvSelectMatch(index, focusEditor = true){
     hvMatches[hvCurrentMatch];
 
   if(focusEditor){
-    hvCodeEditor.focus();
+    hvCodeEditor.focus({ preventScroll:true });
   }
 
+  hvCodeEditor.setSelectionRange(
+    match.start,
+    match.end
+  );
+
+  hvScrollToMatch(match);
+
   requestAnimationFrame(() => {
-
-    hvCodeEditor.setSelectionRange(
-      match.start,
-      match.end
-    );
-
     hvScrollToMatch(match);
-
   });
 
 }
@@ -23713,11 +23801,15 @@ if(hvSearchBar && hvSearchInput && hvCodeEditor){
 
     /*
       Live search:
-      builds all matches and updates visible highlights.
-      Does NOT focus the code editor.
+      builds all matches, highlights them, and reveals the first result.
+      The search input keeps focus so typing can continue uninterrupted.
     */
     hvBuildMatches(true);
     hvRefreshLiveSearchHighlight();
+
+    if(hvMatches.length){
+      hvSelectMatch(0, false);
+    }
 
   });
 
