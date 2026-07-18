@@ -1,0 +1,35 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "html-viewer-secure-backend",
+  "main": "worker.js",
+  "compatibility_date": "2026-07-16",
+  "workers_dev": true,
+  "vars": {
+    "ALLOWED_ORIGINS": "https://htmlviewer.site,https://www.htmlviewer.site,http://localhost:8000"
+  },
+  "secrets": {
+    "required": [
+      "GEMINI_API_KEY",
+      "POLLINATIONS_API_KEY",
+      "DISCORD_WEBHOOK_URL"
+    ]
+  },
+  "ratelimits": [
+    {
+      "name": "AI_RATE_LIMITER",
+      "namespace_id": "47821001",
+      "simple": {
+        "limit": 30,
+        "period": 60
+      }
+    },
+    {
+      "name": "FORM_RATE_LIMITER",
+      "namespace_id": "47821002",
+      "simple": {
+        "limit": 6,
+        "period": 60
+      }
+    }
+  ]
+}

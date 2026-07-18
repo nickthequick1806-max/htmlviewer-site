@@ -1,0 +1,11 @@
+# Cloudflare Worker local state and secrets
+backend/.dev.vars
+backend/.env
+backend/.wrangler/
+backend/node_modules/
+
+# Common secret files
+.env
+.env.*
+!.env.example
+!.dev.vars.example
