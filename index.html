@@ -18467,47 +18467,6 @@ if(document.readyState === 'loading'){
   hvInitValidatorUi();
 }
 
-    const sample = `<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HTML Viewer</title>
-<style>
-  body{
-    font-family:Arial,sans-serif;
-    margin:0;
-    padding:40px;
-    background:#f4f6f8;
-    color:#111;
-  }
-  .card{
-    max-width:720px;
-    margin:auto;
-    background:#fff;
-    padding:24px;
-    border-radius:12px;
-    box-shadow:0 10px 30px rgba(0,0,0,.10);
-  }
-  button{
-    background:#2563eb;
-    color:#fff;
-    border:0;
-    padding:12px 18px;
-    border-radius:10px;
-    cursor:pointer;
-  }
-</style>
-</head>
-<body>
-  <div class="card">
-    <h1>Hello</h1>
-    <p>Edit the HTML and click Run / View. Preview updates automatically.</p>
-    <button onclick="alert('Preview works!')">Test Button</button>
-  </div>
-</body>
-</html>`;
-
     const CODES_CONFIG = [
       {
         id:'starter-layout',
@@ -21637,8 +21596,29 @@ if(hvCommunitySearch){
       els.layout.classList.remove('hv-expanded');
     }
 
-    const initialSaved = localStorage.getItem(LS_LAST);
-els.code.value = initialSaved !== null ? initialSaved : sample;
+function hvIsLegacyStarterCode(value){
+  const code = String(value || '');
+  return (
+    code.includes('<h1>Hello</h1>') &&
+    code.includes('Edit the HTML and click Run / View. Preview updates automatically.') &&
+    code.includes("alert('Preview works!')")
+  );
+}
+
+let initialSaved = localStorage.getItem(LS_LAST);
+
+if(hvIsLegacyStarterCode(initialSaved)){
+  localStorage.removeItem(LS_LAST);
+  localStorage.removeItem(LS_LAST_NAME);
+  initialSaved = null;
+}
+
+if(hvIsLegacyStarterCode(localStorage.getItem(LS_RESTORE_CODE))){
+  localStorage.removeItem(LS_RESTORE_CODE);
+  localStorage.removeItem(LS_RESTORE_NAME);
+}
+
+els.code.value = initialSaved !== null ? initialSaved : '';
 els.fileName.textContent = localStorage.getItem(LS_LAST_NAME) || 'Untitled';
 els.font.value = localStorage.getItem(LS_FONT) || '14';
 document.documentElement.style.setProperty(
