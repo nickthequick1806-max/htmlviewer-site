@@ -1,5 +1,4 @@
 # Copy this file to .dev.vars only for local Worker testing.
 # Never commit .dev.vars and never put real values in this example file.
 GEMINI_API_KEY="replace-with-a-new-gemini-key"
-POLLINATIONS_API_KEY="replace-with-a-new-pollinations-key"
 DISCORD_WEBHOOK_URL="replace-with-a-new-discord-webhook-url"

@@ -1,8 +1,9 @@
 # HTML Viewer secure backend setup
 
-This folder contains a Cloudflare Worker that keeps the Gemini API key,
-Pollinations API key, and Discord webhook URL out of the public HTML file. The
-browser calls this Worker, and only the Worker can read the three secrets.
+This folder contains a Cloudflare Worker that keeps the Gemini API key and
+Discord webhook URL out of the public HTML file. The browser calls this Worker,
+and only the Worker can read those secrets. Image generation uses the Worker AI
+binding, so it does not require a browser credential or an API token.
 
 The Worker is deployed at:
 
@@ -13,7 +14,6 @@ https://html-viewer-secure-backend.nickthequick1806.workers.dev
 The Worker provides these routes:
 
 - `GET /health`
-- `GET /api/pollinations/balance`
 - `POST /api/ai/image`
 - `POST /api/ai/gemini`
 - `POST /api/contact`
@@ -21,7 +21,7 @@ The Worker provides these routes:
 
 ## 1. Replace the old credentials first
 
-The old credentials were inside a browser-delivered HTML file. Treat all three
+The old credentials were inside a browser-delivered HTML file. Treat them
 as exposed even if the site was only online briefly. Do not put the old values
 back into this project.
 
@@ -29,17 +29,14 @@ back into this project.
    **Auth** key. Do not reuse an unrestricted legacy **Standard** key; Google is
    retiring Standard keys in 2026. Keep the replacement restricted to the
    Gemini API.
-2. In the Pollinations key/account page, revoke the exposed key and create a new
-   one. Add a model restriction and Pollen spending cap if those controls are
-   available for your account.
-3. In Discord, open the server's **Server Settings > Integrations > Webhooks**.
+2. In Discord, open the server's **Server Settings > Integrations > Webhooks**.
    Delete the exposed webhook, create a replacement, and copy its new URL.
 
 Useful official pages:
 
 - Gemini keys: https://ai.google.dev/gemini-api/docs/api-key
-- Pollinations API docs: https://gen.pollinations.ai/docs
-- Pollinations account/key site: https://enter.pollinations.ai
+- Cloudflare FLUX.2 Klein 4B model: https://developers.cloudflare.com/workers-ai/models/flux-2-klein-4b/
+- Workers AI bindings: https://developers.cloudflare.com/workers-ai/configuration/bindings/
 - Discord webhooks: https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks
 
 ## 2. Check the allowed website addresses
@@ -68,7 +65,7 @@ npm --version
 
 Both commands should print a version number.
 
-## 4. Create and deploy the free Worker
+## 4. Create and deploy the Worker
 
 Open PowerShell and run:
 
@@ -93,13 +90,16 @@ https://html-viewer-secure-backend.your-subdomain.workers.dev
 Keep that address. The API routes will return a setup error until the secrets
 are added in the next step.
 
-## 5. Add the three secrets safely
+The `AI` binding in `wrangler.jsonc` runs image generation on Workers AI.
+Workers AI usage is charged to the Cloudflare account according to its current
+plan; no Workers AI credential belongs in the frontend or `.dev.vars`.
+
+## 5. Add the two secrets safely
 
 Run each command separately:
 
 ```powershell
 npx wrangler secret put GEMINI_API_KEY
-npx wrangler secret put POLLINATIONS_API_KEY
 npx wrangler secret put DISCORD_WEBHOOK_URL
 ```
 
@@ -117,11 +117,11 @@ npx wrangler deploy
 
 ## 6. Connect the HTML file to the Worker
 
-`htmlviewer.htm` is already connected to the deployed Worker address. The
-Worker address is public and is safe to keep in frontend code; the three
-credentials are not.
+`index.html` is already connected to the deployed Worker address. The Worker
+address is public and is safe to keep in frontend code; credentials and
+Cloudflare account details are not included in it.
 
-Upload the updated `htmlviewer.htm` to the website as usual.
+Upload the updated `index.html` to the website as usual.
 
 ## 7. Test everything
 
@@ -152,16 +152,18 @@ npx http-server . -p 8000
 Then open:
 
 ```text
-http://localhost:8000/htmlviewer.htm
+http://localhost:8000/index.html
 ```
 
-Test a Gemini message, an image, the Pollen balance, the contact form, and a
-community preset submission. Stop the local server with **Ctrl+C**.
+Test both Gemini models, a FLUX.2 image, the contact form, and a community preset
+submission. Stop the local server with **Ctrl+C**.
 
 ## Troubleshooting
 
 - **Secure backend URL has not been configured:** the placeholder in
-  `htmlviewer.htm` was not replaced with the real `workers.dev` address.
+  `index.html` was not replaced with the real `workers.dev` address.
+- **Cloudflare Workers AI is not configured:** confirm `wrangler.jsonc` contains
+  the `AI` binding, then deploy the Worker again.
 - **Origin is not allowed / CORS error:** add the exact frontend origin to
   `ALLOWED_ORIGINS` in `wrangler.jsonc`, then run `npx wrangler deploy` again.
 - **Backend secret ... is not configured:** rerun the matching
@@ -188,7 +190,7 @@ npx wrangler secret put GEMINI_API_KEY
 ```
 
 Never place real credentials in `worker.js`, `wrangler.jsonc`,
-`.dev.vars.example`, `htmlviewer.htm`, Git, screenshots, or chat messages.
+`.dev.vars.example`, `index.html`, Git, screenshots, or chat messages.
 
 ## Security boundary
 

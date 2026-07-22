@@ -6958,7 +6958,7 @@ html.hv-light-mode .hv-toast{
   position:absolute;
   right:0;
   bottom:calc(100% + 9px);
-  width:240px;
+  width:310px;
   padding:8px;
   border-radius:14px;
   background:
@@ -7003,6 +7003,31 @@ html.hv-light-mode .hv-toast{
   padding:0 11px;
   font-size:12px;
   font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+
+.ai-model-badge{
+  padding:3px 6px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.07);
+  color:#d4d4d8;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.04em;
+  line-height:1;
+  text-transform:uppercase;
+  flex:0 0 auto;
+}
+
+.ai-model-pick-btn > span:first-child{
+  min-width:0;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
 }
 
 .ai-model-info-btn{
@@ -7178,7 +7203,7 @@ html.hv-light-mode .hv-toast{
   }
 
   .ai-model-menu{
-    width:220px;
+    width:min(300px, calc(100vw - 24px));
   }
 
   .ai-model-trigger{
@@ -8258,91 +8283,6 @@ html.hv-light-mode .hv-toast{
   border-radius: 12px;
 }
 
-.flux-image-stats {
-  flex: 1;
-  display: none;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  align-items: end;
-}
-
-.flux-image-stats.show {
-  display: grid;
-}
-
-.flux-stat-card {
-  height: 48px;
-  min-height: 48px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: linear-gradient(180deg, #171717, #101010);
-  padding: 7px 8px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  position: relative;
-  overflow: hidden;
-}
-
-.flux-stat-icon {
-  width: 29px;
-  height: 29px;
-  border-radius: 9px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.08);
-  display: grid;
-  place-items: center;
-  color: #ffffff;
-  flex: 0 0 auto;
-  font-size: 11px;
-}
-
-.flux-stat-main {
-  min-width: 0;
-  flex: 1;
-}
-
-.flux-stat-subtitle {
-  color: #71717a;
-  font-size: 8.5px;
-  line-height: 1;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.035em;
-  margin-bottom: 3px;
-}
-
-.flux-stat-value {
-  color: #f5f5f5;
-  font-size: 11.5px;
-  line-height: 1.1;
-  font-weight: 900;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.flux-stat-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-}
-
-.flux-stat-above {
-  color: #a1a1aa;
-  font-size: 8px;
-  line-height: 1;
-  font-weight: 800;
-  white-space: nowrap;
-  text-align: right;
-  padding-right: 2px;
-}
-
-.flux-balance-card {
-  padding-top: 7px;
-}
-
 @media (max-width: 620px), (min-width:621px) and (max-width:1024px) {
   .ai-model-info-footer {
     flex-direction: column;
@@ -8352,9 +8292,6 @@ html.hv-light-mode .hv-toast{
     width: 100%;
   }
 
-  .flux-image-stats {
-    grid-template-columns: 1fr;
-  }
 }
 
 
@@ -9951,12 +9888,8 @@ html.hv-light-mode .hv-toast{
 
       <select id="model-select" class="model-select ai-hidden-native-model">
   <option value="gemini-3.6-flash">Gemini 3.6 Flash</option>
-  <option value="gemini-3.5-flash">Gemini 3.5 Flash</option>
-  <option value="gemini-3.1-flash-lite">Gemini 3.1 Flash Lite</option>
-  <option value="gemini-3-flash-preview">Gemini 3 Flash</option>
-  <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
-  <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash-Lite</option>
-  <option value="pollinations-flux-image">Flux Image</option>
+  <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite</option>
+  <option value="flux-2-klein-4b">FLUX.2 Klein 4B</option>
 </select>
       <button id="aiModelTrigger" class="ai-model-trigger" type="button">
         <span id="aiModelTriggerText">Gemini 3.6 Flash</span>
@@ -9967,7 +9900,8 @@ html.hv-light-mode .hv-toast{
 
         <div class="ai-model-option" data-model="gemini-3.6-flash">
           <button class="ai-model-pick-btn" type="button">
-            Gemini 3.6 Flash
+            <span>Gemini 3.6 Flash</span>
+            <span class="ai-model-badge">Recommended</span>
           </button>
 
           <button class="ai-model-info-btn" type="button" data-model="gemini-3.6-flash" aria-label="Gemini 3.6 Flash info">
@@ -9975,65 +9909,26 @@ html.hv-light-mode .hv-toast{
           </button>
         </div>
 
-        <div class="ai-model-option" data-model="gemini-3.5-flash">
+        <div class="ai-model-option" data-model="gemini-3.5-flash-lite">
           <button class="ai-model-pick-btn" type="button">
-            Gemini 3.5 Flash
+            <span>Gemini 3.5 Flash-Lite</span>
+            <span class="ai-model-badge">Fast</span>
           </button>
 
-          <button class="ai-model-info-btn" type="button" data-model="gemini-3.5-flash" aria-label="Gemini 3.5 Flash info">
+          <button class="ai-model-info-btn" type="button" data-model="gemini-3.5-flash-lite" aria-label="Gemini 3.5 Flash-Lite info">
             <i class="fa-solid fa-circle-info"></i>
           </button>
         </div>
 
-        <div class="ai-model-option" data-model="gemini-3.1-flash-lite">
+        <div class="ai-model-option" data-model="flux-2-klein-4b">
           <button class="ai-model-pick-btn" type="button">
-            Gemini 3.1 Flash Lite
+            <span>FLUX.2 Klein 4B</span>
           </button>
 
-          <button class="ai-model-info-btn" type="button" data-model="gemini-3.1-flash-lite" aria-label="Gemini 3.1 Flash Lite info">
+          <button class="ai-model-info-btn" type="button" data-model="flux-2-klein-4b" aria-label="FLUX.2 Klein 4B info">
             <i class="fa-solid fa-circle-info"></i>
           </button>
         </div>
-
-        <div class="ai-model-option" data-model="gemini-3-flash-preview">
-          <button class="ai-model-pick-btn" type="button">
-            Gemini 3 Flash
-          </button>
-
-          <button class="ai-model-info-btn" type="button" data-model="gemini-3-flash-preview" aria-label="Gemini 3 Flash info">
-            <i class="fa-solid fa-circle-info"></i>
-          </button>
-        </div>
-
-        <div class="ai-model-option" data-model="gemini-2.5-flash">
-          <button class="ai-model-pick-btn" type="button">
-            Gemini 2.5 Flash
-          </button>
-
-          <button class="ai-model-info-btn" type="button" data-model="gemini-2.5-flash" aria-label="Gemini 2.5 Flash info">
-            <i class="fa-solid fa-circle-info"></i>
-          </button>
-        </div>
-
-        <div class="ai-model-option" data-model="gemini-2.5-flash-lite">
-          <button class="ai-model-pick-btn" type="button">
-            Gemini 2.5 Flash-Lite
-          </button>
-
-          <button class="ai-model-info-btn" type="button" data-model="gemini-2.5-flash-lite" aria-label="Gemini 2.5 Flash-Lite info">
-            <i class="fa-solid fa-circle-info"></i>
-          </button>
-        </div>
-        
-        <div class="ai-model-option" data-model="pollinations-flux-image">
-  <button class="ai-model-pick-btn" type="button">
-    Flux Image
-  </button>
-
-  <button class="ai-model-info-btn" type="button" data-model="pollinations-flux-image" aria-label="Flux Image info">
-    <i class="fa-solid fa-circle-info"></i>
-  </button>
-</div>
 
       </div>
 
@@ -10181,35 +10076,6 @@ html.hv-light-mode .hv-toast{
     <i class="fa-solid fa-arrow-up-right-from-square"></i>
   </a>
 
-  <div id="fluxImageStats" class="flux-image-stats">
-  <div class="flux-stat-card">
-    <div class="flux-stat-icon">
-      <i class="fa-solid fa-coins"></i>
-    </div>
-
-    <div class="flux-stat-main">
-      <div class="flux-stat-subtitle">Token Output</div>
-      <div class="flux-stat-value">0.0018/gen</div>
-    </div>
-  </div>
-
-  <div class="flux-stat-stack">
-    <div class="flux-stat-above" id="fluxImagesRemaining">
-      Images Remaining: —
-    </div>
-
-    <div class="flux-stat-card flux-balance-card">
-      <div class="flux-stat-icon">
-        <i class="fa-solid fa-seedling"></i>
-      </div>
-
-      <div class="flux-stat-main">
-        <div class="flux-stat-subtitle">Pollen Balance</div>
-        <div class="flux-stat-value" id="fluxPollenBalance">—</div>
-      </div>
-    </div>
-  </div>
-</div>
 </div>
   </div>
 </div>
@@ -10280,9 +10146,6 @@ const aiModelInfoClose = document.getElementById('aiModelInfoClose');
 const aiModelInfoTitle = document.getElementById('aiModelInfoTitle');
 const aiModelInfoDesc = document.getElementById('aiModelInfoDesc');
 const aiModelLearnMore = document.getElementById('aiModelLearnMore');
-const fluxImageStats = document.getElementById('fluxImageStats');
-const fluxPollenBalance = document.getElementById('fluxPollenBalance');
-const fluxImagesRemaining = document.getElementById('fluxImagesRemaining');
 
   const libraryBtn = document.getElementById('library-btn');
   const libraryModalOverlay = document.getElementById('library-modal-overlay');
@@ -11610,45 +11473,30 @@ const aiReplyStore = {};
 const AI_MODEL_DETAILS = {
   'gemini-3.6-flash': {
     label:'Gemini 3.6 Flash',
-    desc:'A fast production model for complex coding, multimodal reasoning, and agentic workflows with a 1M-token context window.',
+    desc:'Recommended for advanced code generation, debugging, analysis, and editing.',
     link:'https://ai.google.dev/gemini-api/docs/models/gemini-3.6-flash'
   },
 
-  'gemini-3.5-flash': {
-    label:'Gemini 3.5 Flash',
-    desc:'A fast model option for quick HTML edits, layout updates, code cleanup, and general chat tasks inside your AI editor.',
-    link:'https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/3-5-flash'
+  'gemini-3.5-flash-lite': {
+    label:'Gemini 3.5 Flash-Lite',
+    desc:'Fast for quick questions, small edits, summaries, and simpler coding tasks.',
+    link:'https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite'
   },
 
-  'gemini-3.1-flash-lite': {
-    label:'Gemini 3.1 Flash Lite',
-    desc:'A lightweight model option made for faster responses, simple edits, smaller prompts, and quick assistant-style actions.',
-    link:'https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/3-1-flash-lite'
-  },
-
-  'gemini-3-flash-preview': {
-    label:'Gemini 3 Flash',
-    desc:'A preview-style model option for newer responses, fast coding help, prompt testing, and experimental HTML editor workflows.',
-    link:'https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/3-flash'
-  },
-
-  'gemini-2.5-flash': {
-    label:'Gemini 2.5 Flash',
-    desc:'A balanced model option for coding, explanations, HTML generation, UI writing, debugging, and general productivity tasks.',
-    link:'https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/2-5-flash'
-  },
-
-  'gemini-2.5-flash-lite': {
-    label:'Gemini 2.5 Flash-Lite',
-    desc:'A compact model option for faster and lighter requests, short edits, simple completions, and quick website helper tasks.',
-    link:'https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/2-5-flash-lite'
-  },
-    'pollinations-flux-image': {
-    label:'Flux Image',
-    desc:'Generate AI images directly inside the AI editor chat using the Pollinations Flux image model. Use this for image prompts, visual concepts, banners, icons, and mockups.',
-    link:'https://gen.pollinations.ai/docs#tag/image'
+  'flux-2-klein-4b': {
+    label:'FLUX.2 Klein 4B',
+    desc:'Generates images from prompts through Cloudflare Workers AI. This model is image-only and does not handle text or code requests.',
+    link:'https://developers.cloudflare.com/workers-ai/models/flux-2-klein-4b/'
   }
 };
+
+const AI_DEFAULT_MODEL_ID = 'gemini-3.6-flash';
+const AI_IMAGE_MODEL_ID = 'flux-2-klein-4b';
+const AI_ALLOWED_MODEL_IDS = new Set(Object.keys(AI_MODEL_DETAILS));
+
+function aiNormalizeModelId(modelId){
+  return AI_ALLOWED_MODEL_IDS.has(modelId) ? modelId : AI_DEFAULT_MODEL_ID;
+}
 
 function aiGetModelData(modelId){
 
@@ -11692,201 +11540,12 @@ function aiSetModel(modelId){
   }
 
   modelSelect.value =
-    modelId;
+    aiNormalizeModelId(modelId);
 
   aiSyncModelTrigger();
 
   if(aiModelPicker){
     aiModelPicker.classList.remove('open');
-  }
-
-}
-
-const FLUX_IMAGE_COST_PER_GEN =
-  0.0018;
-
-function aiFormatFluxNumber(value){
-
-  const num =
-    Number(value);
-
-  if(!Number.isFinite(num)){
-    return '—';
-  }
-
-  return num.toLocaleString(undefined, {
-    maximumFractionDigits: 4
-  });
-
-}
-
-function aiFormatFluxWholeNumber(value){
-
-  const num =
-    Number(value);
-
-  if(!Number.isFinite(num)){
-    return '—';
-  }
-
-  return Math.floor(num).toLocaleString();
-
-}
-
-async function aiFetchPollenBalance(){
-
-  const res =
-    await fetch(aiBackendEndpoint('/api/pollinations/balance'), {
-      method:'GET',
-      cache:'no-store',
-      headers:{
-        Accept:'application/json'
-      }
-    });
-
-  const rawText =
-    await res.text();
-
-  let data =
-    null;
-
-  try{
-    data = rawText ? JSON.parse(rawText) : null;
-  }catch(parseErr){
-    throw new Error('Balance response was not JSON.');
-  }
-
-  if(!res.ok){
-
-    const apiMessage =
-      typeof data?.error === 'string'
-        ? data.error
-        : typeof data?.message === 'string'
-          ? data.message
-          : data?.error?.message
-            ? data.error.message
-            : data?.message?.message
-              ? data.message.message
-              : res.statusText;
-
-    throw new Error('Balance error ' + res.status + ': ' + apiMessage);
-
-  }
-
-  const balance =
-    data?.balance;
-
-  if(typeof balance !== 'number'){
-    throw new Error('Balance value missing.');
-  }
-
-  return balance;
-
-}
-
-function aiSetFluxStatsLoading(){
-
-  if(fluxPollenBalance){
-    fluxPollenBalance.textContent =
-      'Loading...';
-  }
-
-  if(fluxImagesRemaining){
-    fluxImagesRemaining.textContent =
-      'Images Remaining: —';
-  }
-
-}
-
-function aiSetFluxStatsError(message){
-
-  let cleanMessage =
-    message || 'Unable to load';
-
-  if(cleanMessage.includes('account:usage')){
-
-    cleanMessage =
-      'Missing usage permission';
-
-  }else if(cleanMessage.includes('no budget')){
-
-    cleanMessage =
-      'Key has no budget';
-
-  }else if(cleanMessage.includes('403')){
-
-    cleanMessage =
-      'Balance permission denied';
-
-  }
-
-  if(fluxPollenBalance){
-    fluxPollenBalance.textContent =
-      cleanMessage;
-  }
-
-  if(fluxImagesRemaining){
-    fluxImagesRemaining.textContent =
-      'Images Remaining: —';
-  }
-
-}
-
-async function aiLoadFluxStats(){
-
-  if(!fluxImageStats){
-    return;
-  }
-
-  aiSetFluxStatsLoading();
-
-  try{
-
-    const balance =
-      await aiFetchPollenBalance();
-
-    const imagesRemaining =
-      balance / FLUX_IMAGE_COST_PER_GEN;
-
-    if(fluxPollenBalance){
-      fluxPollenBalance.textContent =
-        aiFormatFluxNumber(balance);
-    }
-
-    if(fluxImagesRemaining){
-      fluxImagesRemaining.textContent =
-        'Images Remaining: ' + aiFormatFluxWholeNumber(imagesRemaining);
-    }
-
-  }catch(err){
-
-  console.warn('Pollinations balance failed:', err);
-
-  aiSetFluxStatsError(
-    err.message || 'Unable to load'
-  );
-
-}
-
-}
-
-function aiToggleFluxStats(modelId){
-
-  const isFluxImage =
-    modelId === AI_IMAGE_MODEL_ID ||
-    modelId === 'pollinations-flux-image';
-
-  if(!fluxImageStats){
-    return;
-  }
-
-  fluxImageStats.classList.toggle(
-    'show',
-    isFluxImage
-  );
-
-  if(isFluxImage){
-    aiLoadFluxStats();
   }
 
 }
@@ -11913,8 +11572,6 @@ function aiOpenModelInfo(modelId){
 
   aiModelLearnMore.href =
     data.link;
-
-  aiToggleFluxStats(modelId);
 
   aiModelInfoOverlay.classList.add('show');
 
@@ -12042,7 +11699,7 @@ function aiInitModelPicker(){
       chat.title || 'New chat';
 
     chat.model =
-      chat.model || modelSelect.value;
+      aiNormalizeModelId(chat.model);
 
     chat.createdAt =
       chat.createdAt || Date.now();
@@ -12161,7 +11818,7 @@ function loadChat(chatId){
   aiSanitizeHistoryForGemini(chat.history || []);
 
   modelSelect.value =
-    chat.model || modelSelect.value;
+    aiNormalizeModelId(chat.model);
 
   if(typeof aiSyncModelTrigger === 'function'){
     aiSyncModelTrigger();
@@ -13390,11 +13047,8 @@ function aiClearReplyContext(){
 }
 
 /* =========================
-   POLLINATIONS IMAGE MODEL
+   CLOUDFLARE FLUX IMAGE MODEL
 ========================= */
-
-const AI_IMAGE_MODEL_ID =
-  'pollinations-flux-image';
 
 function aiShouldUseImageModel(text, model){
 
@@ -13441,7 +13095,7 @@ function aiBlobToBase64(blob){
 
 }
 
-async function aiCallPollinationsImageModel(prompt){
+async function aiCallFluxImageModel(prompt){
 
   const res =
     await fetch(aiBackendEndpoint('/api/ai/image'), {
@@ -13765,7 +13419,7 @@ const timerInterval =
   try{
 
     const imageResult =
-      await aiCallPollinationsImageModel(cleanPrompt);
+      await aiCallFluxImageModel(cleanPrompt);
 
     const durationSec =
       Math.round((Date.now() - startTime) / 1000);

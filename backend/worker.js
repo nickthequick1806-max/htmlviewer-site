@@ -1,15 +1,12 @@
 const GEMINI_MODELS = new Set([
   'gemini-3.6-flash',
-  'gemini-3.5-flash',
-  'gemini-3.1-flash-lite',
-  'gemini-3-flash-preview',
-  'gemini-2.5-flash',
-  'gemini-2.5-flash-lite'
+  'gemini-3.5-flash-lite'
 ]);
 
 const MAX_AI_BODY_BYTES = 8 * 1024 * 1024;
 const MAX_FORM_BODY_BYTES = 160 * 1024;
-const POLLINATIONS_BASE_URL = 'https://gen.pollinations.ai';
+const FLUX_IMAGE_MODEL = '@cf/black-forest-labs/flux-2-klein-4b';
+const FLUX_IMAGE_SIZE = 1024;
 
 export default {
   async fetch(request, env) {
@@ -41,14 +38,9 @@ export default {
     }
 
     try{
-      if(request.method === 'GET' && url.pathname === '/api/pollinations/balance'){
-        await enforceRateLimit(env.AI_RATE_LIMITER, request, 'ai');
-        return await getPollinationsBalance(env, origin);
-      }
-
       if(request.method === 'POST' && url.pathname === '/api/ai/image'){
         await enforceRateLimit(env.AI_RATE_LIMITER, request, 'ai');
-        return await generatePollinationsImage(request, env, origin);
+        return await generateFluxImage(request, env, origin);
       }
 
       if(request.method === 'POST' && url.pathname === '/api/ai/gemini'){
@@ -124,61 +116,50 @@ async function generateGeminiResponse(request, env, origin){
   return jsonResponse(data, 200, origin);
 }
 
-async function generatePollinationsImage(request, env, origin){
-  const apiKey = requireSecret(env, 'POLLINATIONS_API_KEY');
+async function generateFluxImage(request, env, origin){
+  if(!env.AI || typeof env.AI.run !== 'function'){
+    throw new PublicError(503, 'Cloudflare Workers AI is not configured.');
+  }
+
   const body = await readJson(request, 32 * 1024);
   const prompt = requireText(body.prompt, 'prompt', 4000);
-  const upstream = await fetch(
-    POLLINATIONS_BASE_URL +
-      '/image/' +
-      encodeURIComponent(prompt) +
-      '?model=flux',
-    {
-      headers:{ Authorization:'Bearer ' + apiKey }
-    }
-  );
 
-  if(!upstream.ok){
-    const rawText = await upstream.text().catch(() => '');
-    throw new PublicError(
-      normalizeUpstreamStatus(upstream.status),
-      getUpstreamMessage(rawText, 'Pollinations rejected the image request.')
-    );
+  const form = new FormData();
+  form.append('prompt', prompt);
+  form.append('width', String(FLUX_IMAGE_SIZE));
+  form.append('height', String(FLUX_IMAGE_SIZE));
+  const serializedForm = new Response(form);
+
+  let result;
+  try{
+    result = await env.AI.run(FLUX_IMAGE_MODEL, {
+      multipart:{
+        body:serializedForm.body,
+        contentType:serializedForm.headers.get('Content-Type')
+      }
+    });
+  }catch(error){
+    throw new PublicError(502, getWorkersAiMessage(error));
+  }
+
+  const imageBase64 = typeof result?.image === 'string' ? result.image : '';
+  if(!imageBase64){
+    throw new PublicError(502, 'Cloudflare Workers AI returned no image.');
+  }
+
+  let imageBytes;
+  try{
+    imageBytes = base64ToBytes(imageBase64);
+  }catch(error){
+    throw new PublicError(502, 'Cloudflare Workers AI returned an invalid image.');
   }
 
   const headers = responseHeaders(origin, {
-    'Content-Type':upstream.headers.get('Content-Type') || 'image/png'
+    'Content-Type':detectImageContentType(imageBytes),
+    'Content-Length':String(imageBytes.byteLength)
   });
 
-  return new Response(upstream.body, { status:200, headers });
-}
-
-async function getPollinationsBalance(env, origin){
-  const apiKey = requireSecret(env, 'POLLINATIONS_API_KEY');
-  const upstream = await fetch(POLLINATIONS_BASE_URL + '/account/balance', {
-    method:'GET',
-    headers:{
-      Authorization:'Bearer ' + apiKey,
-      Accept:'application/json'
-    }
-  });
-  const rawText = await upstream.text();
-
-  if(!upstream.ok){
-    throw new PublicError(
-      normalizeUpstreamStatus(upstream.status),
-      getUpstreamMessage(rawText, 'Pollinations rejected the balance request.')
-    );
-  }
-
-  let data;
-  try{
-    data = rawText ? JSON.parse(rawText) : null;
-  }catch(error){
-    throw new PublicError(502, 'Pollinations returned an invalid balance response.');
-  }
-
-  return jsonResponse(data, 200, origin);
+  return new Response(imageBytes, { status:200, headers });
 }
 
 async function sendContactMessage(request, env, origin){
@@ -418,6 +399,35 @@ function getGeminiUpstreamMessage(status, rawText){
   }
 
   return getUpstreamMessage(rawText, 'Gemini rejected the request.');
+}
+
+function getWorkersAiMessage(error){
+  const message = typeof error?.message === 'string' ? error.message.trim() : '';
+  return message
+    ? 'Cloudflare Workers AI could not generate the image: ' + message.slice(0, 400)
+    : 'Cloudflare Workers AI could not generate the image.';
+}
+
+function base64ToBytes(value){
+  const normalized = String(value).replace(/^data:image\/[^;]+;base64,/i, '');
+  const binary = atob(normalized);
+  return Uint8Array.from(binary, character => character.charCodeAt(0));
+}
+
+function detectImageContentType(bytes){
+  if(bytes.length >= 8 &&
+    bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47){
+    return 'image/png';
+  }
+  if(bytes.length >= 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff){
+    return 'image/jpeg';
+  }
+  if(bytes.length >= 12 &&
+    bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46 &&
+    bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50){
+    return 'image/webp';
+  }
+  return 'application/octet-stream';
 }
 
 function normalizeUpstreamStatus(status){

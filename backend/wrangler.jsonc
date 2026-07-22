@@ -8,10 +8,12 @@
   "vars": {
     "ALLOWED_ORIGINS": "https://htmlviewer.site,https://www.htmlviewer.site,http://localhost:8000"
   },
+  "ai": {
+    "binding": "AI"
+  },
   "secrets": {
     "required": [
       "GEMINI_API_KEY",
-      "POLLINATIONS_API_KEY",
       "DISCORD_WEBHOOK_URL"
     ]
   },
