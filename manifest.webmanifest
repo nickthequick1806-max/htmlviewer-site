@@ -1,15 +1,25 @@
 {
-  "name": "HTML Viewer",
+  "id": "/",
+  "name": "HTML Viewer - Free AI HTML Editor",
   "short_name": "HTML Viewer",
-  "description": "View HTML content in a clean, modern interface.",
+  "description": "Write, validate, debug, save, and preview HTML, CSS, and JavaScript in a free AI-assisted online editor.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#0a0a0a",
   "theme_color": "#0a0a0a",
+  "lang": "en-US",
+  "dir": "ltr",
+  "categories": ["developer", "productivity", "utilities"],
   "icons": [
     {
       "src": "assets/favicon-32.png",
       "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/favicon.png",
+      "sizes": "64x64",
       "type": "image/png"
     },
     {
