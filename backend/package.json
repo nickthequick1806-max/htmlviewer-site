@@ -3,5 +3,8 @@
   "type": "module",
   "scripts": {
     "test": "node --test worker.test.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.113.0"
   }
 }

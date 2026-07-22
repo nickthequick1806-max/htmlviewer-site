@@ -4,6 +4,7 @@
   "main": "worker.js",
   "compatibility_date": "2026-07-16",
   "workers_dev": true,
+  "preview_urls": false,
   "vars": {
     "ALLOWED_ORIGINS": "https://htmlviewer.site,https://www.htmlviewer.site,http://localhost:8000"
   },

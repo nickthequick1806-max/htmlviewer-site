@@ -44,6 +44,32 @@ test('returns Gemini responses from the upstream API', async t => {
   assert.equal((await response.json()).candidates[0].content.parts[0].text, 'OK');
 });
 
+test('allows Gemini 3.6 Flash and forwards its stable model ID', async t => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+  });
+
+  globalThis.fetch = async (url, init) => {
+    assert.match(String(url), /gemini-3\.6-flash:generateContent$/);
+    assert.equal(init.headers['x-goog-api-key'], TEST_ENV.GEMINI_API_KEY);
+    return Response.json({
+      candidates:[{ content:{ parts:[{ text:'Gemini 3.6 OK' }] } }]
+    });
+  };
+
+  const response = await worker.fetch(
+    createGeminiRequest('gemini-3.6-flash'),
+    TEST_ENV
+  );
+
+  assert.equal(response.status, 200);
+  assert.equal(
+    (await response.json()).candidates[0].content.parts[0].text,
+    'Gemini 3.6 OK'
+  );
+});
+
 test('turns Gemini 401 responses into an actionable key-rotation error', async t => {
   const originalFetch = globalThis.fetch;
   t.after(() => {
