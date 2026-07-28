@@ -4821,10 +4821,24 @@ body.hv-resizing-active iframe{
 }
 
 .hv-update-card{
+  width:100%;
   padding:15px;
   border:1px solid rgba(255,255,255,.08);
   border-radius:13px;
   background:rgba(255,255,255,.025);
+  color:inherit;
+  font-family:inherit;
+  text-align:left;
+  cursor:pointer;
+  transition:transform .16s ease,border-color .16s ease,background .16s ease;
+}
+
+.hv-update-card:hover,
+.hv-update-card:focus-visible{
+  transform:translateY(-2px);
+  border-color:rgba(56,189,248,.34);
+  background:rgba(14,165,233,.07);
+  outline:0;
 }
 
 .hv-update-meta{
@@ -5052,6 +5066,264 @@ body.hv-resizing-active iframe{
   text-align:right;
 }
 
+.hv-update-detail-modal{
+  z-index:1000005;
+}
+
+.hv-update-detail-hero{
+  padding:16px;
+  border:1px solid rgba(56,189,248,.20);
+  border-radius:14px;
+  background:linear-gradient(135deg,rgba(14,165,233,.09),rgba(255,255,255,.02));
+}
+
+.hv-update-detail-version{
+  display:inline-flex;
+  padding:5px 9px;
+  border-radius:999px;
+  background:rgba(56,189,248,.13);
+  color:#bae6fd;
+  font-size:10px;
+  font-weight:850;
+}
+
+.hv-update-detail-hero h3{
+  margin:11px 0 7px;
+  color:#f8fafc;
+  font-size:19px;
+}
+
+.hv-update-detail-hero p{
+  margin:0;
+  color:#a1a1aa;
+  font-size:12px;
+  line-height:1.65;
+}
+
+.hv-update-detail-grid{
+  margin-top:12px;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+
+.hv-update-detail-item{
+  min-height:104px;
+  padding:13px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  background:rgba(255,255,255,.025);
+}
+
+.hv-update-detail-item i{
+  width:31px;
+  height:31px;
+  display:grid;
+  place-items:center;
+  border-radius:9px;
+  background:rgba(255,255,255,.05);
+  color:#e4e4e7;
+}
+
+.hv-update-detail-item strong{
+  display:block;
+  margin-top:10px;
+  color:#f4f4f5;
+  font-size:12px;
+}
+
+.hv-update-detail-item span{
+  display:block;
+  margin-top:5px;
+  color:#71717a;
+  font-size:10px;
+  line-height:1.5;
+}
+
+.hv-settings-panel{
+  width:min(1020px,calc(100vw - 28px));
+  height:min(780px,90vh);
+}
+
+.hv-settings-panel > .hv-nav-center-body{
+  min-height:0;
+  flex:1;
+  display:flex;
+  padding:0;
+  overflow:hidden;
+}
+
+.hv-settings-shell{
+  min-height:0;
+  flex:1;
+  display:grid;
+  grid-template-columns:220px minmax(0,1fr);
+}
+
+.hv-settings-rail{
+  min-height:0;
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  border-right:1px solid rgba(255,255,255,.08);
+  background:rgba(0,0,0,.16);
+}
+
+.hv-settings-tabs{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.hv-settings-tab{
+  width:100%;
+  min-height:43px;
+  padding:0 12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border:1px solid transparent;
+  border-radius:10px;
+  background:transparent;
+  color:#8b8b93;
+  font:800 11px/1 Inter,system-ui,sans-serif;
+  text-align:left;
+  cursor:pointer;
+  transition:background .16s ease,border-color .16s ease,color .16s ease,transform .16s ease;
+}
+
+.hv-settings-tab:hover{
+  color:#e4e4e7;
+  background:rgba(255,255,255,.035);
+}
+
+.hv-settings-tab.active{
+  border-color:rgba(56,189,248,.42);
+  background:linear-gradient(90deg,rgba(14,165,233,.82),rgba(56,189,248,.35));
+  color:#fff;
+  box-shadow:0 9px 24px rgba(2,132,199,.18);
+}
+
+.hv-settings-tab i{
+  width:17px;
+  text-align:center;
+}
+
+.hv-settings-save-close{
+  width:100%;
+  min-height:42px;
+  margin-top:auto;
+  border:1px solid rgba(56,189,248,.52);
+  border-radius:10px;
+  background:linear-gradient(135deg,#0ea5e9,#38bdf8);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  font:850 11px/1 Inter,system-ui,sans-serif;
+  cursor:pointer;
+  box-shadow:0 10px 26px rgba(2,132,199,.22);
+}
+
+.hv-settings-save-close:hover{
+  filter:brightness(1.08);
+  transform:translateY(-1px);
+}
+
+.hv-settings-content{
+  min-width:0;
+  min-height:0;
+  overflow:auto;
+  padding:22px;
+  scrollbar-color:#3f3f46 #101010;
+}
+
+.hv-settings-section{
+  display:none;
+}
+
+.hv-settings-section.active{
+  display:block;
+  animation:hvSettingsSectionIn .18s ease;
+}
+
+@keyframes hvSettingsSectionIn{
+  from{opacity:0;transform:translateY(5px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.hv-settings-section-head{
+  margin-bottom:16px;
+}
+
+.hv-settings-section-head h3{
+  margin:0;
+  color:#f5f5f5;
+  font-size:17px;
+  font-weight:900;
+}
+
+.hv-settings-section-head p{
+  margin:5px 0 0;
+  color:#71717a;
+  font-size:11px;
+  line-height:1.55;
+}
+
+.hv-connection-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+
+.hv-connection-card{
+  min-height:112px;
+  padding:14px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:13px;
+  background:rgba(255,255,255,.025);
+}
+
+.hv-connection-card-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.hv-connection-card-icon{
+  width:34px;
+  height:34px;
+  flex:0 0 auto;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:9px;
+  background:rgba(255,255,255,.04);
+  color:#e4e4e7;
+}
+
+.hv-connection-card strong{
+  color:#f4f4f5;
+  font-size:12px;
+}
+
+.hv-connection-state{
+  display:block;
+  margin-top:3px;
+  color:#4ade80;
+  font-size:10px;
+  font-weight:850;
+}
+
+.hv-connection-card p{
+  margin:11px 0 0;
+  color:#71717a;
+  font-size:10px;
+  line-height:1.5;
+}
+
 .hv-storage-section{margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,.08)}
 .hv-storage-heading{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
 .hv-storage-heading-icon{width:38px;height:38px;flex:0 0 auto;display:grid;place-items:center;border:1px solid rgba(255,255,255,.11);border-radius:11px;background:rgba(255,255,255,.045);color:#f4f4f5}
@@ -5106,8 +5378,8 @@ body.hv-resizing-active iframe{
 .hv-contact-categories{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .hv-contact-category{min-height:42px;border:1px solid rgba(255,255,255,.09);border-radius:10px;background:rgba(255,255,255,.025);color:#a1a1aa;display:flex;align-items:center;justify-content:center;gap:7px;font:800 11px Inter,system-ui,sans-serif;cursor:pointer;transition:.15s ease}
 .hv-contact-category:hover,.hv-contact-category.active{border-color:rgba(96,165,250,.40);background:rgba(59,130,246,.11);color:#dbeafe}
-.hv-validator-loading{position:absolute;inset:0;z-index:20;display:grid;place-items:center;border-radius:inherit;background:rgba(8,8,8,.58);backdrop-filter:blur(8px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .16s ease,visibility .16s ease}
-.hv-validator-card.loading .hv-validator-loading{opacity:1;visibility:visible;pointer-events:auto}
+.hv-validator-loading{position:absolute;inset:0;z-index:100;display:grid;place-items:center;background:rgba(3,3,3,.52);backdrop-filter:blur(12px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .16s ease,visibility .16s ease}
+.hv-popup.loading .hv-validator-loading{opacity:1;visibility:visible;pointer-events:auto}
 .hv-validator-loading-card{min-width:190px;padding:18px;border:1px solid rgba(255,255,255,.11);border-radius:15px;background:rgba(18,18,18,.94);box-shadow:0 20px 55px rgba(0,0,0,.45);color:#f4f4f5;text-align:center;font-size:12px;font-weight:800}
 .hv-validator-loading-spinner{width:28px;height:28px;margin:0 auto 10px;border:3px solid rgba(255,255,255,.13);border-top-color:#f4f4f5;border-radius:50%;animation:hvStorageSpin .7s linear infinite}
 @keyframes hvStorageSpin{to{transform:rotate(360deg)}}
@@ -5449,47 +5721,42 @@ html.hv-light-mode .hv-toast{
   color:#fca5a5;
 }
 
-.hv-status-summary{
-  display:flex;
-  align-items:flex-start;
-  gap:12px;
-  padding:14px;
-  margin-bottom:14px;
-  border:1px solid rgba(34,197,94,.24);
-  border-radius:10px;
-  background:rgba(34,197,94,.07);
-}
-
-.hv-status-dot{
-  width:10px;
-  height:10px;
-  flex:0 0 auto;
-  margin-top:5px;
-  border-radius:999px;
-  background:#22c55e;
-  box-shadow:0 0 0 5px rgba(34,197,94,.12);
-}
-
-.hv-status-summary strong,
-.hv-status-summary span{
-  display:block;
-}
-
-.hv-status-summary strong{
-  margin-bottom:4px;
-  color:#f4f4f5;
-  font-size:14px;
-}
-
-.hv-status-summary span{
-  color:#a1a1aa;
-  font-size:13px;
-  line-height:1.5;
-}
+.hv-status-panel{width:min(980px,calc(100vw - 28px))}
+.hv-status-dashboard{display:flex;flex-direction:column;gap:18px}
+.hv-status-summary{display:flex;align-items:center;gap:16px;padding:18px;border:1px solid rgba(34,197,94,.24);border-radius:13px;background:rgba(34,197,94,.055)}
+.hv-status-summary.attention{border-color:rgba(245,158,11,.28);background:rgba(245,158,11,.07)}
+.hv-status-dot{width:42px;height:42px;flex:0 0 auto;border:7px solid rgba(34,197,94,.2);border-radius:999px;background:#4ade80;box-shadow:0 0 0 1px rgba(34,197,94,.34),0 0 24px rgba(34,197,94,.22)}
+.hv-status-summary.attention .hv-status-dot{border-color:rgba(245,158,11,.2);background:#fbbf24;box-shadow:0 0 0 1px rgba(245,158,11,.35)}
+.hv-status-summary strong,.hv-status-summary span{display:block}
+.hv-status-summary strong{margin-bottom:5px;color:#f4f4f5;font-size:17px}
+.hv-status-summary span{color:#71717a;font-size:10px;line-height:1.5}
+.hv-status-services-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hv-status-services-head h3{margin:0;color:#f4f4f5;font-size:15px}
+.hv-status-services-head span{color:#71717a;font-size:10px}
+.hv-status-list{display:flex;flex-direction:column}
+.hv-status-service{display:grid;grid-template-columns:minmax(130px,1.25fr) 72px minmax(210px,2.25fr) 70px 60px;align-items:center;gap:14px;min-height:66px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.055)}
+.hv-status-service:last-child{border-bottom:0}
+.hv-status-service-name{min-width:0}
+.hv-status-service-name strong{display:block;overflow:hidden;color:#f4f4f5;font-size:11px;text-overflow:ellipsis;white-space:nowrap}
+.hv-status-service-name a{display:block;margin-top:4px;overflow:hidden;color:#71717a;font-size:9px;text-decoration:none;text-overflow:ellipsis;white-space:nowrap}
+.hv-status-uptime{color:#4ade80;font-size:10px;font-weight:850}
+.hv-status-uptime small{display:block;margin-top:4px;color:#71717a;font-size:8px;font-weight:600}
+.hv-status-bars{height:26px;display:flex;align-items:center;gap:2px}
+.hv-status-bar{width:3px;height:20px;border-radius:2px;background:#27272a}
+.hv-status-bar.up{background:#22c55e}.hv-status-bar.slow{background:#fbbf24}.hv-status-bar.down{background:#ef4444}.hv-status-bar.unknown{background:#3f3f46}
+.hv-status-response{text-align:right;color:#e4e4e7;font-size:10px;font-weight:800}
+.hv-status-response small{display:block;margin-top:4px;color:#71717a;font-size:8px;font-weight:600}
+.hv-status-live{display:flex;align-items:center;justify-content:flex-end;gap:6px;color:#4ade80;font-size:10px;font-weight:850;text-transform:capitalize}
+.hv-status-live.down{color:#f87171}.hv-status-live.paused,.hv-status-live.unknown{color:#fbbf24}
+.hv-status-loading,.hv-status-error{min-height:190px;display:grid;place-items:center;text-align:center;color:#a1a1aa;font-size:12px}
+.hv-status-loading i{display:block;margin:0 auto 12px;color:#e4e4e7;font-size:25px}
+.hv-status-error i{display:block;margin:0 auto 10px;color:#f87171;font-size:24px}
+.hv-status-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:2px;color:#71717a;font-size:9px}
 
 .hv-status-open-btn{
-  width:100%;
+  width:auto;
   min-height:42px;
+  padding:0 16px;
   display:inline-flex;
   align-items:center;
   justify-content:center;
@@ -5534,6 +5801,66 @@ html.hv-light-mode .hv-toast{
     margin-left:auto;
   }
 
+  .hv-settings-panel{
+    height:calc(100dvh - 20px);
+    max-height:none;
+  }
+
+  .hv-settings-shell{
+    grid-template-columns:1fr;
+    grid-template-rows:auto minmax(0,1fr) auto;
+  }
+
+  .hv-settings-rail{
+    padding:9px;
+    border-right:0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+
+  .hv-settings-tabs{
+    flex-direction:row;
+    overflow-x:auto;
+    padding-bottom:2px;
+  }
+
+  .hv-settings-tab{
+    width:auto;
+    min-width:max-content;
+    min-height:38px;
+  }
+
+  .hv-settings-save-close{
+    position:absolute;
+    left:10px;
+    right:10px;
+    bottom:10px;
+    width:auto;
+    z-index:3;
+  }
+
+  .hv-settings-content{
+    padding:16px 14px 68px;
+  }
+
+  .hv-connection-grid,
+  .hv-update-detail-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hv-status-service{
+    grid-template-columns:minmax(0,1fr) 58px 54px;
+    gap:9px;
+  }
+
+  .hv-status-bars{
+    grid-column:1/-1;
+    grid-row:2;
+  }
+
+  .hv-status-response{
+    display:none;
+  }
+
   .hv-storage-action-head{
     align-items:stretch;
     flex-direction:column;
@@ -5547,6 +5874,16 @@ html.hv-light-mode .hv-toast{
     display:grid;
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
+}
+
+.hv-toast.warning{
+  border-color:rgba(245,158,11,.34);
+  background:linear-gradient(135deg,rgba(36,25,8,.98),rgba(20,20,20,.98));
+}
+
+.hv-toast.warning .hv-toast-icon{
+  background:rgba(245,158,11,.15);
+  color:#fcd34d;
 }
 
 @media (max-width:560px){
@@ -6418,7 +6755,7 @@ html.hv-light-mode .hv-toast{
   id="hvAiEditorFrame"
   class="hv-ai-editor-frame"
   title="AI HTML editor"
-  allow="clipboard-write"
+  allow="clipboard-write; microphone; autoplay"
   sandbox="allow-scripts allow-forms allow-modals allow-popups allow-same-origin allow-downloads"
 ></iframe>
   
@@ -9716,6 +10053,704 @@ html.hv-light-mode .hv-toast{
   }
 }
 
+  .voice-entry-wrap{
+    position:relative;
+    display:inline-flex;
+  }
+
+  .voice-entry-menu{
+    position:absolute;
+    left:50%;
+    bottom:calc(100% + 10px);
+    z-index:90;
+    width:138px;
+    padding:6px;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    border:1px solid #303030;
+    border-radius:11px;
+    background:#111;
+    box-shadow:0 16px 38px rgba(0,0,0,.58);
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transform:translate(-50%,7px) scale(.97);
+    transition:opacity .16s ease,transform .16s ease,visibility .16s ease;
+  }
+
+  .voice-entry-wrap:hover .voice-entry-menu,
+  .voice-entry-wrap:focus-within .voice-entry-menu,
+  .voice-entry-wrap.menu-open .voice-entry-menu{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transform:translate(-50%,0) scale(1);
+  }
+
+  .voice-entry-menu button{
+    min-height:34px;
+    padding:0 9px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    border:0;
+    border-radius:7px;
+    background:transparent;
+    color:#d4d4d8;
+    font:700 10px/1 Inter,system-ui,sans-serif;
+    text-align:left;
+    cursor:pointer;
+  }
+
+  .voice-entry-menu button:hover,
+  .voice-entry-menu button:focus-visible{
+    background:#232323;
+    color:#fff;
+    outline:none;
+  }
+
+  .voice-mode{
+    position:relative;
+    min-height:0;
+    flex:1;
+    display:none;
+    flex-direction:column;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 50% 42%,rgba(255,255,255,.035),transparent 33%),
+      radial-gradient(circle at 50% 95%,rgba(127,29,29,.10),transparent 36%),
+      #080808;
+  }
+
+  .voice-mode.active{
+    display:flex;
+    animation:voiceModeIn .24s ease;
+  }
+
+  .app.voice-active .chat,
+  .app.voice-active .input-wrap{
+    display:none;
+  }
+
+  @keyframes voiceModeIn{
+    from{opacity:0;transform:scale(.992)}
+    to{opacity:1;transform:scale(1)}
+  }
+
+  .voice-mode-header{
+    position:relative;
+    z-index:8;
+    min-height:66px;
+    padding:13px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    border-bottom:1px solid rgba(255,255,255,.07);
+    background:rgba(8,8,8,.78);
+    backdrop-filter:blur(12px);
+  }
+
+  .voice-mode-title,
+  .voice-mode-header-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .voice-mode-title i{
+    color:#e4e4e7;
+    font-size:17px;
+  }
+
+  .voice-mode-title strong{
+    display:block;
+    color:#fafafa;
+    font-size:14px;
+  }
+
+  .voice-provider{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin-top:3px;
+    color:#71717a;
+    font-size:9px;
+  }
+
+  .voice-provider-dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#f59e0b;
+    box-shadow:0 0 10px rgba(245,158,11,.5);
+  }
+
+  .voice-provider.connected .voice-provider-dot{
+    background:#4ade80;
+    box-shadow:0 0 10px rgba(74,222,128,.5);
+  }
+
+  .voice-header-btn{
+    width:38px;
+    height:38px;
+    display:grid;
+    place-items:center;
+    border:1px solid #303030;
+    border-radius:11px;
+    background:#151515;
+    color:#e4e4e7;
+    cursor:pointer;
+    transition:.16s ease;
+  }
+
+  .voice-header-btn:hover,
+  .voice-header-btn:focus-visible{
+    border-color:#4a4a4a;
+    background:#202020;
+    color:#fff;
+    outline:none;
+  }
+
+  .voice-settings-popover{
+    position:absolute;
+    top:58px;
+    right:58px;
+    z-index:60;
+    width:min(350px,calc(100vw - 24px));
+    max-height:min(610px,calc(100dvh - 100px));
+    padding:14px;
+    overflow:auto;
+    border:1px solid #343434;
+    border-radius:15px;
+    background:rgba(16,16,16,.98);
+    box-shadow:0 24px 70px rgba(0,0,0,.72);
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transform:translateY(-7px) scale(.98);
+    transition:.16s ease;
+  }
+
+  .voice-settings-popover.open{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transform:translateY(0) scale(1);
+  }
+
+  .voice-settings-status{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+    margin-bottom:12px;
+    padding-bottom:12px;
+    border-bottom:1px solid #292929;
+  }
+
+  .voice-settings-status div{
+    min-width:0;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .voice-settings-status i{
+    width:27px;
+    color:#d4d4d8;
+    text-align:center;
+  }
+
+  .voice-settings-status span,
+  .voice-settings-status strong{
+    display:block;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .voice-settings-status span{
+    color:#71717a;
+    font-size:8px;
+  }
+
+  .voice-settings-status strong{
+    margin-top:3px;
+    color:#e4e4e7;
+    font-size:9px;
+  }
+
+  .voice-field{
+    display:block;
+    margin-top:10px;
+  }
+
+  .voice-field > span{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin-bottom:6px;
+    color:#a1a1aa;
+    font-size:9px;
+    font-weight:800;
+  }
+
+  .voice-field select{
+    width:100%;
+    height:40px;
+    padding:0 34px 0 11px;
+    border:1px solid #343434;
+    border-radius:10px;
+    background:#121212;
+    color:#e4e4e7;
+    font:700 10px Inter,system-ui,sans-serif;
+    outline:none;
+  }
+
+  .voice-field select:focus{
+    border-color:#5a5a5a;
+    box-shadow:0 0 0 3px rgba(255,255,255,.04);
+  }
+
+  .voice-setting-checks{
+    margin-top:11px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+
+  .voice-setting-check{
+    min-height:38px;
+    padding:8px 9px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    border:1px solid #2d2d2d;
+    border-radius:9px;
+    color:#a1a1aa;
+    font-size:9px;
+  }
+
+  .voice-setting-check input{accent-color:#ef4444}
+
+  .voice-settings-note{
+    margin:11px 1px 0;
+    color:#5f5f66;
+    font-size:8px;
+    line-height:1.45;
+  }
+
+  .voice-mode-main{
+    position:relative;
+    min-height:0;
+    flex:1;
+    padding:13px 18px 18px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+
+  .voice-state-card{
+    min-width:160px;
+    min-height:34px;
+    padding:0 13px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    border:1px solid #343434;
+    border-radius:999px;
+    background:rgba(10,10,10,.78);
+    color:#d4d4d8;
+    font-size:10px;
+    font-weight:800;
+  }
+
+  .voice-state-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#f59e0b;
+    box-shadow:0 0 10px currentColor;
+  }
+
+  .voice-state-card[data-state="listening"] .voice-state-dot{background:#60a5fa}
+  .voice-state-card[data-state="speaking"] .voice-state-dot{background:#4ade80}
+  .voice-state-card[data-state="processing"] .voice-state-dot{background:#c084fc}
+  .voice-state-card[data-state="muted"] .voice-state-dot{background:#f87171}
+  .voice-state-card[data-state="error"] .voice-state-dot{background:#ef4444}
+
+  .voice-visual-stage{
+    position:relative;
+    width:min(620px,88%);
+    min-height:150px;
+    flex:1;
+    display:grid;
+    place-items:center;
+  }
+
+  .voice-visual-stage::before,
+  .voice-visual-stage::after{
+    content:"";
+    position:absolute;
+    width:210px;
+    height:210px;
+    border:1px solid rgba(255,255,255,.045);
+    border-radius:50%;
+    pointer-events:none;
+  }
+
+  .voice-visual-stage::after{
+    width:168px;
+    height:168px;
+  }
+
+  #voiceVisualizer{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+  }
+
+  .voice-orb{
+    position:relative;
+    z-index:2;
+    width:118px;
+    height:118px;
+    border:1px solid rgba(255,255,255,.22);
+    border-radius:50%;
+    background:
+      radial-gradient(circle at 35% 30%,rgba(255,255,255,.18),transparent 28%),
+      radial-gradient(circle at 64% 70%,rgba(255,255,255,.055),transparent 34%),
+      #101010;
+    box-shadow:0 0 0 13px rgba(255,255,255,.025),0 0 0 27px rgba(255,255,255,.012),0 18px 50px rgba(0,0,0,.75);
+    transition:transform .1s linear,box-shadow .2s ease;
+  }
+
+  .voice-mode[data-state="speaking"] .voice-orb{
+    box-shadow:0 0 0 13px rgba(74,222,128,.04),0 0 0 27px rgba(74,222,128,.018),0 18px 58px rgba(34,197,94,.12);
+  }
+
+  .voice-mode[data-state="listening"] .voice-orb{
+    box-shadow:0 0 0 13px rgba(96,165,250,.045),0 0 0 27px rgba(96,165,250,.018),0 18px 58px rgba(59,130,246,.12);
+  }
+
+  .voice-lower{
+    width:min(650px,100%);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+  }
+
+  .voice-live-caption{
+    width:100%;
+    min-height:70px;
+    padding:13px 16px;
+    display:grid;
+    grid-template-columns:42px minmax(0,1fr);
+    align-items:center;
+    gap:12px;
+    border:1px solid #323232;
+    border-radius:15px;
+    background:linear-gradient(135deg,rgba(22,22,22,.96),rgba(11,11,11,.96));
+    box-shadow:0 16px 44px rgba(0,0,0,.4);
+    opacity:.86;
+    transition:border-color .2s ease,opacity .2s ease,transform .2s ease;
+  }
+
+  .voice-live-caption.active{
+    opacity:1;
+    transform:translateY(-2px);
+  }
+
+  .voice-live-caption[data-speaker="user"]{
+    border-color:rgba(96,165,250,.28);
+  }
+
+  .voice-live-caption[data-speaker="assistant"]{
+    border-color:rgba(74,222,128,.24);
+  }
+
+  .voice-caption-wave{
+    height:25px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
+    color:#4ade80;
+  }
+
+  .voice-live-caption[data-speaker="user"] .voice-caption-wave{color:#60a5fa}
+
+  .voice-caption-wave span{
+    width:2px;
+    height:7px;
+    border-radius:2px;
+    background:currentColor;
+    transform-origin:center;
+  }
+
+  .voice-live-caption.active .voice-caption-wave span{
+    animation:voiceCaptionBar .75s ease-in-out infinite alternate;
+  }
+
+  .voice-caption-wave span:nth-child(2){animation-delay:-.45s}
+  .voice-caption-wave span:nth-child(3){animation-delay:-.22s}
+  .voice-caption-wave span:nth-child(4){animation-delay:-.6s}
+  .voice-caption-wave span:nth-child(5){animation-delay:-.32s}
+  .voice-caption-wave span:nth-child(6){animation-delay:-.12s}
+
+  @keyframes voiceCaptionBar{
+    from{transform:scaleY(.55)}
+    to{transform:scaleY(2.45)}
+  }
+
+  .voice-caption-speaker{
+    display:block;
+    margin-bottom:5px;
+    color:#71717a;
+    font-size:9px;
+  }
+
+  .voice-caption-text{
+    min-height:18px;
+    color:#f4f4f5;
+    font-size:12px;
+    font-weight:680;
+    line-height:1.45;
+    word-break:break-word;
+  }
+
+  .voice-keyboard-panel{
+    width:100%;
+    display:none;
+    gap:8px;
+  }
+
+  .voice-keyboard-panel.open{display:flex;animation:voiceModeIn .16s ease}
+
+  .voice-keyboard-panel input{
+    min-width:0;
+    flex:1;
+    height:40px;
+    padding:0 12px;
+    border:1px solid #343434;
+    border-radius:11px;
+    background:#101010;
+    color:#f4f4f5;
+    outline:none;
+  }
+
+  .voice-keyboard-panel input:focus{border-color:#5a5a5a}
+
+  .voice-keyboard-panel button{
+    min-width:72px;
+    border:0;
+    border-radius:10px;
+    background:#f4f4f5;
+    color:#09090b;
+    font-weight:850;
+    cursor:pointer;
+  }
+
+  .voice-controls{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+  }
+
+  .voice-control{
+    position:relative;
+    width:50px;
+    height:50px;
+    display:grid;
+    place-items:center;
+    border:1px solid #3b3b3b;
+    border-radius:50%;
+    background:#111;
+    color:#f4f4f5;
+    font-size:16px;
+    cursor:pointer;
+    transition:.16s ease;
+  }
+
+  .voice-control:hover,
+  .voice-control:focus-visible{
+    border-color:#666;
+    background:#1b1b1b;
+    transform:translateY(-2px);
+    outline:none;
+  }
+
+  .voice-control.end{
+    border-color:rgba(248,113,113,.58);
+    background:rgba(127,29,29,.62);
+    color:#fff;
+  }
+
+  .voice-control.muted{
+    border-color:rgba(248,113,113,.48);
+    color:#f87171;
+  }
+
+  .voice-control[disabled]{
+    opacity:.4;
+    cursor:not-allowed;
+    transform:none;
+  }
+
+  .voice-control .voice-control-tip{
+    position:absolute;
+    left:50%;
+    bottom:calc(100% + 8px);
+    padding:5px 7px;
+    border:1px solid #333;
+    border-radius:6px;
+    background:#111;
+    color:#d4d4d8;
+    font-size:8px;
+    white-space:nowrap;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transform:translate(-50%,4px);
+    transition:.14s ease;
+  }
+
+  .voice-control:hover .voice-control-tip,
+  .voice-control:focus-visible .voice-control-tip{
+    opacity:1;
+    visibility:visible;
+    transform:translate(-50%,0);
+  }
+
+  .voice-volume-popover{
+    position:absolute;
+    left:50%;
+    bottom:calc(100% + 12px);
+    width:66px;
+    height:158px;
+    padding:10px 8px;
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    justify-content:space-between;
+    border:1px solid #343434;
+    border-radius:18px;
+    background:#111;
+    box-shadow:0 16px 42px rgba(0,0,0,.58);
+    transform:translateX(-50%);
+  }
+
+  .voice-volume-popover.open{display:flex}
+  .voice-volume-popover output{font-size:9px;font-weight:850}
+  .voice-volume-popover input{
+    width:93px;
+    transform:rotate(-90deg);
+    accent-color:#fff;
+  }
+
+  .voice-transcript-overlay{
+    position:absolute;
+    inset:0;
+    z-index:70;
+    padding:34px;
+    display:none;
+    place-items:center;
+    background:rgba(0,0,0,.72);
+    backdrop-filter:blur(10px);
+  }
+
+  .voice-transcript-overlay.open{display:grid;animation:voiceModeIn .18s ease}
+
+  .voice-transcript-card{
+    width:min(660px,100%);
+    max-height:78vh;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    border:1px solid #343434;
+    border-radius:16px;
+    background:#111;
+    box-shadow:0 28px 80px rgba(0,0,0,.75);
+  }
+
+  .voice-transcript-head{
+    padding:13px 14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid #292929;
+  }
+
+  .voice-transcript-head strong{display:block;font-size:13px}
+  .voice-transcript-head span{display:block;margin-top:3px;color:#71717a;font-size:8px}
+  .voice-transcript-head div:last-child{display:flex;gap:7px}
+
+  .voice-transcript-list{
+    min-height:170px;
+    padding:14px;
+    overflow:auto;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+  }
+
+  .voice-transcript-message{
+    max-width:82%;
+    padding:10px 12px;
+    border:1px solid #303030;
+    border-radius:12px;
+    background:#181818;
+    color:#e4e4e7;
+    font-size:10px;
+    line-height:1.5;
+  }
+
+  .voice-transcript-message.user{
+    align-self:flex-end;
+    background:#222;
+  }
+
+  .voice-transcript-message span{
+    display:block;
+    margin-bottom:4px;
+    color:#71717a;
+    font-size:8px;
+  }
+
+  @media (max-width:720px){
+    .input-row > .voice-entry-wrap{
+      grid-area:mic;
+      width:40px;
+      height:40px;
+    }
+
+    .voice-entry-wrap > .icon-btn{
+      width:40px;
+      height:40px;
+      margin:0;
+    }
+
+    .voice-mode-header{padding:10px 11px}
+    .voice-mode-main{padding:10px 9px 12px}
+    .voice-settings-popover{right:8px;top:56px}
+    .voice-visual-stage{width:100%;min-height:120px}
+    .voice-orb{width:92px;height:92px}
+    .voice-live-caption{min-height:66px;padding:11px 12px;grid-template-columns:32px 1fr}
+    .voice-caption-text{font-size:11px}
+    .voice-control{width:44px;height:44px}
+    .voice-controls{gap:7px}
+    .voice-transcript-overlay{padding:10px}
+    .voice-setting-checks{grid-template-columns:1fr}
+  }
+
   </style>
 
   <div class="app">
@@ -9952,6 +10987,155 @@ html.hv-light-mode .hv-toast{
   </div>
 </div>
 
+    <section class="voice-mode" id="voiceMode" data-state="idle" aria-label="Voice Mode">
+      <header class="voice-mode-header">
+        <div class="voice-mode-title">
+          <i class="fa-solid fa-wave-square" aria-hidden="true"></i>
+          <div>
+            <strong>Voice Mode</strong>
+            <span class="voice-provider" id="voiceProviderStatus"><span class="voice-provider-dot"></span><span id="voiceProviderText">Gemini Live · Disconnected</span></span>
+          </div>
+        </div>
+        <div class="voice-mode-header-actions">
+          <button class="voice-header-btn" id="voiceFullscreenBtn" type="button" aria-label="Toggle Voice Mode fullscreen" title="Fullscreen"><i class="fa-solid fa-expand"></i></button>
+          <button class="voice-header-btn" id="voiceSettingsBtn" type="button" aria-label="Open Voice Mode settings" aria-expanded="false" title="Voice settings"><i class="fa-solid fa-gear"></i></button>
+          <button class="voice-header-btn" id="voiceCloseBtn" type="button" aria-label="Return to text chat" title="Return to text chat"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="voice-settings-popover" id="voiceSettingsPopover" aria-hidden="true">
+          <div class="voice-settings-status">
+            <div><i class="fa-solid fa-signal"></i><span><span>Connection</span><strong id="voiceSettingsConnection">Disconnected</strong></span></div>
+            <div><i class="fa-solid fa-microphone"></i><span><span>Microphone</span><strong id="voiceSettingsMicName">Default input</strong></span></div>
+          </div>
+          <label class="voice-field">
+            <span><i class="fa-solid fa-plug"></i>Connection</span>
+            <select id="voiceConnectionSelect" aria-label="Voice connection">
+              <option value="secure-backend">Secure Gemini Live backend</option>
+            </select>
+          </label>
+          <label class="voice-field">
+            <span><i class="fa-solid fa-robot"></i>Live model</span>
+            <select id="voiceModelSelect" aria-label="Live voice model">
+              <option value="gemini-3.1-flash-live-preview">Gemini 3.1 Flash Live Preview</option>
+            </select>
+          </label>
+          <label class="voice-field">
+            <span><i class="fa-solid fa-user-astronaut"></i>Voice</span>
+            <select id="voiceSelect" aria-label="Gemini voice">
+              <option value="Zephyr">Zephyr — Female · Bright</option>
+              <option value="Puck">Puck — Male · Upbeat</option>
+              <option value="Charon" selected>Charon — Male · Informative</option>
+              <option value="Kore">Kore — Female · Firm</option>
+              <option value="Fenrir">Fenrir — Male · Excitable</option>
+              <option value="Leda">Leda — Female · Youthful</option>
+              <option value="Orus">Orus — Male · Firm</option>
+              <option value="Aoede">Aoede — Female · Breezy</option>
+              <option value="Callirrhoe">Callirrhoe — Female · Easy-going</option>
+              <option value="Autonoe">Autonoe — Female · Bright</option>
+              <option value="Enceladus">Enceladus — Male · Breathy</option>
+              <option value="Iapetus">Iapetus — Male · Clear</option>
+              <option value="Umbriel">Umbriel — Male · Easy-going</option>
+              <option value="Algieba">Algieba — Male · Smooth</option>
+              <option value="Despina">Despina — Female · Smooth</option>
+              <option value="Erinome">Erinome — Female · Clear</option>
+              <option value="Algenib">Algenib — Male · Gravelly</option>
+              <option value="Rasalgethi">Rasalgethi — Male · Informative</option>
+              <option value="Laomedeia">Laomedeia — Female · Upbeat</option>
+              <option value="Achernar">Achernar — Female · Soft</option>
+              <option value="Alnilam">Alnilam — Male · Firm</option>
+              <option value="Schedar">Schedar — Male · Even</option>
+              <option value="Gacrux">Gacrux — Female · Mature</option>
+              <option value="Pulcherrima">Pulcherrima — Female · Forward</option>
+              <option value="Achird">Achird — Male · Friendly</option>
+              <option value="Zubenelgenubi">Zubenelgenubi — Male · Casual</option>
+              <option value="Vindemiatrix">Vindemiatrix — Female · Gentle</option>
+              <option value="Sadachbia">Sadachbia — Male · Lively</option>
+              <option value="Sadaltager">Sadaltager — Male · Knowledgeable</option>
+              <option value="Sulafat">Sulafat — Female · Warm</option>
+            </select>
+          </label>
+          <label class="voice-field">
+            <span><i class="fa-solid fa-language"></i>Language</span>
+            <select id="voiceLanguageSelect" aria-label="Voice language">
+              <option value="auto">Automatic</option>
+              <option value="en-US">English (United States)</option>
+              <option value="en-GB">English (United Kingdom)</option>
+              <option value="es-US">Spanish (United States)</option>
+              <option value="fr-FR">French</option>
+              <option value="de-DE">German</option>
+              <option value="it-IT">Italian</option>
+              <option value="pt-BR">Portuguese (Brazil)</option>
+              <option value="ja-JP">Japanese</option>
+              <option value="ko-KR">Korean</option>
+              <option value="hi-IN">Hindi</option>
+            </select>
+          </label>
+          <label class="voice-field">
+            <span><i class="fa-solid fa-microphone-lines"></i>Microphone / input device</span>
+            <select id="voiceInputSelect" aria-label="Microphone input device"><option value="">System default</option></select>
+          </label>
+          <label class="voice-field">
+            <span><i class="fa-solid fa-volume-high"></i>Speaker / output device</span>
+            <select id="voiceOutputSelect" aria-label="Speaker output device"><option value="">System default</option></select>
+          </label>
+          <div class="voice-setting-checks">
+            <label class="voice-setting-check"><input id="voiceVadToggle" type="checkbox" checked>Automatic turn detection</label>
+            <label class="voice-setting-check"><input id="voiceBargeInToggle" type="checkbox" checked>Allow interruption</label>
+          </div>
+          <p class="voice-settings-note"><i class="fa-solid fa-shield-halved"></i> A backend-issued, one-use ephemeral token connects this browser to Gemini Live. Raw microphone audio is never saved.</p>
+        </div>
+      </header>
+
+      <div class="voice-mode-main">
+        <div class="voice-state-card" id="voiceStateCard" data-state="idle"><span class="voice-state-dot"></span><span id="voiceStateText">Ready</span></div>
+
+        <div class="voice-visual-stage" id="voiceVisualStage">
+          <canvas id="voiceVisualizer" aria-hidden="true"></canvas>
+          <div class="voice-orb" id="voiceOrb" aria-hidden="true"></div>
+        </div>
+
+        <div class="voice-lower">
+          <div class="voice-live-caption" id="voiceLiveCaption" data-speaker="assistant" aria-live="polite">
+            <div class="voice-caption-wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div><span class="voice-caption-speaker" id="voiceCaptionSpeaker">AutoSite AI</span><div class="voice-caption-text" id="voiceCaptionText">Start a voice session whenever you are ready.</div></div>
+          </div>
+
+          <div class="voice-keyboard-panel" id="voiceKeyboardPanel">
+            <input id="voiceKeyboardInput" type="text" placeholder="Type a message for AutoSite AI…" autocomplete="off">
+            <button id="voiceKeyboardSend" type="button"><i class="fa-solid fa-arrow-up"></i> Send</button>
+          </div>
+
+          <div class="voice-controls">
+            <button class="voice-control" id="voiceMuteBtn" type="button" aria-label="Mute microphone"><i class="fa-solid fa-microphone"></i><span class="voice-control-tip">Mute microphone</span></button>
+            <button class="voice-control end" id="voiceEndBtn" type="button" aria-label="End voice session"><i class="fa-solid fa-phone-slash"></i><span class="voice-control-tip">End session</span></button>
+            <div style="position:relative">
+              <button class="voice-control" id="voiceVolumeBtn" type="button" aria-label="AI volume" aria-expanded="false"><i class="fa-solid fa-volume-high"></i><span class="voice-control-tip">AI volume</span></button>
+              <div class="voice-volume-popover" id="voiceVolumePopover">
+                <output id="voiceVolumeValue">80%</output>
+                <input id="voiceVolumeRange" type="range" min="0" max="100" value="80" orient="vertical" aria-label="AI voice volume">
+                <i class="fa-solid fa-volume-low" aria-hidden="true"></i>
+              </div>
+            </div>
+            <button class="voice-control" id="voiceKeyboardBtn" type="button" aria-label="Toggle text input" aria-pressed="false"><i class="fa-solid fa-keyboard"></i><span class="voice-control-tip">Type a message</span></button>
+            <button class="voice-control" id="voiceTranscriptBtn" type="button" aria-label="Open voice transcript" aria-expanded="false"><i class="fa-solid fa-comments"></i><span class="voice-control-tip">Conversation transcript</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="voice-transcript-overlay" id="voiceTranscriptOverlay" aria-hidden="true">
+        <div class="voice-transcript-card" role="dialog" aria-modal="true" aria-labelledby="voiceTranscriptTitle">
+          <div class="voice-transcript-head">
+            <div><strong id="voiceTranscriptTitle">Chat Conversation</strong><span>Live voice and text transcript</span></div>
+            <div>
+              <button class="voice-header-btn" id="voiceTranscriptClear" type="button" aria-label="Clear voice transcript"><i class="fa-solid fa-trash"></i></button>
+              <button class="voice-header-btn" id="voiceTranscriptClose" type="button" aria-label="Close transcript"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+          </div>
+          <div class="voice-transcript-list" id="voiceTranscriptList"></div>
+        </div>
+      </div>
+    </section>
+
     <div id="chat" class="chat">
       <!-- Initial welcome screen -->
       <div id="welcome" class="welcome-screen">
@@ -9991,10 +11175,15 @@ html.hv-light-mode .hv-toast{
       <span class="ai-hover-tooltip">Attach code file</span>
     </button>
 
-    <button id="mic-btn" class="icon-btn ai-tip" aria-label="Voice to text" type="button">
-      <i class="fa-solid fa-microphone"></i>
-      <span class="ai-hover-tooltip">Voice to text</span>
-    </button>
+    <div class="voice-entry-wrap" id="voiceEntryWrap">
+      <button id="mic-btn" class="icon-btn ai-tip" aria-label="Voice options" aria-haspopup="menu" aria-expanded="false" type="button">
+        <i class="fa-solid fa-microphone"></i>
+      </button>
+      <div class="voice-entry-menu" id="voiceEntryMenu" role="menu">
+        <button id="voiceToTextBtn" type="button" role="menuitem"><i class="fa-solid fa-microphone-lines"></i>Voice to text</button>
+        <button id="voiceToVoiceBtn" type="button" role="menuitem"><i class="fa-solid fa-wave-square"></i>Voice to voice</button>
+      </div>
+    </div>
 
     <div id="listening" class="listening" style="display:none;">
       <i class="fa-solid fa-circle-notch fa-spin"></i> Listening…
@@ -10248,6 +11437,48 @@ const textFilePreviewSize = document.getElementById('text-file-preview-size');
 const textFilePreviewRemove = document.getElementById('text-file-preview-remove');
 
 const micBtn = document.getElementById('mic-btn');
+  const appEl = document.querySelector('.app');
+  const voiceEntryWrap = document.getElementById('voiceEntryWrap');
+  const voiceToTextBtn = document.getElementById('voiceToTextBtn');
+  const voiceToVoiceBtn = document.getElementById('voiceToVoiceBtn');
+  const voiceModeEl = document.getElementById('voiceMode');
+  const voiceCloseBtn = document.getElementById('voiceCloseBtn');
+  const voiceEndBtn = document.getElementById('voiceEndBtn');
+  const voiceMuteBtn = document.getElementById('voiceMuteBtn');
+  const voiceSettingsBtn = document.getElementById('voiceSettingsBtn');
+  const voiceSettingsPopover = document.getElementById('voiceSettingsPopover');
+  const voiceFullscreenBtn = document.getElementById('voiceFullscreenBtn');
+  const voiceProviderStatus = document.getElementById('voiceProviderStatus');
+  const voiceProviderText = document.getElementById('voiceProviderText');
+  const voiceSettingsConnection = document.getElementById('voiceSettingsConnection');
+  const voiceSettingsMicName = document.getElementById('voiceSettingsMicName');
+  const voiceModelSelect = document.getElementById('voiceModelSelect');
+  const voiceSelect = document.getElementById('voiceSelect');
+  const voiceLanguageSelect = document.getElementById('voiceLanguageSelect');
+  const voiceInputSelect = document.getElementById('voiceInputSelect');
+  const voiceOutputSelect = document.getElementById('voiceOutputSelect');
+  const voiceVadToggle = document.getElementById('voiceVadToggle');
+  const voiceBargeInToggle = document.getElementById('voiceBargeInToggle');
+  const voiceStateCard = document.getElementById('voiceStateCard');
+  const voiceStateText = document.getElementById('voiceStateText');
+  const voiceVisualizer = document.getElementById('voiceVisualizer');
+  const voiceOrb = document.getElementById('voiceOrb');
+  const voiceLiveCaption = document.getElementById('voiceLiveCaption');
+  const voiceCaptionSpeaker = document.getElementById('voiceCaptionSpeaker');
+  const voiceCaptionText = document.getElementById('voiceCaptionText');
+  const voiceKeyboardBtn = document.getElementById('voiceKeyboardBtn');
+  const voiceKeyboardPanel = document.getElementById('voiceKeyboardPanel');
+  const voiceKeyboardInput = document.getElementById('voiceKeyboardInput');
+  const voiceKeyboardSend = document.getElementById('voiceKeyboardSend');
+  const voiceTranscriptBtn = document.getElementById('voiceTranscriptBtn');
+  const voiceTranscriptOverlay = document.getElementById('voiceTranscriptOverlay');
+  const voiceTranscriptClose = document.getElementById('voiceTranscriptClose');
+  const voiceTranscriptClear = document.getElementById('voiceTranscriptClear');
+  const voiceTranscriptList = document.getElementById('voiceTranscriptList');
+  const voiceVolumeBtn = document.getElementById('voiceVolumeBtn');
+  const voiceVolumePopover = document.getElementById('voiceVolumePopover');
+  const voiceVolumeRange = document.getElementById('voiceVolumeRange');
+  const voiceVolumeValue = document.getElementById('voiceVolumeValue');
   const listeningEl = document.getElementById('listening');
   const modelSelect = document.getElementById('model-select');
 
@@ -13059,84 +14290,1132 @@ if(textFilePreviewRemove){
 
 }
 
-  let recognition = null;
-  let isListening = false;
+  const AI_VOICE_PREFS_KEY = 'hv_ai_voice_preferences_v1';
+  const AI_LIVE_VOICE_MODEL = 'gemini-3.1-flash-live-preview';
+  const AI_DEFAULT_VOICE = 'Charon';
+  const AI_LIVE_SOCKET_URL =
+    'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained';
 
-  if('SpeechRecognition' in window || 'webkitSpeechRecognition' in window){
-
-    const SpeechRec =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    recognition =
-      new SpeechRec();
-
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    recognition.lang = 'en-US';
-
-    recognition.onstart = () => {
-      isListening = true;
-      listeningEl.style.display = 'inline-flex';
-      micBtn.style.background = '#222';
+  function aiLoadVoicePreferences(){
+    let stored = {};
+    try{
+      stored = JSON.parse(localStorage.getItem(AI_VOICE_PREFS_KEY) || '{}') || {};
+    }catch(error){}
+    return {
+      voice:String(stored.voice || AI_DEFAULT_VOICE),
+      language:String(stored.language || 'auto'),
+      inputDeviceId:String(stored.inputDeviceId || ''),
+      outputDeviceId:String(stored.outputDeviceId || ''),
+      volume:Math.max(0,Math.min(1,Number.isFinite(Number(stored.volume)) ? Number(stored.volume) : .8)),
+      vad:stored.vad !== false,
+      bargeIn:stored.bargeIn !== false
     };
-
-    recognition.onend = () => {
-      isListening = false;
-      listeningEl.style.display = 'none';
-      micBtn.style.background = '';
-    };
-
-    recognition.onresult = event => {
-
-      let final = '';
-
-      for(let i = event.resultIndex; i < event.results.length; i++){
-
-        const transcript =
-          event.results[i][0].transcript;
-
-        if(event.results[i].isFinal){
-          final += transcript;
-        }
-
-      }
-
-      if(final){
-
-        inputEl.value +=
-          (inputEl.value ? ' ' : '') + final;
-
-        inputEl.dispatchEvent(
-          new Event('input')
-        );
-
-      }
-
-    };
-
-    recognition.onerror = err => {
-      isListening = false;
-      listeningEl.style.display = 'none';
-      micBtn.style.background = '';
-      console.error('Speech recognition error:', err);
-    };
-
   }
 
-  micBtn.addEventListener('click', () => {
+  let voicePreferences = aiLoadVoicePreferences();
 
-    if(!recognition){
-      alert('Voice input is not supported in this browser.');
+  function aiSaveVoicePreferences(){
+    try{
+      localStorage.setItem(AI_VOICE_PREFS_KEY,JSON.stringify(voicePreferences));
+      if(window.parent && typeof window.parent.hvStorageChanged === 'function'){
+        window.parent.hvStorageChanged();
+      }
+    }catch(error){
+      console.warn('Voice preferences could not be saved.',error);
+    }
+  }
+
+  function aiApplyVoicePreferences(){
+    if(voiceModelSelect) voiceModelSelect.value = AI_LIVE_VOICE_MODEL;
+    if(voiceSelect && [...voiceSelect.options].some(option => option.value === voicePreferences.voice)){
+      voiceSelect.value = voicePreferences.voice;
+    }else if(voiceSelect){
+      voiceSelect.value = AI_DEFAULT_VOICE;
+      voicePreferences.voice = AI_DEFAULT_VOICE;
+    }
+    if(voiceLanguageSelect) voiceLanguageSelect.value = voicePreferences.language;
+    if(voiceVolumeRange) voiceVolumeRange.value = String(Math.round(voicePreferences.volume * 100));
+    if(voiceVolumeValue) voiceVolumeValue.textContent = Math.round(voicePreferences.volume * 100) + '%';
+    if(voiceVadToggle) voiceVadToggle.checked = voicePreferences.vad;
+    if(voiceBargeInToggle) voiceBargeInToggle.checked = voicePreferences.bargeIn;
+  }
+
+  aiApplyVoicePreferences();
+
+  let recognition = null;
+  let isListening = false;
+  let speechToTextBase = '';
+  let speechToTextFinal = '';
+
+  function aiSetSpeechToTextUi(active){
+    isListening = active;
+    if(listeningEl) listeningEl.style.display = active ? 'inline-flex' : 'none';
+    if(micBtn){
+      micBtn.classList.toggle('active',active);
+      micBtn.setAttribute('aria-label',active ? 'Stop voice to text' : 'Voice options');
+    }
+  }
+
+  function aiCreateSpeechRecognition(){
+    if(recognition) return recognition;
+    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if(!SpeechRec) return null;
+    recognition = new SpeechRec();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = voicePreferences.language === 'auto' ? 'en-US' : voicePreferences.language;
+    recognition.onstart = () => aiSetSpeechToTextUi(true);
+    recognition.onend = () => aiSetSpeechToTextUi(false);
+    recognition.onresult = event => {
+      let interim = '';
+      let finalAddition = '';
+      for(let index = event.resultIndex; index < event.results.length; index++){
+        const transcript = String(event.results[index][0]?.transcript || '');
+        if(event.results[index].isFinal) finalAddition += transcript;
+        else interim += transcript;
+      }
+      if(finalAddition){
+        speechToTextFinal += (speechToTextFinal && !/[\s\n]$/.test(speechToTextFinal) ? ' ' : '') + finalAddition.trim();
+      }
+      const completed = [speechToTextBase,speechToTextFinal].filter(Boolean).join(speechToTextBase && speechToTextFinal ? ' ' : '');
+      inputEl.value = completed + (interim ? (completed ? ' ' : '') + interim : '');
+      inputEl.dispatchEvent(new Event('input',{ bubbles:true }));
+    };
+    recognition.onerror = event => {
+      aiSetSpeechToTextUi(false);
+      const errorName = String(event?.error || 'unknown');
+      const message = errorName === 'not-allowed' || errorName === 'service-not-allowed'
+        ? 'Microphone permission was denied. Allow microphone access and try again.'
+        : errorName === 'no-speech'
+          ? 'No speech was detected. Try speaking closer to the microphone.'
+          : 'Voice to text stopped because speech recognition is unavailable.';
+      aiNotifyParent('error','Voice to text',message,false);
+    };
+    return recognition;
+  }
+
+  function aiStartVoiceToText(){
+    const recognizer = aiCreateSpeechRecognition();
+    if(!recognizer){
+      aiNotifyParent('error','Voice to text','Live browser speech recognition is not supported here.',false);
       return;
     }
-
     if(isListening){
-      recognition.stop();
-    } else {
-      recognition.start();
+      recognizer.stop();
+      return;
     }
+    speechToTextBase = inputEl.value.trim();
+    speechToTextFinal = '';
+    recognizer.lang = voicePreferences.language === 'auto' ? 'en-US' : voicePreferences.language;
+    try{
+      recognizer.start();
+    }catch(error){
+      aiNotifyParent('error','Voice to text','Voice recognition is already starting. Please try again.',false);
+    }
+  }
 
+  let voiceSocket = null;
+  let voiceSessionWanted = false;
+  let voiceConnected = false;
+  let voiceMuted = false;
+  let voiceManualActivity = false;
+  let voiceLastActivityAt = 0;
+  let voiceMediaStream = null;
+  let voiceInputContext = null;
+  let voiceOutputContext = null;
+  let voiceOutputContextPromise = null;
+  let voiceInputSource = null;
+  let voiceInputAnalyser = null;
+  let voiceOutputAnalyser = null;
+  let voiceCaptureNode = null;
+  let voiceCaptureSink = null;
+  let voiceOutputGain = null;
+  let voiceWorkletUrl = '';
+  let voiceVisualFrame = 0;
+  let voiceReconnectTimer = 0;
+  let voiceReconnectAttempts = 0;
+  let voiceNextPlaybackTime = 0;
+  let voiceIsPlaying = false;
+  let voiceSessionTokenData = null;
+  let voiceInputDraft = '';
+  let voiceOutputDraft = '';
+  let voiceLastCompletedUser = '';
+  let voiceIntentTimer = 0;
+  const voicePlaybackSources = new Set();
+  const voiceProcessedUsers = new Map();
+  const voiceIntentOutcomes = new Map();
+  const voiceIntentPromises = new Map();
+  let voiceTranscriptEntries = [];
+
+  function aiVoiceSetState(state,text){
+    if(voiceModeEl) voiceModeEl.dataset.state = state;
+    if(voiceStateCard) voiceStateCard.dataset.state = state;
+    if(voiceStateText) voiceStateText.textContent = text || ({
+      idle:'Ready',
+      connecting:'Connecting',
+      listening:'Listening',
+      processing:'Thinking',
+      speaking:'Speaking',
+      muted:'Muted',
+      reconnecting:'Reconnecting',
+      error:'Connection error'
+    }[state] || 'Ready');
+  }
+
+  function aiVoiceSetConnection(connected,label){
+    voiceConnected = Boolean(connected);
+    if(voiceProviderStatus) voiceProviderStatus.classList.toggle('connected',voiceConnected);
+    if(voiceProviderText) voiceProviderText.textContent = 'Gemini Live · ' + (label || (voiceConnected ? 'Connected' : 'Disconnected'));
+    if(voiceSettingsConnection) voiceSettingsConnection.textContent = label || (voiceConnected ? 'Connected' : 'Disconnected');
+  }
+
+  function aiVoiceShowCaption(role,text,active){
+    if(!voiceLiveCaption || !voiceCaptionText || !voiceCaptionSpeaker) return;
+    const isUser = role === 'user';
+    voiceLiveCaption.dataset.speaker = isUser ? 'user' : 'assistant';
+    voiceCaptionSpeaker.textContent = isUser ? 'You' : 'AutoSite AI';
+    voiceCaptionText.textContent = String(text || (isUser ? 'Listening…' : 'Thinking…'));
+    voiceLiveCaption.classList.toggle('active',active !== false);
+  }
+
+  function aiVoiceMergeTranscript(current,incoming){
+    const existing = String(current || '');
+    const addition = String(incoming || '').replace(/\s+/g,' ');
+    if(!addition) return existing;
+    if(addition.startsWith(existing)) return addition;
+    if(existing.endsWith(addition)) return existing;
+    const needsSpace = existing && !/[\s\n]$/.test(existing) && !/^[\s,.!?;:]/.test(addition);
+    return existing + (needsSpace ? ' ' : '') + addition;
+  }
+
+  function aiVoiceAddTranscript(role,text,source){
+    const clean = String(text || '').trim();
+    if(!clean) return null;
+    const entry = {
+      id:'voice-' + Date.now() + '-' + Math.random().toString(36).slice(2,7),
+      role:role === 'user' ? 'user' : 'assistant',
+      text:clean,
+      source:source || 'voice',
+      createdAt:Date.now()
+    };
+    voiceTranscriptEntries.push(entry);
+    if(voiceTranscriptEntries.length > 250) voiceTranscriptEntries = voiceTranscriptEntries.slice(-250);
+    aiVoiceRenderTranscript();
+    return entry;
+  }
+
+  function aiVoiceRenderTranscript(){
+    if(!voiceTranscriptList) return;
+    const fragment = document.createDocumentFragment();
+    voiceTranscriptEntries.forEach(entry => {
+      const card = document.createElement('div');
+      const meta = document.createElement('span');
+      const body = document.createElement('div');
+      card.className = 'voice-transcript-message ' + (entry.role === 'user' ? 'user' : 'assistant');
+      meta.textContent = (entry.role === 'user' ? 'You' : 'AutoSite AI') + ' · ' + new Date(entry.createdAt).toLocaleTimeString([],{
+        hour:'numeric',
+        minute:'2-digit'
+      });
+      body.textContent = entry.text;
+      card.append(meta,body);
+      fragment.append(card);
+    });
+    if(!voiceTranscriptEntries.length){
+      const empty = document.createElement('div');
+      empty.className = 'voice-transcript-message';
+      empty.textContent = 'Your voice conversation will appear here.';
+      fragment.append(empty);
+    }
+    voiceTranscriptList.replaceChildren(fragment);
+    voiceTranscriptList.scrollTop = voiceTranscriptList.scrollHeight;
+  }
+
+  function aiVoiceSyncToNormalChat(role,text){
+    const clean = String(text || '').trim();
+    if(!clean) return;
+    if(!currentChatId) createNewChat();
+    const chat = chats[currentChatId];
+    if(!chat) return;
+    if(welcomeEl) welcomeEl.style.display = 'none';
+    const isUser = role === 'user';
+    addMessageUI(
+      isUser ? 'user' : 'system',
+      clean,
+      false,
+      null,
+      null,
+      null,
+      true,
+      null,
+      null
+    );
+    const historyRole = isUser ? 'user' : 'model';
+    const item = { role:historyRole,parts:[{ text:clean }],source:'voice' };
+    chat.history.push(item);
+    conversationHistory.push({ role:historyRole,parts:[{ text:clean }] });
+    chat.updatedAt = Date.now();
+    if(chat.title === 'New chat') updateCurrentChatTitleFromHistory();
+    saveChats();
+    renderHistoryList();
+  }
+
+  function aiVoiceGetEditorContext(){
+    const code = aiGetMainEditorCode();
+    const chat = chats[currentChatId];
+    const title = chat?.title || 'Untitled AI chat';
+    const selectedModel = modelSelect?.value || 'gemini-3.6-flash';
+    let fileName = 'Untitled';
+    let selectedCode = '';
+    let previewMode = 'desktop';
+    let diagnostics = [];
+    try{
+      const parentDocument = window.parent?.document;
+      const editor = parentDocument?.getElementById('hvCode');
+      fileName = parentDocument?.getElementById('hvFileName')?.textContent?.trim() || fileName;
+      if(editor && editor.selectionEnd > editor.selectionStart){
+        selectedCode = editor.value.slice(editor.selectionStart,editor.selectionEnd).slice(0,5000);
+      }
+      previewMode = parentDocument?.querySelector('.hv-device-btn.active')?.dataset?.device || previewMode;
+      if(typeof window.parent?.hvGetDiagnosticsSnapshot === 'function'){
+        diagnostics = window.parent.hvGetDiagnosticsSnapshot().slice(0,20);
+      }
+    }catch(error){}
+    const projectName = typeof projects === 'object' && currentProjectId
+      ? projects[currentProjectId]?.name || 'Current AI project'
+      : 'No AI project selected';
+    const attachmentSummary = [
+      selectedImageBase64 ? 'Image attachment ready' : '',
+      selectedTextFile?.name ? 'File attachment: ' + selectedTextFile.name : ''
+    ].filter(Boolean).join(', ') || 'No pending attachments';
+    return [
+      'Current AI chat: ' + title,
+      'Current AI project: ' + projectName,
+      'Selected coding model: ' + selectedModel,
+      'Editor file: ' + fileName,
+      'Preview mode: ' + previewMode,
+      'Pending attachments: ' + attachmentSummary,
+      'Selected code: ' + (selectedCode || 'None'),
+      'Current HTML diagnostics: ' + (diagnostics.length ? JSON.stringify(diagnostics) : 'None'),
+      'Current editor code (' + code.length + ' characters):',
+      code.slice(0,22000)
+    ].join('\n');
+  }
+
+  function aiVoiceBytesToBase64(bytes){
+    let binary = '';
+    const chunkSize = 0x8000;
+    for(let offset = 0; offset < bytes.length; offset += chunkSize){
+      binary += String.fromCharCode(...bytes.subarray(offset,offset + chunkSize));
+    }
+    return btoa(binary);
+  }
+
+  function aiVoiceBase64ToBytes(value){
+    const binary = atob(String(value || ''));
+    const bytes = new Uint8Array(binary.length);
+    for(let index = 0; index < binary.length; index++) bytes[index] = binary.charCodeAt(index);
+    return bytes;
+  }
+
+  function aiVoiceResample(samples,sourceRate,targetRate){
+    if(sourceRate === targetRate) return samples;
+    const ratio = sourceRate / targetRate;
+    const length = Math.max(1,Math.round(samples.length / ratio));
+    const output = new Float32Array(length);
+    for(let index = 0; index < length; index++){
+      const position = index * ratio;
+      const left = Math.floor(position);
+      const right = Math.min(samples.length - 1,left + 1);
+      const mix = position - left;
+      output[index] = samples[left] * (1 - mix) + samples[right] * mix;
+    }
+    return output;
+  }
+
+  function aiVoiceEncodePcm16(samples){
+    const buffer = new ArrayBuffer(samples.length * 2);
+    const view = new DataView(buffer);
+    for(let index = 0; index < samples.length; index++){
+      const sample = Math.max(-1,Math.min(1,samples[index]));
+      view.setInt16(index * 2,sample < 0 ? sample * 0x8000 : sample * 0x7fff,true);
+    }
+    return new Uint8Array(buffer);
+  }
+
+  function aiVoiceSend(payload){
+    if(!voiceSocket || voiceSocket.readyState !== WebSocket.OPEN) return false;
+    try{
+      voiceSocket.send(JSON.stringify(payload));
+      return true;
+    }catch(error){
+      return false;
+    }
+  }
+
+  function aiVoiceSendAudio(samples,sourceRate){
+    if(!voiceConnected || voiceMuted || !samples?.length) return;
+    if(!voicePreferences.vad){
+      let total = 0;
+      for(let index = 0; index < samples.length; index++) total += samples[index] * samples[index];
+      const rms = Math.sqrt(total / samples.length);
+      if(rms > .035){
+        voiceLastActivityAt = Date.now();
+        if(!voiceManualActivity){
+          voiceManualActivity = true;
+          aiVoiceSend({ realtimeInput:{ activityStart:{} } });
+        }
+      }else if(voiceManualActivity && Date.now() - voiceLastActivityAt > 700){
+        voiceManualActivity = false;
+        aiVoiceSend({ realtimeInput:{ activityEnd:{} } });
+      }
+    }
+    const resampled = aiVoiceResample(samples,sourceRate,16000);
+    aiVoiceSend({
+      realtimeInput:{
+        audio:{
+          mimeType:'audio/pcm;rate=16000',
+          data:aiVoiceBytesToBase64(aiVoiceEncodePcm16(resampled))
+        }
+      }
+    });
+  }
+
+  async function aiVoiceRefreshDevices(){
+    if(!navigator.mediaDevices || typeof navigator.mediaDevices.enumerateDevices !== 'function') return;
+    try{
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const inputs = devices.filter(device => device.kind === 'audioinput');
+      const outputs = devices.filter(device => device.kind === 'audiooutput');
+      function fill(select,items,preferred,label){
+        if(!select) return;
+        const fragment = document.createDocumentFragment();
+        const fallback = document.createElement('option');
+        fallback.value = '';
+        fallback.textContent = 'System default';
+        fragment.append(fallback);
+        items.forEach((device,index) => {
+          const option = document.createElement('option');
+          option.value = device.deviceId;
+          option.textContent = device.label || label + ' ' + (index + 1);
+          fragment.append(option);
+        });
+        select.replaceChildren(fragment);
+        select.value = [...select.options].some(option => option.value === preferred) ? preferred : '';
+      }
+      fill(voiceInputSelect,inputs,voicePreferences.inputDeviceId,'Microphone');
+      fill(voiceOutputSelect,outputs,voicePreferences.outputDeviceId,'Speaker');
+      const selectedInput = inputs.find(device => device.deviceId === voiceInputSelect?.value) || inputs[0];
+      if(voiceSettingsMicName) voiceSettingsMicName.textContent = selectedInput?.label || 'System default';
+      if(voiceOutputSelect){
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        const canSelectOutput = typeof AudioContextClass?.prototype?.setSinkId === 'function';
+        voiceOutputSelect.disabled = outputs.length === 0 || !canSelectOutput;
+        voiceOutputSelect.title = canSelectOutput ? 'Choose the AI audio output device' : 'This browser uses the system default output device';
+      }
+    }catch(error){
+      console.warn('Audio devices could not be listed.',error);
+    }
+  }
+
+  async function aiVoiceCreateCaptureNode(){
+    if(!voiceInputContext || !voiceInputSource) throw new Error('Microphone audio is unavailable.');
+    const processorCode =
+      'class HvVoicePcmProcessor extends AudioWorkletProcessor{' +
+      'constructor(){super();this.pending=[];this.length=0;}' +
+      'process(inputs){const channel=inputs[0]&&inputs[0][0];if(channel&&channel.length){this.pending.push(new Float32Array(channel));this.length+=channel.length;if(this.length>=2048){const output=new Float32Array(this.length);let offset=0;for(const chunk of this.pending){output.set(chunk,offset);offset+=chunk.length;}this.pending=[];this.length=0;this.port.postMessage(output,[output.buffer]);}}return true;}' +
+      '}registerProcessor("hv-voice-pcm",HvVoicePcmProcessor);';
+    if(voiceInputContext.audioWorklet && typeof AudioWorkletNode === 'function'){
+      const blob = new Blob([processorCode],{ type:'application/javascript' });
+      voiceWorkletUrl = URL.createObjectURL(blob);
+      await voiceInputContext.audioWorklet.addModule(voiceWorkletUrl);
+      voiceCaptureNode = new AudioWorkletNode(voiceInputContext,'hv-voice-pcm');
+      voiceCaptureNode.port.onmessage = event => aiVoiceSendAudio(event.data,voiceInputContext.sampleRate);
+      voiceCaptureSink = voiceInputContext.createGain();
+      voiceCaptureSink.gain.value = 0;
+      voiceInputSource.connect(voiceCaptureNode);
+      voiceCaptureNode.connect(voiceCaptureSink);
+      voiceCaptureSink.connect(voiceInputContext.destination);
+      return;
+    }
+    const processor = voiceInputContext.createScriptProcessor(2048,1,1);
+    processor.onaudioprocess = event => {
+      aiVoiceSendAudio(new Float32Array(event.inputBuffer.getChannelData(0)),voiceInputContext.sampleRate);
+    };
+    voiceCaptureNode = processor;
+    voiceCaptureSink = voiceInputContext.createGain();
+    voiceCaptureSink.gain.value = 0;
+    voiceInputSource.connect(processor);
+    processor.connect(voiceCaptureSink);
+    voiceCaptureSink.connect(voiceInputContext.destination);
+  }
+
+  async function aiVoiceAcquireMicrophone(){
+    if(voiceMediaStream?.active) return;
+    if(!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia !== 'function'){
+      throw new Error('This browser does not support live microphone capture.');
+    }
+    const audioConstraints = {
+      echoCancellation:true,
+      noiseSuppression:true,
+      autoGainControl:true,
+      channelCount:1
+    };
+    if(voicePreferences.inputDeviceId){
+      audioConstraints.deviceId = { exact:voicePreferences.inputDeviceId };
+    }
+    try{
+      voiceMediaStream = await navigator.mediaDevices.getUserMedia({ audio:audioConstraints });
+    }catch(error){
+      if(error?.name === 'NotAllowedError' || error?.name === 'SecurityError'){
+        throw new Error('Microphone permission was denied. Allow microphone access and start Voice Mode again.');
+      }
+      if(error?.name === 'NotFoundError' || error?.name === 'OverconstrainedError'){
+        throw new Error('The selected microphone is unavailable. Choose another input device.');
+      }
+      throw new Error('The microphone could not be started.');
+    }
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if(!AudioContextClass) throw new Error('Web Audio is not supported by this browser.');
+    voiceInputContext = new AudioContextClass({ latencyHint:'interactive' });
+    await voiceInputContext.resume();
+    voiceInputSource = voiceInputContext.createMediaStreamSource(voiceMediaStream);
+    voiceInputAnalyser = voiceInputContext.createAnalyser();
+    voiceInputAnalyser.fftSize = 512;
+    voiceInputAnalyser.smoothingTimeConstant = .72;
+    voiceInputSource.connect(voiceInputAnalyser);
+    await aiVoiceCreateCaptureNode();
+    await aiVoiceRefreshDevices();
+  }
+
+  async function aiVoiceEnsureOutputContext(){
+    if(voiceOutputContext && voiceOutputContext.state !== 'closed') return;
+    if(voiceOutputContextPromise) return voiceOutputContextPromise;
+    voiceOutputContextPromise = (async () => {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if(!AudioContextClass) throw new Error('Web Audio playback is not supported by this browser.');
+      voiceOutputContext = new AudioContextClass({ latencyHint:'interactive' });
+      voiceOutputGain = voiceOutputContext.createGain();
+      voiceOutputGain.gain.value = voicePreferences.volume;
+      voiceOutputAnalyser = voiceOutputContext.createAnalyser();
+      voiceOutputAnalyser.fftSize = 512;
+      voiceOutputAnalyser.smoothingTimeConstant = .74;
+      voiceOutputGain.connect(voiceOutputAnalyser);
+      voiceOutputAnalyser.connect(voiceOutputContext.destination);
+      if(voicePreferences.outputDeviceId && typeof voiceOutputContext.setSinkId === 'function'){
+        await voiceOutputContext.setSinkId(voicePreferences.outputDeviceId).catch(() => {});
+      }
+      await voiceOutputContext.resume();
+    })().finally(() => {
+      voiceOutputContextPromise = null;
+    });
+    return voiceOutputContextPromise;
+  }
+
+  function aiVoiceStopPlayback(){
+    voicePlaybackSources.forEach(source => {
+      try{ source.stop(); }catch(error){}
+      try{ source.disconnect(); }catch(error){}
+    });
+    voicePlaybackSources.clear();
+    voiceNextPlaybackTime = voiceOutputContext?.currentTime || 0;
+    voiceIsPlaying = false;
+    if(voiceMediaStream && !voiceMuted){
+      voiceMediaStream.getAudioTracks().forEach(track => { track.enabled = true; });
+    }
+  }
+
+  async function aiVoiceQueueAudio(base64Data,mimeType){
+    if(!base64Data) return;
+    await aiVoiceEnsureOutputContext();
+    const rateMatch = String(mimeType || '').match(/rate=(\d+)/i);
+    const sampleRate = rateMatch ? Number(rateMatch[1]) : 24000;
+    const bytes = aiVoiceBase64ToBytes(base64Data);
+    const sampleCount = Math.floor(bytes.byteLength / 2);
+    if(!sampleCount) return;
+    const view = new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
+    const floatData = new Float32Array(sampleCount);
+    for(let index = 0; index < sampleCount; index++) floatData[index] = view.getInt16(index * 2,true) / 32768;
+    const buffer = voiceOutputContext.createBuffer(1,sampleCount,sampleRate);
+    buffer.copyToChannel(floatData,0);
+    const source = voiceOutputContext.createBufferSource();
+    source.buffer = buffer;
+    source.connect(voiceOutputGain);
+    const startAt = Math.max(voiceOutputContext.currentTime + .015,voiceNextPlaybackTime);
+    voiceNextPlaybackTime = startAt + buffer.duration;
+    voicePlaybackSources.add(source);
+    voiceIsPlaying = true;
+    if(!voicePreferences.bargeIn && voiceMediaStream && !voiceMuted){
+      voiceMediaStream.getAudioTracks().forEach(track => { track.enabled = false; });
+    }
+    aiVoiceSetState('speaking','Speaking');
+    source.onended = () => {
+      voicePlaybackSources.delete(source);
+      try{ source.disconnect(); }catch(error){}
+      if(!voicePlaybackSources.size){
+        voiceIsPlaying = false;
+        if(!voicePreferences.bargeIn && voiceMediaStream && !voiceMuted){
+          voiceMediaStream.getAudioTracks().forEach(track => { track.enabled = true; });
+        }
+        if(voiceSessionWanted){
+          aiVoiceSetState(voiceMuted ? 'muted' : 'listening',voiceMuted ? 'Muted' : 'Listening');
+        }
+      }
+    };
+    source.start(startAt);
+  }
+
+  function aiVoiceFinalizeDrafts(){
+    const userText = voiceInputDraft.trim();
+    const assistantText = voiceOutputDraft.trim();
+    voiceInputDraft = '';
+    voiceOutputDraft = '';
+    if(userText){
+      voiceLastCompletedUser = userText;
+      aiVoiceAddTranscript('user',userText,'voice');
+      clearTimeout(voiceIntentTimer);
+      voiceIntentTimer = setTimeout(() => {
+        const intentPromise = aiVoiceHandleCompletedUser(userText,assistantText);
+        voiceIntentPromises.set(userText,intentPromise);
+      },450);
+    }
+    if(assistantText){
+      aiVoiceAddTranscript('assistant',assistantText,'voice');
+      if(!userText){
+        const linkedUser = voiceLastCompletedUser;
+        Promise.resolve(voiceIntentPromises.get(linkedUser)).finally(() => {
+          if(voiceIntentOutcomes.get(linkedUser) !== 'actionable'){
+            aiVoiceSyncToNormalChat('assistant',assistantText);
+          }
+        });
+      }
+      aiVoiceShowCaption('assistant',assistantText,false);
+    }
+  }
+
+  async function aiVoiceClassifyIntent(text){
+    const response = await fetch(aiBackendEndpoint('/api/ai/voice-intent'),{
+      method:'POST',
+      headers:{ 'Content-Type':'application/json',Accept:'application/json' },
+      body:JSON.stringify({
+        transcript:text,
+        context:aiVoiceGetEditorContext().slice(0,12000)
+      })
+    });
+    if(!response.ok) throw new Error(await aiReadBackendError(response,'Voice intent could not be classified.'));
+    return response.json();
+  }
+
+  async function aiVoiceHandleCompletedUser(text,assistantText){
+    const clean = String(text || '').trim();
+    if(!clean) return;
+    const processedAt = voiceProcessedUsers.get(clean) || 0;
+    if(Date.now() - processedAt < 5000) return;
+    voiceProcessedUsers.set(clean,Date.now());
+    try{
+      const result = await aiVoiceClassifyIntent(clean);
+      if(result?.actionable === true && Number(result.confidence || 0) >= .6){
+        voiceIntentOutcomes.set(clean,'actionable');
+        aiVoiceShowCaption('assistant','Sending your coding request to the editor…',true);
+        aiVoiceSetState('processing','Sending to code editor');
+        if(modelSelect) modelSelect.value = 'gemini-3.6-flash';
+        if(typeof aiSyncModelTrigger === 'function') aiSyncModelTrigger();
+        inputEl.value = clean;
+        inputEl.dispatchEvent(new Event('input',{ bubbles:true }));
+        const responseText = await sendMessage();
+        if(responseText){
+          aiVoiceAddTranscript('assistant',responseText,'coding-model');
+          aiVoiceShowCaption('assistant',responseText,false);
+        }
+        if(voiceSessionWanted) aiVoiceSetState(voiceMuted ? 'muted' : 'listening',voiceMuted ? 'Muted' : 'Listening');
+        return;
+      }
+    }catch(error){
+      console.warn('Voice intent classification failed; keeping the message conversational.',error);
+    }
+    voiceIntentOutcomes.set(clean,'conversational');
+    aiVoiceSyncToNormalChat('user',clean);
+    if(assistantText) aiVoiceSyncToNormalChat('assistant',assistantText);
+  }
+
+  function aiVoiceHandleServerMessage(message){
+    if(message.setupComplete){
+      voiceReconnectAttempts = 0;
+      aiVoiceSetConnection(true,'Excellent');
+      aiVoiceSetState(voiceMuted ? 'muted' : 'listening',voiceMuted ? 'Muted' : 'Listening');
+      aiVoiceShowCaption('assistant','I’m listening. Ask a question or tell me what to change in your code.',false);
+    }
+    const content = message.serverContent;
+    if(content?.interrupted){
+      aiVoiceStopPlayback();
+      aiVoiceSetState(voiceMuted ? 'muted' : 'listening',voiceMuted ? 'Muted' : 'Listening');
+    }
+    const inputText = content?.inputTranscription?.text;
+    if(inputText){
+      voiceInputDraft = aiVoiceMergeTranscript(voiceInputDraft,inputText);
+      aiVoiceShowCaption('user',voiceInputDraft,true);
+      aiVoiceSetState('listening','Listening');
+    }
+    const outputText = content?.outputTranscription?.text;
+    if(outputText){
+      voiceOutputDraft = aiVoiceMergeTranscript(voiceOutputDraft,outputText);
+      aiVoiceShowCaption('assistant',voiceOutputDraft,true);
+      aiVoiceSetState('speaking','Speaking');
+    }
+    const parts = Array.isArray(content?.modelTurn?.parts) ? content.modelTurn.parts : [];
+    parts.forEach(part => {
+      const audio = part?.inlineData || part?.inline_data;
+      if(audio?.data && /^audio\//i.test(String(audio.mimeType || audio.mime_type || 'audio/pcm'))){
+        aiVoiceQueueAudio(audio.data,audio.mimeType || audio.mime_type).catch(error => {
+          aiVoiceShowError(error.message || 'AI audio playback failed.');
+        });
+      }
+    });
+    if(content?.turnComplete) aiVoiceFinalizeDrafts();
+    if(message.goAway && voiceSessionWanted) aiVoiceScheduleReconnect('The live session is refreshing.');
+  }
+
+  function aiVoiceScheduleReconnect(reason){
+    if(!voiceSessionWanted || voiceReconnectTimer) return;
+    aiVoiceStopPlayback();
+    aiVoiceSetConnection(false,'Reconnecting');
+    aiVoiceSetState('reconnecting','Reconnecting');
+    aiVoiceShowCaption('assistant',reason || 'The live connection was interrupted. Reconnecting…',true);
+    if(voiceReconnectAttempts >= 3){
+      aiVoiceShowError('Voice Mode could not reconnect after three attempts. End the session and try again.');
+      return;
+    }
+    const delay = Math.min(4500,700 * Math.pow(2,voiceReconnectAttempts));
+    voiceReconnectAttempts++;
+    voiceReconnectTimer = setTimeout(() => {
+      voiceReconnectTimer = 0;
+      aiVoiceConnect().catch(error => aiVoiceScheduleReconnect(error.message));
+    },delay);
+  }
+
+  async function aiVoiceConnect(){
+    if(!voiceSessionWanted) return;
+    if(voiceSocket){
+      voiceSocket.onclose = null;
+      try{ voiceSocket.close(1000,'Reconnect'); }catch(error){}
+      voiceSocket = null;
+    }
+    aiVoiceSetConnection(false,voiceReconnectAttempts ? 'Reconnecting' : 'Connecting');
+    aiVoiceSetState(voiceReconnectAttempts ? 'reconnecting' : 'connecting',voiceReconnectAttempts ? 'Reconnecting' : 'Connecting');
+    const response = await fetch(aiBackendEndpoint('/api/ai/live-token'),{
+      method:'POST',
+      headers:{ 'Content-Type':'application/json',Accept:'application/json' },
+      body:JSON.stringify({
+        voice:voicePreferences.voice || AI_DEFAULT_VOICE,
+        language:voicePreferences.language || 'auto',
+        editorContext:aiVoiceGetEditorContext()
+      })
+    });
+    if(!response.ok) throw new Error(await aiReadBackendError(response,'A secure Gemini Live session could not be created.'));
+    voiceSessionTokenData = await response.json();
+    if(!voiceSessionTokenData?.token) throw new Error('The backend returned no Gemini Live session token.');
+    const socket = new WebSocket(
+      AI_LIVE_SOCKET_URL + '?access_token=' + encodeURIComponent(voiceSessionTokenData.token)
+    );
+    voiceSocket = socket;
+    socket.onopen = () => {
+      if(socket !== voiceSocket || !voiceSessionWanted) return;
+      const config = { ...(voiceSessionTokenData.config || {}) };
+      if(!voicePreferences.vad){
+        config.realtimeInputConfig = {
+          ...(config.realtimeInputConfig || {}),
+          automaticActivityDetection:{ disabled:true }
+        };
+      }
+      socket.send(JSON.stringify({
+        setup:{
+          model:'models/' + (voiceSessionTokenData.model || AI_LIVE_VOICE_MODEL),
+          ...config
+        }
+      }));
+    };
+    socket.onmessage = async event => {
+      if(socket !== voiceSocket) return;
+      try{
+        const raw = event.data instanceof Blob ? await event.data.text() : String(event.data || '');
+        aiVoiceHandleServerMessage(JSON.parse(raw));
+      }catch(error){
+        console.warn('Malformed Gemini Live message was ignored.',error);
+      }
+    };
+    socket.onerror = () => {
+      if(socket === voiceSocket && voiceSessionWanted) aiVoiceSetConnection(false,'Connection issue');
+    };
+    socket.onclose = event => {
+      if(socket !== voiceSocket) return;
+      voiceSocket = null;
+      aiVoiceSetConnection(false,'Disconnected');
+      if(voiceSessionWanted && event.code !== 1000){
+        aiVoiceScheduleReconnect('The live connection closed unexpectedly.');
+      }
+    };
+  }
+
+  function aiVoiceShowError(message){
+    const text = String(message || 'Voice Mode encountered an error.');
+    aiVoiceSetConnection(false,'Error');
+    aiVoiceSetState('error','Error');
+    aiVoiceShowCaption('assistant',text,true);
+    aiNotifyParent('error','Voice Mode',text,false);
+  }
+
+  function aiVoiceRms(analyser){
+    if(!analyser) return 0;
+    const values = new Uint8Array(analyser.fftSize);
+    analyser.getByteTimeDomainData(values);
+    let total = 0;
+    for(let index = 0; index < values.length; index++){
+      const normalized = (values[index] - 128) / 128;
+      total += normalized * normalized;
+    }
+    return Math.sqrt(total / values.length);
+  }
+
+  function aiVoiceDrawVisualizer(){
+    if(!voiceModeEl?.classList.contains('active') || !voiceVisualizer) return;
+    const rect = voiceVisualizer.getBoundingClientRect();
+    const scale = Math.max(1,window.devicePixelRatio || 1);
+    const width = Math.max(1,Math.floor(rect.width * scale));
+    const height = Math.max(1,Math.floor(rect.height * scale));
+    if(voiceVisualizer.width !== width || voiceVisualizer.height !== height){
+      voiceVisualizer.width = width;
+      voiceVisualizer.height = height;
+    }
+    const context = voiceVisualizer.getContext('2d');
+    context.clearRect(0,0,width,height);
+    const analyser = voiceIsPlaying ? voiceOutputAnalyser : voiceInputAnalyser;
+    const values = new Uint8Array(analyser?.fftSize || 256);
+    if(analyser) analyser.getByteTimeDomainData(values);
+    else values.fill(128);
+    const centerY = height / 2;
+    const centerX = width / 2;
+    const orbGap = Math.min(width * .13,90 * scale);
+    const amplitude = Math.min(height * .35,70 * scale);
+    context.lineWidth = 1.15 * scale;
+    context.strokeStyle = voiceIsPlaying ? 'rgba(74,222,128,.58)' : 'rgba(96,165,250,.55)';
+    context.beginPath();
+    for(let index = 0; index < values.length; index++){
+      const normalized = (values[index] - 128) / 128;
+      const progress = index / Math.max(1,values.length - 1);
+      const x = progress * width;
+      const distance = Math.abs(x - centerX);
+      if(distance < orbGap) continue;
+      const edgeFade = Math.min(1,distance / (width * .22));
+      const y = centerY + normalized * amplitude * edgeFade;
+      if(index === 0 || Math.abs((index - 1) / (values.length - 1) * width - centerX) < orbGap){
+        context.moveTo(x,y);
+      }else{
+        context.lineTo(x,y);
+      }
+    }
+    context.stroke();
+    const rms = aiVoiceRms(analyser);
+    if(voiceOrb) voiceOrb.style.transform = 'scale(' + (1 + Math.min(.11,rms * .85)).toFixed(3) + ')';
+    voiceVisualFrame = requestAnimationFrame(aiVoiceDrawVisualizer);
+  }
+
+  function aiVoiceStartVisualizer(){
+    cancelAnimationFrame(voiceVisualFrame);
+    voiceVisualFrame = requestAnimationFrame(aiVoiceDrawVisualizer);
+  }
+
+  async function aiStartVoiceMode(){
+    if(voiceSessionWanted) return;
+    if(isListening && recognition) recognition.stop();
+    voiceSessionWanted = true;
+    voiceReconnectAttempts = 0;
+    if(appEl) appEl.classList.add('voice-active');
+    if(voiceModeEl){
+      voiceModeEl.classList.add('active');
+      voiceModeEl.setAttribute('aria-hidden','false');
+    }
+    aiVoiceSetState('connecting','Connecting');
+    aiVoiceShowCaption('assistant','Connecting securely to Gemini Live…',true);
+    aiVoiceStartVisualizer();
+    try{
+      await aiVoiceAcquireMicrophone();
+      await aiVoiceConnect();
+    }catch(error){
+      aiVoiceShowError(error.message || 'Voice Mode could not start.');
+      await aiStopVoiceAudioResources(false);
+      voiceSessionWanted = false;
+    }
+  }
+
+  async function aiStopVoiceAudioResources(closeOutput){
+    clearTimeout(voiceReconnectTimer);
+    voiceReconnectTimer = 0;
+    clearTimeout(voiceIntentTimer);
+    voiceManualActivity = false;
+    voiceLastActivityAt = 0;
+    if(voiceCaptureNode){
+      try{ voiceCaptureNode.port && (voiceCaptureNode.port.onmessage = null); }catch(error){}
+      try{ voiceCaptureNode.disconnect(); }catch(error){}
+      voiceCaptureNode = null;
+    }
+    if(voiceCaptureSink){
+      try{ voiceCaptureSink.disconnect(); }catch(error){}
+      voiceCaptureSink = null;
+    }
+    if(voiceInputSource){
+      try{ voiceInputSource.disconnect(); }catch(error){}
+      voiceInputSource = null;
+    }
+    if(voiceMediaStream){
+      voiceMediaStream.getTracks().forEach(track => track.stop());
+      voiceMediaStream = null;
+    }
+    if(voiceInputContext){
+      await voiceInputContext.close().catch(() => {});
+      voiceInputContext = null;
+      voiceInputAnalyser = null;
+    }
+    if(voiceWorkletUrl){
+      URL.revokeObjectURL(voiceWorkletUrl);
+      voiceWorkletUrl = '';
+    }
+    aiVoiceStopPlayback();
+    if(closeOutput && voiceOutputContext){
+      await voiceOutputContext.close().catch(() => {});
+      voiceOutputContext = null;
+      voiceOutputContextPromise = null;
+      voiceOutputGain = null;
+      voiceOutputAnalyser = null;
+    }
+  }
+
+  async function aiEndVoiceMode(returnToChat){
+    voiceSessionWanted = false;
+    voiceConnected = false;
+    clearTimeout(voiceReconnectTimer);
+    voiceReconnectTimer = 0;
+    if(voiceSocket){
+      const socket = voiceSocket;
+      voiceSocket = null;
+      socket.onclose = null;
+      try{ socket.close(1000,'Voice session ended'); }catch(error){}
+    }
+    aiVoiceFinalizeDrafts();
+    await aiStopVoiceAudioResources(true);
+    aiVoiceSetConnection(false,'Disconnected');
+    aiVoiceSetState('idle','Ready');
+    aiVoiceShowCaption('assistant','Voice session ended. Start another whenever you are ready.',false);
+    voiceMuted = false;
+    if(voiceMuteBtn){
+      voiceMuteBtn.classList.remove('muted');
+      voiceMuteBtn.innerHTML = '<i class="fa-solid fa-microphone"></i><span class="voice-control-tip">Mute microphone</span>';
+    }
+    cancelAnimationFrame(voiceVisualFrame);
+    if(returnToChat){
+      if(appEl) appEl.classList.remove('voice-active');
+      if(voiceModeEl){
+        voiceModeEl.classList.remove('active');
+        voiceModeEl.setAttribute('aria-hidden','true');
+      }
+      if(voiceSettingsPopover) voiceSettingsPopover.classList.remove('open');
+      if(document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    }
+  }
+
+  function aiVoiceToggleMute(){
+    if(!voiceMediaStream) return;
+    voiceMuted = !voiceMuted;
+    voiceMediaStream.getAudioTracks().forEach(track => { track.enabled = !voiceMuted; });
+    if(voiceMuteBtn){
+      voiceMuteBtn.classList.toggle('muted',voiceMuted);
+      voiceMuteBtn.innerHTML = voiceMuted
+        ? '<i class="fa-solid fa-microphone-slash"></i><span class="voice-control-tip">Unmute microphone</span>'
+        : '<i class="fa-solid fa-microphone"></i><span class="voice-control-tip">Mute microphone</span>';
+    }
+    if(voiceMuted){
+      aiVoiceSend({ realtimeInput:{ audioStreamEnd:true } });
+      aiVoiceSetState('muted','Muted');
+      aiVoiceShowCaption('user','Microphone muted',false);
+    }else{
+      aiVoiceSetState('listening','Listening');
+      aiVoiceShowCaption('user','Listening…',true);
+    }
+  }
+
+  function aiVoiceSendKeyboardText(){
+    const text = voiceKeyboardInput?.value.trim();
+    if(!text || !voiceConnected) return;
+    aiVoiceAddTranscript('user',text,'keyboard');
+    voiceLastCompletedUser = text;
+    aiVoiceShowCaption('user',text,true);
+    aiVoiceSend({ realtimeInput:{ text } });
+    const intentPromise = aiVoiceHandleCompletedUser(text);
+    voiceIntentPromises.set(text,intentPromise);
+    voiceKeyboardInput.value = '';
+    aiVoiceSetState('processing','Thinking');
+  }
+
+  if(micBtn){
+    micBtn.addEventListener('click',event => {
+      event.stopPropagation();
+      voiceEntryWrap?.classList.toggle('menu-open');
+      micBtn.setAttribute('aria-expanded',String(voiceEntryWrap?.classList.contains('menu-open')));
+    });
+  }
+
+  voiceToTextBtn?.addEventListener('click',() => {
+    voiceEntryWrap?.classList.remove('menu-open');
+    micBtn?.setAttribute('aria-expanded','false');
+    aiStartVoiceToText();
   });
+
+  voiceToVoiceBtn?.addEventListener('click',() => {
+    voiceEntryWrap?.classList.remove('menu-open');
+    micBtn?.setAttribute('aria-expanded','false');
+    aiStartVoiceMode();
+  });
+
+  document.addEventListener('click',event => {
+    if(voiceEntryWrap && !voiceEntryWrap.contains(event.target)){
+      voiceEntryWrap.classList.remove('menu-open');
+      micBtn?.setAttribute('aria-expanded','false');
+    }
+    if(
+      voiceSettingsPopover?.classList.contains('open') &&
+      !voiceSettingsPopover.contains(event.target) &&
+      !voiceSettingsBtn?.contains(event.target)
+    ){
+      voiceSettingsPopover.classList.remove('open');
+      voiceSettingsPopover.setAttribute('aria-hidden','true');
+      voiceSettingsBtn?.setAttribute('aria-expanded','false');
+    }
+    if(
+      voiceVolumePopover?.classList.contains('open') &&
+      !voiceVolumePopover.contains(event.target) &&
+      !voiceVolumeBtn?.contains(event.target)
+    ){
+      voiceVolumePopover.classList.remove('open');
+      voiceVolumeBtn?.setAttribute('aria-expanded','false');
+    }
+  });
+
+  voiceCloseBtn?.addEventListener('click',() => aiEndVoiceMode(true));
+  voiceEndBtn?.addEventListener('click',() => aiEndVoiceMode(true));
+  voiceMuteBtn?.addEventListener('click',aiVoiceToggleMute);
+  voiceSettingsBtn?.addEventListener('click',event => {
+    event.stopPropagation();
+    const open = !voiceSettingsPopover.classList.contains('open');
+    voiceSettingsPopover.classList.toggle('open',open);
+    voiceSettingsPopover.setAttribute('aria-hidden',String(!open));
+    voiceSettingsBtn.setAttribute('aria-expanded',String(open));
+    if(open) aiVoiceRefreshDevices();
+  });
+  voiceFullscreenBtn?.addEventListener('click',async () => {
+    try{
+      if(document.fullscreenElement) await document.exitFullscreen();
+      else await appEl?.requestFullscreen();
+    }catch(error){
+      aiVoiceShowError('Fullscreen could not be opened in this browser.');
+    }
+  });
+  voiceKeyboardBtn?.addEventListener('click',() => {
+    const open = !voiceKeyboardPanel.classList.contains('open');
+    voiceKeyboardPanel.classList.toggle('open',open);
+    voiceKeyboardBtn.setAttribute('aria-pressed',String(open));
+    if(open) voiceKeyboardInput.focus();
+  });
+  voiceKeyboardSend?.addEventListener('click',aiVoiceSendKeyboardText);
+  voiceKeyboardInput?.addEventListener('keydown',event => {
+    if(event.key === 'Enter' && !event.shiftKey){
+      event.preventDefault();
+      aiVoiceSendKeyboardText();
+    }
+  });
+  voiceTranscriptBtn?.addEventListener('click',() => {
+    aiVoiceRenderTranscript();
+    voiceTranscriptOverlay.classList.add('open');
+    voiceTranscriptOverlay.setAttribute('aria-hidden','false');
+    voiceTranscriptBtn.setAttribute('aria-expanded','true');
+  });
+  voiceTranscriptClose?.addEventListener('click',() => {
+    voiceTranscriptOverlay.classList.remove('open');
+    voiceTranscriptOverlay.setAttribute('aria-hidden','true');
+    voiceTranscriptBtn?.setAttribute('aria-expanded','false');
+  });
+  voiceTranscriptOverlay?.addEventListener('click',event => {
+    if(event.target === voiceTranscriptOverlay) voiceTranscriptClose?.click();
+  });
+  voiceTranscriptClear?.addEventListener('click',() => {
+    voiceTranscriptEntries = [];
+    aiVoiceRenderTranscript();
+  });
+  voiceVolumeBtn?.addEventListener('click',event => {
+    event.stopPropagation();
+    const open = !voiceVolumePopover.classList.contains('open');
+    voiceVolumePopover.classList.toggle('open',open);
+    voiceVolumeBtn.setAttribute('aria-expanded',String(open));
+  });
+  voiceVolumeRange?.addEventListener('input',() => {
+    voicePreferences.volume = Number(voiceVolumeRange.value) / 100;
+    if(voiceVolumeValue) voiceVolumeValue.textContent = voiceVolumeRange.value + '%';
+    if(voiceOutputGain && voiceOutputContext){
+      voiceOutputGain.gain.setTargetAtTime(voicePreferences.volume,voiceOutputContext.currentTime,.025);
+    }
+    aiSaveVoicePreferences();
+  });
+  voiceSelect?.addEventListener('change',() => {
+    voicePreferences.voice = voiceSelect.value || AI_DEFAULT_VOICE;
+    aiSaveVoicePreferences();
+    if(voiceSessionWanted){
+      aiVoiceStopPlayback();
+      aiVoiceConnect().catch(error => aiVoiceShowError(error.message));
+    }
+  });
+  voiceLanguageSelect?.addEventListener('change',() => {
+    voicePreferences.language = voiceLanguageSelect.value || 'auto';
+    aiSaveVoicePreferences();
+    if(voiceSessionWanted){
+      aiVoiceConnect().catch(error => aiVoiceShowError(error.message));
+    }
+  });
+  voiceInputSelect?.addEventListener('change',async () => {
+    voicePreferences.inputDeviceId = voiceInputSelect.value;
+    aiSaveVoicePreferences();
+    if(voiceSessionWanted){
+      await aiStopVoiceAudioResources(false);
+      try{ await aiVoiceAcquireMicrophone(); }
+      catch(error){ aiVoiceShowError(error.message); }
+    }
+  });
+  voiceOutputSelect?.addEventListener('change',async () => {
+    voicePreferences.outputDeviceId = voiceOutputSelect.value;
+    aiSaveVoicePreferences();
+    if(voiceOutputContext && typeof voiceOutputContext.setSinkId === 'function'){
+      await voiceOutputContext.setSinkId(voicePreferences.outputDeviceId).catch(() => {
+        aiVoiceShowError('The selected speaker could not be used.');
+      });
+    }
+  });
+  voiceVadToggle?.addEventListener('change',() => {
+    voicePreferences.vad = voiceVadToggle.checked;
+    aiSaveVoicePreferences();
+    if(voiceSessionWanted){
+      aiVoiceConnect().catch(error => aiVoiceShowError(error.message));
+    }
+  });
+  voiceBargeInToggle?.addEventListener('change',() => {
+    voicePreferences.bargeIn = voiceBargeInToggle.checked;
+    aiSaveVoicePreferences();
+  });
+  navigator.mediaDevices?.addEventListener?.('devicechange',() => {
+    if(voiceModeEl?.classList.contains('active')) aiVoiceRefreshDevices();
+  });
+  window.addEventListener('beforeunload',() => {
+    voiceSessionWanted = false;
+    if(voiceSocket) try{ voiceSocket.close(1000,'Page closing'); }catch(error){}
+    voiceMediaStream?.getTracks().forEach(track => track.stop());
+    if(voiceWorkletUrl) URL.revokeObjectURL(voiceWorkletUrl);
+  });
+  aiVoiceRenderTranscript();
   
   /* =========================
    MAIN EDITOR CODE CONTEXT + REPLY BAR
@@ -14027,6 +16306,7 @@ aiNotifyParent(
   aiResponsePreview(resText),
   true
 );
+      return resText;
 
     }catch(err){
 
@@ -14036,6 +16316,7 @@ aiNotifyParent(
         systemId,
         'Error: ' + (err.message || 'Failed to call Gemini.')
       );
+      return '';
 
     }
 
@@ -16762,8 +19043,15 @@ loadChats();
 
   <div class="hv-popup-backdrop"></div>
 
+  <div class="hv-validator-loading" id="hvValidatorLoading" role="status" aria-live="polite" aria-hidden="true">
+    <div class="hv-validator-loading-card">
+      <div class="hv-validator-loading-spinner" aria-hidden="true"></div>
+      Loading validator code&hellip;
+    </div>
+  </div>
+
   <div class="hv-validator-card">
-    <div class="hv-validator-loading" id="hvValidatorLoading" role="status" aria-live="polite" aria-hidden="true">
+    <div class="hv-validator-loading-legacy" id="hvValidatorLoadingLegacy" hidden>
       <div class="hv-validator-loading-card">
         <div class="hv-validator-loading-spinner" aria-hidden="true"></div>
         Loading validator code…
@@ -17039,33 +19327,29 @@ loadChats();
       <button class="hv-nav-center-close" type="button" data-hv-nav-close aria-label="Close website updates"><i class="fa-solid fa-xmark"></i></button>
     </header>
     <div class="hv-nav-center-body">
-      <div class="hv-update-list">
-        <article class="hv-update-card">
-          <div class="hv-update-meta"><h3 class="hv-update-title">Navigation, history, and settings</h3><span class="hv-update-version">v4.4</span></div>
-          <div class="hv-update-desc">Added in-app legal pages, searchable FAQ, contact form, import history, appearance controls, live-preview preferences, and optional notifications with UI sounds.</div>
-          <div class="hv-update-date">July 10, 2026</div>
-        </article>
-        <article class="hv-update-card">
-          <div class="hv-update-meta"><h3 class="hv-update-title">Projects and pinned code</h3><span class="hv-update-version">v4.3</span></div>
-          <div class="hv-update-desc">Introduced project creation, project assignment, pinned projects and code cards, confirmation dialogs, and locally saved organization tools.</div>
-          <div class="hv-update-date">July 10, 2026</div>
-        </article>
-        <article class="hv-update-card">
-          <div class="hv-update-meta"><h3 class="hv-update-title">Validator workspace upgrade</h3><span class="hv-update-version">v4.2</span></div>
-          <div class="hv-update-desc">Added validator line numbers, syntax colors, code statistics, copy and download tools, error totals, and downloadable validation reports.</div>
-          <div class="hv-update-date">July 10, 2026</div>
-        </article>
-        <article class="hv-update-card">
-          <div class="hv-update-meta"><h3 class="hv-update-title">Advanced search and community favorites</h3><span class="hv-update-version">v4.1</span></div>
-          <div class="hv-update-desc">Added match counts, case-sensitive, whole-word, RegExp, and selection search modes plus locally saved Community Preset favorites.</div>
-          <div class="hv-update-date">July 10, 2026</div>
-        </article>
-        <article class="hv-update-card">
-          <div class="hv-update-meta"><h3 class="hv-update-title">HTML5 diagnostics and native editor selection</h3><span class="hv-update-version">v4.0</span></div>
-          <div class="hv-update-desc">Rebuilt validation around a standards-aware HTML5 engine and added aligned gutter diagnostics while preserving native browser text selection.</div>
-          <div class="hv-update-date">July 7, 2026</div>
-        </article>
+      <div class="hv-update-list" id="hvUpdateList"></div>
+    </div>
+  </section>
+</div>
+
+<div class="hv-nav-center-modal hv-update-detail-modal" id="hvUpdateDetailModal" aria-hidden="true">
+  <div class="hv-nav-center-backdrop" data-hv-update-detail-close></div>
+  <section class="hv-nav-center-panel" role="dialog" aria-modal="true" aria-labelledby="hvUpdateDetailTitle">
+    <header class="hv-nav-center-head">
+      <div class="hv-nav-center-icon" id="hvUpdateDetailIcon"><i class="fa-solid fa-sparkles"></i></div>
+      <div>
+        <h2 class="hv-nav-center-title" id="hvUpdateDetailTitle">Website update</h2>
+        <div class="hv-nav-center-sub" id="hvUpdateDetailSubtitle"></div>
       </div>
+      <button class="hv-nav-center-close" type="button" data-hv-update-detail-close aria-label="Close update details"><i class="fa-solid fa-xmark"></i></button>
+    </header>
+    <div class="hv-nav-center-body">
+      <div class="hv-update-detail-hero">
+        <span class="hv-update-detail-version" id="hvUpdateDetailVersion"></span>
+        <h3 id="hvUpdateDetailHeading"></h3>
+        <p id="hvUpdateDetailDescription"></p>
+      </div>
+      <div class="hv-update-detail-grid" id="hvUpdateDetailGrid"></div>
     </div>
   </section>
 </div>
@@ -17095,27 +19379,26 @@ loadChats();
 <!-- STATUS PAGE MODAL -->
 <div class="hv-nav-center-modal" id="hvStatusModal" data-hv-nav-modal="status" aria-hidden="true">
   <div class="hv-nav-center-backdrop" data-hv-nav-close></div>
-  <section class="hv-nav-center-panel" role="dialog" aria-modal="true" aria-labelledby="hvStatusTitle">
+  <section class="hv-nav-center-panel hv-status-panel" role="dialog" aria-modal="true" aria-labelledby="hvStatusTitle">
     <header class="hv-nav-center-head">
       <div class="hv-nav-center-icon"><i class="fa-solid fa-signal"></i></div>
       <div>
         <h2 class="hv-nav-center-title" id="hvStatusTitle">Service Status</h2>
-        <div class="hv-nav-center-sub">View the latest availability and uptime information for HTML Viewer.</div>
+        <div class="hv-nav-center-sub">Live availability and response-time data from UptimeRobot.</div>
       </div>
       <button class="hv-nav-center-close" type="button" data-hv-nav-close aria-label="Close status page dialog"><i class="fa-solid fa-xmark"></i></button>
     </header>
-    <div class="hv-nav-center-body">
-      <div class="hv-status-summary">
-        <span class="hv-status-dot" aria-hidden="true"></span>
-        <div>
-          <strong>Live service monitoring</strong>
-          <span>The external status page contains current uptime details and incident history.</span>
-        </div>
+    <div class="hv-nav-center-body hv-status-dashboard">
+      <div id="hvStatusContent" aria-live="polite">
+        <div class="hv-status-loading"><i class="fa-solid fa-circle-notch fa-spin"></i><span>Loading live service data&hellip;</span></div>
       </div>
-      <button class="hv-status-open-btn" id="hvOpenStatusPage" type="button">
-        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-        Status Page
-      </button>
+      <div class="hv-status-footer">
+        <span id="hvStatusCheckedAt">Waiting for live data</span>
+        <button class="hv-status-open-btn" id="hvOpenStatusPage" type="button">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          Status Page
+        </button>
+      </div>
     </div>
   </section>
 </div>
@@ -17123,17 +19406,34 @@ loadChats();
 <!-- SETTINGS MODAL -->
 <div class="hv-nav-center-modal" id="hvSettingsModal" data-hv-nav-modal="settings" aria-hidden="true">
   <div class="hv-nav-center-backdrop" data-hv-nav-close></div>
-  <section class="hv-nav-center-panel" role="dialog" aria-modal="true" aria-labelledby="hvSettingsTitle">
+  <section class="hv-nav-center-panel hv-settings-panel" role="dialog" aria-modal="true" aria-labelledby="hvSettingsTitle">
     <header class="hv-nav-center-head">
       <div class="hv-nav-center-icon"><i class="fa-solid fa-gear"></i></div>
       <div>
         <h2 class="hv-nav-center-title" id="hvSettingsTitle">Settings</h2>
-        <div class="hv-nav-center-sub">Customize preview behavior, appearance, and feedback.</div>
+        <div class="hv-nav-center-sub">Manage the editor, appearance, notifications, connections, and local data.</div>
       </div>
       <button class="hv-nav-center-close" type="button" data-hv-nav-close aria-label="Close settings"><i class="fa-solid fa-xmark"></i></button>
     </header>
     <div class="hv-nav-center-body">
-      <div class="hv-settings-list">
+      <div class="hv-settings-shell">
+        <aside class="hv-settings-rail" aria-label="Settings sections">
+          <nav class="hv-settings-tabs" role="tablist" aria-orientation="vertical">
+            <button class="hv-settings-tab active" type="button" role="tab" aria-selected="true" data-hv-settings-tab="general"><i class="fa-solid fa-sliders"></i><span>General</span></button>
+            <button class="hv-settings-tab" type="button" role="tab" aria-selected="false" data-hv-settings-tab="appearance"><i class="fa-solid fa-palette"></i><span>Appearance</span></button>
+            <button class="hv-settings-tab" type="button" role="tab" aria-selected="false" data-hv-settings-tab="notifications"><i class="fa-solid fa-bell"></i><span>Notifications</span></button>
+            <button class="hv-settings-tab" type="button" role="tab" aria-selected="false" data-hv-settings-tab="connections"><i class="fa-solid fa-plug"></i><span>Connections</span></button>
+            <button class="hv-settings-tab" type="button" role="tab" aria-selected="false" data-hv-settings-tab="storage"><i class="fa-solid fa-hard-drive"></i><span>Storage &amp; Data</span></button>
+          </nav>
+          <button class="hv-settings-save-close" id="hvSettingsSaveClose" type="button"><i class="fa-solid fa-check"></i>Save &amp; Close</button>
+        </aside>
+        <div class="hv-settings-content">
+          <section class="hv-settings-section active" role="tabpanel" data-hv-settings-section="general">
+            <div class="hv-settings-section-head">
+              <h3>General</h3>
+              <p>Control live preview behavior and automatic refreshes.</p>
+            </div>
+            <div class="hv-settings-list">
         <div class="hv-setting-row">
           <div class="hv-setting-row-icon"><i class="fa-solid fa-eye"></i></div>
           <div class="hv-setting-row-main">
@@ -17151,7 +19451,15 @@ loadChats();
           </div>
           <button class="hv-setting-toggle" id="hvSettingAutoUpdate" type="button" role="switch" aria-checked="true" aria-label="Toggle automatic preview updates"></button>
         </div>
+            </div>
+          </section>
 
+          <section class="hv-settings-section" role="tabpanel" data-hv-settings-section="appearance" hidden>
+            <div class="hv-settings-section-head">
+              <h3>Appearance</h3>
+              <p>Choose how HTML Viewer looks across the editor and its tools.</p>
+            </div>
+            <div class="hv-settings-list">
         <div class="hv-setting-row">
           <div class="hv-setting-row-icon"><i class="fa-solid fa-palette"></i></div>
           <div class="hv-setting-row-main">
@@ -17163,7 +19471,15 @@ loadChats();
             <option value="light">Light</option>
           </select>
         </div>
+            </div>
+          </section>
 
+          <section class="hv-settings-section" role="tabpanel" data-hv-settings-section="notifications" hidden>
+            <div class="hv-settings-section-head">
+              <h3>Notifications</h3>
+              <p>Control local action confirmations and their optional UI sounds.</p>
+            </div>
+            <div class="hv-settings-list">
         <div class="hv-setting-row">
           <div class="hv-setting-row-icon"><i class="fa-solid fa-bell"></i></div>
           <div class="hv-setting-row-main">
@@ -17181,8 +19497,27 @@ loadChats();
           </div>
           <button class="hv-setting-toggle" id="hvSettingSounds" type="button" role="switch" aria-checked="false" aria-label="Toggle UI sounds"></button>
         </div>
-      </div>
+            </div>
+          </section>
 
+          <section class="hv-settings-section" role="tabpanel" data-hv-settings-section="connections" hidden>
+            <div class="hv-settings-section-head">
+              <h3>Connections</h3>
+              <p>Secure AI and service credentials are configured on the backend and are never stored in this browser.</p>
+            </div>
+            <div class="hv-connection-grid">
+              <div class="hv-connection-card"><div class="hv-connection-card-head"><div class="hv-connection-card-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div><div><strong>Gemini AI</strong><span class="hv-connection-state">Backend connected</span></div></div><p>Text, code, and live voice requests use the secure Cloudflare backend.</p></div>
+              <div class="hv-connection-card"><div class="hv-connection-card-head"><div class="hv-connection-card-icon"><i class="fa-solid fa-image"></i></div><div><strong>Workers AI</strong><span class="hv-connection-state">Connected</span></div></div><p>FLUX.2 Klein image generation runs through a protected Workers AI binding.</p></div>
+              <div class="hv-connection-card"><div class="hv-connection-card-head"><div class="hv-connection-card-icon"><i class="fa-solid fa-signal"></i></div><div><strong>UptimeRobot</strong><span class="hv-connection-state">Backend connected</span></div></div><p>Status data is read server-side without exposing monitoring API keys.</p></div>
+              <div class="hv-connection-card"><div class="hv-connection-card-head"><div class="hv-connection-card-icon"><i class="fa-brands fa-discord"></i></div><div><strong>Discord</strong><span class="hv-connection-state">Backend connected</span></div></div><p>Contact messages and preset submissions are relayed securely by the backend.</p></div>
+            </div>
+          </section>
+
+          <section class="hv-settings-section" role="tabpanel" data-hv-settings-section="storage" hidden>
+            <div class="hv-settings-section-head">
+              <h3>Storage &amp; Data</h3>
+              <p>Inspect, export, or permanently clear site-owned browser storage.</p>
+            </div>
       <section class="hv-storage-section" aria-labelledby="hvStorageDataTitle">
         <div class="hv-storage-heading">
           <div class="hv-storage-heading-icon"><i class="fa-solid fa-hard-drive"></i></div>
@@ -17267,6 +19602,9 @@ loadChats();
         </div>
       </section>
       <div class="hv-settings-note">Settings are saved automatically on this device.</div>
+          </section>
+        </div>
+      </div>
     </div>
   </section>
 </div>
@@ -18672,7 +21010,6 @@ function hvInitValidatorUi(){
   }
 
   const popup = document.getElementById('hvValidatorPopup');
-  const card = popup ? popup.querySelector('.hv-validator-card') : null;
   const loading = document.getElementById('hvValidatorLoading');
   const openButton = document.getElementById('hvValidatorBtn');
   const closeButton = document.getElementById('hvValidatorClose');
@@ -18794,7 +21131,7 @@ function hvInitValidatorUi(){
 
   function closeValidator(){
     validatorLoadRevision++;
-    if(card) card.classList.remove('loading');
+    popup.classList.remove('loading');
     if(loading) loading.setAttribute('aria-hidden','true');
     popup.classList.remove('show');
   }
@@ -18803,7 +21140,7 @@ function hvInitValidatorUi(){
     const revision = ++validatorLoadRevision;
     hvResetValidatorResults();
     popup.classList.add('show');
-    if(card) card.classList.add('loading');
+    popup.classList.add('loading');
     if(loading) loading.setAttribute('aria-hidden','false');
 
     await hvYieldToBrowser();
@@ -18818,7 +21155,7 @@ function hvInitValidatorUi(){
 
     await hvYieldToBrowser();
     if(revision === validatorLoadRevision){
-      if(card) card.classList.remove('loading');
+    popup.classList.remove('loading');
       if(loading) loading.setAttribute('aria-hidden','true');
     }
   });
@@ -18944,6 +21281,21 @@ window.hvValidateHtmlSource =
 
 window.hvScheduleDiagnostics =
   hvScheduleDiagnostics;
+
+window.hvGetDiagnosticsSnapshot = function(){
+  const diagnostics = [];
+  hvDiagnosticsByLine.forEach(items => {
+    (items || []).forEach(item => {
+      diagnostics.push({
+        line:Number(item.line) || 1,
+        column:Number(item.column) || 1,
+        severity:String(item.severity || 'error'),
+        message:String(item.message || 'HTML issue')
+      });
+    });
+  });
+  return diagnostics.sort((left,right) => left.line - right.line || left.column - right.column);
+};
 
 if(document.readyState === 'loading'){
   document.addEventListener(
@@ -24734,6 +27086,306 @@ const hvSettingNotifications =
 const hvSettingSounds =
   document.getElementById('hvSettingSounds');
 
+const HV_WEBSITE_UPDATES = [
+  {
+    title:'Live Voice Mode and service dashboard',
+    version:'v5.3',
+    date:'July 28, 2026',
+    icon:'fa-wave-square',
+    description:'Added a complete Gemini Live voice workspace, live speaker captions, secure server-issued sessions, and a real UptimeRobot-powered service dashboard.',
+    details:[
+      ['fa-microphone-lines','Natural voice conversations','Talk with AutoSite AI using live microphone capture, interruption handling, synchronized transcripts, and real audio visualization.'],
+      ['fa-closed-captioning','Live speaker captions','A polished caption card switches between You and AutoSite AI and types interim and final speech above the session controls.'],
+      ['fa-shield-halved','Secure connections','Gemini and monitoring credentials remain on the Cloudflare backend; the browser receives only constrained, short-lived session access.'],
+      ['fa-chart-line','Real service data','The redesigned status view shows current monitor state, 30-day uptime, response times, and recent health bars.']
+    ]
+  },
+  {
+    title:'Storage, exports, and permanent cleanup',
+    version:'v5.2',
+    date:'July 27, 2026',
+    icon:'fa-hard-drive',
+    description:'Introduced complete local-data visibility, ZIP exports, storage-health guidance, and verified deletion for saved site content.',
+    details:[
+      ['fa-file-zipper','Portable data export','Export readable localStorage, sessionStorage, IndexedDB, Cache Storage, OPFS, and stored files with a complete manifest.'],
+      ['fa-gauge-high','Live storage health','See real browser usage, estimated quota, a recommended safe limit, file totals, and graduated usage states.'],
+      ['fa-trash-can','Complete cleanup','Clear site-owned records and related references only after typed confirmation, with partial-failure reporting.'],
+      ['fa-shield','Account-safe behavior','The cleanup registry excludes unrelated browser data and does not intentionally remove authentication cookies or sessions.']
+    ]
+  },
+  {
+    title:'Cloudflare AI image generation',
+    version:'v5.1',
+    date:'July 24, 2026',
+    icon:'fa-image',
+    description:'Replaced the former image provider with FLUX.2 Klein 4B on Cloudflare Workers AI while preserving the full AI-editor workflow.',
+    details:[
+      ['fa-cloud','Workers AI backend','Image generation now runs securely with the project’s Cloudflare AI binding.'],
+      ['fa-lock','No frontend credentials','Provider credentials and account details are kept out of browser-delivered source.'],
+      ['fa-download','Preview and download','Generated images retain loading feedback, chat history, preview, library, and download controls.'],
+      ['fa-code','Clear model routing','Gemini handles text and code, while FLUX.2 Klein 4B is used exclusively for image generation.']
+    ]
+  },
+  {
+    title:'Navigation, history, and settings',
+    version:'v4.4',
+    date:'July 10, 2026',
+    icon:'fa-sliders',
+    description:'Added in-app legal pages, searchable FAQ, contact tools, import history, theme controls, preview preferences, and optional notifications.',
+    details:[
+      ['fa-clock-rotate-left','Code history','Imported files and compatible share links are retained locally and searchable by title.'],
+      ['fa-bell','Action feedback','Optional notifications and clean UI sounds confirm important local actions.'],
+      ['fa-circle-question','Help and policies','FAQ, Terms, Privacy, Contact, Updates, Status, and Settings are available from the navigation menu.'],
+      ['fa-mobile-screen','Responsive controls','Mobile and tablet layouts expose the same editor actions in compact menus.']
+    ]
+  },
+  {
+    title:'Projects and pinned code',
+    version:'v4.3',
+    date:'July 10, 2026',
+    icon:'fa-folder-tree',
+    description:'Introduced project creation, project assignment, pinned projects and code cards, confirmation dialogs, and locally saved organization tools.',
+    details:[
+      ['fa-folder-plus','Project organization','Create named projects and assign saved versions without duplicating their code.'],
+      ['fa-thumbtack','Pinned content','Keep important projects and code cards at the top of each collection.'],
+      ['fa-magnifying-glass','Fast filtering','Search saved versions, projects, project code, and Community Preset favorites by name.'],
+      ['fa-trash','Safe destructive actions','Existing confirmation modals protect code and project deletion.']
+    ]
+  },
+  {
+    title:'Validator workspace upgrade',
+    version:'v4.2',
+    date:'July 10, 2026',
+    icon:'fa-shield-halved',
+    description:'Added validator line numbers, syntax colors, code statistics, copy and download tools, error totals, and downloadable validation reports.',
+    details:[
+      ['fa-list-ol','Aligned code view','Line numbers and syntax-highlighted source stay synchronized while the validator scrolls.'],
+      ['fa-file-circle-exclamation','Readable reports','Errors include source locations and can be downloaded as a separated text report.'],
+      ['fa-copy','Code actions','Copy, clear, and download the exact source shown in the validation workspace.'],
+      ['fa-spinner','Large-code loading','A modal-wide blur and progress indicator now cover heavy validator preparation.']
+    ]
+  }
+];
+
+const hvUpdateList = document.getElementById('hvUpdateList');
+const hvUpdateDetailModal = document.getElementById('hvUpdateDetailModal');
+const hvStatusContent = document.getElementById('hvStatusContent');
+const hvStatusCheckedAt = document.getElementById('hvStatusCheckedAt');
+let hvStatusRequestPromise = null;
+let hvStatusLastLoaded = 0;
+
+function hvRenderWebsiteUpdates(){
+  if(!hvUpdateList) return;
+  const fragment = document.createDocumentFragment();
+  HV_WEBSITE_UPDATES.forEach((update,index) => {
+    const card = document.createElement('button');
+    const meta = document.createElement('div');
+    const title = document.createElement('h3');
+    const version = document.createElement('span');
+    const description = document.createElement('div');
+    const date = document.createElement('div');
+    card.type = 'button';
+    card.className = 'hv-update-card';
+    card.dataset.hvUpdateIndex = String(index);
+    meta.className = 'hv-update-meta';
+    title.className = 'hv-update-title';
+    version.className = 'hv-update-version';
+    description.className = 'hv-update-desc';
+    date.className = 'hv-update-date';
+    title.textContent = update.title;
+    version.textContent = update.version;
+    description.textContent = update.description;
+    date.textContent = update.date + ' · View details';
+    meta.append(title,version);
+    card.append(meta,description,date);
+    fragment.append(card);
+  });
+  hvUpdateList.replaceChildren(fragment);
+}
+
+function hvOpenUpdateDetails(index){
+  const update = HV_WEBSITE_UPDATES[index];
+  if(!update || !hvUpdateDetailModal) return;
+  const title = document.getElementById('hvUpdateDetailTitle');
+  const subtitle = document.getElementById('hvUpdateDetailSubtitle');
+  const version = document.getElementById('hvUpdateDetailVersion');
+  const heading = document.getElementById('hvUpdateDetailHeading');
+  const description = document.getElementById('hvUpdateDetailDescription');
+  const icon = document.querySelector('#hvUpdateDetailIcon i');
+  const grid = document.getElementById('hvUpdateDetailGrid');
+  if(title) title.textContent = update.title;
+  if(subtitle) subtitle.textContent = update.date;
+  if(version) version.textContent = update.version;
+  if(heading) heading.textContent = update.title;
+  if(description) description.textContent = update.description;
+  if(icon) icon.className = 'fa-solid ' + update.icon;
+  if(grid){
+    const fragment = document.createDocumentFragment();
+    update.details.forEach(detail => {
+      const card = document.createElement('div');
+      const detailIcon = document.createElement('i');
+      const detailTitle = document.createElement('strong');
+      const detailCopy = document.createElement('span');
+      card.className = 'hv-update-detail-item';
+      detailIcon.className = 'fa-solid ' + detail[0];
+      detailTitle.textContent = detail[1];
+      detailCopy.textContent = detail[2];
+      card.append(detailIcon,detailTitle,detailCopy);
+      fragment.append(card);
+    });
+    grid.replaceChildren(fragment);
+  }
+  hvUpdateDetailModal.classList.add('open');
+  hvUpdateDetailModal.setAttribute('aria-hidden','false');
+}
+
+function hvCloseUpdateDetails(){
+  if(!hvUpdateDetailModal) return;
+  hvUpdateDetailModal.classList.remove('open');
+  hvUpdateDetailModal.setAttribute('aria-hidden','true');
+}
+
+function hvActivateSettingsTab(name){
+  const modal = document.getElementById('hvSettingsModal');
+  if(!modal) return;
+  modal.querySelectorAll('[data-hv-settings-tab]').forEach(button => {
+    const active = button.dataset.hvSettingsTab === name;
+    button.classList.toggle('active',active);
+    button.setAttribute('aria-selected',String(active));
+  });
+  modal.querySelectorAll('[data-hv-settings-section]').forEach(section => {
+    const active = section.dataset.hvSettingsSection === name;
+    section.classList.toggle('active',active);
+    section.hidden = !active;
+  });
+  if(name === 'storage' && typeof window.hvStorageChanged === 'function'){
+    window.hvStorageChanged();
+  }
+}
+
+function hvStatusText(value,fallback){
+  const text = String(value == null ? '' : value).trim();
+  return text || fallback;
+}
+
+function hvRenderStatusDashboard(data){
+  if(!hvStatusContent) return;
+  const services = Array.isArray(data?.services)
+    ? data.services
+    : Array.isArray(data?.monitors)
+      ? data.monitors
+      : [];
+  const allUp = services.length > 0 && services.every(service => service.status === 'up');
+  const summary = document.createElement('div');
+  const dot = document.createElement('span');
+  const summaryCopy = document.createElement('div');
+  const summaryTitle = document.createElement('strong');
+  const summaryText = document.createElement('span');
+  summary.className = 'hv-status-summary' + (allUp ? '' : ' attention');
+  dot.className = 'hv-status-dot';
+  summaryTitle.textContent = allUp ? 'All systems operational' : 'Some services need attention';
+  summaryText.textContent = services.length + ' monitored service' + (services.length === 1 ? '' : 's') + ' · live backend data';
+  summaryCopy.append(summaryTitle,summaryText);
+  summary.append(dot,summaryCopy);
+
+  const head = document.createElement('div');
+  const headTitle = document.createElement('h3');
+  const headCount = document.createElement('span');
+  head.className = 'hv-status-services-head';
+  headTitle.textContent = 'Services';
+  headCount.textContent = services.length + ' monitor' + (services.length === 1 ? '' : 's');
+  head.append(headTitle,headCount);
+
+  const list = document.createElement('div');
+  list.className = 'hv-status-list';
+  services.forEach(service => {
+    const row = document.createElement('div');
+    const nameWrap = document.createElement('div');
+    const name = document.createElement('strong');
+    const link = document.createElement('a');
+    const uptime = document.createElement('div');
+    const uptimeLabel = document.createElement('small');
+    const bars = document.createElement('div');
+    const response = document.createElement('div');
+    const responseLabel = document.createElement('small');
+    const live = document.createElement('div');
+    const liveIcon = document.createElement('i');
+    row.className = 'hv-status-service';
+    nameWrap.className = 'hv-status-service-name';
+    name.textContent = hvStatusText(service.name,'Service');
+    link.textContent = hvStatusText(service.url,'Monitored endpoint');
+    if(/^https?:\/\//i.test(String(service.url || ''))){
+      link.href = service.url;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+    }
+    nameWrap.append(name,link);
+    uptime.className = 'hv-status-uptime';
+    const uptimeValue = service.uptimePercent ?? service.uptime;
+    uptime.textContent = Number.isFinite(Number(uptimeValue)) ? Number(uptimeValue).toFixed(3) + '%' : '—';
+    uptimeLabel.textContent = '30 day uptime';
+    uptime.append(uptimeLabel);
+    bars.className = 'hv-status-bars';
+    bars.setAttribute('aria-label','Recent monitor health');
+    (Array.isArray(service.bars) ? service.bars : []).slice(-30).forEach(item => {
+      const state = typeof item === 'object' && item ? item.state : item;
+      const bar = document.createElement('span');
+      bar.className = 'hv-status-bar ' + (/^(up|slow|down)$/.test(state) ? state : 'unknown');
+      bars.append(bar);
+    });
+    response.className = 'hv-status-response';
+    const responseValue = service.responseTimeMs ?? service.responseTime;
+    response.textContent = Number.isFinite(Number(responseValue)) ? Math.round(Number(responseValue)) + ' ms' : '—';
+    responseLabel.textContent = 'Response';
+    response.append(responseLabel);
+    live.className = 'hv-status-live ' + hvStatusText(service.status,'unknown');
+    liveIcon.className = service.status === 'up' ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-exclamation';
+    const fallbackStatus = service.status
+      ? service.status.charAt(0).toUpperCase() + service.status.slice(1)
+      : 'Unknown';
+    live.append(liveIcon,document.createTextNode(' ' + hvStatusText(service.statusLabel,fallbackStatus)));
+    row.append(nameWrap,uptime,bars,response,live);
+    list.append(row);
+  });
+  hvStatusContent.replaceChildren(summary,head,list);
+  if(hvStatusCheckedAt){
+    const checked = data?.checkedAt ? new Date(data.checkedAt) : new Date();
+    hvStatusCheckedAt.textContent = 'Last checked ' + (Number.isNaN(checked.getTime()) ? 'just now' : checked.toLocaleString());
+  }
+}
+
+async function hvRefreshStatusDashboard(force){
+  if(!hvStatusContent) return;
+  if(!force && Date.now() - hvStatusLastLoaded < 45000) return;
+  if(hvStatusRequestPromise) return hvStatusRequestPromise;
+  hvStatusContent.innerHTML = '<div class="hv-status-loading"><div><i class="fa-solid fa-circle-notch fa-spin"></i><span>Loading live service data&hellip;</span></div></div>';
+  hvStatusRequestPromise = (async () => {
+    const response = await fetch(hvBackendEndpoint('/api/status'),{
+      method:'GET',
+      headers:{ Accept:'application/json' }
+    });
+    if(!response.ok) throw new Error(await hvReadBackendError(response,'Service data could not be loaded.'));
+    const data = await response.json();
+    hvRenderStatusDashboard(data);
+    hvStatusLastLoaded = Date.now();
+  })().catch(error => {
+    const wrapper = document.createElement('div');
+    const inner = document.createElement('div');
+    const icon = document.createElement('i');
+    const message = document.createElement('span');
+    wrapper.className = 'hv-status-error';
+    icon.className = 'fa-solid fa-triangle-exclamation';
+    message.textContent = error.message || 'Service data could not be loaded.';
+    inner.append(icon,message);
+    wrapper.append(inner);
+    hvStatusContent.replaceChildren(wrapper);
+    if(hvStatusCheckedAt) hvStatusCheckedAt.textContent = 'Live status unavailable';
+  }).finally(() => {
+    hvStatusRequestPromise = null;
+  });
+  return hvStatusRequestPromise;
+}
+
 function hvSafeLocalJson(value, fallback){
   try{
     return JSON.parse(value);
@@ -24845,6 +27497,7 @@ function hvPlayUiSound(type){
     message:[620, 820],
     create:[440, 660],
     rename:[500, 680],
+    storage:[310, 440, 620],
     error:[220, 170]
   };
 
@@ -24891,11 +27544,13 @@ const HV_NOTIFICATION_META = {
   message:{ title:'Message ready', icon:'fa-comment-dots' },
   create:{ title:'Item created', icon:'fa-plus' },
   rename:{ title:'Item renamed', icon:'fa-pen' },
+  storage:{ title:'Storage warning', icon:'fa-hard-drive' },
   error:{ title:'Action failed', icon:'fa-triangle-exclamation' }
 };
 
 window.hvNotify = function(type, message, options){
-  if(!hvUiSettings.notifications || !hvToastStack){
+  const custom = options && typeof options === 'object' ? options : {};
+  if((!hvUiSettings.notifications && !custom.force) || !hvToastStack){
     return;
   }
 
@@ -24907,9 +27562,8 @@ window.hvNotify = function(type, message, options){
   const title = document.createElement('div');
   const text = document.createElement('div');
   const detail = document.createElement('div');
-  const custom = options && typeof options === 'object' ? options : {};
 
-  toast.className = 'hv-toast';
+  toast.className = 'hv-toast' + (custom.variant ? ' ' + String(custom.variant) : '');
   toast.setAttribute('role', 'status');
   iconWrap.className = 'hv-toast-icon';
   icon.className = 'fa-solid ' + meta.icon;
@@ -25195,6 +27849,7 @@ function hvRenderFaq(){
 }
 
 function hvCloseNavModals(){
+  hvCloseUpdateDetails();
   document.querySelectorAll('.hv-nav-center-modal.open').forEach(modal => {
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden', 'true');
@@ -25225,9 +27880,18 @@ function hvOpenNavModal(name){
 
   if(name === 'settings'){
     hvApplyUiSettings(false);
+    hvActivateSettingsTab('general');
     if(typeof window.hvStorageChanged === 'function'){
       window.hvStorageChanged();
     }
+  }
+
+  if(name === 'updates'){
+    hvRenderWebsiteUpdates();
+  }
+
+  if(name === 'status'){
+    hvRefreshStatusDashboard(false);
   }
 
   if(name === 'contact'){
@@ -25464,6 +28128,31 @@ if(hvFaqList){
   });
 }
 
+if(hvUpdateList){
+  hvRenderWebsiteUpdates();
+  hvUpdateList.addEventListener('click', event => {
+    const card = event.target.closest('[data-hv-update-index]');
+    if(card) hvOpenUpdateDetails(Number(card.dataset.hvUpdateIndex));
+  });
+}
+
+document.querySelectorAll('[data-hv-update-detail-close]').forEach(button => {
+  button.addEventListener('click',hvCloseUpdateDetails);
+});
+
+document.querySelectorAll('[data-hv-settings-tab]').forEach(button => {
+  button.addEventListener('click',() => hvActivateSettingsTab(button.dataset.hvSettingsTab));
+});
+
+const hvSettingsSaveClose = document.getElementById('hvSettingsSaveClose');
+if(hvSettingsSaveClose){
+  hvSettingsSaveClose.addEventListener('click',() => {
+    hvStoreUiSettings();
+    hvApplyUiSettings(true);
+    hvCloseNavModals();
+  });
+}
+
 if(hvHistorySearch){
   hvHistorySearch.addEventListener('input', hvRenderCodeHistory);
 }
@@ -25660,6 +28349,7 @@ const HV_SITE_STORAGE_REGISTRY = Object.freeze({
     { key:'hv_restore_name_v4', group:'editor' },
     { key:'hv_code_history_v1', group:'history' },
     { key:'hv_ui_settings_v1', group:'settings' },
+    { key:'hv_ai_voice_preferences_v1', group:'settings' },
     { key:'gemini_chats', group:'ai-history' },
     { key:'gemini_projects', group:'ai-history' },
     { key:'html_viewer_ai_library_fallback', group:'ai-library' }
@@ -26180,6 +28870,37 @@ function hvStorageStatusForPercent(percent){
   return { label:'Healthy',className:'healthy' };
 }
 
+function hvMaybeWarnStorage(percent,status){
+  const warningKey = 'hv_storage_warning_level_v1';
+  const level = percent >= 90 ? 90 : percent >= 80 ? 80 : percent >= 60 ? 60 : 0;
+  let previous = 0;
+  try{
+    previous = Number(sessionStorage.getItem(warningKey)) || 0;
+    if(!level){
+      sessionStorage.removeItem(warningKey);
+      return;
+    }
+    if(level <= previous) return;
+    sessionStorage.setItem(warningKey,String(level));
+  }catch(error){
+    if(!level) return;
+  }
+
+  window.hvNotify(
+    'storage',
+    level >= 90
+      ? 'Browser storage is critically full. Download important data and clear unused items now.'
+      : level >= 80
+        ? 'Browser storage usage is high. Download a backup and remove unused saved data soon.'
+        : 'Browser storage is getting full. Staying below 70% can reduce storage-failure and performance risks.',
+    {
+      force:true,
+      variant:'warning',
+      title:status.label + ' · ' + percent.toFixed(1) + '% used'
+    }
+  );
+}
+
 async function refreshStorageEstimate(scan){
   const stats = calculateStoredFileStats(scan || await scanLocalSiteData());
   if(hvStorageElements.fileCount) hvStorageElements.fileCount.textContent = String(stats.count);
@@ -26218,6 +28939,7 @@ async function refreshStorageEstimate(scan){
     hvStorageElements.meter.setAttribute('aria-valuenow',String(Math.round(percent)));
     hvStorageElements.meter.setAttribute('aria-valuetext',supported ? percent.toFixed(1) + '%' : 'Storage estimate unavailable');
   }
+  if(supported) hvMaybeWarnStorage(percent,status);
   return { ...stats,usage,quota,percent,supported,status:status.label };
 }
 

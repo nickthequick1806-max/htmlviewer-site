@@ -14,7 +14,9 @@
   "secrets": {
     "required": [
       "GEMINI_API_KEY",
-      "DISCORD_WEBHOOK_URL"
+      "DISCORD_WEBHOOK_URL",
+      "UPTIMEROBOT_API_KEY",
+      "UPTIMEROBOT_RESPONSE_API_KEY"
     ]
   },
   "ratelimits": [

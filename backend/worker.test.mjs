@@ -7,6 +7,8 @@ const ALLOWED_ORIGIN = 'https://htmlviewer.site';
 const TEST_ENV = {
   ALLOWED_ORIGINS:ALLOWED_ORIGIN,
   GEMINI_API_KEY:'test-auth-key',
+  UPTIMEROBOT_API_KEY:'test-uptime-key',
+  UPTIMEROBOT_RESPONSE_API_KEY:'test-response-key',
   AI:{
     run:async () => ({
       image:Buffer.from([
@@ -16,6 +18,17 @@ const TEST_ENV = {
     })
   }
 };
+
+function createJsonRequest(path, body, method = 'POST'){
+  return new Request('https://worker.example' + path, {
+    method,
+    headers:{
+      'Content-Type':'application/json',
+      Origin:ALLOWED_ORIGIN
+    },
+    body:method === 'GET' ? undefined : JSON.stringify(body || {})
+  });
+}
 
 function createGeminiRequest(model = 'gemini-3.6-flash'){
   return new Request('https://worker.example/api/ai/gemini', {
@@ -148,6 +161,195 @@ test('rejects Gemini models outside the allowlist before calling upstream', asyn
   assert.deepEqual(await response.json(), {
     error:'The selected Gemini model is not allowed.'
   });
+});
+
+test('creates a one-use Gemini Live token with Charon as the default voice', async t => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+  });
+
+  let provisioningBody;
+  globalThis.fetch = async (url, init) => {
+    assert.equal(
+      String(url),
+      'https://generativelanguage.googleapis.com/v1beta/auth_tokens'
+    );
+    assert.equal(init.headers['x-goog-api-key'], TEST_ENV.GEMINI_API_KEY);
+    provisioningBody = JSON.parse(init.body);
+    return Response.json({
+      name:'auth_tokens/live-test-token',
+      expireTime:'2026-07-28T17:30:00.000Z'
+    });
+  };
+
+  const response = await worker.fetch(
+    createJsonRequest('/api/ai/live-token', {
+      editorContext:'Current file: landing-page.html'
+    }),
+    TEST_ENV
+  );
+  const data = await response.json();
+
+  assert.equal(response.status, 200);
+  assert.equal(data.model, 'gemini-3.1-flash-live-preview');
+  assert.equal(data.voice, 'Charon');
+  assert.equal(data.token, 'auth_tokens/live-test-token');
+  assert.equal(provisioningBody.uses, 1);
+  assert.equal(provisioningBody.liveConnectConstraints, undefined);
+  assert.equal(provisioningBody.bidiGenerateContentSetup, undefined);
+  assert.equal(
+    data.config.generationConfig.speechConfig
+      .voiceConfig.prebuiltVoiceConfig.voiceName,
+    'Charon'
+  );
+  assert.match(
+    data.config.systemInstruction
+      .parts[0].text,
+    /Current file: landing-page\.html/
+  );
+});
+
+test('rejects unsupported Gemini Live voices before provisioning a token', async t => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+  });
+
+  globalThis.fetch = async () => {
+    throw new Error('Token provisioning should not be called.');
+  };
+
+  const response = await worker.fetch(
+    createJsonRequest('/api/ai/live-token', { voice:'Not-A-Voice' }),
+    TEST_ENV
+  );
+
+  assert.equal(response.status, 400);
+  assert.deepEqual(await response.json(), {
+    error:'The selected Gemini Live voice is not allowed.'
+  });
+});
+
+test('classifies stabilized coding commands with the dedicated intent route', async t => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+  });
+
+  globalThis.fetch = async (url, init) => {
+    assert.match(String(url), /gemini-3\.5-flash-lite:generateContent$/);
+    const body = JSON.parse(init.body);
+    assert.match(
+      body.contents[0].parts[0].text,
+      /Add a responsive contact section/
+    );
+    assert.equal(body.generationConfig.responseMimeType, 'application/json');
+    return Response.json({
+      candidates:[{
+        content:{
+          parts:[{
+            text:JSON.stringify({
+              intent:'ACTIONABLE',
+              confidence:0.97,
+              reason:'The user requested a code change.'
+            })
+          }]
+        }
+      }]
+    });
+  };
+
+  const response = await worker.fetch(
+    createJsonRequest('/api/ai/voice-intent', {
+      transcript:'Add a responsive contact section to my page.'
+    }),
+    TEST_ENV
+  );
+
+  assert.equal(response.status, 200);
+  assert.deepEqual(await response.json(), {
+    actionable:true,
+    intent:'ACTIONABLE',
+    confidence:0.97,
+    reason:'The user requested a code change.'
+  });
+});
+
+test('returns sanitized UptimeRobot v3 monitor data and status bars', async t => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+  });
+
+  const seen = [];
+  globalThis.fetch = async (url, init) => {
+    const requestUrl = new URL(url);
+    seen.push({
+      path:requestUrl.pathname,
+      authorization:init.headers.Authorization
+    });
+
+    if(requestUrl.pathname === '/v3/monitors'){
+      return Response.json({
+        data:[{
+          id:42,
+          friendlyName:'htmlviewer.site',
+          url:'https://htmlviewer.site/',
+          status:'UP',
+          privateField:'must not be exposed'
+        }]
+      });
+    }
+
+    if(requestUrl.pathname.endsWith('/stats/uptime')){
+      return Response.json({
+        uptime:99.99,
+        total_downtime_seconds:260,
+        incident_count:1,
+        mtbf:100000,
+        from:'2026-06-28T00:00:00.000Z',
+        to:'2026-07-28T00:00:00.000Z'
+      });
+    }
+
+    if(requestUrl.pathname.endsWith('/stats/response-time')){
+      return Response.json({
+        summary:{ min:35, max:140, avg:72 },
+        data_points:2,
+        from:'2026-06-28T00:00:00.000Z',
+        to:'2026-07-28T00:00:00.000Z',
+        time_series:[
+          { timestamp:new Date().toISOString(), value:72 }
+        ]
+      });
+    }
+
+    return Response.json({ error:'Unexpected route' }, { status:404 });
+  };
+
+  const response = await worker.fetch(
+    createJsonRequest('/api/status', null, 'GET'),
+    TEST_ENV
+  );
+  const data = await response.json();
+
+  assert.equal(response.status, 200);
+  assert.equal(data.allOperational, true);
+  assert.equal(data.monitorCount, 1);
+  assert.equal(data.monitors[0].name, 'htmlviewer.site');
+  assert.equal(data.monitors[0].uptime, 99.99);
+  assert.equal(data.monitors[0].responseTime, 72);
+  assert.equal(data.monitors[0].bars.length, 30);
+  assert.equal('privateField' in data.monitors[0], false);
+  assert.ok(seen.some(call =>
+    call.path === '/v3/monitors' &&
+    call.authorization === 'Bearer test-uptime-key'
+  ));
+  assert.ok(seen.some(call =>
+    call.path.endsWith('/stats/response-time') &&
+    call.authorization === 'Bearer test-response-key'
+  ));
 });
 
 test('generates images with only FLUX.2 Klein 4B through the AI binding', async () => {

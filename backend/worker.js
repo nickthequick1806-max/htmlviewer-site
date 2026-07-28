@@ -7,9 +7,21 @@ const MAX_AI_BODY_BYTES = 8 * 1024 * 1024;
 const MAX_FORM_BODY_BYTES = 160 * 1024;
 const FLUX_IMAGE_MODEL = '@cf/black-forest-labs/flux-2-klein-4b';
 const FLUX_IMAGE_SIZE = 1024;
+const GEMINI_LIVE_MODEL = 'gemini-3.1-flash-live-preview';
+const GEMINI_VOICE_INTENT_MODEL = 'gemini-3.5-flash-lite';
+const GEMINI_LIVE_VOICES = new Set([
+  'Zephyr', 'Puck', 'Charon', 'Kore', 'Fenrir', 'Leda', 'Orus', 'Aoede',
+  'Callirrhoe', 'Autonoe', 'Enceladus', 'Iapetus', 'Umbriel', 'Algieba',
+  'Despina', 'Erinome', 'Algenib', 'Rasalgethi', 'Laomedeia', 'Achernar',
+  'Alnilam', 'Schedar', 'Gacrux', 'Pulcherrima', 'Achird',
+  'Zubenelgenubi', 'Vindemiatrix', 'Sadachbia', 'Sadaltager', 'Sulafat'
+]);
+const UPTIMEROBOT_API_BASE = 'https://api.uptimerobot.com/v3';
+const UPTIMEROBOT_STATUS_CACHE_SECONDS = 60;
+const STATUS_CACHE_KEY = 'https://html-viewer-status-cache.invalid/v1';
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
     if(request.method === 'GET' && url.pathname === '/health'){
@@ -48,6 +60,20 @@ export default {
         return await generateGeminiResponse(request, env, origin);
       }
 
+      if(request.method === 'POST' && url.pathname === '/api/ai/live-token'){
+        await enforceRateLimit(env.AI_RATE_LIMITER, request, 'voice');
+        return await createGeminiLiveToken(request, env, origin);
+      }
+
+      if(request.method === 'POST' && url.pathname === '/api/ai/voice-intent'){
+        await enforceRateLimit(env.AI_RATE_LIMITER, request, 'voice');
+        return await classifyVoiceIntent(request, env, origin);
+      }
+
+      if(request.method === 'GET' && url.pathname === '/api/status'){
+        return await getServiceStatus(env, origin, ctx);
+      }
+
       if(request.method === 'POST' && url.pathname === '/api/contact'){
         await enforceRateLimit(env.FORM_RATE_LIMITER, request, 'form');
         return await sendContactMessage(request, env, origin);
@@ -69,6 +95,454 @@ export default {
     }
   }
 };
+
+async function createGeminiLiveToken(request, env, origin){
+  const apiKey = requireSecret(env, 'GEMINI_API_KEY');
+  const body = await readJson(request, 48 * 1024);
+  const voice = requireText(body.voice || 'Charon', 'voice', 40);
+
+  if(!GEMINI_LIVE_VOICES.has(voice)){
+    throw new PublicError(400, 'The selected Gemini Live voice is not allowed.');
+  }
+
+  const editorContext = typeof body.editorContext === 'string'
+    ? body.editorContext.trim().slice(0, 24000)
+    : '';
+  const language = typeof body.language === 'string'
+    ? body.language.trim().slice(0, 20)
+    : 'auto';
+  const systemInstruction = createVoiceSystemInstruction(editorContext, language);
+  const liveConfig = {
+    generationConfig:{
+      responseModalities:['AUDIO'],
+      speechConfig:{
+        voiceConfig:{
+          prebuiltVoiceConfig:{ voiceName:voice }
+        }
+      },
+      thinkingConfig:{ thinkingLevel:'low' }
+    },
+    inputAudioTranscription:{},
+    outputAudioTranscription:{},
+    realtimeInputConfig:{
+      automaticActivityDetection:{
+        disabled:false,
+        startOfSpeechSensitivity:'START_SENSITIVITY_LOW',
+        endOfSpeechSensitivity:'END_SENSITIVITY_LOW',
+        prefixPaddingMs:120,
+        silenceDurationMs:650
+      }
+    },
+    sessionResumption:{},
+    systemInstruction:{
+      parts:[{ text:systemInstruction }]
+    }
+  };
+  const now = Date.now();
+  const upstream = await fetch(
+    'https://generativelanguage.googleapis.com/v1beta/auth_tokens',
+    {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-goog-api-key':apiKey
+      },
+      body:JSON.stringify({
+        uses:1,
+        expireTime:new Date(now + (30 * 60 * 1000)).toISOString(),
+        newSessionExpireTime:new Date(now + (60 * 1000)).toISOString()
+      })
+    }
+  );
+  const rawText = await upstream.text();
+
+  if(!upstream.ok){
+    throw new PublicError(
+      normalizeUpstreamStatus(upstream.status),
+      getGeminiUpstreamMessage(upstream.status, rawText)
+    );
+  }
+
+  let data;
+  try{
+    data = rawText ? JSON.parse(rawText) : null;
+  }catch(error){
+    throw new PublicError(502, 'Gemini returned an invalid Live API token.');
+  }
+
+  const token = typeof data?.name === 'string' ? data.name : '';
+  if(!token){
+    throw new PublicError(502, 'Gemini returned no Live API token.');
+  }
+
+  return jsonResponse({
+    token,
+    model:GEMINI_LIVE_MODEL,
+    voice,
+    config:liveConfig,
+    expiresAt:data.expireTime || new Date(now + (30 * 60 * 1000)).toISOString()
+  }, 200, origin);
+}
+
+function createVoiceSystemInstruction(editorContext, language){
+  const context = editorContext
+    ? '\n\nCURRENT EDITOR CONTEXT:\n' + editorContext
+    : '';
+  const languageInstruction = language && language !== 'auto'
+    ? ' Prefer spoken language ' + language + ' unless the user asks to switch.'
+    : '';
+
+  return (
+    'You are AutoSite AI, the concise voice assistant inside HTML Viewer and ' +
+    'the AI HTML Editor. Help with the current HTML, CSS, JavaScript, preview, ' +
+    'validator, projects, saved versions, files, images, errors, and editor ' +
+    'controls. Give short natural spoken answers unless the user asks for more. ' +
+    'When the user gives an actionable coding command, briefly acknowledge it ' +
+    'without inventing completed changes; the application will submit the final ' +
+    'transcript to its dedicated Gemini coding pipeline. Never claim a code edit ' +
+    'was applied unless the normal coding pipeline confirms it.' +
+    languageInstruction +
+    context
+  );
+}
+
+async function classifyVoiceIntent(request, env, origin){
+  const apiKey = requireSecret(env, 'GEMINI_API_KEY');
+  const body = await readJson(request, 32 * 1024);
+  const transcript = requireText(body.transcript, 'transcript', 12000);
+  const context = typeof body.context === 'string'
+    ? body.context.trim().slice(0, 12000)
+    : '';
+  const prompt = [
+    'Classify this stabilized voice transcript for an HTML editor.',
+    'ACTIONABLE means the user is directing the editor to create, edit, fix,',
+    'replace, remove, format, debug, validate, or otherwise change code or a',
+    'project. CONVERSATIONAL means a question, explanation request, greeting,',
+    'discussion, or clarification that should stay in the live conversation.',
+    'Use meaning and context, not a single keyword. Return only JSON.',
+    '',
+    'Transcript:',
+    transcript,
+    context ? '\nEditor context:\n' + context : ''
+  ].join('\n');
+  const upstream = await fetch(
+    'https://generativelanguage.googleapis.com/v1beta/models/' +
+      GEMINI_VOICE_INTENT_MODEL +
+      ':generateContent',
+    {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-goog-api-key':apiKey
+      },
+      body:JSON.stringify({
+        contents:[{ role:'user', parts:[{ text:prompt }] }],
+        generationConfig:{
+          temperature:0,
+          responseMimeType:'application/json',
+          responseSchema:{
+            type:'OBJECT',
+            properties:{
+              intent:{ type:'STRING', enum:['ACTIONABLE','CONVERSATIONAL'] },
+              confidence:{ type:'NUMBER' },
+              reason:{ type:'STRING' }
+            },
+            required:['intent','confidence']
+          }
+        }
+      })
+    }
+  );
+  const rawText = await upstream.text();
+
+  if(!upstream.ok){
+    throw new PublicError(
+      normalizeUpstreamStatus(upstream.status),
+      getGeminiUpstreamMessage(upstream.status, rawText)
+    );
+  }
+
+  let data;
+  try{
+    data = JSON.parse(rawText);
+  }catch(error){
+    throw new PublicError(502, 'Gemini returned an invalid intent response.');
+  }
+
+  const classifierText = data?.candidates?.[0]?.content?.parts
+    ?.map(part => typeof part?.text === 'string' ? part.text : '')
+    .join('')
+    .trim();
+  let result;
+  try{
+    result = JSON.parse(classifierText || '');
+  }catch(error){
+    throw new PublicError(502, 'Gemini returned an unreadable intent result.');
+  }
+
+  const intent = result.intent === 'ACTIONABLE'
+    ? 'ACTIONABLE'
+    : 'CONVERSATIONAL';
+  const confidence = Number.isFinite(Number(result.confidence))
+    ? Math.max(0, Math.min(1, Number(result.confidence)))
+    : 0;
+
+  return jsonResponse({
+    actionable:intent === 'ACTIONABLE' && confidence >= 0.6,
+    intent,
+    confidence,
+    reason:typeof result.reason === 'string'
+      ? result.reason.slice(0, 240)
+      : ''
+  }, 200, origin);
+}
+
+async function getServiceStatus(env, origin, ctx){
+  const cached = await readStatusCache();
+  if(cached){
+    return jsonResponse(cached, 200, origin, {
+      'Cache-Control':'public, max-age=30',
+      'X-Status-Cache':'HIT'
+    });
+  }
+
+  const apiKey = requireSecret(env, 'UPTIMEROBOT_API_KEY');
+  const responseApiKey = requireSecret(env, 'UPTIMEROBOT_RESPONSE_API_KEY');
+  const monitorPayload = await fetchUptimeRobotJson('/monitors?limit=10', apiKey);
+  const rawMonitors = Array.isArray(monitorPayload?.data)
+    ? monitorPayload.data.slice(0, 10)
+    : [];
+
+  if(rawMonitors.length === 0){
+    throw new PublicError(502, 'UptimeRobot returned no configured monitors.');
+  }
+
+  const to = new Date();
+  const from = new Date(to.getTime() - (30 * 24 * 60 * 60 * 1000));
+  const query =
+    '?from=' + encodeURIComponent(from.toISOString()) +
+    '&to=' + encodeURIComponent(to.toISOString());
+  const monitors = await Promise.all(rawMonitors.map(async monitor => {
+    const id = Number(monitor?.id);
+    if(!Number.isFinite(id)){
+      return null;
+    }
+
+    const [uptime, responseStats] = await Promise.all([
+      fetchUptimeRobotJson(
+        '/monitors/' + encodeURIComponent(String(id)) + '/stats/uptime' + query,
+        apiKey
+      ),
+      fetchResponseTimeStats(id, query, responseApiKey, apiKey)
+    ]);
+    const uptimeValue = clampNumber(uptime?.uptime, 0, 100, 0);
+    const responseAverage = clampNumber(
+      responseStats?.summary?.avg,
+      0,
+      1000000,
+      0
+    );
+
+    return {
+      id,
+      name:safePublicText(monitor?.friendlyName, 'Service', 100),
+      url:safePublicUrl(monitor?.url),
+      status:normalizeMonitorStatus(monitor?.status),
+      uptime:uptimeValue,
+      responseTime:Math.round(responseAverage),
+      incidents:Math.max(0, Math.round(Number(uptime?.incident_count) || 0)),
+      bars:buildStatusBars(
+        uptimeValue,
+        responseStats?.time_series,
+        responseAverage
+      )
+    };
+  }));
+  const validMonitors = monitors.filter(Boolean);
+  const allOperational = validMonitors.length > 0 &&
+    validMonitors.every(monitor => monitor.status === 'up');
+  const result = {
+    allOperational,
+    summary:allOperational
+      ? 'All systems operational'
+      : 'Some services need attention',
+    checkedAt:new Date().toISOString(),
+    source:'UptimeRobot API v3',
+    monitorCount:validMonitors.length,
+    monitors:validMonitors
+  };
+
+  await writeStatusCache(result, ctx);
+  return jsonResponse(result, 200, origin, {
+    'Cache-Control':'public, max-age=30',
+    'X-Status-Cache':'MISS'
+  });
+}
+
+async function fetchResponseTimeStats(id, query, responseApiKey, fallbackApiKey){
+  const path =
+    '/monitors/' + encodeURIComponent(String(id)) +
+    '/stats/response-time' + query + '&includeTimeSeries=true';
+
+  try{
+    return await fetchUptimeRobotJson(path, responseApiKey);
+  }catch(error){
+    if(
+      responseApiKey !== fallbackApiKey &&
+      error instanceof PublicError &&
+      (error.status === 401 || error.status === 403)
+    ){
+      return await fetchUptimeRobotJson(path, fallbackApiKey);
+    }
+    throw error;
+  }
+}
+
+async function fetchUptimeRobotJson(path, apiKey){
+  const upstream = await fetch(UPTIMEROBOT_API_BASE + path, {
+    method:'GET',
+    headers:{
+      Accept:'application/json',
+      Authorization:'Bearer ' + apiKey
+    }
+  });
+  const rawText = await upstream.text();
+
+  if(!upstream.ok){
+    throw new PublicError(
+      normalizeUpstreamStatus(upstream.status),
+      getUpstreamMessage(rawText, 'UptimeRobot rejected the status request.')
+    );
+  }
+
+  try{
+    return rawText ? JSON.parse(rawText) : {};
+  }catch(error){
+    throw new PublicError(502, 'UptimeRobot returned invalid status data.');
+  }
+}
+
+function normalizeMonitorStatus(value){
+  const status = String(value || '').toUpperCase();
+  if(status === 'UP' || status === 'STARTED'){
+    return 'up';
+  }
+  if(status === 'PAUSED'){
+    return 'paused';
+  }
+  if(status === 'DOWN' || status === 'LOOKS_DOWN'){
+    return 'down';
+  }
+  return 'unknown';
+}
+
+function buildStatusBars(uptime, timeSeries, averageResponse){
+  const buckets = Array.from({ length:30 }, () => []);
+  const series = Array.isArray(timeSeries) ? timeSeries : [];
+  const cutoff = Date.now() - (30 * 24 * 60 * 60 * 1000);
+  const bucketWidth = (30 * 24 * 60 * 60 * 1000) / 30;
+
+  series.forEach(point => {
+    const time = Date.parse(point?.timestamp);
+    const value = Number(point?.value);
+    if(!Number.isFinite(time) || !Number.isFinite(value) || time < cutoff){
+      return;
+    }
+    const index = Math.max(
+      0,
+      Math.min(29, Math.floor((time - cutoff) / bucketWidth))
+    );
+    buckets[index].push(value);
+  });
+
+  const slowThreshold = Math.max(1200, Number(averageResponse || 0) * 1.8);
+  const bars = buckets.map(values => {
+    if(values.length === 0){
+      return { state:'unknown', responseTime:null };
+    }
+    const avg = values.reduce((sum, value) => sum + value, 0) / values.length;
+    return {
+      state:avg >= slowThreshold ? 'slow' : 'up',
+      responseTime:Math.round(avg)
+    };
+  });
+  const downSegments = uptime >= 100
+    ? 0
+    : Math.max(1, Math.round(((100 - uptime) / 100) * bars.length));
+  const preferredIndexes = bars
+    .map((bar, index) => ({ bar, index }))
+    .sort((a, b) => {
+      if(a.bar.state === 'unknown' && b.bar.state !== 'unknown') return -1;
+      if(a.bar.state !== 'unknown' && b.bar.state === 'unknown') return 1;
+      return b.index - a.index;
+    })
+    .slice(0, downSegments)
+    .map(item => item.index);
+
+  preferredIndexes.forEach(index => {
+    bars[index] = { state:'down', responseTime:null };
+  });
+  return bars;
+}
+
+function clampNumber(value, min, max, fallback){
+  const number = Number(value);
+  if(!Number.isFinite(number)){
+    return fallback;
+  }
+  return Math.max(min, Math.min(max, number));
+}
+
+function safePublicText(value, fallback, maxLength){
+  const text = typeof value === 'string' ? value.trim() : '';
+  return (text || fallback).slice(0, maxLength);
+}
+
+function safePublicUrl(value){
+  try{
+    const url = new URL(String(value || ''));
+    return ['http:', 'https:'].includes(url.protocol)
+      ? url.toString().slice(0, 500)
+      : '';
+  }catch(error){
+    return '';
+  }
+}
+
+async function readStatusCache(){
+  if(typeof caches === 'undefined' || !caches.default){
+    return null;
+  }
+
+  try{
+    const response = await caches.default.match(new Request(STATUS_CACHE_KEY));
+    return response ? await response.json() : null;
+  }catch(error){
+    return null;
+  }
+}
+
+async function writeStatusCache(data, ctx){
+  if(typeof caches === 'undefined' || !caches.default){
+    return;
+  }
+
+  const task = caches.default.put(
+    new Request(STATUS_CACHE_KEY),
+    new Response(JSON.stringify(data), {
+      headers:{
+        'Content-Type':'application/json; charset=utf-8',
+        'Cache-Control':'public, max-age=' + UPTIMEROBOT_STATUS_CACHE_SECONDS
+      }
+    })
+  ).catch(() => undefined);
+
+  if(ctx && typeof ctx.waitUntil === 'function'){
+    ctx.waitUntil(task);
+  }else{
+    await task;
+  }
+}
 
 async function generateGeminiResponse(request, env, origin){
   const apiKey = requireSecret(env, 'GEMINI_API_KEY');
@@ -452,7 +926,9 @@ function normalizeUpstreamStatus(status){
 
 function responseHeaders(origin, additionalHeaders){
   const headers = new Headers(additionalHeaders || {});
-  headers.set('Cache-Control', 'no-store');
+  if(!headers.has('Cache-Control')){
+    headers.set('Cache-Control', 'no-store');
+  }
   headers.set('X-Content-Type-Options', 'nosniff');
   headers.set('Referrer-Policy', 'no-referrer');
 
@@ -469,9 +945,10 @@ function responseHeaders(origin, additionalHeaders){
   return headers;
 }
 
-function jsonResponse(data, status, origin){
+function jsonResponse(data, status, origin, additionalHeaders){
   const headers = responseHeaders(origin, {
-    'Content-Type':'application/json; charset=utf-8'
+    'Content-Type':'application/json; charset=utf-8',
+    ...(additionalHeaders || {})
   });
   return new Response(JSON.stringify(data), { status, headers });
 }
