@@ -325,6 +325,25 @@ test('returns sanitized UptimeRobot v3 monitor data and status bars', async t =>
       });
     }
 
+    if(requestUrl.pathname === '/v3/incidents'){
+      return Response.json({
+        data:[{
+          id:'incident-17',
+          status:'RESOLVED',
+          type:'DOWNTIME',
+          cause:500,
+          reason:'Origin returned an error',
+          monitor:{ id:42, friendlyName:'htmlviewer.site' },
+          commentsCount:0,
+          startedAt:new Date(Date.now() - (2 * 60 * 60 * 1000)).toISOString(),
+          resolvedAt:new Date(Date.now() - (60 * 60 * 1000)).toISOString(),
+          duration:3600,
+          includeInReports:true,
+          privateRootCause:'must not be exposed'
+        }]
+      });
+    }
+
     return Response.json({ error:'Unexpected route' }, { status:404 });
   };
 
@@ -340,8 +359,27 @@ test('returns sanitized UptimeRobot v3 monitor data and status bars', async t =>
   assert.equal(data.monitors[0].name, 'htmlviewer.site');
   assert.equal(data.monitors[0].uptime, 99.99);
   assert.equal(data.monitors[0].responseTime, 72);
+  assert.equal(data.monitors[0].responseTimeMin, 35);
+  assert.equal(data.monitors[0].responseTimeMax, 140);
+  assert.equal(data.monitors[0].responseDataPoints, 2);
   assert.equal(data.monitors[0].bars.length, 30);
+  assert.equal(data.monitors[0].bars.at(-1).state, 'down');
+  assert.equal(data.incidentCount, 1);
+  assert.equal(data.activeIncidentCount, 0);
+  assert.equal(data.incidentsAvailable, true);
+  assert.deepEqual(data.incidents[0], {
+    id:'incident-17',
+    status:'resolved',
+    type:'DOWNTIME',
+    reason:'Origin returned an error',
+    monitorId:42,
+    monitorName:'htmlviewer.site',
+    startedAt:data.incidents[0].startedAt,
+    resolvedAt:data.incidents[0].resolvedAt,
+    duration:3600
+  });
   assert.equal('privateField' in data.monitors[0], false);
+  assert.equal('privateRootCause' in data.incidents[0], false);
   assert.ok(seen.some(call =>
     call.path === '/v3/monitors' &&
     call.authorization === 'Bearer test-uptime-key'
@@ -350,6 +388,71 @@ test('returns sanitized UptimeRobot v3 monitor data and status bars', async t =>
     call.path.endsWith('/stats/response-time') &&
     call.authorization === 'Bearer test-response-key'
   ));
+  assert.ok(seen.some(call =>
+    call.path === '/v3/incidents' &&
+    call.authorization === 'Bearer test-uptime-key'
+  ));
+});
+
+test('does not fabricate down status bars when UptimeRobot returns no incidents', async t => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+  });
+
+  globalThis.fetch = async url => {
+    const requestUrl = new URL(url);
+    if(requestUrl.pathname === '/v3/monitors'){
+      return Response.json({
+        data:[{
+          id:7,
+          friendlyName:'No incidents',
+          url:'https://example.com/',
+          status:'UP'
+        }]
+      });
+    }
+    if(requestUrl.pathname === '/v3/incidents'){
+      return Response.json({ data:[] });
+    }
+    if(requestUrl.pathname.endsWith('/stats/uptime')){
+      return Response.json({
+        uptime:99.5,
+        total_downtime_seconds:120,
+        incident_count:0,
+        mtbf:null,
+        from:'2026-06-28T00:00:00.000Z',
+        to:'2026-07-28T00:00:00.000Z'
+      });
+    }
+    if(requestUrl.pathname.endsWith('/stats/response-time')){
+      return Response.json({
+        summary:{ min:null, max:null, avg:null },
+        data_points:0,
+        from:'2026-06-28T00:00:00.000Z',
+        to:'2026-07-28T00:00:00.000Z',
+        time_series:[]
+      });
+    }
+    return Response.json({ error:'Unexpected route' }, { status:404 });
+  };
+
+  const response = await worker.fetch(
+    createJsonRequest('/api/status', null, 'GET'),
+    TEST_ENV
+  );
+  const data = await response.json();
+
+  assert.equal(response.status, 200);
+  assert.equal(data.monitors[0].responseTime, null);
+  assert.equal(
+    data.monitors[0].bars.some(bar => bar.state === 'down'),
+    false
+  );
+  assert.equal(
+    data.monitors[0].bars.every(bar => bar.state === 'unknown'),
+    true
+  );
 });
 
 test('generates images with only FLUX.2 Klein 4B through the AI binding', async () => {

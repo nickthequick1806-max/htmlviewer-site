@@ -5050,8 +5050,9 @@ body.hv-resizing-active iframe{
 }
 
 .hv-setting-toggle.active{
-  border-color:rgba(59,130,246,.55);
-  background:#2563eb;
+  border-color:rgba(255,255,255,.28);
+  background:linear-gradient(135deg,#3f3f46,#27272a);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 6px 18px rgba(0,0,0,.24);
 }
 
 .hv-setting-toggle.active::after{
@@ -5199,10 +5200,10 @@ body.hv-resizing-active iframe{
 }
 
 .hv-settings-tab.active{
-  border-color:rgba(56,189,248,.42);
-  background:linear-gradient(90deg,rgba(14,165,233,.82),rgba(56,189,248,.35));
+  border-color:rgba(255,255,255,.18);
+  background:linear-gradient(90deg,#303034,#232326);
   color:#fff;
-  box-shadow:0 9px 24px rgba(2,132,199,.18);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 9px 24px rgba(0,0,0,.24);
 }
 
 .hv-settings-tab i{
@@ -5214,9 +5215,9 @@ body.hv-resizing-active iframe{
   width:100%;
   min-height:42px;
   margin-top:auto;
-  border:1px solid rgba(56,189,248,.52);
+  border:1px solid rgba(255,255,255,.18);
   border-radius:10px;
-  background:linear-gradient(135deg,#0ea5e9,#38bdf8);
+  background:linear-gradient(135deg,#333337,#202023);
   color:#fff;
   display:flex;
   align-items:center;
@@ -5224,11 +5225,12 @@ body.hv-resizing-active iframe{
   gap:8px;
   font:850 11px/1 Inter,system-ui,sans-serif;
   cursor:pointer;
-  box-shadow:0 10px 26px rgba(2,132,199,.22);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 26px rgba(0,0,0,.3);
 }
 
 .hv-settings-save-close:hover{
-  filter:brightness(1.08);
+  border-color:rgba(255,255,255,.3);
+  background:linear-gradient(135deg,#444449,#29292d);
   transform:translateY(-1px);
 }
 
@@ -5272,58 +5274,6 @@ body.hv-resizing-active iframe{
   line-height:1.55;
 }
 
-.hv-connection-grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:10px;
-}
-
-.hv-connection-card{
-  min-height:112px;
-  padding:14px;
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:13px;
-  background:rgba(255,255,255,.025);
-}
-
-.hv-connection-card-head{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.hv-connection-card-icon{
-  width:34px;
-  height:34px;
-  flex:0 0 auto;
-  display:grid;
-  place-items:center;
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:9px;
-  background:rgba(255,255,255,.04);
-  color:#e4e4e7;
-}
-
-.hv-connection-card strong{
-  color:#f4f4f5;
-  font-size:12px;
-}
-
-.hv-connection-state{
-  display:block;
-  margin-top:3px;
-  color:#4ade80;
-  font-size:10px;
-  font-weight:850;
-}
-
-.hv-connection-card p{
-  margin:11px 0 0;
-  color:#71717a;
-  font-size:10px;
-  line-height:1.5;
-}
-
 .hv-storage-section{margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,.08)}
 .hv-storage-heading{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
 .hv-storage-heading-icon{width:38px;height:38px;flex:0 0 auto;display:grid;place-items:center;border:1px solid rgba(255,255,255,.11);border-radius:11px;background:rgba(255,255,255,.045);color:#f4f4f5}
@@ -5357,7 +5307,7 @@ body.hv-resizing-active iframe{
 .hv-storage-progress{display:none;margin-top:12px}
 .hv-storage-progress.active{display:block}
 .hv-storage-progress-track{height:6px;overflow:hidden;border-radius:999px;background:#080808}
-.hv-storage-progress-fill{width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#60a5fa,#a78bfa);transition:width .25s ease}
+.hv-storage-progress-fill{width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#52525b,#a1a1aa);transition:width .25s ease}
 .hv-storage-progress-copy{margin-top:7px;display:flex;justify-content:space-between;gap:10px;color:#71717a;font-size:10px}
 .hv-storage-export-result{min-height:18px;margin-top:8px;color:#a1a1aa;font-size:10px}
 .hv-storage-export-result.error{color:#fca5a5}
@@ -5721,7 +5671,7 @@ html.hv-light-mode .hv-toast{
   color:#fca5a5;
 }
 
-.hv-status-panel{width:min(980px,calc(100vw - 28px))}
+.hv-status-panel{width:min(1080px,calc(100vw - 28px))}
 .hv-status-dashboard{display:flex;flex-direction:column;gap:18px}
 .hv-status-summary{display:flex;align-items:center;gap:16px;padding:18px;border:1px solid rgba(34,197,94,.24);border-radius:13px;background:rgba(34,197,94,.055)}
 .hv-status-summary.attention{border-color:rgba(245,158,11,.28);background:rgba(245,158,11,.07)}
@@ -5734,20 +5684,38 @@ html.hv-light-mode .hv-toast{
 .hv-status-services-head h3{margin:0;color:#f4f4f5;font-size:15px}
 .hv-status-services-head span{color:#71717a;font-size:10px}
 .hv-status-list{display:flex;flex-direction:column}
-.hv-status-service{display:grid;grid-template-columns:minmax(130px,1.25fr) 72px minmax(210px,2.25fr) 70px 60px;align-items:center;gap:14px;min-height:66px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.055)}
+.hv-status-service{display:grid;grid-template-columns:minmax(140px,1.1fr) 78px minmax(330px,3.8fr) 78px 60px;align-items:center;gap:12px;min-height:66px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.055)}
 .hv-status-service:last-child{border-bottom:0}
 .hv-status-service-name{min-width:0}
 .hv-status-service-name strong{display:block;overflow:hidden;color:#f4f4f5;font-size:11px;text-overflow:ellipsis;white-space:nowrap}
 .hv-status-service-name a{display:block;margin-top:4px;overflow:hidden;color:#71717a;font-size:9px;text-decoration:none;text-overflow:ellipsis;white-space:nowrap}
 .hv-status-uptime{color:#4ade80;font-size:10px;font-weight:850}
 .hv-status-uptime small{display:block;margin-top:4px;color:#71717a;font-size:8px;font-weight:600}
-.hv-status-bars{height:26px;display:flex;align-items:center;gap:2px}
-.hv-status-bar{width:3px;height:20px;border-radius:2px;background:#27272a}
+.hv-status-bars{width:100%;height:26px;display:flex;align-items:center;gap:2px}
+.hv-status-bar{width:auto;min-width:2px;height:20px;flex:1 1 0;border-radius:2px;background:#27272a}
 .hv-status-bar.up{background:#22c55e}.hv-status-bar.slow{background:#fbbf24}.hv-status-bar.down{background:#ef4444}.hv-status-bar.unknown{background:#3f3f46}
 .hv-status-response{text-align:right;color:#e4e4e7;font-size:10px;font-weight:800}
 .hv-status-response small{display:block;margin-top:4px;color:#71717a;font-size:8px;font-weight:600}
 .hv-status-live{display:flex;align-items:center;justify-content:flex-end;gap:6px;color:#4ade80;font-size:10px;font-weight:850;text-transform:capitalize}
 .hv-status-live.down{color:#f87171}.hv-status-live.paused,.hv-status-live.unknown{color:#fbbf24}
+.hv-status-incidents{margin-top:3px;padding-top:15px;border-top:1px solid rgba(255,255,255,.07)}
+.hv-status-incidents-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:9px}
+.hv-status-incidents-head h3{margin:0;color:#f4f4f5;font-size:14px}
+.hv-status-incidents-head span{color:#71717a;font-size:9px}
+.hv-status-incident-list{display:flex;flex-direction:column;gap:7px}
+.hv-status-incident{min-height:56px;padding:10px 12px;display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:11px;border:1px solid rgba(255,255,255,.07);border-radius:11px;background:rgba(255,255,255,.022)}
+.hv-status-incident-icon{width:34px;height:34px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.09);border-radius:9px;background:#151515;color:#a1a1aa}
+.hv-status-incident.ongoing{border-color:rgba(239,68,68,.22);background:rgba(127,29,29,.07)}
+.hv-status-incident.ongoing .hv-status-incident-icon{color:#f87171}
+.hv-status-incident-copy{min-width:0}
+.hv-status-incident-copy strong{display:block;overflow:hidden;color:#e4e4e7;font-size:10px;text-overflow:ellipsis;white-space:nowrap}
+.hv-status-incident-copy p{margin:4px 0 0;overflow:hidden;color:#71717a;font-size:9px;text-overflow:ellipsis;white-space:nowrap}
+.hv-status-incident-copy span{display:block;margin-top:4px;overflow:hidden;color:#71717a;font-size:9px;text-overflow:ellipsis;white-space:nowrap}
+.hv-status-incident-meta{text-align:right}
+.hv-status-incident-meta strong{display:block;color:#a1a1aa;font-size:9px;text-transform:capitalize}
+.hv-status-incident-meta span{display:block;margin-top:4px;color:#62626a;font-size:8px}
+.hv-status-incident-empty{min-height:54px;padding:12px;display:flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.07);border-radius:11px;background:rgba(255,255,255,.018);color:#8b8b93;font-size:10px}
+.hv-status-incident-empty i{color:#4ade80}
 .hv-status-loading,.hv-status-error{min-height:190px;display:grid;place-items:center;text-align:center;color:#a1a1aa;font-size:12px}
 .hv-status-loading i{display:block;margin:0 auto 12px;color:#e4e4e7;font-size:25px}
 .hv-status-error i{display:block;margin:0 auto 10px;color:#f87171;font-size:24px}
@@ -5842,7 +5810,6 @@ html.hv-light-mode .hv-toast{
     padding:16px 14px 68px;
   }
 
-  .hv-connection-grid,
   .hv-update-detail-grid{
     grid-template-columns:1fr;
   }
@@ -5859,6 +5826,15 @@ html.hv-light-mode .hv-toast{
 
   .hv-status-response{
     display:none;
+  }
+
+  .hv-status-incident{
+    grid-template-columns:32px minmax(0,1fr);
+  }
+
+  .hv-status-incident-meta{
+    grid-column:2;
+    text-align:left;
   }
 
   .hv-storage-action-head{
@@ -10751,6 +10727,258 @@ html.hv-light-mode .hv-toast{
     .voice-setting-checks{grid-template-columns:1fr}
   }
 
+  /* Floating, resizable Voice Mode player */
+  .voice-mode{
+    position:fixed;
+    left:50%;
+    top:50%;
+    width:min(620px,calc(100vw - 36px));
+    height:min(650px,calc(100dvh - 36px));
+    min-width:310px;
+    min-height:390px;
+    max-width:calc(100vw - 12px);
+    max-height:calc(100dvh - 12px);
+    z-index:90;
+    flex:none;
+    border:1px solid #343434;
+    border-radius:22px;
+    background:
+      radial-gradient(circle at 50% 40%,rgba(255,255,255,.04),transparent 32%),
+      #080808;
+    box-shadow:0 32px 110px rgba(0,0,0,.76),inset 0 1px rgba(255,255,255,.035);
+    transform:translate(-50%,-50%);
+    container-type:size;
+  }
+
+  .voice-mode.active{display:flex;animation:voicePlayerIn .22s cubic-bezier(.2,.8,.2,1)}
+  .voice-mode:fullscreen{left:0 !important;top:0 !important;width:100vw !important;height:100dvh !important;max-width:none;max-height:none;border:0;border-radius:0}
+  .voice-mode.dragging,.voice-mode.resizing{transition:none;user-select:none}
+  .app.voice-active .chat{display:flex}
+  .app.voice-active .input-wrap{display:block}
+
+  @keyframes voicePlayerIn{
+    from{opacity:0;filter:blur(3px)}
+    to{opacity:1;filter:blur(0)}
+  }
+
+  .voice-mode-header{
+    min-height:58px;
+    padding:10px 12px;
+    flex:0 0 auto;
+    border-bottom-color:rgba(255,255,255,.055);
+    cursor:default;
+  }
+
+  .voice-mode-title{min-width:0;gap:9px}
+  .voice-mode-title > div{min-width:0}
+  .voice-mode-title strong{font-size:13px}
+  .voice-provider{max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .voice-mode-header-actions{gap:6px}
+  .voice-header-btn{width:34px;height:34px;border-radius:10px}
+  .voice-drag-btn{cursor:grab;touch-action:none}
+  .voice-drag-btn:active{cursor:grabbing}
+
+  .voice-title-wave{
+    width:25px;
+    height:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:2px;
+    color:#d4d4d8;
+    flex:0 0 auto;
+  }
+
+  .voice-title-wave span{
+    width:2px;
+    height:8px;
+    border-radius:999px;
+    background:currentColor;
+    animation:voiceTitleWave 1.1s ease-in-out infinite alternate;
+  }
+  .voice-title-wave span:nth-child(2){height:15px;animation-delay:-.7s}
+  .voice-title-wave span:nth-child(3){height:21px;animation-delay:-.35s}
+  .voice-title-wave span:nth-child(4){height:14px;animation-delay:-.8s}
+  .voice-title-wave span:nth-child(5){animation-delay:-.2s}
+  @keyframes voiceTitleWave{from{transform:scaleY(.48);opacity:.45}to{transform:scaleY(1);opacity:1}}
+
+  .voice-mode-main{padding:10px 14px 14px;gap:8px}
+  .voice-state-card{min-width:132px;min-height:29px;padding:0 11px;font-size:9px}
+  .voice-visual-stage{width:100%;min-height:120px}
+  .voice-visual-stage::before,.voice-visual-stage::after{display:none}
+  .voice-orb{
+    width:clamp(78px,22cqw,124px);
+    height:clamp(78px,22cqw,124px);
+    box-shadow:0 0 0 10px rgba(255,255,255,.025),0 0 0 21px rgba(255,255,255,.012),0 18px 50px rgba(0,0,0,.78);
+  }
+  .voice-mode[data-state="speaking"] .voice-orb,
+  .voice-mode[data-state="listening"] .voice-orb{
+    box-shadow:0 0 0 10px rgba(255,255,255,.045),0 0 0 21px rgba(255,255,255,.018),0 18px 58px rgba(255,255,255,.06);
+  }
+  .voice-lower{width:100%;gap:8px}
+  .voice-live-caption{
+    min-height:60px;
+    padding:10px 12px;
+    grid-template-columns:32px minmax(0,1fr);
+    border-color:#323232 !important;
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(9px);
+    pointer-events:none;
+    transition:opacity .22s ease,visibility .22s ease,transform .22s ease;
+  }
+  .voice-live-caption.active{opacity:1;visibility:visible;transform:translateY(0)}
+  .voice-caption-wave{color:#d4d4d8 !important}
+  .voice-caption-text{font-size:11px;line-height:1.38}
+  .voice-controls{gap:clamp(5px,1.6cqw,10px)}
+  .voice-control{width:clamp(40px,9.2cqw,50px);height:clamp(40px,9.2cqw,50px);font-size:14px}
+  .voice-keyboard-panel{padding:8px;border:1px solid #303030;border-radius:13px;background:#0c0c0c}
+  .voice-keyboard-panel input{height:38px}
+  .voice-keyboard-panel button{min-width:62px}
+
+  .voice-settings-popover{
+    top:52px;
+    right:10px;
+    width:min(344px,calc(100% - 20px));
+    max-height:calc(100% - 64px);
+  }
+  .voice-field select.voice-native-select{
+    position:absolute;
+    width:1px;
+    height:1px;
+    padding:0;
+    margin:-1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    white-space:nowrap;
+    border:0;
+  }
+  .voice-custom-select{position:relative}
+  .voice-custom-trigger{
+    width:100%;
+    min-height:40px;
+    padding:0 10px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:9px;
+    border:1px solid #343434;
+    border-radius:10px;
+    background:linear-gradient(180deg,#181818,#101010);
+    color:#e4e4e7;
+    font:700 10px Inter,system-ui,sans-serif;
+    text-align:left;
+    cursor:pointer;
+  }
+  .voice-custom-trigger:hover,.voice-custom-trigger:focus-visible{border-color:#5a5a5a;outline:none}
+  .voice-custom-trigger span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .voice-custom-menu{
+    position:absolute;
+    left:0;
+    right:0;
+    top:calc(100% + 5px);
+    z-index:90;
+    max-height:190px;
+    padding:5px;
+    overflow:auto;
+    border:1px solid #383838;
+    border-radius:11px;
+    background:#111;
+    box-shadow:0 18px 42px rgba(0,0,0,.7);
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(-4px);
+    transition:.14s ease;
+  }
+  .voice-custom-select.open .voice-custom-menu{opacity:1;visibility:visible;transform:none}
+  .voice-custom-option{
+    width:100%;
+    min-height:34px;
+    padding:7px 9px;
+    border:0;
+    border-radius:7px;
+    background:transparent;
+    color:#a1a1aa;
+    font:700 9px Inter,system-ui,sans-serif;
+    text-align:left;
+    cursor:pointer;
+  }
+  .voice-custom-option:hover,.voice-custom-option:focus-visible{background:#232323;color:#fff;outline:none}
+  .voice-custom-option.selected{background:#2c2c2c;color:#fff}
+  .voice-setting-check{cursor:pointer;background:#101010;transition:.15s ease}
+  .voice-setting-check:hover{border-color:#4a4a4a;background:#171717}
+  .voice-setting-check input{
+    appearance:none;
+    width:17px;
+    height:17px;
+    flex:0 0 auto;
+    display:grid;
+    place-items:center;
+    border:1px solid #555;
+    border-radius:5px;
+    background:#090909;
+    cursor:pointer;
+  }
+  .voice-setting-check input::before{content:"";width:8px;height:5px;border-left:2px solid #080808;border-bottom:2px solid #080808;transform:rotate(-45deg) scale(0);transition:.12s ease}
+  .voice-setting-check input:checked{background:#e4e4e7;border-color:#e4e4e7}
+  .voice-setting-check input:checked::before{transform:rotate(-45deg) scale(1)}
+
+  .voice-volume-popover{width:72px;height:174px;padding:11px 9px}
+  .voice-volume-popover input{
+    appearance:none;
+    width:112px;
+    height:7px;
+    transform:rotate(-90deg);
+    border-radius:999px;
+    background:linear-gradient(90deg,#e4e4e7 var(--voice-volume,80%),#292929 var(--voice-volume,80%));
+    outline:none;
+  }
+  .voice-volume-popover input::-webkit-slider-thumb{
+    appearance:none;
+    width:18px;
+    height:18px;
+    border:4px solid #111;
+    border-radius:50%;
+    background:#fafafa;
+    box-shadow:0 0 0 1px #666,0 3px 9px rgba(0,0,0,.5);
+  }
+  .voice-volume-popover input::-moz-range-thumb{width:12px;height:12px;border:4px solid #111;border-radius:50%;background:#fafafa}
+  .voice-transcript-overlay{padding:10px;border-radius:inherit}
+  .voice-transcript-card{width:100%;max-height:100%}
+  .voice-transcript-list{min-height:0;flex:1}
+
+  .voice-resize-handle{position:absolute;z-index:100;display:block;touch-action:none}
+  .voice-resize-handle.n,.voice-resize-handle.s{left:14px;right:14px;height:9px;cursor:ns-resize}
+  .voice-resize-handle.n{top:-5px}.voice-resize-handle.s{bottom:-5px}
+  .voice-resize-handle.e,.voice-resize-handle.w{top:14px;bottom:14px;width:9px;cursor:ew-resize}
+  .voice-resize-handle.e{right:-5px}.voice-resize-handle.w{left:-5px}
+  .voice-resize-handle.ne,.voice-resize-handle.nw,.voice-resize-handle.se,.voice-resize-handle.sw{width:18px;height:18px}
+  .voice-resize-handle.ne{right:-6px;top:-6px;cursor:nesw-resize}
+  .voice-resize-handle.nw{left:-6px;top:-6px;cursor:nwse-resize}
+  .voice-resize-handle.se{right:-6px;bottom:-6px;cursor:nwse-resize}
+  .voice-resize-handle.sw{left:-6px;bottom:-6px;cursor:nesw-resize}
+
+  @container (max-width:420px), (max-height:520px){
+    .voice-mode-header{min-height:50px;padding:7px 8px}
+    .voice-provider{display:none}
+    .voice-header-btn{width:31px;height:31px}
+    .voice-mode-main{padding:7px 9px 10px}
+    .voice-state-card{min-height:25px}
+    .voice-live-caption{min-height:54px;padding:8px 9px}
+    .voice-caption-text{font-size:10px}
+    .voice-control{width:40px;height:40px}
+  }
+
+  @media (max-width:720px){
+    .voice-mode{width:calc(100vw - 20px);height:min(620px,calc(100dvh - 20px));max-width:calc(100vw - 10px);max-height:calc(100dvh - 10px)}
+    .voice-settings-popover{right:8px;top:48px}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .voice-title-wave span,.voice-caption-wave span{animation:none !important}
+    .voice-mode.active{animation:none}
+  }
+
   </style>
 
   <div class="app">
@@ -10990,13 +11218,14 @@ html.hv-light-mode .hv-toast{
     <section class="voice-mode" id="voiceMode" data-state="idle" aria-label="Voice Mode">
       <header class="voice-mode-header">
         <div class="voice-mode-title">
-          <i class="fa-solid fa-wave-square" aria-hidden="true"></i>
+          <span class="voice-title-wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
           <div>
             <strong>Voice Mode</strong>
             <span class="voice-provider" id="voiceProviderStatus"><span class="voice-provider-dot"></span><span id="voiceProviderText">Gemini Live · Disconnected</span></span>
           </div>
         </div>
         <div class="voice-mode-header-actions">
+          <button class="voice-header-btn voice-drag-btn" id="voiceDragBtn" type="button" aria-label="Drag Voice Mode player" title="Drag player"><i class="fa-solid fa-up-down-left-right"></i></button>
           <button class="voice-header-btn" id="voiceFullscreenBtn" type="button" aria-label="Toggle Voice Mode fullscreen" title="Fullscreen"><i class="fa-solid fa-expand"></i></button>
           <button class="voice-header-btn" id="voiceSettingsBtn" type="button" aria-label="Open Voice Mode settings" aria-expanded="false" title="Voice settings"><i class="fa-solid fa-gear"></i></button>
           <button class="voice-header-btn" id="voiceCloseBtn" type="button" aria-label="Return to text chat" title="Return to text chat"><i class="fa-solid fa-xmark"></i></button>
@@ -11134,6 +11363,14 @@ html.hv-light-mode .hv-toast{
           <div class="voice-transcript-list" id="voiceTranscriptList"></div>
         </div>
       </div>
+      <span class="voice-resize-handle n" data-voice-resize="n" aria-hidden="true"></span>
+      <span class="voice-resize-handle ne" data-voice-resize="ne" aria-hidden="true"></span>
+      <span class="voice-resize-handle e" data-voice-resize="e" aria-hidden="true"></span>
+      <span class="voice-resize-handle se" data-voice-resize="se" aria-hidden="true"></span>
+      <span class="voice-resize-handle s" data-voice-resize="s" aria-hidden="true"></span>
+      <span class="voice-resize-handle sw" data-voice-resize="sw" aria-hidden="true"></span>
+      <span class="voice-resize-handle w" data-voice-resize="w" aria-hidden="true"></span>
+      <span class="voice-resize-handle nw" data-voice-resize="nw" aria-hidden="true"></span>
     </section>
 
     <div id="chat" class="chat">
@@ -11442,6 +11679,7 @@ const micBtn = document.getElementById('mic-btn');
   const voiceToTextBtn = document.getElementById('voiceToTextBtn');
   const voiceToVoiceBtn = document.getElementById('voiceToVoiceBtn');
   const voiceModeEl = document.getElementById('voiceMode');
+  const voiceDragBtn = document.getElementById('voiceDragBtn');
   const voiceCloseBtn = document.getElementById('voiceCloseBtn');
   const voiceEndBtn = document.getElementById('voiceEndBtn');
   const voiceMuteBtn = document.getElementById('voiceMuteBtn');
@@ -11452,6 +11690,7 @@ const micBtn = document.getElementById('mic-btn');
   const voiceProviderText = document.getElementById('voiceProviderText');
   const voiceSettingsConnection = document.getElementById('voiceSettingsConnection');
   const voiceSettingsMicName = document.getElementById('voiceSettingsMicName');
+  const voiceConnectionSelect = document.getElementById('voiceConnectionSelect');
   const voiceModelSelect = document.getElementById('voiceModelSelect');
   const voiceSelect = document.getElementById('voiceSelect');
   const voiceLanguageSelect = document.getElementById('voiceLanguageSelect');
@@ -14308,7 +14547,13 @@ if(textFilePreviewRemove){
       outputDeviceId:String(stored.outputDeviceId || ''),
       volume:Math.max(0,Math.min(1,Number.isFinite(Number(stored.volume)) ? Number(stored.volume) : .8)),
       vad:stored.vad !== false,
-      bargeIn:stored.bargeIn !== false
+      bargeIn:stored.bargeIn !== false,
+      player:{
+        left:Number.isFinite(Number(stored.player?.left)) ? Number(stored.player.left) : null,
+        top:Number.isFinite(Number(stored.player?.top)) ? Number(stored.player.top) : null,
+        width:Number.isFinite(Number(stored.player?.width)) ? Number(stored.player.width) : 620,
+        height:Number.isFinite(Number(stored.player?.height)) ? Number(stored.player.height) : 650
+      }
     };
   }
 
@@ -14335,12 +14580,107 @@ if(textFilePreviewRemove){
     }
     if(voiceLanguageSelect) voiceLanguageSelect.value = voicePreferences.language;
     if(voiceVolumeRange) voiceVolumeRange.value = String(Math.round(voicePreferences.volume * 100));
+    if(voiceVolumeRange) voiceVolumeRange.style.setProperty('--voice-volume',Math.round(voicePreferences.volume * 100) + '%');
     if(voiceVolumeValue) voiceVolumeValue.textContent = Math.round(voicePreferences.volume * 100) + '%';
     if(voiceVadToggle) voiceVadToggle.checked = voicePreferences.vad;
     if(voiceBargeInToggle) voiceBargeInToggle.checked = voicePreferences.bargeIn;
   }
 
   aiApplyVoicePreferences();
+
+  function aiVoiceCloseCustomSelects(except){
+    document.querySelectorAll('.voice-custom-select.open').forEach(wrapper => {
+      if(wrapper !== except){
+        wrapper.classList.remove('open');
+        wrapper.querySelector('.voice-custom-trigger')?.setAttribute('aria-expanded','false');
+      }
+    });
+  }
+
+  function aiVoiceSyncCustomSelect(select){
+    const wrapper = select?._voiceCustomWrapper;
+    if(!select || !wrapper) return;
+    const menu = wrapper.querySelector('.voice-custom-menu');
+    const triggerText = wrapper.querySelector('.voice-custom-trigger span');
+    if(!menu || !triggerText) return;
+    const fragment = document.createDocumentFragment();
+    [...select.options].forEach(option => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'voice-custom-option' + (option.selected ? ' selected' : '');
+      button.textContent = option.textContent;
+      button.dataset.value = option.value;
+      button.disabled = option.disabled;
+      button.addEventListener('click',() => {
+        select.value = option.value;
+        select.dispatchEvent(new Event('change',{ bubbles:true }));
+        aiVoiceSyncCustomSelect(select);
+        wrapper.classList.remove('open');
+        wrapper.querySelector('.voice-custom-trigger')?.setAttribute('aria-expanded','false');
+      });
+      fragment.append(button);
+    });
+    menu.replaceChildren(fragment);
+    const selected = select.options[select.selectedIndex];
+    triggerText.textContent = selected?.textContent || 'Select';
+    wrapper.querySelector('.voice-custom-trigger').disabled = select.disabled;
+  }
+
+  function aiEnhanceVoiceSelect(select){
+    if(!select || select._voiceCustomWrapper) return;
+    const wrapper = document.createElement('div');
+    const trigger = document.createElement('button');
+    const triggerText = document.createElement('span');
+    const icon = document.createElement('i');
+    const menu = document.createElement('div');
+    wrapper.className = 'voice-custom-select';
+    trigger.type = 'button';
+    trigger.className = 'voice-custom-trigger';
+    trigger.setAttribute('aria-haspopup','listbox');
+    trigger.setAttribute('aria-expanded','false');
+    icon.className = 'fa-solid fa-chevron-down';
+    menu.className = 'voice-custom-menu';
+    menu.setAttribute('role','listbox');
+    trigger.append(triggerText,icon);
+    wrapper.append(trigger,menu);
+    select.classList.add('voice-native-select');
+    select.insertAdjacentElement('afterend',wrapper);
+    select._voiceCustomWrapper = wrapper;
+    trigger.addEventListener('click',event => {
+      event.preventDefault();
+      event.stopPropagation();
+      const open = !wrapper.classList.contains('open');
+      aiVoiceCloseCustomSelects(wrapper);
+      wrapper.classList.toggle('open',open);
+      trigger.setAttribute('aria-expanded',String(open));
+      if(open) menu.querySelector('.selected')?.focus();
+    });
+    trigger.addEventListener('keydown',event => {
+      if(event.key === 'ArrowDown'){
+        event.preventDefault();
+        wrapper.classList.add('open');
+        trigger.setAttribute('aria-expanded','true');
+        menu.querySelector('.selected,.voice-custom-option')?.focus();
+      }
+    });
+    menu.addEventListener('keydown',event => {
+      const options = [...menu.querySelectorAll('.voice-custom-option:not(:disabled)')];
+      const current = options.indexOf(document.activeElement);
+      if(event.key === 'Escape'){
+        wrapper.classList.remove('open');
+        trigger.setAttribute('aria-expanded','false');
+        trigger.focus();
+      }else if(event.key === 'ArrowDown' || event.key === 'ArrowUp'){
+        event.preventDefault();
+        const direction = event.key === 'ArrowDown' ? 1 : -1;
+        options[(current + direction + options.length) % options.length]?.focus();
+      }
+    });
+    aiVoiceSyncCustomSelect(select);
+  }
+
+  [voiceConnectionSelect,voiceModelSelect,voiceSelect,voiceLanguageSelect,voiceInputSelect,voiceOutputSelect]
+    .forEach(aiEnhanceVoiceSelect);
 
   let recognition = null;
   let isListening = false;
@@ -14446,6 +14786,34 @@ if(textFilePreviewRemove){
   const voiceIntentOutcomes = new Map();
   const voiceIntentPromises = new Map();
   let voiceTranscriptEntries = [];
+  let voiceCaptionHideTimer = 0;
+  let voiceGeometrySaveTimer = 0;
+  let voiceResizeObserver = null;
+  const voiceVizState = {
+    level:0,
+    peak:0,
+    lastTime:0,
+    time:[],
+    frequency:[],
+    particles:[],
+    reducedMotion:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches || false
+  };
+
+  function aiVoicePersistTranscript(){
+    if(!currentChatId || !chats[currentChatId]) return;
+    chats[currentChatId].voiceTranscript = voiceTranscriptEntries.slice(-250);
+    chats[currentChatId].updatedAt = Date.now();
+    saveChats();
+  }
+
+  function aiVoiceLoadTranscript(){
+    if(!currentChatId) createNewChat();
+    const stored = chats[currentChatId]?.voiceTranscript;
+    voiceTranscriptEntries = Array.isArray(stored)
+      ? stored.filter(entry => entry && (entry.role === 'user' || entry.role === 'assistant') && typeof entry.text === 'string').slice(-250)
+      : [];
+    aiVoiceRenderTranscript();
+  }
 
   function aiVoiceSetState(state,text){
     if(voiceModeEl) voiceModeEl.dataset.state = state;
@@ -14471,11 +14839,16 @@ if(textFilePreviewRemove){
 
   function aiVoiceShowCaption(role,text,active){
     if(!voiceLiveCaption || !voiceCaptionText || !voiceCaptionSpeaker) return;
+    clearTimeout(voiceCaptionHideTimer);
     const isUser = role === 'user';
     voiceLiveCaption.dataset.speaker = isUser ? 'user' : 'assistant';
     voiceCaptionSpeaker.textContent = isUser ? 'You' : 'AutoSite AI';
     voiceCaptionText.textContent = String(text || (isUser ? 'Listening…' : 'Thinking…'));
-    voiceLiveCaption.classList.toggle('active',active !== false);
+    if(active !== false){
+      voiceLiveCaption.classList.add('active');
+    }else{
+      voiceCaptionHideTimer = setTimeout(() => voiceLiveCaption.classList.remove('active'),900);
+    }
   }
 
   function aiVoiceMergeTranscript(current,incoming){
@@ -14501,6 +14874,7 @@ if(textFilePreviewRemove){
     voiceTranscriptEntries.push(entry);
     if(voiceTranscriptEntries.length > 250) voiceTranscriptEntries = voiceTranscriptEntries.slice(-250);
     aiVoiceRenderTranscript();
+    aiVoicePersistTranscript();
     return entry;
   }
 
@@ -14509,7 +14883,9 @@ if(textFilePreviewRemove){
     const fragment = document.createDocumentFragment();
     voiceTranscriptEntries.forEach(entry => {
       const card = document.createElement('div');
-      const meta = document.createElement('span');
+      const meta = document.createElement('div');
+      const metaStatus = document.createElement('strong');
+      const metaTime = document.createElement('span');
       const body = document.createElement('div');
       card.className = 'voice-transcript-message ' + (entry.role === 'user' ? 'user' : 'assistant');
       meta.textContent = (entry.role === 'user' ? 'You' : 'AutoSite AI') + ' · ' + new Date(entry.createdAt).toLocaleTimeString([],{
@@ -14704,6 +15080,8 @@ if(textFilePreviewRemove){
       }
       fill(voiceInputSelect,inputs,voicePreferences.inputDeviceId,'Microphone');
       fill(voiceOutputSelect,outputs,voicePreferences.outputDeviceId,'Speaker');
+      aiVoiceSyncCustomSelect(voiceInputSelect);
+      aiVoiceSyncCustomSelect(voiceOutputSelect);
       const selectedInput = inputs.find(device => device.deviceId === voiceInputSelect?.value) || inputs[0];
       if(voiceSettingsMicName) voiceSettingsMicName.textContent = selectedInput?.label || 'System default';
       if(voiceOutputSelect){
@@ -14711,6 +15089,7 @@ if(textFilePreviewRemove){
         const canSelectOutput = typeof AudioContextClass?.prototype?.setSinkId === 'function';
         voiceOutputSelect.disabled = outputs.length === 0 || !canSelectOutput;
         voiceOutputSelect.title = canSelectOutput ? 'Choose the AI audio output device' : 'This browser uses the system default output device';
+        aiVoiceSyncCustomSelect(voiceOutputSelect);
       }
     }catch(error){
       console.warn('Audio devices could not be listed.',error);
@@ -14915,7 +15294,7 @@ if(textFilePreviewRemove){
       const result = await aiVoiceClassifyIntent(clean);
       if(result?.actionable === true && Number(result.confidence || 0) >= .6){
         voiceIntentOutcomes.set(clean,'actionable');
-        aiVoiceShowCaption('assistant','Sending your coding request to the editor…',true);
+        aiVoiceShowCaption('assistant','Sending your coding request to the editor…',false);
         aiVoiceSetState('processing','Sending to code editor');
         if(modelSelect) modelSelect.value = 'gemini-3.6-flash';
         if(typeof aiSyncModelTrigger === 'function') aiSyncModelTrigger();
@@ -14979,7 +15358,7 @@ if(textFilePreviewRemove){
     aiVoiceStopPlayback();
     aiVoiceSetConnection(false,'Reconnecting');
     aiVoiceSetState('reconnecting','Reconnecting');
-    aiVoiceShowCaption('assistant',reason || 'The live connection was interrupted. Reconnecting…',true);
+    aiVoiceShowCaption('assistant',reason || 'The live connection was interrupted. Reconnecting…',false);
     if(voiceReconnectAttempts >= 3){
       aiVoiceShowError('Voice Mode could not reconnect after three attempts. End the session and try again.');
       return;
@@ -15059,82 +15438,286 @@ if(textFilePreviewRemove){
     const text = String(message || 'Voice Mode encountered an error.');
     aiVoiceSetConnection(false,'Error');
     aiVoiceSetState('error','Error');
-    aiVoiceShowCaption('assistant',text,true);
+    aiVoiceShowCaption('assistant',text,false);
     aiNotifyParent('error','Voice Mode',text,false);
   }
 
-  function aiVoiceRms(analyser){
-    if(!analyser) return 0;
-    const values = new Uint8Array(analyser.fftSize);
-    analyser.getByteTimeDomainData(values);
-    let total = 0;
-    for(let index = 0; index < values.length; index++){
-      const normalized = (values[index] - 128) / 128;
-      total += normalized * normalized;
+  function aiVoiceEnsureParticles(count){
+    while(voiceVizState.particles.length < count){
+      const index = voiceVizState.particles.length + 1;
+      voiceVizState.particles.push({
+        angle:(index * 2.399963229728653) % (Math.PI * 2),
+        radius:.18 + ((index * 37) % 80) / 100,
+        size:.35 + ((index * 17) % 13) / 20,
+        speed:.000025 + ((index * 11) % 9) * .000004
+      });
     }
-    return Math.sqrt(total / values.length);
   }
 
-  function aiVoiceDrawVisualizer(){
+  function aiVoiceReadAnalyser(analyser){
+    const timeLength = analyser?.fftSize || 512;
+    const frequencyLength = analyser?.frequencyBinCount || 256;
+    const rawTime = new Uint8Array(timeLength);
+    const rawFrequency = new Uint8Array(frequencyLength);
+    if(analyser){
+      analyser.getByteTimeDomainData(rawTime);
+      analyser.getByteFrequencyData(rawFrequency);
+    }else{
+      rawTime.fill(128);
+    }
+    if(voiceVizState.time.length !== timeLength) voiceVizState.time = new Float32Array(timeLength);
+    if(voiceVizState.frequency.length !== frequencyLength) voiceVizState.frequency = new Float32Array(frequencyLength);
+    let squareTotal = 0;
+    for(let index = 0; index < timeLength; index++){
+      const value = (rawTime[index] - 128) / 128;
+      voiceVizState.time[index] += (value - voiceVizState.time[index]) * .32;
+      squareTotal += value * value;
+    }
+    for(let index = 0; index < frequencyLength; index++){
+      const value = rawFrequency[index] / 255;
+      voiceVizState.frequency[index] += (value - voiceVizState.frequency[index]) * .24;
+    }
+    const rms = Math.sqrt(squareTotal / Math.max(1,timeLength));
+    return rms < .012 ? 0 : Math.min(1,(rms - .012) * 8.5);
+  }
+
+  function aiVoiceSmoothPath(context,points){
+    if(points.length < 2) return;
+    context.moveTo(points[0][0],points[0][1]);
+    for(let index = 1; index < points.length - 1; index++){
+      const current = points[index];
+      const next = points[index + 1];
+      context.quadraticCurveTo(current[0],current[1],(current[0] + next[0]) / 2,(current[1] + next[1]) / 2);
+    }
+    const last = points[points.length - 1];
+    context.lineTo(last[0],last[1]);
+  }
+
+  function aiVoiceDrawVisualizer(timestamp){
     if(!voiceModeEl?.classList.contains('active') || !voiceVisualizer) return;
+    if(document.hidden){
+      voiceVisualFrame = requestAnimationFrame(aiVoiceDrawVisualizer);
+      return;
+    }
     const rect = voiceVisualizer.getBoundingClientRect();
-    const scale = Math.max(1,window.devicePixelRatio || 1);
+    const scale = Math.min(2,Math.max(1,window.devicePixelRatio || 1));
     const width = Math.max(1,Math.floor(rect.width * scale));
     const height = Math.max(1,Math.floor(rect.height * scale));
     if(voiceVisualizer.width !== width || voiceVisualizer.height !== height){
       voiceVisualizer.width = width;
       voiceVisualizer.height = height;
     }
-    const context = voiceVisualizer.getContext('2d');
+    const context = voiceVisualizer.getContext('2d',{ alpha:true });
     context.clearRect(0,0,width,height);
     const analyser = voiceIsPlaying ? voiceOutputAnalyser : voiceInputAnalyser;
-    const values = new Uint8Array(analyser?.fftSize || 256);
-    if(analyser) analyser.getByteTimeDomainData(values);
-    else values.fill(128);
-    const centerY = height / 2;
+    const measured = aiVoiceReadAnalyser(analyser);
+    const activeState = /^(listening|speaking)$/.test(voiceModeEl.dataset.state || '');
+    const target = activeState && !voiceMuted ? measured : 0;
+    voiceVizState.level += (target - voiceVizState.level) * (target > voiceVizState.level ? .28 : .08);
+    voiceVizState.peak = Math.max(voiceVizState.level,voiceVizState.peak - .008);
+    const level = voiceVizState.level;
+    const delta = Math.min(34,Math.max(0,timestamp - (voiceVizState.lastTime || timestamp)));
+    voiceVizState.lastTime = timestamp;
     const centerX = width / 2;
-    const orbGap = Math.min(width * .13,90 * scale);
-    const amplitude = Math.min(height * .35,70 * scale);
-    context.lineWidth = 1.15 * scale;
-    context.strokeStyle = voiceIsPlaying ? 'rgba(74,222,128,.58)' : 'rgba(96,165,250,.55)';
-    context.beginPath();
-    for(let index = 0; index < values.length; index++){
-      const normalized = (values[index] - 128) / 128;
-      const progress = index / Math.max(1,values.length - 1);
-      const x = progress * width;
-      const distance = Math.abs(x - centerX);
-      if(distance < orbGap) continue;
-      const edgeFade = Math.min(1,distance / (width * .22));
-      const y = centerY + normalized * amplitude * edgeFade;
-      if(index === 0 || Math.abs((index - 1) / (values.length - 1) * width - centerX) < orbGap){
-        context.moveTo(x,y);
-      }else{
-        context.lineTo(x,y);
+    const centerY = height / 2;
+    const baseRadius = Math.min(width,height) * .19;
+    const reduced = voiceVizState.reducedMotion;
+
+    aiVoiceEnsureParticles(42);
+    context.save();
+    voiceVizState.particles.forEach((particle,index) => {
+      if(!reduced){
+        particle.radius -= delta * particle.speed * (1 + level * 3.2);
+        particle.angle += Math.sin(timestamp * .00018 + index) * .00025 * (1 + level);
+        if(particle.radius < .13) particle.radius = .92;
       }
+      const distance = particle.radius * Math.max(width,height) * .62;
+      const x = centerX + Math.cos(particle.angle) * distance;
+      const y = centerY + Math.sin(particle.angle) * distance * .55;
+      const alpha = (.025 + level * .08) * Math.min(1,(particle.radius - .1) * 3);
+      context.fillStyle = 'rgba(228,228,231,' + alpha.toFixed(3) + ')';
+      context.beginPath();
+      context.arc(x,y,particle.size * scale,0,Math.PI * 2);
+      context.fill();
+    });
+    context.restore();
+
+    const ringSpeed = reduced ? 0 : timestamp * (.000045 + level * .00002);
+    for(let index = 0; index < 3; index++){
+      const progress = reduced ? (index + 1) / 4 : (ringSpeed + index / 3) % 1;
+      const radius = baseRadius * (1.12 + progress * .95);
+      context.strokeStyle = 'rgba(228,228,231,' + ((1 - progress) * (.055 + level * .045)).toFixed(3) + ')';
+      context.lineWidth = scale;
+      context.beginPath();
+      context.arc(centerX,centerY,radius,0,Math.PI * 2);
+      context.stroke();
     }
-    context.stroke();
-    const rms = aiVoiceRms(analyser);
-    if(voiceOrb) voiceOrb.style.transform = 'scale(' + (1 + Math.min(.11,rms * .85)).toFixed(3) + ')';
+
+    const sampleCount = Math.max(46,Math.min(96,Math.round(width / (7 * scale))));
+    const gap = baseRadius * 1.12;
+    const sideWidth = Math.max(1,centerX - gap - 8 * scale);
+    for(let layer = 0; layer < 3; layer++){
+      const left = [];
+      const right = [];
+      const layerScale = (1 - layer * .22) * (height * (.045 + level * .16));
+      for(let index = 0; index < sampleCount; index++){
+        const progress = index / Math.max(1,sampleCount - 1);
+        const sourceIndex = Math.floor(progress * (voiceVizState.time.length - 1));
+        const oppositeIndex = Math.floor(((progress * .91 + .07 + layer * .023) % 1) * (voiceVizState.time.length - 1));
+        const envelope = Math.sin(progress * Math.PI) * (.48 + .52 * progress);
+        const leftX = centerX - gap - progress * sideWidth;
+        const rightX = centerX + gap + progress * sideWidth;
+        left.push([leftX,centerY + voiceVizState.time[sourceIndex] * layerScale * envelope]);
+        right.push([rightX,centerY + voiceVizState.time[oppositeIndex] * layerScale * envelope]);
+      }
+      context.beginPath();
+      aiVoiceSmoothPath(context,left);
+      aiVoiceSmoothPath(context,right);
+      context.strokeStyle = 'rgba(228,228,231,' + (.52 - layer * .13).toFixed(2) + ')';
+      context.lineWidth = (1.05 - layer * .14) * scale;
+      context.shadowBlur = (4 + level * 8) * scale;
+      context.shadowColor = 'rgba(255,255,255,.15)';
+      context.stroke();
+    }
+    context.shadowBlur = 0;
+
+    const radialBars = 96;
+    for(let index = 0; index < radialBars; index++){
+      const angle = index / radialBars * Math.PI * 2 - Math.PI / 2;
+      const frequencyIndex = Math.min(
+        voiceVizState.frequency.length - 1,
+        Math.floor((index % (radialBars / 2)) / (radialBars / 2) * Math.min(90,voiceVizState.frequency.length))
+      );
+      const detail = voiceVizState.frequency[frequencyIndex] || 0;
+      const length = (3 + detail * (10 + level * 25)) * scale;
+      const inner = baseRadius * 1.04;
+      const outer = inner + length;
+      context.strokeStyle = 'rgba(228,228,231,' + (.22 + detail * .48).toFixed(3) + ')';
+      context.lineWidth = .85 * scale;
+      context.beginPath();
+      context.moveTo(centerX + Math.cos(angle) * inner,centerY + Math.sin(angle) * inner);
+      context.lineTo(centerX + Math.cos(angle) * outer,centerY + Math.sin(angle) * outer);
+      context.stroke();
+    }
+
+    const breath = reduced ? 0 : Math.sin(timestamp * .0018) * .008;
+    if(voiceOrb) voiceOrb.style.transform = 'scale(' + (1 + breath + Math.min(.13,voiceVizState.peak * .16)).toFixed(3) + ')';
     voiceVisualFrame = requestAnimationFrame(aiVoiceDrawVisualizer);
   }
 
   function aiVoiceStartVisualizer(){
     cancelAnimationFrame(voiceVisualFrame);
+    voiceVizState.lastTime = 0;
     voiceVisualFrame = requestAnimationFrame(aiVoiceDrawVisualizer);
+  }
+
+  function aiVoiceApplyPlayerGeometry(){
+    if(!voiceModeEl) return;
+    const viewportWidth = Math.max(320,window.innerWidth);
+    const viewportHeight = Math.max(420,window.innerHeight);
+    const minWidth = Math.min(310,viewportWidth - 10);
+    const minHeight = Math.min(390,viewportHeight - 10);
+    const width = Math.max(minWidth,Math.min(viewportWidth - 10,Number(voicePreferences.player?.width) || 620));
+    const height = Math.max(minHeight,Math.min(viewportHeight - 10,Number(voicePreferences.player?.height) || 650));
+    const storedLeft = Number(voicePreferences.player?.left);
+    const storedTop = Number(voicePreferences.player?.top);
+    const left = Number.isFinite(storedLeft)
+      ? Math.max(5,Math.min(viewportWidth - width - 5,storedLeft))
+      : Math.max(5,(viewportWidth - width) / 2);
+    const top = Number.isFinite(storedTop)
+      ? Math.max(5,Math.min(viewportHeight - height - 5,storedTop))
+      : Math.max(5,(viewportHeight - height) / 2);
+    Object.assign(voiceModeEl.style,{
+      left:left + 'px',
+      top:top + 'px',
+      width:width + 'px',
+      height:height + 'px',
+      transform:'none'
+    });
+  }
+
+  function aiVoiceSavePlayerGeometry(){
+    if(!voiceModeEl) return;
+    const rect = voiceModeEl.getBoundingClientRect();
+    voicePreferences.player = {
+      left:Math.round(rect.left),
+      top:Math.round(rect.top),
+      width:Math.round(rect.width),
+      height:Math.round(rect.height)
+    };
+    clearTimeout(voiceGeometrySaveTimer);
+    voiceGeometrySaveTimer = setTimeout(aiSaveVoicePreferences,120);
+  }
+
+  function aiVoiceStartPointerTransform(event,direction){
+    if(!voiceModeEl || event.button !== 0) return;
+    event.preventDefault();
+    event.stopPropagation();
+    const target = event.currentTarget;
+    const start = voiceModeEl.getBoundingClientRect();
+    const startX = event.clientX;
+    const startY = event.clientY;
+    const resizing = Boolean(direction);
+    voiceModeEl.classList.add(resizing ? 'resizing' : 'dragging');
+    target.setPointerCapture?.(event.pointerId);
+    const move = moveEvent => {
+      const deltaX = moveEvent.clientX - startX;
+      const deltaY = moveEvent.clientY - startY;
+      let left = resizing && direction.includes('w') ? start.left + deltaX : start.left + (resizing ? 0 : deltaX);
+      let top = resizing && direction.includes('n') ? start.top + deltaY : start.top + (resizing ? 0 : deltaY);
+      let width = resizing
+        ? start.width + (direction.includes('e') ? deltaX : direction.includes('w') ? -deltaX : 0)
+        : start.width;
+      let height = resizing
+        ? start.height + (direction.includes('s') ? deltaY : direction.includes('n') ? -deltaY : 0)
+        : start.height;
+      const minWidth = Math.min(310,window.innerWidth - 10);
+      const minHeight = Math.min(390,window.innerHeight - 10);
+      if(width < minWidth){
+        if(direction?.includes('w')) left -= minWidth - width;
+        width = minWidth;
+      }
+      if(height < minHeight){
+        if(direction?.includes('n')) top -= minHeight - height;
+        height = minHeight;
+      }
+      width = Math.min(width,window.innerWidth - 10);
+      height = Math.min(height,window.innerHeight - 10);
+      left = Math.max(5,Math.min(window.innerWidth - width - 5,left));
+      top = Math.max(5,Math.min(window.innerHeight - height - 5,top));
+      Object.assign(voiceModeEl.style,{
+        left:left + 'px',
+        top:top + 'px',
+        width:width + 'px',
+        height:height + 'px'
+      });
+    };
+    const end = () => {
+      voiceModeEl.classList.remove('dragging','resizing');
+      target.removeEventListener('pointermove',move);
+      target.removeEventListener('pointerup',end);
+      target.removeEventListener('pointercancel',end);
+      aiVoiceSavePlayerGeometry();
+    };
+    target.addEventListener('pointermove',move);
+    target.addEventListener('pointerup',end);
+    target.addEventListener('pointercancel',end);
   }
 
   async function aiStartVoiceMode(){
     if(voiceSessionWanted) return;
     if(isListening && recognition) recognition.stop();
+    aiVoiceLoadTranscript();
     voiceSessionWanted = true;
     voiceReconnectAttempts = 0;
     if(appEl) appEl.classList.add('voice-active');
     if(voiceModeEl){
       voiceModeEl.classList.add('active');
       voiceModeEl.setAttribute('aria-hidden','false');
+      aiVoiceApplyPlayerGeometry();
     }
     aiVoiceSetState('connecting','Connecting');
-    aiVoiceShowCaption('assistant','Connecting securely to Gemini Live…',true);
+    aiVoiceShowCaption('assistant','Connecting securely to Gemini Live…',false);
     aiVoiceStartVisualizer();
     try{
       await aiVoiceAcquireMicrophone();
@@ -15237,7 +15820,7 @@ if(textFilePreviewRemove){
       aiVoiceShowCaption('user','Microphone muted',false);
     }else{
       aiVoiceSetState('listening','Listening');
-      aiVoiceShowCaption('user','Listening…',true);
+      aiVoiceShowCaption('user','Listening…',false);
     }
   }
 
@@ -15246,7 +15829,7 @@ if(textFilePreviewRemove){
     if(!text || !voiceConnected) return;
     aiVoiceAddTranscript('user',text,'keyboard');
     voiceLastCompletedUser = text;
-    aiVoiceShowCaption('user',text,true);
+    aiVoiceShowCaption('user',text,false);
     aiVoiceSend({ realtimeInput:{ text } });
     const intentPromise = aiVoiceHandleCompletedUser(text);
     voiceIntentPromises.set(text,intentPromise);
@@ -15275,6 +15858,7 @@ if(textFilePreviewRemove){
   });
 
   document.addEventListener('click',event => {
+    if(!event.target.closest('.voice-custom-select')) aiVoiceCloseCustomSelects();
     if(voiceEntryWrap && !voiceEntryWrap.contains(event.target)){
       voiceEntryWrap.classList.remove('menu-open');
       micBtn?.setAttribute('aria-expanded','false');
@@ -15300,6 +15884,10 @@ if(textFilePreviewRemove){
 
   voiceCloseBtn?.addEventListener('click',() => aiEndVoiceMode(true));
   voiceEndBtn?.addEventListener('click',() => aiEndVoiceMode(true));
+  voiceDragBtn?.addEventListener('pointerdown',event => aiVoiceStartPointerTransform(event,''));
+  voiceModeEl?.querySelectorAll('[data-voice-resize]').forEach(handle => {
+    handle.addEventListener('pointerdown',event => aiVoiceStartPointerTransform(event,handle.dataset.voiceResize));
+  });
   voiceMuteBtn?.addEventListener('click',aiVoiceToggleMute);
   voiceSettingsBtn?.addEventListener('click',event => {
     event.stopPropagation();
@@ -15312,7 +15900,7 @@ if(textFilePreviewRemove){
   voiceFullscreenBtn?.addEventListener('click',async () => {
     try{
       if(document.fullscreenElement) await document.exitFullscreen();
-      else await appEl?.requestFullscreen();
+      else await voiceModeEl?.requestFullscreen();
     }catch(error){
       aiVoiceShowError('Fullscreen could not be opened in this browser.');
     }
@@ -15347,6 +15935,7 @@ if(textFilePreviewRemove){
   voiceTranscriptClear?.addEventListener('click',() => {
     voiceTranscriptEntries = [];
     aiVoiceRenderTranscript();
+    aiVoicePersistTranscript();
   });
   voiceVolumeBtn?.addEventListener('click',event => {
     event.stopPropagation();
@@ -15357,6 +15946,7 @@ if(textFilePreviewRemove){
   voiceVolumeRange?.addEventListener('input',() => {
     voicePreferences.volume = Number(voiceVolumeRange.value) / 100;
     if(voiceVolumeValue) voiceVolumeValue.textContent = voiceVolumeRange.value + '%';
+    voiceVolumeRange.style.setProperty('--voice-volume',voiceVolumeRange.value + '%');
     if(voiceOutputGain && voiceOutputContext){
       voiceOutputGain.gain.setTargetAtTime(voicePreferences.volume,voiceOutputContext.currentTime,.025);
     }
@@ -15409,11 +15999,34 @@ if(textFilePreviewRemove){
   navigator.mediaDevices?.addEventListener?.('devicechange',() => {
     if(voiceModeEl?.classList.contains('active')) aiVoiceRefreshDevices();
   });
+  window.addEventListener('resize',() => {
+    if(voiceModeEl?.classList.contains('active')){
+      aiVoiceSavePlayerGeometry();
+      aiVoiceApplyPlayerGeometry();
+    }
+  });
+  document.addEventListener('fullscreenchange',() => {
+    if(!document.fullscreenElement && voiceModeEl?.classList.contains('active')) aiVoiceApplyPlayerGeometry();
+  });
+  window.addEventListener('message',event => {
+    if(event.data?.type === 'hv-ai-editor-closing') aiEndVoiceMode(false);
+  });
+  if(typeof ResizeObserver === 'function' && voiceModeEl){
+    voiceResizeObserver = new ResizeObserver(() => {
+      if(voiceModeEl.classList.contains('active') && !voiceModeEl.classList.contains('resizing')){
+        const rect = voiceModeEl.getBoundingClientRect();
+        voiceModeEl.classList.toggle('compact',rect.width < 430 || rect.height < 520);
+      }
+    });
+    voiceResizeObserver.observe(voiceModeEl);
+  }
   window.addEventListener('beforeunload',() => {
+    aiVoicePersistTranscript();
     voiceSessionWanted = false;
     if(voiceSocket) try{ voiceSocket.close(1000,'Page closing'); }catch(error){}
     voiceMediaStream?.getTracks().forEach(track => track.stop());
     if(voiceWorkletUrl) URL.revokeObjectURL(voiceWorkletUrl);
+    voiceResizeObserver?.disconnect();
   });
   aiVoiceRenderTranscript();
   
@@ -19411,7 +20024,7 @@ loadChats();
       <div class="hv-nav-center-icon"><i class="fa-solid fa-gear"></i></div>
       <div>
         <h2 class="hv-nav-center-title" id="hvSettingsTitle">Settings</h2>
-        <div class="hv-nav-center-sub">Manage the editor, appearance, notifications, connections, and local data.</div>
+        <div class="hv-nav-center-sub">Manage the editor, appearance, notifications, and local data.</div>
       </div>
       <button class="hv-nav-center-close" type="button" data-hv-nav-close aria-label="Close settings"><i class="fa-solid fa-xmark"></i></button>
     </header>
@@ -19422,7 +20035,6 @@ loadChats();
             <button class="hv-settings-tab active" type="button" role="tab" aria-selected="true" data-hv-settings-tab="general"><i class="fa-solid fa-sliders"></i><span>General</span></button>
             <button class="hv-settings-tab" type="button" role="tab" aria-selected="false" data-hv-settings-tab="appearance"><i class="fa-solid fa-palette"></i><span>Appearance</span></button>
             <button class="hv-settings-tab" type="button" role="tab" aria-selected="false" data-hv-settings-tab="notifications"><i class="fa-solid fa-bell"></i><span>Notifications</span></button>
-            <button class="hv-settings-tab" type="button" role="tab" aria-selected="false" data-hv-settings-tab="connections"><i class="fa-solid fa-plug"></i><span>Connections</span></button>
             <button class="hv-settings-tab" type="button" role="tab" aria-selected="false" data-hv-settings-tab="storage"><i class="fa-solid fa-hard-drive"></i><span>Storage &amp; Data</span></button>
           </nav>
           <button class="hv-settings-save-close" id="hvSettingsSaveClose" type="button"><i class="fa-solid fa-check"></i>Save &amp; Close</button>
@@ -19497,19 +20109,6 @@ loadChats();
           </div>
           <button class="hv-setting-toggle" id="hvSettingSounds" type="button" role="switch" aria-checked="false" aria-label="Toggle UI sounds"></button>
         </div>
-            </div>
-          </section>
-
-          <section class="hv-settings-section" role="tabpanel" data-hv-settings-section="connections" hidden>
-            <div class="hv-settings-section-head">
-              <h3>Connections</h3>
-              <p>Secure AI and service credentials are configured on the backend and are never stored in this browser.</p>
-            </div>
-            <div class="hv-connection-grid">
-              <div class="hv-connection-card"><div class="hv-connection-card-head"><div class="hv-connection-card-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div><div><strong>Gemini AI</strong><span class="hv-connection-state">Backend connected</span></div></div><p>Text, code, and live voice requests use the secure Cloudflare backend.</p></div>
-              <div class="hv-connection-card"><div class="hv-connection-card-head"><div class="hv-connection-card-icon"><i class="fa-solid fa-image"></i></div><div><strong>Workers AI</strong><span class="hv-connection-state">Connected</span></div></div><p>FLUX.2 Klein image generation runs through a protected Workers AI binding.</p></div>
-              <div class="hv-connection-card"><div class="hv-connection-card-head"><div class="hv-connection-card-icon"><i class="fa-solid fa-signal"></i></div><div><strong>UptimeRobot</strong><span class="hv-connection-state">Backend connected</span></div></div><p>Status data is read server-side without exposing monitoring API keys.</p></div>
-              <div class="hv-connection-card"><div class="hv-connection-card-head"><div class="hv-connection-card-icon"><i class="fa-brands fa-discord"></i></div><div><strong>Discord</strong><span class="hv-connection-state">Backend connected</span></div></div><p>Contact messages and preset submissions are relayed securely by the backend.</p></div>
             </div>
           </section>
 
@@ -27268,6 +27867,16 @@ function hvStatusText(value,fallback){
   return text || fallback;
 }
 
+function hvFormatIncidentDuration(seconds){
+  const total = Math.max(0,Math.round(Number(seconds) || 0));
+  if(total < 60) return total + ' sec';
+  const minutes = Math.floor(total / 60);
+  if(minutes < 60) return minutes + ' min';
+  const hours = Math.floor(minutes / 60);
+  const remainder = minutes % 60;
+  return hours + ' hr' + (hours === 1 ? '' : 's') + (remainder ? ' ' + remainder + ' min' : '');
+}
+
 function hvRenderStatusDashboard(data){
   if(!hvStatusContent) return;
   const services = Array.isArray(data?.services)
@@ -27275,7 +27884,11 @@ function hvRenderStatusDashboard(data){
     : Array.isArray(data?.monitors)
       ? data.monitors
       : [];
-  const allUp = services.length > 0 && services.every(service => service.status === 'up');
+  const incidents = Array.isArray(data?.incidents) ? data.incidents : [];
+  const allUp = data?.allOperational !== false &&
+    services.length > 0 &&
+    services.every(service => service.status === 'up') &&
+    !incidents.some(incident => incident.status !== 'resolved' && !incident.resolvedAt);
   const summary = document.createElement('div');
   const dot = document.createElement('span');
   const summaryCopy = document.createElement('div');
@@ -27326,11 +27939,21 @@ function hvRenderStatusDashboard(data){
     uptimeLabel.textContent = '30 day uptime';
     uptime.append(uptimeLabel);
     bars.className = 'hv-status-bars';
-    bars.setAttribute('aria-label','Recent monitor health');
+    bars.setAttribute('aria-label','Real response-time and incident history for the last 30 days');
     (Array.isArray(service.bars) ? service.bars : []).slice(-30).forEach(item => {
       const state = typeof item === 'object' && item ? item.state : item;
       const bar = document.createElement('span');
       bar.className = 'hv-status-bar ' + (/^(up|slow|down)$/.test(state) ? state : 'unknown');
+      if(typeof item === 'object' && item){
+        const date = item.start ? new Date(item.start) : null;
+        const dateText = date && !Number.isNaN(date.getTime()) ? date.toLocaleDateString() : 'Period';
+        const responseText = Number.isFinite(Number(item.responseTimeMs))
+          ? Math.round(Number(item.responseTimeMs)) + ' ms'
+          : state === 'down'
+            ? 'Incident recorded'
+            : 'No response sample';
+        bar.title = dateText + ' · ' + responseText;
+      }
       bars.append(bar);
     });
     response.className = 'hv-status-response';
@@ -27347,7 +27970,64 @@ function hvRenderStatusDashboard(data){
     row.append(nameWrap,uptime,bars,response,live);
     list.append(row);
   });
-  hvStatusContent.replaceChildren(summary,head,list);
+
+  const incidentSection = document.createElement('section');
+  const incidentHead = document.createElement('div');
+  const incidentTitle = document.createElement('h3');
+  const incidentCount = document.createElement('span');
+  const incidentList = document.createElement('div');
+  incidentSection.className = 'hv-status-incidents';
+  incidentHead.className = 'hv-status-incidents-head';
+  incidentList.className = 'hv-status-incident-list';
+  incidentTitle.textContent = 'Incidents';
+  incidentCount.textContent = incidents.length + ' in the last 30 days';
+  incidentHead.append(incidentTitle,incidentCount);
+
+  if(data?.incidentsAvailable === false){
+    const unavailable = document.createElement('div');
+    unavailable.className = 'hv-status-incident-empty';
+    unavailable.textContent = 'Incident history is temporarily unavailable. Live monitor status remains available above.';
+    incidentList.append(unavailable);
+  }else if(!incidents.length){
+    const empty = document.createElement('div');
+    empty.className = 'hv-status-incident-empty';
+    empty.textContent = 'No incidents were recorded in the last 30 days.';
+    incidentList.append(empty);
+  }else{
+    incidents.forEach(incident => {
+      const card = document.createElement('article');
+      const icon = document.createElement('i');
+      const copy = document.createElement('div');
+      const title = document.createElement('strong');
+      const description = document.createElement('p');
+      const meta = document.createElement('span');
+      const ongoing = incident.status !== 'resolved' && !incident.resolvedAt;
+      card.className = 'hv-status-incident' + (ongoing ? ' ongoing' : '');
+      icon.className = 'hv-status-incident-icon fa-solid ' + (ongoing ? 'fa-triangle-exclamation' : 'fa-circle-check');
+      copy.className = 'hv-status-incident-copy';
+      meta.className = 'hv-status-incident-meta';
+      title.textContent = hvStatusText(
+        incident.reason || incident.cause,
+        ongoing ? 'Active service incident' : 'Resolved service incident'
+      );
+      description.textContent = hvStatusText(
+        incident.monitorName,
+        'Monitored service'
+      ) + (incident.type ? ' · ' + incident.type : '');
+      const started = incident.startedAt ? new Date(incident.startedAt) : null;
+      const startedText = started && !Number.isNaN(started.getTime())
+        ? started.toLocaleString()
+        : 'Start time unavailable';
+      metaStatus.textContent = ongoing ? 'Ongoing' : 'Resolved';
+      metaTime.textContent = startedText + (ongoing ? '' : ' · ' + hvFormatIncidentDuration(incident.duration));
+      meta.append(metaStatus,metaTime);
+      copy.append(title,description);
+      card.append(icon,copy,meta);
+      incidentList.append(card);
+    });
+  }
+  incidentSection.append(incidentHead,incidentList);
+  hvStatusContent.replaceChildren(summary,head,list,incidentSection);
   if(hvStatusCheckedAt){
     const checked = data?.checkedAt ? new Date(data.checkedAt) : new Date();
     hvStatusCheckedAt.textContent = 'Last checked ' + (Number.isNaN(checked.getTime()) ? 'just now' : checked.toLocaleString());
@@ -30596,6 +31276,11 @@ if(hvSubmitPresetSend){
   function closeAiEditorPreview(){
 
     aiOpen = false;
+    try{
+      aiFrame.contentWindow?.postMessage({ type:'hv-ai-editor-closing' },'*');
+    }catch(error){
+      console.warn('AI editor cleanup message could not be sent.',error);
+    }
 
     clearTimeout(aiTransitionTimer);
     frameWrap.classList.remove('hv-ai-visible');

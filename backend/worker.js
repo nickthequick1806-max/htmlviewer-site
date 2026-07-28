@@ -18,7 +18,7 @@ const GEMINI_LIVE_VOICES = new Set([
 ]);
 const UPTIMEROBOT_API_BASE = 'https://api.uptimerobot.com/v3';
 const UPTIMEROBOT_STATUS_CACHE_SECONDS = 60;
-const STATUS_CACHE_KEY = 'https://html-viewer-status-cache.invalid/v1';
+const STATUS_CACHE_KEY = 'https://html-viewer-status-cache.invalid/v2';
 
 export default {
   async fetch(request, env, ctx) {
@@ -308,17 +308,26 @@ async function getServiceStatus(env, origin, ctx){
 
   const apiKey = requireSecret(env, 'UPTIMEROBOT_API_KEY');
   const responseApiKey = requireSecret(env, 'UPTIMEROBOT_RESPONSE_API_KEY');
-  const monitorPayload = await fetchUptimeRobotJson('/monitors?limit=10', apiKey);
+  const to = new Date();
+  const from = new Date(to.getTime() - (30 * 24 * 60 * 60 * 1000));
+  const incidentQuery =
+    '?started_after=' + encodeURIComponent(from.toISOString()) +
+    '&started_before=' + encodeURIComponent(to.toISOString());
+  const [monitorPayload, incidentResult] = await Promise.all([
+    fetchUptimeRobotJson('/monitors?limit=10', apiKey),
+    fetchIncidentSummary(incidentQuery, apiKey)
+  ]);
   const rawMonitors = Array.isArray(monitorPayload?.data)
     ? monitorPayload.data.slice(0, 10)
+    : [];
+  const rawIncidents = Array.isArray(incidentResult.data)
+    ? incidentResult.data
     : [];
 
   if(rawMonitors.length === 0){
     throw new PublicError(502, 'UptimeRobot returned no configured monitors.');
   }
 
-  const to = new Date();
-  const from = new Date(to.getTime() - (30 * 24 * 60 * 60 * 1000));
   const query =
     '?from=' + encodeURIComponent(from.toISOString()) +
     '&to=' + encodeURIComponent(to.toISOString());
@@ -335,12 +344,15 @@ async function getServiceStatus(env, origin, ctx){
       ),
       fetchResponseTimeStats(id, query, responseApiKey, apiKey)
     ]);
-    const uptimeValue = clampNumber(uptime?.uptime, 0, 100, 0);
+    const monitorIncidents = rawIncidents.filter(incident =>
+      Number(incident?.monitor?.id) === id
+    );
+    const uptimeValue = clampNumber(uptime?.uptime, 0, 100, null);
     const responseAverage = clampNumber(
       responseStats?.summary?.avg,
       0,
       1000000,
-      0
+      null
     );
 
     return {
@@ -349,16 +361,30 @@ async function getServiceStatus(env, origin, ctx){
       url:safePublicUrl(monitor?.url),
       status:normalizeMonitorStatus(monitor?.status),
       uptime:uptimeValue,
-      responseTime:Math.round(responseAverage),
+      responseTime:responseAverage == null ? null : Math.round(responseAverage),
+      responseTimeMin:roundNullable(responseStats?.summary?.min),
+      responseTimeMax:roundNullable(responseStats?.summary?.max),
+      responseDataPoints:Math.max(
+        0,
+        Math.round(Number(responseStats?.data_points) || 0)
+      ),
       incidents:Math.max(0, Math.round(Number(uptime?.incident_count) || 0)),
       bars:buildStatusBars(
-        uptimeValue,
         responseStats?.time_series,
-        responseAverage
+        responseAverage,
+        monitor?.responseTimeThreshold,
+        monitorIncidents,
+        from,
+        to
       )
     };
   }));
   const validMonitors = monitors.filter(Boolean);
+  const incidents = rawIncidents
+    .map(sanitizeIncident)
+    .filter(Boolean)
+    .sort((a, b) => Date.parse(b.startedAt) - Date.parse(a.startedAt))
+    .slice(0, 20);
   const allOperational = validMonitors.length > 0 &&
     validMonitors.every(monitor => monitor.status === 'up');
   const result = {
@@ -368,8 +394,17 @@ async function getServiceStatus(env, origin, ctx){
       : 'Some services need attention',
     checkedAt:new Date().toISOString(),
     source:'UptimeRobot API v3',
+    period:{
+      from:from.toISOString(),
+      to:to.toISOString(),
+      label:'Last 30 days'
+    },
     monitorCount:validMonitors.length,
-    monitors:validMonitors
+    monitors:validMonitors,
+    incidentCount:incidents.length,
+    activeIncidentCount:incidents.filter(incident => incident.status === 'ongoing').length,
+    incidentsAvailable:incidentResult.available,
+    incidents
   };
 
   await writeStatusCache(result, ctx);
@@ -377,6 +412,21 @@ async function getServiceStatus(env, origin, ctx){
     'Cache-Control':'public, max-age=30',
     'X-Status-Cache':'MISS'
   });
+}
+
+async function fetchIncidentSummary(query, apiKey){
+  try{
+    const payload = await fetchUptimeRobotJson('/incidents' + query, apiKey);
+    return {
+      available:true,
+      data:Array.isArray(payload?.data) ? payload.data : []
+    };
+  }catch(error){
+    if(error instanceof PublicError){
+      return { available:false, data:[] };
+    }
+    throw error;
+  }
 }
 
 async function fetchResponseTimeStats(id, query, responseApiKey, fallbackApiKey){
@@ -436,26 +486,48 @@ function normalizeMonitorStatus(value){
   return 'unknown';
 }
 
-function buildStatusBars(uptime, timeSeries, averageResponse){
+function buildStatusBars(
+  timeSeries,
+  averageResponse,
+  configuredSlowThreshold,
+  incidents,
+  rangeFrom,
+  rangeTo
+){
   const buckets = Array.from({ length:30 }, () => []);
   const series = Array.isArray(timeSeries) ? timeSeries : [];
-  const cutoff = Date.now() - (30 * 24 * 60 * 60 * 1000);
-  const bucketWidth = (30 * 24 * 60 * 60 * 1000) / 30;
+  const rangeStart = Date.parse(rangeFrom);
+  const rangeEnd = Date.parse(rangeTo);
+  const safeRangeStart = Number.isFinite(rangeStart)
+    ? rangeStart
+    : Date.now() - (30 * 24 * 60 * 60 * 1000);
+  const safeRangeEnd = Number.isFinite(rangeEnd) && rangeEnd > safeRangeStart
+    ? rangeEnd
+    : Date.now();
+  const bucketWidth = (safeRangeEnd - safeRangeStart) / buckets.length;
 
   series.forEach(point => {
     const time = Date.parse(point?.timestamp);
     const value = Number(point?.value);
-    if(!Number.isFinite(time) || !Number.isFinite(value) || time < cutoff){
+    if(
+      !Number.isFinite(time) ||
+      !Number.isFinite(value) ||
+      time < safeRangeStart ||
+      time > safeRangeEnd
+    ){
       return;
     }
     const index = Math.max(
       0,
-      Math.min(29, Math.floor((time - cutoff) / bucketWidth))
+      Math.min(29, Math.floor((time - safeRangeStart) / bucketWidth))
     );
     buckets[index].push(value);
   });
 
-  const slowThreshold = Math.max(1200, Number(averageResponse || 0) * 1.8);
+  const configuredThreshold = Number(configuredSlowThreshold);
+  const slowThreshold = Number.isFinite(configuredThreshold) && configuredThreshold > 0
+    ? configuredThreshold
+    : Math.max(1200, Number(averageResponse || 0) * 1.8);
   const bars = buckets.map(values => {
     if(values.length === 0){
       return { state:'unknown', responseTime:null };
@@ -466,31 +538,83 @@ function buildStatusBars(uptime, timeSeries, averageResponse){
       responseTime:Math.round(avg)
     };
   });
-  const downSegments = uptime >= 100
-    ? 0
-    : Math.max(1, Math.round(((100 - uptime) / 100) * bars.length));
-  const preferredIndexes = bars
-    .map((bar, index) => ({ bar, index }))
-    .sort((a, b) => {
-      if(a.bar.state === 'unknown' && b.bar.state !== 'unknown') return -1;
-      if(a.bar.state !== 'unknown' && b.bar.state === 'unknown') return 1;
-      return b.index - a.index;
-    })
-    .slice(0, downSegments)
-    .map(item => item.index);
 
-  preferredIndexes.forEach(index => {
-    bars[index] = { state:'down', responseTime:null };
+  (Array.isArray(incidents) ? incidents : []).forEach(incident => {
+    const incidentStart = Date.parse(incident?.startedAt);
+    const parsedEnd = Date.parse(incident?.resolvedAt);
+    const incidentEnd = Number.isFinite(parsedEnd) ? parsedEnd : safeRangeEnd;
+    if(!Number.isFinite(incidentStart) || incidentEnd < safeRangeStart){
+      return;
+    }
+    bars.forEach((bar, index) => {
+      const bucketStart = safeRangeStart + (index * bucketWidth);
+      const bucketEnd = bucketStart + bucketWidth;
+      if(incidentStart < bucketEnd && incidentEnd >= bucketStart){
+        bars[index] = { state:'down', responseTime:bar.responseTime };
+      }
+    });
   });
   return bars;
 }
 
 function clampNumber(value, min, max, fallback){
+  if(value == null || value === ''){
+    return fallback;
+  }
   const number = Number(value);
   if(!Number.isFinite(number)){
     return fallback;
   }
   return Math.max(min, Math.min(max, number));
+}
+
+function roundNullable(value){
+  const number = Number(value);
+  return value == null || value === '' || !Number.isFinite(number)
+    ? null
+    : Math.round(number);
+}
+
+function sanitizeIncident(value){
+  if(!value || typeof value !== 'object'){
+    return null;
+  }
+  const id = typeof value.id === 'string' ? value.id.trim() : '';
+  const startedAt = normalizeIsoDate(value.startedAt);
+  if(!id || !startedAt){
+    return null;
+  }
+  const resolvedAt = normalizeIsoDate(value.resolvedAt);
+  const rawStatus = String(value.status || '').trim().toUpperCase();
+  const status = resolvedAt || rawStatus === 'RESOLVED'
+    ? 'resolved'
+    : 'ongoing';
+  const duration = Number(value.duration);
+
+  return {
+    id:id.slice(0, 100),
+    status,
+    type:safePublicText(value.type, 'Incident', 80),
+    reason:safePublicText(value.reason, 'Service interruption detected', 240),
+    monitorId:Number.isFinite(Number(value.monitor?.id))
+      ? Number(value.monitor.id)
+      : null,
+    monitorName:safePublicText(
+      value.monitor?.friendlyName,
+      'Monitored service',
+      100
+    ),
+    startedAt,
+    resolvedAt,
+    duration:Number.isFinite(duration) && duration >= 0
+      ? Math.round(duration)
+      : null
+  };
+}
+
+function normalizeIsoDate(value){
+  const parsed = Date.parse(value);
+  return Number.isFinite(parsed) ? new Date(parsed).toISOString() : null;
 }
 
 function safePublicText(value, fallback, maxLength){
