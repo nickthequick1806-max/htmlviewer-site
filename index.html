@@ -10034,10 +10034,28 @@ html.hv-light-mode .hv-toast{
     display:inline-flex;
   }
 
+  .voice-entry-wrap::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:100%;
+    z-index:89;
+    width:148px;
+    height:12px;
+    pointer-events:none;
+    transform:translateX(-50%);
+  }
+
+  .voice-entry-wrap:hover::before,
+  .voice-entry-wrap:focus-within::before,
+  .voice-entry-wrap.menu-open::before{
+    pointer-events:auto;
+  }
+
   .voice-entry-menu{
     position:absolute;
     left:50%;
-    bottom:calc(100% + 10px);
+    bottom:calc(100% + 8px);
     z-index:90;
     width:138px;
     padding:6px;
