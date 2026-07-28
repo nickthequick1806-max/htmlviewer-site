@@ -208,6 +208,14 @@ test('creates a one-use Gemini Live token with Charon as the default voice', asy
       .parts[0].text,
     /Current file: landing-page\.html/
   );
+  assert.match(
+    data.config.systemInstruction.parts[0].text,
+    /You are ONYX/
+  );
+  assert.match(
+    data.config.systemInstruction.parts[0].text,
+    /ONYX online/
+  );
 });
 
 test('rejects unsupported Gemini Live voices before provisioning a token', async t => {
@@ -251,6 +259,7 @@ test('classifies stabilized coding commands with the dedicated intent route', as
           parts:[{
             text:JSON.stringify({
               intent:'ACTIONABLE',
+              action:'NONE',
               confidence:0.97,
               reason:'The user requested a code change.'
             })
@@ -271,8 +280,47 @@ test('classifies stabilized coding commands with the dedicated intent route', as
   assert.deepEqual(await response.json(), {
     actionable:true,
     intent:'ACTIONABLE',
+    uiAction:null,
     confidence:0.97,
     reason:'The user requested a code change.'
+  });
+});
+
+test('classifies supported Voice Mode interface commands', async t => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+  });
+
+  globalThis.fetch = async () => Response.json({
+    candidates:[{
+      content:{
+        parts:[{
+          text:JSON.stringify({
+            intent:'UI_ACTION',
+            action:'OPEN_PROJECTS',
+            confidence:0.99,
+            reason:'The user asked to open Projects.'
+          })
+        }]
+      }
+    }]
+  });
+
+  const response = await worker.fetch(
+    createJsonRequest('/api/ai/voice-intent', {
+      transcript:'Please open my projects section.'
+    }),
+    TEST_ENV
+  );
+
+  assert.equal(response.status, 200);
+  assert.deepEqual(await response.json(), {
+    actionable:false,
+    intent:'UI_ACTION',
+    uiAction:'OPEN_PROJECTS',
+    confidence:0.99,
+    reason:'The user asked to open Projects.'
   });
 });
 

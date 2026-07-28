@@ -9,6 +9,14 @@ const FLUX_IMAGE_MODEL = '@cf/black-forest-labs/flux-2-klein-4b';
 const FLUX_IMAGE_SIZE = 1024;
 const GEMINI_LIVE_MODEL = 'gemini-3.1-flash-live-preview';
 const GEMINI_VOICE_INTENT_MODEL = 'gemini-3.5-flash-lite';
+const GEMINI_VOICE_UI_ACTIONS = new Set([
+  'NEW_CHAT',
+  'OPEN_PROJECTS',
+  'OPEN_LIBRARY',
+  'OPEN_CHAT_HISTORY',
+  'ADD_IMAGE',
+  'ATTACH_CODE_FILE'
+]);
 const GEMINI_LIVE_VOICES = new Set([
   'Zephyr', 'Puck', 'Charon', 'Kore', 'Fenrir', 'Leda', 'Orus', 'Aoede',
   'Callirrhoe', 'Autonoe', 'Enceladus', 'Iapetus', 'Umbriel', 'Algieba',
@@ -111,7 +119,12 @@ async function createGeminiLiveToken(request, env, origin){
   const language = typeof body.language === 'string'
     ? body.language.trim().slice(0, 20)
     : 'auto';
-  const systemInstruction = createVoiceSystemInstruction(editorContext, language);
+  const hasIntroduced = body.hasIntroduced === true;
+  const systemInstruction = createVoiceSystemInstruction(
+    editorContext,
+    language,
+    hasIntroduced
+  );
   const liveConfig = {
     generationConfig:{
       responseModalities:['AUDIO'],
@@ -184,26 +197,60 @@ async function createGeminiLiveToken(request, env, origin){
   }, 200, origin);
 }
 
-function createVoiceSystemInstruction(editorContext, language){
+function createVoiceSystemInstruction(editorContext, language, hasIntroduced){
   const context = editorContext
     ? '\n\nCURRENT EDITOR CONTEXT:\n' + editorContext
     : '';
   const languageInstruction = language && language !== 'auto'
     ? ' Prefer spoken language ' + language + ' unless the user asks to switch.'
     : '';
+  const introductionInstruction = hasIntroduced
+    ? 'You have already introduced yourself in this chat. Do not introduce yourself again.'
+    : (
+      'On your first response after the user speaks, introduce yourself once with: ' +
+      '"ONYX online. I can inspect your current code, build new features, modify ' +
+      'the latest edit, debug problems, or recommend the strongest next upgrade." ' +
+      'Then respond directly to what the user said. Do not repeat this introduction later.'
+    );
 
-  return (
-    'You are AutoSite AI, the concise voice assistant inside HTML Viewer and ' +
-    'the AI HTML Editor. Help with the current HTML, CSS, JavaScript, preview, ' +
-    'validator, projects, saved versions, files, images, errors, and editor ' +
-    'controls. Give short natural spoken answers unless the user asks for more. ' +
-    'When the user gives an actionable coding command, briefly acknowledge it ' +
-    'without inventing completed changes; the application will submit the final ' +
-    'transcript to its dedicated Gemini coding pipeline. Never claim a code edit ' +
-    'was applied unless the normal coding pipeline confirms it.' +
-    languageInstruction +
+  return [
+    'You are ONYX, the advanced voice-powered coding architect embedded directly',
+    'inside HTMLViewer.site. You are an elite senior developer, UI/UX strategist,',
+    'debugging specialist, product advisor, and active coding partner—not a generic',
+    'chatbot. Be calm, confident, friendly, direct, honest, and execution-focused.',
+    'Speak naturally in short complete sentences suited to voice. Avoid filler, fake',
+    'enthusiasm, repeated introductions, and long code recitations unless requested.',
+    '',
+    introductionInstruction,
+    '',
+    'Maintain awareness of the current editor code, selection, project, chat,',
+    'attachments, diagnostics, preview mode, latest edit, and recent conversation',
+    'whenever that context is supplied. Never pretend to see unavailable information.',
+    'Treat the most recent edit as important: explain what changed, spot regressions,',
+    'say what to test, and suggest the strongest one to three relevant next upgrades.',
+    '',
+    'Help the user build complete production-quality HTML, CSS, and JavaScript;',
+    'create and modify components, pages, modals, forms, dashboards, animations, and',
+    'interactions; debug root causes; improve responsive behavior, accessibility,',
+    'performance, security, SEO, usability, validation, and maintainability. Preserve',
+    'the existing design language, architecture, data, and unrelated working features.',
+    'Offer decisive project-specific advice rather than generic lists. Ask only a',
+    'focused question when a missing choice would materially change the result.',
+    '',
+    'When the user gives an actionable coding command, briefly acknowledge the exact',
+    'request without claiming it is complete. The application will route the stabilized',
+    'final transcript into the dedicated Gemini coding pipeline, which performs the',
+    'actual code change. Never claim an edit was applied until that pipeline confirms it.',
+    'For commands to create a new chat, open Projects, Library, Chat History, add an',
+    'image, or attach a code file/link, acknowledge naturally; the application will',
+    'execute the matching interface action.',
+    '',
+    'Protect the project. Never expose credentials, silently delete working features,',
+    'overwrite saved work, invent test results, or hide limitations. Give concise',
+    'spoken conclusions and useful next actions, not hidden reasoning.',
+    languageInstruction,
     context
-  );
+  ].join('\n');
 }
 
 async function classifyVoiceIntent(request, env, origin){
@@ -215,6 +262,9 @@ async function classifyVoiceIntent(request, env, origin){
     : '';
   const prompt = [
     'Classify this stabilized voice transcript for an HTML editor.',
+    'UI_ACTION means the user is directing the app interface to create a new chat,',
+    'open Projects, open Library, open Chat History, add an image, or attach/add a',
+    'code file or link. Choose the matching action value.',
     'ACTIONABLE means the user is directing the editor to create, edit, fix,',
     'replace, remove, format, debug, validate, or otherwise change code or a',
     'project. CONVERSATIONAL means a question, explanation request, greeting,',
@@ -243,11 +293,23 @@ async function classifyVoiceIntent(request, env, origin){
           responseSchema:{
             type:'OBJECT',
             properties:{
-              intent:{ type:'STRING', enum:['ACTIONABLE','CONVERSATIONAL'] },
+              intent:{ type:'STRING', enum:['UI_ACTION','ACTIONABLE','CONVERSATIONAL'] },
+              action:{
+                type:'STRING',
+                enum:[
+                  'NONE',
+                  'NEW_CHAT',
+                  'OPEN_PROJECTS',
+                  'OPEN_LIBRARY',
+                  'OPEN_CHAT_HISTORY',
+                  'ADD_IMAGE',
+                  'ATTACH_CODE_FILE'
+                ]
+              },
               confidence:{ type:'NUMBER' },
               reason:{ type:'STRING' }
             },
-            required:['intent','confidence']
+            required:['intent','action','confidence']
           }
         }
       })
@@ -282,7 +344,13 @@ async function classifyVoiceIntent(request, env, origin){
 
   const intent = result.intent === 'ACTIONABLE'
     ? 'ACTIONABLE'
-    : 'CONVERSATIONAL';
+    : result.intent === 'UI_ACTION'
+      ? 'UI_ACTION'
+      : 'CONVERSATIONAL';
+  const uiAction = intent === 'UI_ACTION' &&
+    GEMINI_VOICE_UI_ACTIONS.has(result.action)
+    ? result.action
+    : null;
   const confidence = Number.isFinite(Number(result.confidence))
     ? Math.max(0, Math.min(1, Number(result.confidence)))
     : 0;
@@ -290,6 +358,7 @@ async function classifyVoiceIntent(request, env, origin){
   return jsonResponse({
     actionable:intent === 'ACTIONABLE' && confidence >= 0.6,
     intent,
+    uiAction,
     confidence,
     reason:typeof result.reason === 'string'
       ? result.reason.slice(0, 240)

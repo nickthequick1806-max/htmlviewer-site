@@ -3412,6 +3412,25 @@ body.hv-resizing-active iframe{
   transition-delay:0s;
 }
 
+.hv-ai-editor-frame.hv-ai-voice-floating{
+  position:fixed !important;
+  inset:0 !important;
+  z-index:100000 !important;
+  width:100vw !important;
+  height:100dvh !important;
+  display:block !important;
+  background:transparent !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  pointer-events:auto !important;
+  transform:none !important;
+}
+
+body.hv-ai-voice-floating-host .hv-preview .hv-head{
+  position:relative;
+  z-index:100001;
+}
+
 #hvAiEditorToggle.active{
   background:rgba(255,255,255,.12) !important;
   border-color:rgba(255,255,255,.42) !important;
@@ -5673,10 +5692,16 @@ html.hv-light-mode .hv-toast{
 
 .hv-status-panel{width:min(1080px,calc(100vw - 28px))}
 .hv-status-dashboard{display:flex;flex-direction:column;gap:18px}
-.hv-status-summary{display:flex;align-items:center;gap:16px;padding:18px;border:1px solid rgba(34,197,94,.24);border-radius:13px;background:rgba(34,197,94,.055)}
+.hv-status-summary{display:flex;align-items:center;gap:16px;margin-bottom:14px;padding:18px;border:1px solid rgba(34,197,94,.24);border-radius:13px;background:rgba(34,197,94,.055)}
 .hv-status-summary.attention{border-color:rgba(245,158,11,.28);background:rgba(245,158,11,.07)}
 .hv-status-dot{width:42px;height:42px;flex:0 0 auto;border:7px solid rgba(34,197,94,.2);border-radius:999px;background:#4ade80;box-shadow:0 0 0 1px rgba(34,197,94,.34),0 0 24px rgba(34,197,94,.22)}
-.hv-status-summary.attention .hv-status-dot{border-color:rgba(245,158,11,.2);background:#fbbf24;box-shadow:0 0 0 1px rgba(245,158,11,.35)}
+.hv-status-dot{animation:hvStatusLivePulse 1.9s ease-out infinite}
+.hv-status-summary.attention .hv-status-dot{border-color:rgba(245,158,11,.2);background:#fbbf24;box-shadow:0 0 0 1px rgba(245,158,11,.35);animation:none}
+@keyframes hvStatusLivePulse{
+  0%{box-shadow:0 0 0 1px rgba(34,197,94,.34),0 0 0 0 rgba(74,222,128,.24),0 0 20px rgba(34,197,94,.2)}
+  70%{box-shadow:0 0 0 1px rgba(34,197,94,.34),0 0 0 11px rgba(74,222,128,0),0 0 29px rgba(34,197,94,.29)}
+  100%{box-shadow:0 0 0 1px rgba(34,197,94,.34),0 0 0 11px rgba(74,222,128,0),0 0 20px rgba(34,197,94,.2)}
+}
 .hv-status-summary strong,.hv-status-summary span{display:block}
 .hv-status-summary strong{margin-bottom:5px;color:#f4f4f5;font-size:17px}
 .hv-status-summary span{color:#71717a;font-size:10px;line-height:1.5}
@@ -5692,8 +5717,40 @@ html.hv-light-mode .hv-toast{
 .hv-status-uptime{color:#4ade80;font-size:10px;font-weight:850}
 .hv-status-uptime small{display:block;margin-top:4px;color:#71717a;font-size:8px;font-weight:600}
 .hv-status-bars{width:100%;height:26px;display:flex;align-items:center;gap:2px}
-.hv-status-bar{width:auto;min-width:2px;height:20px;flex:1 1 0;border-radius:2px;background:#27272a}
+.hv-status-bar{position:relative;width:auto;min-width:2px;height:20px;flex:1 1 0;border-radius:2px;background:#27272a;outline:none;cursor:help}
 .hv-status-bar.up{background:#22c55e}.hv-status-bar.slow{background:#fbbf24}.hv-status-bar.down{background:#ef4444}.hv-status-bar.unknown{background:#3f3f46}
+.hv-status-bar:focus-visible{box-shadow:0 0 0 2px #0b0b0b,0 0 0 3px #e4e4e7}
+.hv-status-bar-detail{
+  position:absolute;
+  left:50%;
+  bottom:calc(100% + 9px);
+  z-index:80;
+  width:max-content;
+  max-width:210px;
+  padding:7px 9px;
+  border:1px solid #3a3a3a;
+  border-radius:8px;
+  background:rgba(13,13,13,.98);
+  box-shadow:0 12px 32px rgba(0,0,0,.58);
+  color:#d4d4d8;
+  font-size:9px;
+  font-weight:650;
+  line-height:1.4;
+  white-space:nowrap;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translate(-50%,4px);
+  transition:opacity .14s ease,visibility .14s ease,transform .14s ease;
+}
+.hv-status-bar:hover .hv-status-bar-detail,
+.hv-status-bar:focus-visible .hv-status-bar-detail{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.hv-status-bar:first-child .hv-status-bar-detail{left:0;transform:translateY(4px)}
+.hv-status-bar:first-child:hover .hv-status-bar-detail,
+.hv-status-bar:first-child:focus-visible .hv-status-bar-detail{transform:translateY(0)}
+.hv-status-bar:last-child .hv-status-bar-detail{right:0;left:auto;transform:translateY(4px)}
+.hv-status-bar:last-child:hover .hv-status-bar-detail,
+.hv-status-bar:last-child:focus-visible .hv-status-bar-detail{transform:translateY(0)}
 .hv-status-response{text-align:right;color:#e4e4e7;font-size:10px;font-weight:800}
 .hv-status-response small{display:block;margin-top:4px;color:#71717a;font-size:8px;font-weight:600}
 .hv-status-live{display:flex;align-items:center;justify-content:flex-end;gap:6px;color:#4ade80;font-size:10px;font-weight:850;text-transform:capitalize}
@@ -5702,7 +5759,20 @@ html.hv-light-mode .hv-toast{
 .hv-status-incidents-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:9px}
 .hv-status-incidents-head h3{margin:0;color:#f4f4f5;font-size:14px}
 .hv-status-incidents-head span{color:#71717a;font-size:9px}
-.hv-status-incident-list{display:flex;flex-direction:column;gap:7px}
+.hv-status-incident-list{
+  max-height:182px;
+  padding-right:7px;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:#4a4a4a #151515;
+}
+.hv-status-incident-list::-webkit-scrollbar{width:6px}
+.hv-status-incident-list::-webkit-scrollbar-track{border-radius:999px;background:#151515}
+.hv-status-incident-list::-webkit-scrollbar-thumb{border-radius:999px;background:#4a4a4a}
 .hv-status-incident{min-height:56px;padding:10px 12px;display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:11px;border:1px solid rgba(255,255,255,.07);border-radius:11px;background:rgba(255,255,255,.022)}
 .hv-status-incident-icon{width:34px;height:34px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.09);border-radius:9px;background:#151515;color:#a1a1aa}
 .hv-status-incident.ongoing{border-color:rgba(239,68,68,.22);background:rgba(127,29,29,.07)}
@@ -5830,6 +5900,10 @@ html.hv-light-mode .hv-toast{
 
   .hv-status-incident{
     grid-template-columns:32px minmax(0,1fr);
+  }
+
+  .hv-status-incident-list{
+    max-height:245px;
   }
 
   .hv-status-incident-meta{
@@ -6731,7 +6805,8 @@ html.hv-light-mode .hv-toast{
   id="hvAiEditorFrame"
   class="hv-ai-editor-frame"
   title="AI HTML editor"
-  allow="clipboard-write; microphone; autoplay"
+  allow="clipboard-write; microphone; autoplay; fullscreen"
+  allowfullscreen
   sandbox="allow-scripts allow-forms allow-modals allow-popups allow-same-origin allow-downloads"
 ></iframe>
   
@@ -10165,28 +10240,6 @@ html.hv-light-mode .hv-toast{
     font-size:14px;
   }
 
-  .voice-provider{
-    display:flex;
-    align-items:center;
-    gap:6px;
-    margin-top:3px;
-    color:#71717a;
-    font-size:9px;
-  }
-
-  .voice-provider-dot{
-    width:6px;
-    height:6px;
-    border-radius:50%;
-    background:#f59e0b;
-    box-shadow:0 0 10px rgba(245,158,11,.5);
-  }
-
-  .voice-provider.connected .voice-provider-dot{
-    background:#4ade80;
-    box-shadow:0 0 10px rgba(74,222,128,.5);
-  }
-
   .voice-header-btn{
     width:38px;
     height:38px;
@@ -10434,6 +10487,7 @@ html.hv-light-mode .hv-toast{
   }
 
   .voice-lower{
+    position:relative;
     width:min(650px,100%);
     display:flex;
     flex-direction:column;
@@ -10788,10 +10842,9 @@ html.hv-light-mode .hv-toast{
     cursor:default;
   }
 
-  .voice-mode-title{min-width:0;gap:9px}
+  .voice-mode-title{min-width:0;gap:10px;padding-top:3px}
   .voice-mode-title > div{min-width:0}
-  .voice-mode-title strong{font-size:13px}
-  .voice-provider{max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .voice-mode-title strong{font-size:15px;line-height:1.1}
   .voice-mode-header-actions{gap:6px}
   .voice-header-btn{width:34px;height:34px;border-radius:10px}
   .voice-drag-btn{cursor:grab;touch-action:none}
@@ -10861,9 +10914,9 @@ html.hv-light-mode .hv-toast{
     right:10px;
     width:min(344px,calc(100% - 20px));
     max-height:calc(100cqh - 70px);
-    padding-bottom:8px;
+    padding:12px 12px 5px;
   }
-  .voice-settings-note{margin-bottom:0}
+  .voice-settings-note{margin:9px 1px 0;padding-bottom:0}
   .voice-field select.voice-native-select{
     position:absolute;
     width:1px;
@@ -10945,12 +10998,12 @@ html.hv-light-mode .hv-toast{
   .voice-setting-check input:checked{background:#e4e4e7;border-color:#e4e4e7}
   .voice-setting-check input:checked::before{transform:rotate(-45deg) scale(1)}
 
-  .voice-mode-main > .voice-volume-popover{
+  .voice-lower > .voice-volume-popover{
     position:absolute;
     left:50%;
-    top:46px;
-    bottom:auto;
-    z-index:30;
+    top:auto;
+    bottom:calc(clamp(40px,9.2cqw,50px) + 13px);
+    z-index:45;
     width:min(250px,calc(100% - 24px));
     height:52px;
     padding:9px 12px;
@@ -10998,14 +11051,15 @@ html.hv-light-mode .hv-toast{
 
   @container (max-width:420px), (max-height:520px){
     .voice-mode-header{min-height:50px;padding:7px 8px}
-    .voice-provider{display:none}
+    .voice-mode-title{padding-top:2px}
+    .voice-mode-title strong{font-size:14px}
     .voice-header-btn{width:31px;height:31px}
     .voice-mode-main{padding:7px 9px 10px}
     .voice-state-card{min-height:25px}
     .voice-live-caption{min-height:54px;padding:8px 9px}
     .voice-caption-text{font-size:10px}
     .voice-control{width:40px;height:40px}
-    .voice-mode-main > .voice-volume-popover{top:38px;height:46px;padding:7px 10px}
+    .voice-lower > .voice-volume-popover{height:46px;padding:7px 10px}
   }
 
   @container (max-height:380px){
@@ -11274,7 +11328,6 @@ html.hv-light-mode .hv-toast{
           <span class="voice-title-wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
           <div>
             <strong>Voice Mode</strong>
-            <span class="voice-provider" id="voiceProviderStatus"><span class="voice-provider-dot"></span><span id="voiceProviderText">Gemini Live · Disconnected</span></span>
           </div>
         </div>
         <div class="voice-mode-header-actions">
@@ -11289,18 +11342,6 @@ html.hv-light-mode .hv-toast{
             <div><i class="fa-solid fa-signal"></i><span><span>Connection</span><strong id="voiceSettingsConnection">Disconnected</strong></span></div>
             <div><i class="fa-solid fa-microphone"></i><span><span>Microphone</span><strong id="voiceSettingsMicName">Default input</strong></span></div>
           </div>
-          <label class="voice-field">
-            <span><i class="fa-solid fa-plug"></i>Connection</span>
-            <select id="voiceConnectionSelect" aria-label="Voice connection">
-              <option value="secure-backend">Secure Gemini Live backend</option>
-            </select>
-          </label>
-          <label class="voice-field">
-            <span><i class="fa-solid fa-robot"></i>Live model</span>
-            <select id="voiceModelSelect" aria-label="Live voice model">
-              <option value="gemini-3.1-flash-live-preview">Gemini 3.1 Flash Live Preview</option>
-            </select>
-          </label>
           <label class="voice-field">
             <span><i class="fa-solid fa-user-astronaut"></i>Voice</span>
             <select id="voiceSelect" aria-label="Gemini voice">
@@ -11371,25 +11412,25 @@ html.hv-light-mode .hv-toast{
       <div class="voice-mode-main">
         <div class="voice-state-card" id="voiceStateCard" data-state="idle"><span class="voice-state-dot"></span><span id="voiceStateText">Ready</span></div>
 
-        <div class="voice-volume-popover" id="voiceVolumePopover">
-          <i class="fa-solid fa-volume-low" aria-hidden="true"></i>
-          <input id="voiceVolumeRange" type="range" min="0" max="100" value="80" aria-label="AI voice volume">
-          <output id="voiceVolumeValue">80%</output>
-        </div>
-
         <div class="voice-visual-stage" id="voiceVisualStage">
           <canvas id="voiceVisualizer" aria-hidden="true"></canvas>
           <div class="voice-orb" id="voiceOrb" aria-hidden="true"></div>
         </div>
 
         <div class="voice-lower">
+          <div class="voice-volume-popover" id="voiceVolumePopover">
+            <i class="fa-solid fa-volume-low" aria-hidden="true"></i>
+            <input id="voiceVolumeRange" type="range" min="0" max="100" value="80" aria-label="AI voice volume">
+            <output id="voiceVolumeValue">80%</output>
+          </div>
+
           <div class="voice-live-caption" id="voiceLiveCaption" data-speaker="assistant" aria-live="polite">
             <div class="voice-caption-wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-            <div><span class="voice-caption-speaker" id="voiceCaptionSpeaker">AutoSite AI</span><div class="voice-caption-text" id="voiceCaptionText">Start a voice session whenever you are ready.</div></div>
+            <div><span class="voice-caption-speaker" id="voiceCaptionSpeaker">ONYX</span><div class="voice-caption-text" id="voiceCaptionText">Start a voice session whenever you are ready.</div></div>
           </div>
 
           <div class="voice-keyboard-panel" id="voiceKeyboardPanel">
-            <input id="voiceKeyboardInput" type="text" placeholder="Type a message for AutoSite AI…" autocomplete="off">
+            <input id="voiceKeyboardInput" type="text" placeholder="Type a message for ONYX…" autocomplete="off">
             <button id="voiceKeyboardSend" type="button"><i class="fa-solid fa-arrow-up"></i> Send</button>
           </div>
 
@@ -11738,12 +11779,8 @@ const micBtn = document.getElementById('mic-btn');
   const voiceSettingsBtn = document.getElementById('voiceSettingsBtn');
   const voiceSettingsPopover = document.getElementById('voiceSettingsPopover');
   const voiceFullscreenBtn = document.getElementById('voiceFullscreenBtn');
-  const voiceProviderStatus = document.getElementById('voiceProviderStatus');
-  const voiceProviderText = document.getElementById('voiceProviderText');
   const voiceSettingsConnection = document.getElementById('voiceSettingsConnection');
   const voiceSettingsMicName = document.getElementById('voiceSettingsMicName');
-  const voiceConnectionSelect = document.getElementById('voiceConnectionSelect');
-  const voiceModelSelect = document.getElementById('voiceModelSelect');
   const voiceSelect = document.getElementById('voiceSelect');
   const voiceLanguageSelect = document.getElementById('voiceLanguageSelect');
   const voiceInputSelect = document.getElementById('voiceInputSelect');
@@ -14592,6 +14629,14 @@ if(textFilePreviewRemove){
     try{
       stored = JSON.parse(localStorage.getItem(AI_VOICE_PREFS_KEY) || '{}') || {};
     }catch(error){}
+    const storedWidth = Number.isFinite(Number(stored.player?.width))
+      ? Number(stored.player.width)
+      : 620;
+    const storedHeight = Number.isFinite(Number(stored.player?.height))
+      ? Number(stored.player.height)
+      : 650;
+    const storedAspect = storedWidth / Math.max(1,storedHeight);
+    const restoreDefaultShape = storedAspect < .8 || storedAspect > 1.18;
     return {
       voice:String(stored.voice || AI_DEFAULT_VOICE),
       language:String(stored.language || 'auto'),
@@ -14601,10 +14646,10 @@ if(textFilePreviewRemove){
       vad:stored.vad !== false,
       bargeIn:stored.bargeIn !== false,
       player:{
-        left:Number.isFinite(Number(stored.player?.left)) ? Number(stored.player.left) : null,
-        top:Number.isFinite(Number(stored.player?.top)) ? Number(stored.player.top) : null,
-        width:Number.isFinite(Number(stored.player?.width)) ? Number(stored.player.width) : 620,
-        height:Number.isFinite(Number(stored.player?.height)) ? Number(stored.player.height) : 650
+        left:restoreDefaultShape ? null : (Number.isFinite(Number(stored.player?.left)) ? Number(stored.player.left) : null),
+        top:restoreDefaultShape ? null : (Number.isFinite(Number(stored.player?.top)) ? Number(stored.player.top) : null),
+        width:restoreDefaultShape ? 620 : storedWidth,
+        height:restoreDefaultShape ? 650 : storedHeight
       }
     };
   }
@@ -14623,7 +14668,6 @@ if(textFilePreviewRemove){
   }
 
   function aiApplyVoicePreferences(){
-    if(voiceModelSelect) voiceModelSelect.value = AI_LIVE_VOICE_MODEL;
     if(voiceSelect && [...voiceSelect.options].some(option => option.value === voicePreferences.voice)){
       voiceSelect.value = voicePreferences.voice;
     }else if(voiceSelect){
@@ -14731,7 +14775,7 @@ if(textFilePreviewRemove){
     aiVoiceSyncCustomSelect(select);
   }
 
-  [voiceConnectionSelect,voiceModelSelect,voiceSelect,voiceLanguageSelect,voiceInputSelect,voiceOutputSelect]
+  [voiceSelect,voiceLanguageSelect,voiceInputSelect,voiceOutputSelect]
     .forEach(aiEnhanceVoiceSelect);
 
   let recognition = null;
@@ -14841,6 +14885,7 @@ if(textFilePreviewRemove){
   let voiceCaptionHideTimer = 0;
   let voiceGeometrySaveTimer = 0;
   let voiceResizeObserver = null;
+  let voicePreFullscreenGeometry = null;
   const voiceVizState = {
     level:0,
     peak:0,
@@ -14884,8 +14929,6 @@ if(textFilePreviewRemove){
 
   function aiVoiceSetConnection(connected,label){
     voiceConnected = Boolean(connected);
-    if(voiceProviderStatus) voiceProviderStatus.classList.toggle('connected',voiceConnected);
-    if(voiceProviderText) voiceProviderText.textContent = 'Gemini Live · ' + (label || (voiceConnected ? 'Connected' : 'Disconnected'));
     if(voiceSettingsConnection) voiceSettingsConnection.textContent = label || (voiceConnected ? 'Connected' : 'Disconnected');
   }
 
@@ -14894,7 +14937,7 @@ if(textFilePreviewRemove){
     clearTimeout(voiceCaptionHideTimer);
     const isUser = role === 'user';
     voiceLiveCaption.dataset.speaker = isUser ? 'user' : 'assistant';
-    voiceCaptionSpeaker.textContent = isUser ? 'You' : 'AutoSite AI';
+    voiceCaptionSpeaker.textContent = isUser ? 'You' : 'ONYX';
     voiceCaptionText.textContent = String(text || (isUser ? 'Listening…' : 'Thinking…'));
     if(active !== false){
       voiceLiveCaption.classList.add('active');
@@ -14938,7 +14981,7 @@ if(textFilePreviewRemove){
       const meta = document.createElement('span');
       const body = document.createElement('div');
       card.className = 'voice-transcript-message ' + (entry.role === 'user' ? 'user' : 'assistant');
-      meta.textContent = (entry.role === 'user' ? 'You' : 'AutoSite AI') + ' · ' + new Date(entry.createdAt).toLocaleTimeString([],{
+      meta.textContent = (entry.role === 'user' ? 'You' : 'ONYX') + ' · ' + new Date(entry.createdAt).toLocaleTimeString([],{
         hour:'numeric',
         minute:'2-digit'
       });
@@ -15013,6 +15056,15 @@ if(textFilePreviewRemove){
       selectedImageBase64 ? 'Image attachment ready' : '',
       selectedTextFile?.name ? 'File attachment: ' + selectedTextFile.name : ''
     ].filter(Boolean).join(', ') || 'No pending attachments';
+    const recentConversation = Array.isArray(chat?.history)
+      ? chat.history.slice(-8).map(item => {
+          const role = item?.role === 'model' ? 'ONYX/coding assistant' : 'User';
+          const text = Array.isArray(item?.parts)
+            ? item.parts.map(part => typeof part?.text === 'string' ? part.text : '').join(' ')
+            : '';
+          return role + ': ' + text.replace(/\s+/g,' ').trim().slice(0,900);
+        }).filter(line => !/:\s*$/.test(line)).join('\n')
+      : '';
     return [
       'Current AI chat: ' + title,
       'Current AI project: ' + projectName,
@@ -15022,6 +15074,8 @@ if(textFilePreviewRemove){
       'Pending attachments: ' + attachmentSummary,
       'Selected code: ' + (selectedCode || 'None'),
       'Current HTML diagnostics: ' + (diagnostics.length ? JSON.stringify(diagnostics) : 'None'),
+      'ONYX introduction already completed in this chat: ' + (chat?.voiceIntroduced === true ? 'Yes' : 'No'),
+      'Recent conversation and latest-edit context:\n' + (recentConversation || 'None'),
       'Current editor code (' + code.length + ' characters):',
       code.slice(0,22000)
     ].join('\n');
@@ -15309,6 +15363,12 @@ if(textFilePreviewRemove){
     }
     if(assistantText){
       aiVoiceAddTranscript('assistant',assistantText,'voice');
+      const activeChat = chats[currentChatId];
+      if(activeChat && activeChat.voiceIntroduced !== true){
+        activeChat.voiceIntroduced = true;
+        activeChat.updatedAt = Date.now();
+        saveChats();
+      }
       if(!userText){
         const linkedUser = voiceLastCompletedUser;
         Promise.resolve(voiceIntentPromises.get(linkedUser)).finally(() => {
@@ -15334,6 +15394,61 @@ if(textFilePreviewRemove){
     return response.json();
   }
 
+  function aiVoiceFallbackUiAction(text){
+    const normalized = String(text || '').toLowerCase().replace(/\s+/g,' ').trim();
+    const patterns = [
+      ['NEW_CHAT',/\b(?:create|start|open|make)\s+(?:a\s+)?new\s+chat\b/],
+      ['OPEN_PROJECTS',/\b(?:open|show|view|go\s+to)\s+(?:the\s+)?projects?(?:\s+section)?\b/],
+      ['OPEN_LIBRARY',/\b(?:open|show|view|go\s+to)\s+(?:the\s+)?library(?:\s+section)?\b/],
+      ['OPEN_CHAT_HISTORY',/\b(?:open|show|view|go\s+to)\s+(?:the\s+)?(?:chat\s+)?history(?:\s+section)?\b/],
+      ['ADD_IMAGE',/\b(?:add|attach|upload|choose)\s+(?:an?\s+)?image\b/],
+      ['ATTACH_CODE_FILE',/\b(?:add|attach|upload|choose)\s+(?:a\s+)?(?:code\s+)?(?:file|link)\b/]
+    ];
+    return patterns.find(([,pattern]) => pattern.test(normalized))?.[0] || null;
+  }
+
+  async function aiVoiceExecuteUiAction(action){
+    const actions = {
+      OPEN_PROJECTS:{
+        button:document.getElementById('projects-btn'),
+        caption:'Opening Projects.'
+      },
+      OPEN_LIBRARY:{
+        button:document.getElementById('library-btn'),
+        caption:'Opening Library.'
+      },
+      OPEN_CHAT_HISTORY:{
+        button:document.getElementById('share-history-btn'),
+        caption:'Opening Chat History.'
+      },
+      ADD_IMAGE:{
+        button:document.getElementById('image-btn'),
+        caption:'Opening the image picker.'
+      },
+      ATTACH_CODE_FILE:{
+        button:document.getElementById('text-file-btn'),
+        caption:'Opening the code attachment picker.'
+      }
+    };
+    if(action === 'NEW_CHAT'){
+      const button = document.getElementById('new-chat-btn');
+      if(!button) return false;
+      aiVoicePersistTranscript();
+      button.click();
+      aiVoiceLoadTranscript();
+      aiVoiceShowCaption('assistant','New chat created. ONYX is ready.',false);
+      if(voiceSessionWanted){
+        await aiVoiceConnect().catch(error => aiVoiceShowError(error.message));
+      }
+      return true;
+    }
+    const entry = actions[action];
+    if(!entry?.button) return false;
+    entry.button.click();
+    aiVoiceShowCaption('assistant',entry.caption,false);
+    return true;
+  }
+
   async function aiVoiceHandleCompletedUser(text,assistantText){
     const clean = String(text || '').trim();
     if(!clean) return;
@@ -15341,7 +15456,27 @@ if(textFilePreviewRemove){
     if(Date.now() - processedAt < 5000) return;
     voiceProcessedUsers.set(clean,Date.now());
     try{
-      const result = await aiVoiceClassifyIntent(clean);
+      const fallbackAction = aiVoiceFallbackUiAction(clean);
+      const result = fallbackAction
+        ? { intent:'UI_ACTION',uiAction:fallbackAction,confidence:1 }
+        : await aiVoiceClassifyIntent(clean);
+      if(
+        result?.intent === 'UI_ACTION' &&
+        result?.uiAction &&
+        Number(result.confidence || 0) >= .6
+      ){
+        voiceIntentOutcomes.set(clean,'ui-action');
+        aiVoiceSyncToNormalChat('user',clean);
+        if(assistantText) aiVoiceSyncToNormalChat('assistant',assistantText);
+        const executed = await aiVoiceExecuteUiAction(result.uiAction);
+        if(!executed){
+          throw new Error('The requested editor control is not available.');
+        }
+        if(voiceSessionWanted){
+          aiVoiceSetState(voiceMuted ? 'muted' : 'listening',voiceMuted ? 'Muted' : 'Listening');
+        }
+        return;
+      }
       if(result?.actionable === true && Number(result.confidence || 0) >= .6){
         voiceIntentOutcomes.set(clean,'actionable');
         aiVoiceShowCaption('assistant','Sending your coding request to the editor…',false);
@@ -15436,6 +15571,7 @@ if(textFilePreviewRemove){
       body:JSON.stringify({
         voice:voicePreferences.voice || AI_DEFAULT_VOICE,
         language:voicePreferences.language || 'auto',
+        hasIntroduced:chats[currentChatId]?.voiceIntroduced === true,
         editorContext:aiVoiceGetEditorContext()
       })
     });
@@ -15568,9 +15704,21 @@ if(textFilePreviewRemove){
     const level = voiceVizState.level;
     const delta = Math.min(34,Math.max(0,timestamp - (voiceVizState.lastTime || timestamp)));
     voiceVizState.lastTime = timestamp;
-    const centerX = width / 2;
-    const centerY = height / 2;
-    const baseRadius = Math.min(width,height) * .19;
+    const orbRect = voiceOrb?.getBoundingClientRect();
+    const hasOrbGeometry = orbRect &&
+      orbRect.width > 0 &&
+      orbRect.height > 0 &&
+      rect.width > 0 &&
+      rect.height > 0;
+    const centerX = hasOrbGeometry
+      ? (orbRect.left + (orbRect.width / 2) - rect.left) * scale
+      : width / 2;
+    const centerY = hasOrbGeometry
+      ? (orbRect.top + (orbRect.height / 2) - rect.top) * scale
+      : height / 2;
+    const baseRadius = hasOrbGeometry
+      ? Math.min(orbRect.width,orbRect.height) * scale / 2
+      : Math.min(width,height) * .19;
     const reduced = voiceVizState.reducedMotion;
 
     aiVoiceEnsureParticles(42);
@@ -15584,7 +15732,7 @@ if(textFilePreviewRemove){
       const distance = particle.radius * Math.max(width,height) * .62;
       const x = centerX + Math.cos(particle.angle) * distance;
       const y = centerY + Math.sin(particle.angle) * distance * .55;
-      const alpha = (.025 + level * .08) * Math.min(1,(particle.radius - .1) * 3);
+      const alpha = (.045 + level * .11) * Math.min(1,(particle.radius - .1) * 3);
       context.fillStyle = 'rgba(228,228,231,' + alpha.toFixed(3) + ')';
       context.beginPath();
       context.arc(x,y,particle.size * scale,0,Math.PI * 2);
@@ -15603,20 +15751,24 @@ if(textFilePreviewRemove){
       context.stroke();
     }
 
-    const sampleCount = Math.max(64,Math.min(132,Math.round(width / (5.5 * scale))));
-    const gap = baseRadius * 1.2;
-    const sideWidth = Math.max(1,centerX - gap - 8 * scale);
+    const sampleCount = Math.max(72,Math.min(148,Math.round(width / (4.8 * scale))));
+    const gap = baseRadius + (10 * scale);
+    const sideWidth = Math.max(1,Math.min(centerX - gap,width - centerX - gap) - 7 * scale);
     const sideVisibility = Math.min(1,Math.max(0,(level - .012) / .09));
-    for(let layer = 0; layer < 5 && sideVisibility > .01; layer++){
+    for(let layer = 0; layer < 6 && sideVisibility > .01; layer++){
       const left = [];
       const right = [];
-      const layerScale = (1 - layer * .13) * (height * (.12 + level * .21));
+      const layerScale = (1 - layer * .105) * (height * (.11 + level * .225));
       for(let index = 0; index < sampleCount; index++){
         const progress = index / Math.max(1,sampleCount - 1);
-        const sourceProgress = (progress * (.88 + layer * .025) + layer * .037) % 1;
-        const oppositeProgress = (progress * (.91 + layer * .018) + .11 + layer * .029) % 1;
+        const sourceProgress = (progress * (.9 + layer * .018) + layer * .031) % 1;
+        const oppositeProgress = (progress * (.92 + layer * .015) + .095 + layer * .026) % 1;
         const sourceIndex = Math.floor(sourceProgress * (voiceVizState.time.length - 1));
         const oppositeIndex = Math.floor(oppositeProgress * (voiceVizState.time.length - 1));
+        const sourcePrevious = Math.max(0,sourceIndex - 2);
+        const sourceNext = Math.min(voiceVizState.time.length - 1,sourceIndex + 2);
+        const oppositePrevious = Math.max(0,oppositeIndex - 2);
+        const oppositeNext = Math.min(voiceVizState.time.length - 1,oppositeIndex + 2);
         const bandIndex = Math.min(
           voiceVizState.frequency.length - 1,
           Math.floor(progress * Math.min(96,voiceVizState.frequency.length - 1))
@@ -15626,29 +15778,54 @@ if(textFilePreviewRemove){
           bandIndex + 9 + (layer * 4)
         );
         const spectralDetail =
-          ((voiceVizState.frequency[bandIndex] || 0) - (voiceVizState.frequency[nextBandIndex] || 0)) * .2;
-        const envelope = Math.pow(Math.sin(progress * Math.PI),.72) * (.94 - progress * .12);
-        const leftSignal = (voiceVizState.time[sourceIndex] || 0) * .84 + spectralDetail;
-        const rightSignal = (voiceVizState.time[oppositeIndex] || 0) * .84 - spectralDetail * .72;
+          ((voiceVizState.frequency[bandIndex] || 0) - (voiceVizState.frequency[nextBandIndex] || 0)) * .16;
+        const envelope = Math.pow(Math.sin(progress * Math.PI),.82) * (1 - progress * .08);
+        const leftWave = (
+          (voiceVizState.time[sourcePrevious] || 0) +
+          (voiceVizState.time[sourceIndex] || 0) * 2 +
+          (voiceVizState.time[sourceNext] || 0)
+        ) / 4;
+        const rightWave = (
+          (voiceVizState.time[oppositePrevious] || 0) +
+          (voiceVizState.time[oppositeIndex] || 0) * 2 +
+          (voiceVizState.time[oppositeNext] || 0)
+        ) / 4;
+        const leftSignal = leftWave * .92 + spectralDetail;
+        const rightSignal = rightWave * .92 - spectralDetail * .68;
         const leftX = centerX - gap - progress * sideWidth;
         const rightX = centerX + gap + progress * sideWidth;
         left.push([leftX,centerY + leftSignal * layerScale * envelope]);
         right.push([rightX,centerY + rightSignal * layerScale * envelope]);
       }
-      context.beginPath();
-      aiVoiceSmoothPath(context,left);
-      aiVoiceSmoothPath(context,right);
-      context.strokeStyle = 'rgba(228,228,231,' + ((.045 + level * .07) * sideVisibility).toFixed(3) + ')';
-      context.lineWidth = (4 - layer * .42) * scale;
-      context.stroke();
-      context.beginPath();
-      aiVoiceSmoothPath(context,left);
-      aiVoiceSmoothPath(context,right);
-      context.strokeStyle = 'rgba(228,228,231,' + ((.72 - layer * .105) * sideVisibility).toFixed(3) + ')';
-      context.lineWidth = (1.2 - layer * .08) * scale;
-      context.shadowBlur = (6 + level * 12) * scale;
-      context.shadowColor = 'rgba(255,255,255,.15)';
-      context.stroke();
+      const drawSide = (points,side) => {
+        const gradient = context.createLinearGradient(
+          side === 'left' ? centerX - gap : centerX + gap,
+          centerY,
+          side === 'left' ? centerX - gap - sideWidth : centerX + gap + sideWidth,
+          centerY
+        );
+        const coreAlpha = Math.max(.1,.82 - layer * .1) * sideVisibility;
+        gradient.addColorStop(0,'rgba(228,228,231,0)');
+        gradient.addColorStop(.08,'rgba(228,228,231,' + (coreAlpha * .42).toFixed(3) + ')');
+        gradient.addColorStop(.28,'rgba(244,244,245,' + coreAlpha.toFixed(3) + ')');
+        gradient.addColorStop(.72,'rgba(228,228,231,' + (coreAlpha * .72).toFixed(3) + ')');
+        gradient.addColorStop(.94,'rgba(228,228,231,' + (coreAlpha * .16).toFixed(3) + ')');
+        gradient.addColorStop(1,'rgba(228,228,231,0)');
+        context.beginPath();
+        aiVoiceSmoothPath(context,points);
+        context.strokeStyle = 'rgba(228,228,231,' + ((.045 + level * .075) * sideVisibility).toFixed(3) + ')';
+        context.lineWidth = Math.max(.9,3.8 - layer * .4) * scale;
+        context.stroke();
+        context.beginPath();
+        aiVoiceSmoothPath(context,points);
+        context.strokeStyle = gradient;
+        context.lineWidth = Math.max(.55,1.22 - layer * .085) * scale;
+        context.shadowBlur = (5 + level * 13) * scale;
+        context.shadowColor = 'rgba(255,255,255,.16)';
+        context.stroke();
+      };
+      drawSide(left,'left');
+      drawSide(right,'right');
     }
     context.shadowBlur = 0;
 
@@ -15668,7 +15845,7 @@ if(textFilePreviewRemove){
         const waveform = voiceVizState.time[timeIndex] || 0;
         const frequency = voiceVizState.frequency[frequencyIndex] || 0;
         const radius =
-          baseRadius * (1.055 + layer * .045) +
+          baseRadius + ((5 + layer * 4) * scale) +
           frequency * (2 + level * 16) * scale +
           waveform * (3 + level * 12) * scale;
         const x = centerX + Math.cos(angle) * radius;
@@ -15696,7 +15873,7 @@ if(textFilePreviewRemove){
       const timeIndex = Math.floor(index / radialBars * (voiceVizState.time.length - 1));
       const waveformDetail = Math.abs(voiceVizState.time[timeIndex] || 0);
       const length = (2.5 + detail * (9 + level * 28) + waveformDetail * level * 11) * scale;
-      const inner = baseRadius * 1.11;
+      const inner = baseRadius + (9 * scale);
       const outer = inner + length;
       context.strokeStyle = 'rgba(228,228,231,' + (.18 + detail * .56 + waveformDetail * .12).toFixed(3) + ')';
       context.lineWidth = .78 * scale;
@@ -15718,7 +15895,7 @@ if(textFilePreviewRemove){
   }
 
   function aiVoiceApplyPlayerGeometry(){
-    if(!voiceModeEl) return;
+    if(!voiceModeEl || document.fullscreenElement === voiceModeEl) return;
     const viewportWidth = Math.max(320,window.innerWidth);
     const viewportHeight = Math.max(420,window.innerHeight);
     const minWidth = Math.min(270,viewportWidth - 10);
@@ -15743,7 +15920,11 @@ if(textFilePreviewRemove){
   }
 
   function aiVoiceSavePlayerGeometry(){
-    if(!voiceModeEl) return;
+    if(
+      !voiceModeEl ||
+      document.fullscreenElement === voiceModeEl ||
+      voicePreFullscreenGeometry
+    ) return;
     const rect = voiceModeEl.getBoundingClientRect();
     voicePreferences.player = {
       left:Math.round(rect.left),
@@ -15841,6 +16022,11 @@ if(textFilePreviewRemove){
       voiceModeEl.setAttribute('aria-hidden','false');
       aiVoiceApplyPlayerGeometry();
     }
+    document.documentElement.classList.add('voice-floating-host');
+    document.body.classList.add('voice-floating-host');
+    try{
+      window.parent?.postMessage({ type:'hv-ai-voice-floating',active:true },'*');
+    }catch(error){}
     aiVoiceSetState('connecting','Connecting');
     aiVoiceShowCaption('assistant','Connecting securely to Gemini Live…',false);
     aiVoiceStartVisualizer();
@@ -15926,6 +16112,11 @@ if(textFilePreviewRemove){
       }
       if(voiceSettingsPopover) voiceSettingsPopover.classList.remove('open');
       if(document.fullscreenElement) document.exitFullscreen().catch(() => {});
+      document.documentElement.classList.remove('voice-floating-host');
+      document.body.classList.remove('voice-floating-host');
+      try{
+        window.parent?.postMessage({ type:'hv-ai-voice-floating',active:false },'*');
+      }catch(error){}
     }
   }
 
@@ -16041,8 +16232,18 @@ if(textFilePreviewRemove){
   voiceFullscreenBtn?.addEventListener('click',async () => {
     try{
       if(document.fullscreenElement) await document.exitFullscreen();
-      else await voiceModeEl?.requestFullscreen();
+      else if(voiceModeEl){
+        const rect = voiceModeEl.getBoundingClientRect();
+        voicePreFullscreenGeometry = {
+          left:Math.round(rect.left),
+          top:Math.round(rect.top),
+          width:Math.round(rect.width),
+          height:Math.round(rect.height)
+        };
+        await voiceModeEl.requestFullscreen();
+      }
     }catch(error){
+      voicePreFullscreenGeometry = null;
       aiVoiceShowError('Fullscreen could not be opened in this browser.');
     }
   });
@@ -16141,13 +16342,35 @@ if(textFilePreviewRemove){
     if(voiceModeEl?.classList.contains('active')) aiVoiceRefreshDevices();
   });
   window.addEventListener('resize',() => {
-    if(voiceModeEl?.classList.contains('active')){
+    if(
+      voiceModeEl?.classList.contains('active') &&
+      document.fullscreenElement !== voiceModeEl &&
+      !voicePreFullscreenGeometry
+    ){
       aiVoiceSavePlayerGeometry();
       aiVoiceApplyPlayerGeometry();
     }
   });
   document.addEventListener('fullscreenchange',() => {
-    if(!document.fullscreenElement && voiceModeEl?.classList.contains('active')) aiVoiceApplyPlayerGeometry();
+    if(document.fullscreenElement === voiceModeEl) return;
+    if(!voiceModeEl?.classList.contains('active')){
+      voicePreFullscreenGeometry = null;
+      return;
+    }
+    if(voicePreFullscreenGeometry){
+      voicePreferences.player = { ...voicePreFullscreenGeometry };
+      Object.assign(voiceModeEl.style,{
+        left:voicePreFullscreenGeometry.left + 'px',
+        top:voicePreFullscreenGeometry.top + 'px',
+        width:voicePreFullscreenGeometry.width + 'px',
+        height:voicePreFullscreenGeometry.height + 'px',
+        transform:'none'
+      });
+      voicePreFullscreenGeometry = null;
+      aiSaveVoicePreferences();
+      return;
+    }
+    aiVoiceApplyPlayerGeometry();
   });
   window.addEventListener('message',event => {
     if(event.data?.type === 'hv-ai-editor-closing') aiEndVoiceMode(false);
@@ -16168,6 +16391,9 @@ if(textFilePreviewRemove){
     voiceMediaStream?.getTracks().forEach(track => track.stop());
     if(voiceWorkletUrl) URL.revokeObjectURL(voiceWorkletUrl);
     voiceResizeObserver?.disconnect();
+    try{
+      window.parent?.postMessage({ type:'hv-ai-voice-floating',active:false },'*');
+    }catch(error){}
   });
   aiVoiceRenderTranscript();
   
@@ -28084,7 +28310,10 @@ function hvRenderStatusDashboard(data){
     (Array.isArray(service.bars) ? service.bars : []).slice(-30).forEach(item => {
       const state = typeof item === 'object' && item ? item.state : item;
       const bar = document.createElement('span');
+      const detail = document.createElement('span');
       bar.className = 'hv-status-bar ' + (/^(up|slow|down)$/.test(state) ? state : 'unknown');
+      detail.className = 'hv-status-bar-detail';
+      detail.setAttribute('role','tooltip');
       if(typeof item === 'object' && item){
         const date = item.start ? new Date(item.start) : null;
         const dateText = date && !Number.isNaN(date.getTime()) ? date.toLocaleDateString() : 'Period';
@@ -28093,8 +28322,21 @@ function hvRenderStatusDashboard(data){
           : state === 'down'
             ? 'Incident recorded'
             : 'No response sample';
-        bar.title = dateText + ' · ' + responseText;
+        const stateText = state === 'up'
+          ? 'Operational'
+          : state === 'slow'
+            ? 'Slower response'
+            : state === 'down'
+              ? 'Incident'
+              : 'No data';
+        detail.textContent = dateText + ' · ' + stateText + ' · ' + responseText;
+        bar.setAttribute('aria-label',detail.textContent);
+      }else{
+        detail.textContent = 'Status details unavailable';
+        bar.setAttribute('aria-label',detail.textContent);
       }
+      bar.tabIndex = 0;
+      bar.append(detail);
       bars.append(bar);
     });
     response.className = 'hv-status-response';
@@ -31356,6 +31598,28 @@ if(hvSubmitPresetSend){
           border:0 !important;
           box-shadow:none !important;
         }
+
+        html.voice-floating-host,
+        body.voice-floating-host,
+        body.voice-floating-host .app{
+          background:transparent !important;
+        }
+
+        body.voice-floating-host .app{
+          border:0 !important;
+          box-shadow:none !important;
+          pointer-events:none !important;
+        }
+
+        body.voice-floating-host .app > :not(.voice-mode){
+          visibility:hidden !important;
+          pointer-events:none !important;
+        }
+
+        body.voice-floating-host .voice-mode{
+          visibility:visible !important;
+          pointer-events:auto !important;
+        }
       </style>
     `;
 
@@ -31397,8 +31661,10 @@ if(hvSubmitPresetSend){
 
     clearTimeout(aiTransitionTimer);
 
-    aiFrame.srcdoc =
-      hvBuildAiEditorHtml();
+    if(aiFrame.dataset.hvInitialized !== 'true'){
+      aiFrame.srcdoc = hvBuildAiEditorHtml();
+      aiFrame.dataset.hvInitialized = 'true';
+    }
 
     aiOpen = true;
 
@@ -31419,11 +31685,6 @@ if(hvSubmitPresetSend){
   function closeAiEditorPreview(){
 
     aiOpen = false;
-    try{
-      aiFrame.contentWindow?.postMessage({ type:'hv-ai-editor-closing' },'*');
-    }catch(error){
-      console.warn('AI editor cleanup message could not be sent.',error);
-    }
 
     clearTimeout(aiTransitionTimer);
     frameWrap.classList.remove('hv-ai-visible');
@@ -31443,6 +31704,18 @@ if(hvSubmitPresetSend){
     }, 210);
 
   }
+
+  window.addEventListener('message',event => {
+    if(
+      event.source !== aiFrame.contentWindow ||
+      event.data?.type !== 'hv-ai-voice-floating'
+    ){
+      return;
+    }
+    const active = event.data.active === true;
+    aiFrame.classList.toggle('hv-ai-voice-floating',active);
+    document.body.classList.toggle('hv-ai-voice-floating-host',active);
+  });
 
   aiBtn.addEventListener('click', () => {
 
