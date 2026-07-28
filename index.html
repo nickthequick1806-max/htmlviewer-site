@@ -15606,10 +15606,11 @@ if(textFilePreviewRemove){
     const sampleCount = Math.max(64,Math.min(132,Math.round(width / (5.5 * scale))));
     const gap = baseRadius * 1.2;
     const sideWidth = Math.max(1,centerX - gap - 8 * scale);
-    for(let layer = 0; layer < 3; layer++){
+    const sideVisibility = Math.min(1,Math.max(0,(level - .012) / .09));
+    for(let layer = 0; layer < 5 && sideVisibility > .01; layer++){
       const left = [];
       const right = [];
-      const layerScale = (1 - layer * .19) * (height * (.11 + level * .19));
+      const layerScale = (1 - layer * .13) * (height * (.12 + level * .21));
       for(let index = 0; index < sampleCount; index++){
         const progress = index / Math.max(1,sampleCount - 1);
         const sourceProgress = (progress * (.88 + layer * .025) + layer * .037) % 1;
@@ -15637,15 +15638,15 @@ if(textFilePreviewRemove){
       context.beginPath();
       aiVoiceSmoothPath(context,left);
       aiVoiceSmoothPath(context,right);
-      context.strokeStyle = 'rgba(228,228,231,' + (.055 + level * .055).toFixed(3) + ')';
-      context.lineWidth = (3.8 - layer * .5) * scale;
+      context.strokeStyle = 'rgba(228,228,231,' + ((.045 + level * .07) * sideVisibility).toFixed(3) + ')';
+      context.lineWidth = (4 - layer * .42) * scale;
       context.stroke();
       context.beginPath();
       aiVoiceSmoothPath(context,left);
       aiVoiceSmoothPath(context,right);
-      context.strokeStyle = 'rgba(228,228,231,' + (.66 - layer * .15).toFixed(2) + ')';
-      context.lineWidth = (1.15 - layer * .13) * scale;
-      context.shadowBlur = (5 + level * 10) * scale;
+      context.strokeStyle = 'rgba(228,228,231,' + ((.72 - layer * .105) * sideVisibility).toFixed(3) + ')';
+      context.lineWidth = (1.2 - layer * .08) * scale;
+      context.shadowBlur = (6 + level * 12) * scale;
       context.shadowColor = 'rgba(255,255,255,.15)';
       context.stroke();
     }
