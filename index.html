@@ -14883,9 +14883,7 @@ if(textFilePreviewRemove){
     const fragment = document.createDocumentFragment();
     voiceTranscriptEntries.forEach(entry => {
       const card = document.createElement('div');
-      const meta = document.createElement('div');
-      const metaStatus = document.createElement('strong');
-      const metaTime = document.createElement('span');
+      const meta = document.createElement('span');
       const body = document.createElement('div');
       card.className = 'voice-transcript-message ' + (entry.role === 'user' ? 'user' : 'assistant');
       meta.textContent = (entry.role === 'user' ? 'You' : 'AutoSite AI') + ' · ' + new Date(entry.createdAt).toLocaleTimeString([],{
@@ -28000,7 +27998,9 @@ function hvRenderStatusDashboard(data){
       const copy = document.createElement('div');
       const title = document.createElement('strong');
       const description = document.createElement('p');
-      const meta = document.createElement('span');
+      const meta = document.createElement('div');
+      const metaStatus = document.createElement('strong');
+      const metaTime = document.createElement('span');
       const ongoing = incident.status !== 'resolved' && !incident.resolvedAt;
       card.className = 'hv-status-incident' + (ongoing ? ' ongoing' : '');
       icon.className = 'hv-status-incident-icon fa-solid ' + (ongoing ? 'fa-triangle-exclamation' : 'fa-circle-check');
