@@ -10734,8 +10734,8 @@ html.hv-light-mode .hv-toast{
     top:50%;
     width:min(620px,calc(100vw - 36px));
     height:min(650px,calc(100dvh - 36px));
-    min-width:310px;
-    min-height:390px;
+    min-width:270px;
+    min-height:300px;
     max-width:calc(100vw - 12px);
     max-height:calc(100dvh - 12px);
     z-index:90;
@@ -10818,6 +10818,7 @@ html.hv-light-mode .hv-toast{
   .voice-lower{width:100%;gap:8px}
   .voice-live-caption{
     min-height:60px;
+    max-height:96px;
     padding:10px 12px;
     grid-template-columns:32px minmax(0,1fr);
     border-color:#323232 !important;
@@ -10841,7 +10842,9 @@ html.hv-light-mode .hv-toast{
     right:10px;
     width:min(344px,calc(100% - 20px));
     max-height:calc(100cqh - 70px);
+    padding-bottom:8px;
   }
+  .voice-settings-note{margin-bottom:0}
   .voice-field select.voice-native-select{
     position:absolute;
     width:1px;
@@ -10923,12 +10926,28 @@ html.hv-light-mode .hv-toast{
   .voice-setting-check input:checked{background:#e4e4e7;border-color:#e4e4e7}
   .voice-setting-check input:checked::before{transform:rotate(-45deg) scale(1)}
 
-  .voice-volume-popover{width:72px;height:174px;padding:11px 9px}
+  .voice-mode-main > .voice-volume-popover{
+    position:absolute;
+    left:50%;
+    top:46px;
+    bottom:auto;
+    z-index:30;
+    width:min(250px,calc(100% - 24px));
+    height:52px;
+    padding:9px 12px;
+    flex-direction:row;
+    justify-content:center;
+    gap:10px;
+    border-radius:14px;
+    transform:translateX(-50%);
+  }
   .voice-volume-popover input{
     appearance:none;
-    width:112px;
+    width:auto;
+    min-width:0;
+    flex:1;
     height:7px;
-    transform:rotate(-90deg);
+    transform:none;
     border-radius:999px;
     background:linear-gradient(90deg,#e4e4e7 var(--voice-volume,80%),#292929 var(--voice-volume,80%));
     outline:none;
@@ -10967,6 +10986,21 @@ html.hv-light-mode .hv-toast{
     .voice-live-caption{min-height:54px;padding:8px 9px}
     .voice-caption-text{font-size:10px}
     .voice-control{width:40px;height:40px}
+    .voice-mode-main > .voice-volume-popover{top:38px;height:46px;padding:7px 10px}
+  }
+
+  @container (max-height:380px){
+    .voice-visual-stage{min-height:55px}
+    .voice-orb{width:64px;height:64px}
+    .voice-state-card{min-height:23px}
+    .voice-live-caption:not(.active){
+      min-height:0;
+      max-height:0;
+      padding-top:0;
+      padding-bottom:0;
+      border-width:0;
+      overflow:hidden;
+    }
   }
 
   @media (max-width:720px){
@@ -11318,6 +11352,12 @@ html.hv-light-mode .hv-toast{
       <div class="voice-mode-main">
         <div class="voice-state-card" id="voiceStateCard" data-state="idle"><span class="voice-state-dot"></span><span id="voiceStateText">Ready</span></div>
 
+        <div class="voice-volume-popover" id="voiceVolumePopover">
+          <i class="fa-solid fa-volume-low" aria-hidden="true"></i>
+          <input id="voiceVolumeRange" type="range" min="0" max="100" value="80" aria-label="AI voice volume">
+          <output id="voiceVolumeValue">80%</output>
+        </div>
+
         <div class="voice-visual-stage" id="voiceVisualStage">
           <canvas id="voiceVisualizer" aria-hidden="true"></canvas>
           <div class="voice-orb" id="voiceOrb" aria-hidden="true"></div>
@@ -11337,14 +11377,7 @@ html.hv-light-mode .hv-toast{
           <div class="voice-controls">
             <button class="voice-control" id="voiceMuteBtn" type="button" aria-label="Mute microphone"><i class="fa-solid fa-microphone"></i><span class="voice-control-tip">Mute microphone</span></button>
             <button class="voice-control end" id="voiceEndBtn" type="button" aria-label="End voice session"><i class="fa-solid fa-phone-slash"></i><span class="voice-control-tip">End session</span></button>
-            <div style="position:relative">
-              <button class="voice-control" id="voiceVolumeBtn" type="button" aria-label="AI volume" aria-expanded="false"><i class="fa-solid fa-volume-high"></i><span class="voice-control-tip">AI volume</span></button>
-              <div class="voice-volume-popover" id="voiceVolumePopover">
-                <output id="voiceVolumeValue">80%</output>
-                <input id="voiceVolumeRange" type="range" min="0" max="100" value="80" orient="vertical" aria-label="AI voice volume">
-                <i class="fa-solid fa-volume-low" aria-hidden="true"></i>
-              </div>
-            </div>
+            <button class="voice-control" id="voiceVolumeBtn" type="button" aria-label="AI volume" aria-expanded="false"><i class="fa-solid fa-volume-high"></i><span class="voice-control-tip">AI volume</span></button>
             <button class="voice-control" id="voiceKeyboardBtn" type="button" aria-label="Toggle text input" aria-pressed="false"><i class="fa-solid fa-keyboard"></i><span class="voice-control-tip">Type a message</span></button>
             <button class="voice-control" id="voiceTranscriptBtn" type="button" aria-label="Open voice transcript" aria-expanded="false"><i class="fa-solid fa-comments"></i><span class="voice-control-tip">Conversation transcript</span></button>
           </div>
@@ -15551,35 +15584,88 @@ if(textFilePreviewRemove){
       context.stroke();
     }
 
-    const sampleCount = Math.max(46,Math.min(96,Math.round(width / (7 * scale))));
-    const gap = baseRadius * 1.12;
+    const sampleCount = Math.max(64,Math.min(132,Math.round(width / (5.5 * scale))));
+    const gap = baseRadius * 1.2;
     const sideWidth = Math.max(1,centerX - gap - 8 * scale);
     for(let layer = 0; layer < 3; layer++){
       const left = [];
       const right = [];
-      const layerScale = (1 - layer * .22) * (height * (.045 + level * .16));
+      const layerScale = (1 - layer * .19) * (height * (.11 + level * .19));
       for(let index = 0; index < sampleCount; index++){
         const progress = index / Math.max(1,sampleCount - 1);
-        const sourceIndex = Math.floor(progress * (voiceVizState.time.length - 1));
-        const oppositeIndex = Math.floor(((progress * .91 + .07 + layer * .023) % 1) * (voiceVizState.time.length - 1));
-        const envelope = Math.sin(progress * Math.PI) * (.48 + .52 * progress);
+        const sourceProgress = (progress * (.88 + layer * .025) + layer * .037) % 1;
+        const oppositeProgress = (progress * (.91 + layer * .018) + .11 + layer * .029) % 1;
+        const sourceIndex = Math.floor(sourceProgress * (voiceVizState.time.length - 1));
+        const oppositeIndex = Math.floor(oppositeProgress * (voiceVizState.time.length - 1));
+        const bandIndex = Math.min(
+          voiceVizState.frequency.length - 1,
+          Math.floor(progress * Math.min(96,voiceVizState.frequency.length - 1))
+        );
+        const nextBandIndex = Math.min(
+          voiceVizState.frequency.length - 1,
+          bandIndex + 9 + (layer * 4)
+        );
+        const spectralDetail =
+          ((voiceVizState.frequency[bandIndex] || 0) - (voiceVizState.frequency[nextBandIndex] || 0)) * .2;
+        const envelope = Math.pow(Math.sin(progress * Math.PI),.72) * (.94 - progress * .12);
+        const leftSignal = (voiceVizState.time[sourceIndex] || 0) * .84 + spectralDetail;
+        const rightSignal = (voiceVizState.time[oppositeIndex] || 0) * .84 - spectralDetail * .72;
         const leftX = centerX - gap - progress * sideWidth;
         const rightX = centerX + gap + progress * sideWidth;
-        left.push([leftX,centerY + voiceVizState.time[sourceIndex] * layerScale * envelope]);
-        right.push([rightX,centerY + voiceVizState.time[oppositeIndex] * layerScale * envelope]);
+        left.push([leftX,centerY + leftSignal * layerScale * envelope]);
+        right.push([rightX,centerY + rightSignal * layerScale * envelope]);
       }
       context.beginPath();
       aiVoiceSmoothPath(context,left);
       aiVoiceSmoothPath(context,right);
-      context.strokeStyle = 'rgba(228,228,231,' + (.52 - layer * .13).toFixed(2) + ')';
-      context.lineWidth = (1.05 - layer * .14) * scale;
-      context.shadowBlur = (4 + level * 8) * scale;
+      context.strokeStyle = 'rgba(228,228,231,' + (.055 + level * .055).toFixed(3) + ')';
+      context.lineWidth = (3.8 - layer * .5) * scale;
+      context.stroke();
+      context.beginPath();
+      aiVoiceSmoothPath(context,left);
+      aiVoiceSmoothPath(context,right);
+      context.strokeStyle = 'rgba(228,228,231,' + (.66 - layer * .15).toFixed(2) + ')';
+      context.lineWidth = (1.15 - layer * .13) * scale;
+      context.shadowBlur = (5 + level * 10) * scale;
       context.shadowColor = 'rgba(255,255,255,.15)';
       context.stroke();
     }
     context.shadowBlur = 0;
 
-    const radialBars = 96;
+    const circularSamples = 144;
+    for(let layer = 1; layer >= 0; layer--){
+      context.beginPath();
+      for(let index = 0; index <= circularSamples; index++){
+        const wrapped = index % circularSamples;
+        const progress = wrapped / circularSamples;
+        const angle = progress * Math.PI * 2 - Math.PI / 2;
+        const timeIndex = Math.floor(progress * (voiceVizState.time.length - 1));
+        const mirroredProgress = progress <= .5 ? progress * 2 : (1 - progress) * 2;
+        const frequencyIndex = Math.min(
+          voiceVizState.frequency.length - 1,
+          Math.floor(mirroredProgress * Math.min(110,voiceVizState.frequency.length - 1))
+        );
+        const waveform = voiceVizState.time[timeIndex] || 0;
+        const frequency = voiceVizState.frequency[frequencyIndex] || 0;
+        const radius =
+          baseRadius * (1.055 + layer * .045) +
+          frequency * (2 + level * 16) * scale +
+          waveform * (3 + level * 12) * scale;
+        const x = centerX + Math.cos(angle) * radius;
+        const y = centerY + Math.sin(angle) * radius;
+        if(index === 0) context.moveTo(x,y);
+        else context.lineTo(x,y);
+      }
+      context.closePath();
+      context.strokeStyle = 'rgba(228,228,231,' + (layer ? .24 : .62).toFixed(2) + ')';
+      context.lineWidth = (layer ? .8 : 1.15) * scale;
+      context.shadowBlur = (layer ? 2 : 5 + level * 7) * scale;
+      context.shadowColor = 'rgba(255,255,255,.14)';
+      context.stroke();
+    }
+    context.shadowBlur = 0;
+
+    const radialBars = 120;
     for(let index = 0; index < radialBars; index++){
       const angle = index / radialBars * Math.PI * 2 - Math.PI / 2;
       const frequencyIndex = Math.min(
@@ -15587,11 +15673,13 @@ if(textFilePreviewRemove){
         Math.floor((index % (radialBars / 2)) / (radialBars / 2) * Math.min(90,voiceVizState.frequency.length))
       );
       const detail = voiceVizState.frequency[frequencyIndex] || 0;
-      const length = (3 + detail * (10 + level * 25)) * scale;
-      const inner = baseRadius * 1.04;
+      const timeIndex = Math.floor(index / radialBars * (voiceVizState.time.length - 1));
+      const waveformDetail = Math.abs(voiceVizState.time[timeIndex] || 0);
+      const length = (2.5 + detail * (9 + level * 28) + waveformDetail * level * 11) * scale;
+      const inner = baseRadius * 1.11;
       const outer = inner + length;
-      context.strokeStyle = 'rgba(228,228,231,' + (.22 + detail * .48).toFixed(3) + ')';
-      context.lineWidth = .85 * scale;
+      context.strokeStyle = 'rgba(228,228,231,' + (.18 + detail * .56 + waveformDetail * .12).toFixed(3) + ')';
+      context.lineWidth = .78 * scale;
       context.beginPath();
       context.moveTo(centerX + Math.cos(angle) * inner,centerY + Math.sin(angle) * inner);
       context.lineTo(centerX + Math.cos(angle) * outer,centerY + Math.sin(angle) * outer);
@@ -15613,8 +15701,8 @@ if(textFilePreviewRemove){
     if(!voiceModeEl) return;
     const viewportWidth = Math.max(320,window.innerWidth);
     const viewportHeight = Math.max(420,window.innerHeight);
-    const minWidth = Math.min(310,viewportWidth - 10);
-    const minHeight = Math.min(390,viewportHeight - 10);
+    const minWidth = Math.min(270,viewportWidth - 10);
+    const minHeight = Math.min(300,viewportHeight - 10);
     const width = Math.max(minWidth,Math.min(viewportWidth - 10,Number(voicePreferences.player?.width) || 620));
     const height = Math.max(minHeight,Math.min(viewportHeight - 10,Number(voicePreferences.player?.height) || 650));
     const storedLeft = Number(voicePreferences.player?.left);
@@ -15657,30 +15745,48 @@ if(textFilePreviewRemove){
     const startY = event.clientY;
     const resizing = Boolean(direction);
     voiceModeEl.classList.add(resizing ? 'resizing' : 'dragging');
-    target.setPointerCapture?.(event.pointerId);
+    try{ target.setPointerCapture?.(event.pointerId); }catch(error){}
     const move = moveEvent => {
       const deltaX = moveEvent.clientX - startX;
       const deltaY = moveEvent.clientY - startY;
-      let left = resizing && direction.includes('w') ? start.left + deltaX : start.left + (resizing ? 0 : deltaX);
-      let top = resizing && direction.includes('n') ? start.top + deltaY : start.top + (resizing ? 0 : deltaY);
-      let width = resizing
-        ? start.width + (direction.includes('e') ? deltaX : direction.includes('w') ? -deltaX : 0)
-        : start.width;
-      let height = resizing
-        ? start.height + (direction.includes('s') ? deltaY : direction.includes('n') ? -deltaY : 0)
-        : start.height;
-      const minWidth = Math.min(310,window.innerWidth - 10);
-      const minHeight = Math.min(390,window.innerHeight - 10);
-      if(width < minWidth){
-        if(direction?.includes('w')) left -= minWidth - width;
-        width = minWidth;
+      let width = start.width;
+      let height = start.height;
+      let left = start.left + deltaX;
+      let top = start.top + deltaY;
+      if(resizing){
+        const horizontalSign = direction.includes('e') ? 1 : direction.includes('w') ? -1 : 0;
+        const verticalSign = direction.includes('s') ? 1 : direction.includes('n') ? -1 : 0;
+        const horizontalOnly = horizontalSign && !verticalSign;
+        const verticalOnly = verticalSign && !horizontalSign;
+        const projectedDelta = horizontalOnly
+          ? deltaX * horizontalSign
+          : verticalOnly
+            ? deltaY * verticalSign
+            : ((deltaX * horizontalSign) + (deltaY * verticalSign)) / Math.SQRT2;
+        const referenceRadius = horizontalOnly
+          ? start.width / 2
+          : verticalOnly
+            ? start.height / 2
+            : Math.hypot(start.width,start.height) / 2;
+        const minWidth = Math.min(270,window.innerWidth - 10);
+        const minHeight = Math.min(300,window.innerHeight - 10);
+        const minimumScale = Math.max(minWidth / start.width,minHeight / start.height);
+        const maximumScale = Math.max(
+          minimumScale,
+          Math.min(
+            (window.innerWidth - 10) / start.width,
+            (window.innerHeight - 10) / start.height
+          )
+        );
+        const scale = Math.max(
+          minimumScale,
+          Math.min(maximumScale,1 + (projectedDelta / Math.max(1,referenceRadius)))
+        );
+        width = start.width * scale;
+        height = start.height * scale;
+        left = start.left + ((start.width - width) / 2);
+        top = start.top + ((start.height - height) / 2);
       }
-      if(height < minHeight){
-        if(direction?.includes('n')) top -= minHeight - height;
-        height = minHeight;
-      }
-      width = Math.min(width,window.innerWidth - 10);
-      height = Math.min(height,window.innerHeight - 10);
       left = Math.max(5,Math.min(window.innerWidth - width - 5,left));
       top = Math.max(5,Math.min(window.innerHeight - height - 5,top));
       Object.assign(voiceModeEl.style,{
@@ -15692,6 +15798,7 @@ if(textFilePreviewRemove){
     };
     const end = () => {
       voiceModeEl.classList.remove('dragging','resizing');
+      try{ target.releasePointerCapture?.(event.pointerId); }catch(error){}
       target.removeEventListener('pointermove',move);
       target.removeEventListener('pointerup',end);
       target.removeEventListener('pointercancel',end);
