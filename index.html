@@ -3415,7 +3415,7 @@ body.hv-resizing-active iframe{
 .hv-ai-editor-frame.hv-ai-voice-floating{
   position:fixed !important;
   inset:0 !important;
-  z-index:100000 !important;
+  z-index:1000001 !important;
   width:100vw !important;
   height:100dvh !important;
   display:block !important;
@@ -3428,9 +3428,12 @@ body.hv-resizing-active iframe{
   transform:none !important;
 }
 
-body.hv-ai-voice-floating-host .hv-preview .hv-head{
-  position:relative;
-  z-index:100001;
+.hv-ai-editor-frame.hv-ai-voice-floating.hv-ai-voice-modal-behind{
+  z-index:40 !important;
+}
+
+body.hv-ai-voice-floating-host .hv-ai-voice-command-surface{
+  z-index:1000010 !important;
 }
 
 #hvAiEditorToggle.active{
@@ -10134,7 +10137,7 @@ html.hv-light-mode .hv-toast{
     position:absolute;
     left:50%;
     bottom:calc(100% + 8px);
-    z-index:90;
+    z-index:1000000;
     width:138px;
     padding:6px;
     display:flex;
@@ -10790,6 +10793,13 @@ html.hv-light-mode .hv-toast{
     margin-bottom:4px;
     color:#71717a;
     font-size:8px;
+  }
+
+  .voice-transcript-message .voice-transcript-thought{
+    margin-bottom:5px;
+    color:#a1a1aa;
+    font-size:9px;
+    font-weight:700;
   }
 
   @media (max-width:720px){
@@ -14896,6 +14906,7 @@ if(textFilePreviewRemove){
   let voiceInputDraft = '';
   let voiceOutputDraft = '';
   let voiceLastCompletedUser = '';
+  let voiceThinkingStartedAt = 0;
   let voiceIntentTimer = 0;
   const voicePlaybackSources = new Set();
   const voiceProcessedUsers = new Map();
@@ -14976,7 +14987,7 @@ if(textFilePreviewRemove){
     return existing + (needsSpace ? ' ' : '') + addition;
   }
 
-  function aiVoiceAddTranscript(role,text,source){
+  function aiVoiceAddTranscript(role,text,source,thoughtSec){
     const clean = String(text || '').trim();
     if(!clean) return null;
     const entry = {
@@ -14984,7 +14995,10 @@ if(textFilePreviewRemove){
       role:role === 'user' ? 'user' : 'assistant',
       text:clean,
       source:source || 'voice',
-      createdAt:Date.now()
+      createdAt:Date.now(),
+      thoughtSec:role === 'assistant' && Number.isFinite(Number(thoughtSec))
+        ? Math.max(0,Number(thoughtSec))
+        : null
     };
     voiceTranscriptEntries.push(entry);
     if(voiceTranscriptEntries.length > 250) voiceTranscriptEntries = voiceTranscriptEntries.slice(-250);
@@ -15006,6 +15020,12 @@ if(textFilePreviewRemove){
         minute:'2-digit'
       });
       body.textContent = entry.text;
+      if(entry.role === 'assistant' && Number.isFinite(Number(entry.thoughtSec))){
+        const thought = document.createElement('span');
+        thought.className = 'voice-transcript-thought';
+        thought.textContent = aiFormatThoughtDuration(entry.thoughtSec,false);
+        card.append(thought);
+      }
       card.append(meta,body);
       fragment.append(card);
     });
@@ -15374,6 +15394,7 @@ if(textFilePreviewRemove){
     voiceOutputDraft = '';
     if(userText){
       voiceLastCompletedUser = userText;
+      if(!voiceThinkingStartedAt) voiceThinkingStartedAt = Date.now();
       aiVoiceAddTranscript('user',userText,'voice');
       clearTimeout(voiceIntentTimer);
       voiceIntentTimer = setTimeout(() => {
@@ -15382,7 +15403,11 @@ if(textFilePreviewRemove){
       },450);
     }
     if(assistantText){
-      aiVoiceAddTranscript('assistant',assistantText,'voice');
+      const thoughtSec = voiceThinkingStartedAt
+        ? (Date.now() - voiceThinkingStartedAt) / 1000
+        : 0;
+      voiceThinkingStartedAt = 0;
+      aiVoiceAddTranscript('assistant',assistantText,'voice',thoughtSec);
       const activeChat = chats[currentChatId];
       if(activeChat && activeChat.voiceIntroduced !== true){
         activeChat.voiceIntroduced = true;
@@ -15424,10 +15449,270 @@ if(textFilePreviewRemove){
       ['ADD_IMAGE',/\b(?:add|attach|upload|choose)\s+(?:an?\s+)?image\b/],
       ['ATTACH_CODE_FILE',/\b(?:add|attach|upload|choose)\s+(?:a\s+)?(?:code\s+)?(?:file|link)\b/]
     ];
-    return patterns.find(([,pattern]) => pattern.test(normalized))?.[0] || null;
+    const dedicated = patterns.find(([,pattern]) => pattern.test(normalized))?.[0] || null;
+    if(dedicated) return { action:dedicated,target:null };
+    const saveMatch = normalized.match(
+      /\bsave\s+(?:(?:this|the|my)\s+)?(?:current\s+)?(?:code\s+)?(?:as|named|called)\s+(.+)$/
+    );
+    if(saveMatch?.[1]){
+      const name = saveMatch[1].trim();
+      if(name) return { action:'SAVE_CODE',target:'Save Version',value:name };
+    }
+    if(/\bsaved versions?\b/.test(normalized)){
+      const operationMatch = normalized.match(
+        /\b(update|pin|unpin|delete|remove|share|add)\b/
+      );
+      const operation = operationMatch?.[1] === 'remove'
+        ? 'delete'
+        : operationMatch?.[1];
+      const nameMatch = normalized.match(
+        /\bsaved versions?\s+(?:named\s+|called\s+)?(.+)$/
+      ) || normalized.match(
+        /\b(?:update|pin|unpin|delete|remove|share|add)\s+(.+?)\s+(?:in|from|inside|within)\s+(?:the\s+)?saved versions?\b/
+      );
+      const savedName = nameMatch?.[1]
+        ?.replace(/\b(?:to|from)\s+(?:a\s+)?project\b.*$/,'')
+        .trim();
+      if(operation && savedName){
+        return {
+          action:'SAVED_VERSION_ACTION',
+          target:operation,
+          value:savedName
+        };
+      }
+    }
+    if(/\b(?:validate|check)\s+(?:the\s+)?(?:html|code|markup)\b/.test(normalized)){
+      return { action:'CLICK_CONTROL',target:'Validate HTML' };
+    }
+    if(/\bdownload\s+(?:the\s+)?(?:html|code|file|project)\b/.test(normalized)){
+      return { action:'CLICK_CONTROL',target:'Download' };
+    }
+    const searchMatch = normalized.match(
+      /\b(?:search|find|look)\s+(?:(?:the|in)\s+)?(?:code|editor|html|markup)?\s*(?:for\s+)?(.+)$/
+    );
+    if(searchMatch?.[1]){
+      const query = searchMatch[1].trim();
+      if(query) return { action:'SEARCH_CODE',target:'Search editor code',value:query };
+    }
+    const controlMatch = normalized.match(
+      /\b(?:click|press|tap|select|choose|open|show|activate|use)\s+(?:the\s+)?(.+?)(?:\s+button)?(?:\s+(?:for|please))?$/
+    );
+    if(!controlMatch?.[1]) return null;
+    const target = controlMatch[1]
+      .replace(/\bbutton\b/g,' ')
+      .replace(/\s+/g,' ')
+      .trim();
+    return target ? { action:'CLICK_CONTROL',target,value:null } : null;
   }
 
-  async function aiVoiceExecuteUiAction(action){
+  function aiVoiceNormalizeControlLabel(value){
+    return String(value || '')
+      .toLowerCase()
+      .replace(/&/g,' and ')
+      .replace(/[^a-z0-9]+/g,' ')
+      .replace(/\b(?:the|a|an|button|please)\b/g,' ')
+      .replace(/\s+/g,' ')
+      .trim();
+  }
+
+  function aiVoiceGetControlLabels(button){
+    const tooltip = button.querySelector(
+      '.ai-hover-tooltip,.voice-control-tip,.hv-tooltip,[role="tooltip"]'
+    );
+    const labels = [
+      button.getAttribute('aria-label'),
+      button.getAttribute('title'),
+      button.dataset?.label,
+      button.dataset?.action,
+      tooltip?.textContent,
+      button.innerText
+    ];
+    return [...new Set(labels
+      .map(aiVoiceNormalizeControlLabel)
+      .filter(Boolean))];
+  }
+
+  function aiVoiceIsAvailableControl(button){
+    if(
+      !button ||
+      button.disabled ||
+      button.getAttribute('aria-disabled') === 'true' ||
+      button.closest('[inert],[aria-hidden="true"]')
+    ){
+      return false;
+    }
+    const ownerWindow = button.ownerDocument?.defaultView;
+    const style = ownerWindow?.getComputedStyle(button);
+    const rect = button.getBoundingClientRect();
+    return Boolean(
+      style &&
+      style.display !== 'none' &&
+      style.visibility !== 'hidden' &&
+      Number(style.opacity || 1) > 0 &&
+      rect.width > 0 &&
+      rect.height > 0
+    );
+  }
+
+  function aiVoiceFindNamedControl(target){
+    const normalizedTarget = aiVoiceNormalizeControlLabel(target);
+    if(!normalizedTarget) return null;
+    const documents = [document];
+    try{
+      if(window.parent?.document && window.parent.document !== document){
+        documents.push(window.parent.document);
+      }
+    }catch(error){}
+    const parentDocument = documents.find(ownerDocument => ownerDocument !== document);
+    const editorAliases = {
+      'format':'hvFormatIcon',
+      'format html':'hvFormatIcon',
+      'compress':'hvCompressIcon',
+      'compress html':'hvCompressIcon',
+      'search':'hvSearchToggle',
+      'search replace':'hvSearchToggle',
+      'search box':'hvSearchToggle',
+      'copy':'hvCopy',
+      'copy code':'hvCopy',
+      'import file':'hvLoad',
+      'open file':'hvLoad',
+      'delete':'hvClear',
+      'delete code':'hvClear',
+      'restore':'hvRestore',
+      'restore last saved':'hvRestore',
+      'download':'hvDownloadPopupBtn',
+      'download code':'hvDownloadPopupBtn',
+      'download modal':'hvDownloadPopupBtn',
+      'minify':'hvMinify',
+      'minify html':'hvMinify',
+      'beautify':'hvBeautify',
+      'beautify html':'hvBeautify',
+      'validate':'hvValidatorBtn',
+      'validate html':'hvValidatorBtn',
+      'save':'hvSaveCurrent',
+      'save code':'hvSaveCurrent',
+      'saved codes':'hvSavedMenu',
+      'community presets':'hvCodesBtn'
+    };
+    const aliasedControl = parentDocument?.getElementById(editorAliases[normalizedTarget] || '');
+    if(aliasedControl && aiVoiceIsAvailableControl(aliasedControl)) return aliasedControl;
+    const candidates = [];
+    documents.forEach((ownerDocument,documentIndex) => {
+      ownerDocument.querySelectorAll('button,[role="button"],input[type="button"],input[type="submit"]')
+        .forEach(button => {
+          if(!aiVoiceIsAvailableControl(button)) return;
+          const labels = aiVoiceGetControlLabels(button);
+          let score = 0;
+          labels.forEach(label => {
+            if(label === normalizedTarget) score = Math.max(score,1000 + label.length);
+            else if(label.startsWith(normalizedTarget) || normalizedTarget.startsWith(label)){
+              score = Math.max(score,700 + Math.min(label.length,normalizedTarget.length));
+            }else if(label.includes(normalizedTarget) || normalizedTarget.includes(label)){
+              score = Math.max(score,400 + Math.min(label.length,normalizedTarget.length));
+            }
+          });
+          if(score){
+            const inDialog = Boolean(button.closest('[role="dialog"][aria-modal="true"]'));
+            candidates.push({ button,score:score + (inDialog ? 80 : 0) + (documentIndex === 0 ? 10 : 0) });
+          }
+        });
+    });
+    candidates.sort((left,right) => right.score - left.score);
+    if(!candidates.length) return null;
+    if(candidates.length > 1 && candidates[0].score === candidates[1].score) return null;
+    return candidates[0].button;
+  }
+
+  function aiVoiceFindNamedField(target){
+    const normalizedTarget = aiVoiceNormalizeControlLabel(target);
+    if(!normalizedTarget) return null;
+    const documents = [document];
+    try{
+      if(window.parent?.document && window.parent.document !== document){
+        documents.push(window.parent.document);
+      }
+    }catch(error){}
+    const candidates = [];
+    documents.forEach((ownerDocument,documentIndex) => {
+      ownerDocument.querySelectorAll('input:not([type="hidden"]),textarea,select')
+        .forEach(field => {
+          if(
+            field.disabled ||
+            field.readOnly ||
+            field.closest('[inert],[aria-hidden="true"]')
+          ){
+            return;
+          }
+          const style = ownerDocument.defaultView?.getComputedStyle(field);
+          const rect = field.getBoundingClientRect();
+          if(
+            !style ||
+            style.display === 'none' ||
+            style.visibility === 'hidden' ||
+            rect.width <= 0 ||
+            rect.height <= 0
+          ){
+            return;
+          }
+          const explicitLabel = field.id
+            ? ownerDocument.querySelector(
+                'label[for="' +
+                (ownerDocument.defaultView?.CSS?.escape?.(field.id) || field.id.replace(/"/g,'\\"')) +
+                '"]'
+              )?.textContent
+            : '';
+          const labels = [
+            field.getAttribute('aria-label'),
+            field.getAttribute('placeholder'),
+            field.getAttribute('title'),
+            explicitLabel
+          ].map(aiVoiceNormalizeControlLabel).filter(Boolean);
+          let score = 0;
+          labels.forEach(label => {
+            if(label === normalizedTarget) score = Math.max(score,1000 + label.length);
+            else if(label.includes(normalizedTarget) || normalizedTarget.includes(label)){
+              score = Math.max(score,500 + Math.min(label.length,normalizedTarget.length));
+            }
+          });
+          if(score){
+            const inDialog = Boolean(field.closest('[role="dialog"][aria-modal="true"]'));
+            candidates.push({ field,score:score + (inDialog ? 80 : 0) + (documentIndex === 0 ? 10 : 0) });
+          }
+        });
+    });
+    candidates.sort((left,right) => right.score - left.score);
+    if(!candidates.length) return null;
+    if(candidates.length > 1 && candidates[0].score === candidates[1].score) return null;
+    return candidates[0].field;
+  }
+
+  function aiVoiceSetFieldValue(field,value){
+    if(!field) return false;
+    if(field.tagName === 'SELECT'){
+      const normalizedValue = aiVoiceNormalizeControlLabel(value);
+      const option = [...field.options].find(item => (
+        aiVoiceNormalizeControlLabel(item.label) === normalizedValue ||
+        aiVoiceNormalizeControlLabel(item.value) === normalizedValue
+      ));
+      if(!option) return false;
+      field.value = option.value;
+      field.dispatchEvent(new Event('change',{ bubbles:true }));
+      return true;
+    }
+    const ownerWindow = field.ownerDocument?.defaultView || window;
+    const prototype = field instanceof ownerWindow.HTMLTextAreaElement
+      ? ownerWindow.HTMLTextAreaElement.prototype
+      : ownerWindow.HTMLInputElement.prototype;
+    const setter = Object.getOwnPropertyDescriptor(prototype,'value')?.set;
+    if(setter) setter.call(field,String(value ?? ''));
+    else field.value = String(value ?? '');
+    field.dispatchEvent(new Event('input',{ bubbles:true }));
+    field.dispatchEvent(new Event('change',{ bubbles:true }));
+    field.focus();
+    return true;
+  }
+
+  async function aiVoiceExecuteUiAction(action,target,value){
     const actions = {
       OPEN_PROJECTS:{
         button:document.getElementById('projects-btn'),
@@ -15462,6 +15747,137 @@ if(textFilePreviewRemove){
       }
       return true;
     }
+    if(action === 'CLICK_CONTROL'){
+      const button = aiVoiceFindNamedControl(target);
+      if(!button) return false;
+      const parentControl = button.ownerDocument !== document;
+      button.click();
+      if(parentControl){
+        try{
+          window.parent?.postMessage({
+            type:'hv-ai-control-activated',
+            target:String(target || '').slice(0,120)
+          },'*');
+        }catch(error){}
+      }
+      aiVoiceShowCaption('assistant','Activated ' + String(target || 'the requested control') + '.',false);
+      return true;
+    }
+    if(action === 'SEARCH_CODE'){
+      let parentDocument;
+      try{ parentDocument = window.parent?.document; }catch(error){}
+      const searchToggle = parentDocument?.getElementById('hvSearchToggle');
+      const searchBar = parentDocument?.getElementById('hvSearchBar');
+      const searchInput = parentDocument?.getElementById('hvSearchInput');
+      if(!searchToggle || !searchBar || !searchInput || !String(value || '').trim()) return false;
+      if(!searchBar.classList.contains('open')) searchToggle.click();
+      aiVoiceSetFieldValue(searchInput,String(value).trim());
+      aiVoiceShowCaption('assistant','Searching the code for “' + String(value).trim().slice(0,120) + '”.',false);
+      try{
+        window.parent?.postMessage({ type:'hv-ai-control-activated',target:'Search editor code' },'*');
+      }catch(error){}
+      return true;
+    }
+    if(action === 'SAVE_CODE'){
+      let parentDocument;
+      try{ parentDocument = window.parent?.document; }catch(error){}
+      const saveButton = parentDocument?.getElementById('hvSaveCurrent');
+      const saveInput = parentDocument?.getElementById('hvSaveInput');
+      const saveConfirm = parentDocument?.getElementById('hvSaveConfirm');
+      const name = String(value || '').trim().slice(0,180);
+      if(!saveButton || !saveInput || !saveConfirm || !name) return false;
+      saveButton.click();
+      aiVoiceSetFieldValue(saveInput,name);
+      saveConfirm.click();
+      aiVoiceShowCaption('assistant','Saved the current code as “' + name + '”.',false);
+      return true;
+    }
+    if(action === 'SAVED_VERSION_ACTION'){
+      let parentDocument;
+      try{ parentDocument = window.parent?.document; }catch(error){}
+      const savedMenu = parentDocument?.getElementById('hvSavedMenu');
+      const savedDrop = parentDocument?.getElementById('hvDrop');
+      if(!savedMenu || !savedDrop) return false;
+      if(!savedDrop.classList.contains('open')) savedMenu.click();
+      const backButton = parentDocument.getElementById('hvSavedBackButton');
+      if(
+        backButton &&
+        !backButton.classList.contains('hv-hidden') &&
+        aiVoiceIsAvailableControl(backButton)
+      ){
+        backButton.click();
+      }
+      const requestedName = aiVoiceNormalizeControlLabel(value);
+      const cards = [...parentDocument.querySelectorAll('.hv-saveitem')];
+      const exact = cards.filter(card => (
+        aiVoiceNormalizeControlLabel(card.querySelector('.hv-saveitem-title')?.textContent) === requestedName
+      ));
+      const partial = exact.length ? exact : cards.filter(card => {
+        const name = aiVoiceNormalizeControlLabel(card.querySelector('.hv-saveitem-title')?.textContent);
+        return name && (name.includes(requestedName) || requestedName.includes(name));
+      });
+      if(partial.length !== 1) return false;
+      const card = partial[0];
+      const normalizedOperation = aiVoiceNormalizeControlLabel(target);
+      const operation = normalizedOperation.includes('update')
+        ? 'update'
+        : normalizedOperation.includes('unpin')
+          ? 'unpin'
+          : normalizedOperation.includes('pin')
+            ? 'pin'
+            : normalizedOperation.includes('delete')
+              ? 'delete'
+              : normalizedOperation.includes('share')
+                ? 'share'
+                : normalizedOperation.includes('project') || normalizedOperation === 'add'
+                  ? 'project'
+                  : '';
+      if(!operation) return false;
+      const isPinned = card.classList.contains('pinned');
+      if((operation === 'pin' && isPinned) || (operation === 'unpin' && !isPinned)){
+        aiVoiceShowCaption(
+          'assistant',
+          'Saved version “' + String(value).trim() + '” is already ' + (isPinned ? 'pinned.' : 'unpinned.'),
+          false
+        );
+        return true;
+      }
+      const dataAction = operation === 'unpin' ? 'pin' : operation;
+      const button = card.querySelector('[data-action="' + dataAction + '"]');
+      if(!button) return false;
+      button.click();
+      const verb = operation === 'delete'
+        ? 'Opened delete confirmation for'
+        : operation === 'update'
+          ? 'Opened update confirmation for'
+          : operation.charAt(0).toUpperCase() + operation.slice(1);
+      aiVoiceShowCaption(
+        'assistant',
+        verb + ' saved version “' + String(value).trim() + '”.',
+        false
+      );
+      try{
+        window.parent?.postMessage({
+          type:'hv-ai-control-activated',
+          target:operation + ' saved version'
+        },'*');
+      }catch(error){}
+      return true;
+    }
+    if(action === 'FILL_CONTROL'){
+      const field = aiVoiceFindNamedField(target);
+      if(!field || !aiVoiceSetFieldValue(field,value)) return false;
+      aiVoiceShowCaption('assistant','Updated ' + String(target || 'the requested field') + '.',false);
+      if(field.ownerDocument !== document){
+        try{
+          window.parent?.postMessage({
+            type:'hv-ai-control-activated',
+            target:String(target || '').slice(0,120)
+          },'*');
+        }catch(error){}
+      }
+      return true;
+    }
     const entry = actions[action];
     if(!entry?.button) return false;
     entry.button.click();
@@ -15478,7 +15894,13 @@ if(textFilePreviewRemove){
     try{
       const fallbackAction = aiVoiceFallbackUiAction(clean);
       const result = fallbackAction
-        ? { intent:'UI_ACTION',uiAction:fallbackAction,confidence:1 }
+        ? {
+            intent:'UI_ACTION',
+            uiAction:fallbackAction.action,
+            uiTarget:fallbackAction.target,
+            uiValue:fallbackAction.value,
+            confidence:1
+          }
         : await aiVoiceClassifyIntent(clean);
       if(
         result?.intent === 'UI_ACTION' &&
@@ -15488,7 +15910,11 @@ if(textFilePreviewRemove){
         voiceIntentOutcomes.set(clean,'ui-action');
         aiVoiceSyncToNormalChat('user',clean);
         if(assistantText) aiVoiceSyncToNormalChat('assistant',assistantText);
-        const executed = await aiVoiceExecuteUiAction(result.uiAction);
+        const executed = await aiVoiceExecuteUiAction(
+          result.uiAction,
+          result.uiTarget,
+          result.uiValue
+        );
         if(!executed){
           throw new Error('The requested editor control is not available.');
         }
@@ -15505,9 +15931,15 @@ if(textFilePreviewRemove){
         if(typeof aiSyncModelTrigger === 'function') aiSyncModelTrigger();
         inputEl.value = clean;
         inputEl.dispatchEvent(new Event('input',{ bubbles:true }));
+        const codingThinkingStartedAt = Date.now();
         const responseText = await sendMessage();
         if(responseText){
-          aiVoiceAddTranscript('assistant',responseText,'coding-model');
+          aiVoiceAddTranscript(
+            'assistant',
+            responseText,
+            'coding-model',
+            (Date.now() - codingThinkingStartedAt) / 1000
+          );
           aiVoiceShowCaption('assistant',responseText,false);
         }
         if(voiceSessionWanted) aiVoiceSetState(voiceMuted ? 'muted' : 'listening',voiceMuted ? 'Muted' : 'Listening');
@@ -15535,12 +15967,14 @@ if(textFilePreviewRemove){
     }
     const inputText = content?.inputTranscription?.text;
     if(inputText){
+      if(!voiceInputDraft && !voiceThinkingStartedAt) voiceThinkingStartedAt = Date.now();
       voiceInputDraft = aiVoiceMergeTranscript(voiceInputDraft,inputText);
       aiVoiceShowCaption('user',voiceInputDraft,true);
       aiVoiceSetState('listening','Listening');
     }
     const outputText = content?.outputTranscription?.text;
     if(outputText){
+      if(!voiceThinkingStartedAt) voiceThinkingStartedAt = Date.now();
       voiceOutputDraft = aiVoiceMergeTranscript(voiceOutputDraft,outputText);
       aiVoiceShowCaption('assistant',voiceOutputDraft,true);
       aiVoiceSetState('speaking','Speaking');
@@ -16032,6 +16466,35 @@ if(textFilePreviewRemove){
     target.addEventListener('pointercancel',end);
   }
 
+  function aiVoiceSetHostGeometry(rect){
+    if(!rect || !document.documentElement) return;
+    const left = Number(rect.left);
+    const top = Number(rect.top);
+    const width = Number(rect.width);
+    const height = Number(rect.height);
+    if(
+      !Number.isFinite(left) ||
+      !Number.isFinite(top) ||
+      !Number.isFinite(width) ||
+      !Number.isFinite(height) ||
+      width < 1 ||
+      height < 1
+    ){
+      return;
+    }
+    const rootStyle = document.documentElement.style;
+    rootStyle.setProperty('--voice-host-left',Math.round(left) + 'px');
+    rootStyle.setProperty('--voice-host-top',Math.round(top) + 'px');
+    rootStyle.setProperty('--voice-host-width',Math.round(width) + 'px');
+    rootStyle.setProperty('--voice-host-height',Math.round(height) + 'px');
+  }
+
+  function aiVoiceCaptureHostGeometry(){
+    try{
+      aiVoiceSetHostGeometry(window.frameElement?.getBoundingClientRect());
+    }catch(error){}
+  }
+
   async function aiStartVoiceMode(){
     if(voiceSessionWanted) return;
     if(isListening && recognition) recognition.stop();
@@ -16039,6 +16502,7 @@ if(textFilePreviewRemove){
     voiceSessionWanted = true;
     voiceReconnectAttempts = 0;
     if(appEl) appEl.classList.add('voice-active');
+    aiVoiceCaptureHostGeometry();
     if(voiceModeEl){
       voiceModeEl.classList.add('active');
       voiceModeEl.setAttribute('aria-hidden','false');
@@ -16068,6 +16532,7 @@ if(textFilePreviewRemove){
     clearTimeout(voiceIntentTimer);
     voiceManualActivity = false;
     voiceLastActivityAt = 0;
+    voiceThinkingStartedAt = 0;
     if(voiceCaptureNode){
       try{ voiceCaptureNode.port && (voiceCaptureNode.port.onmessage = null); }catch(error){}
       try{ voiceCaptureNode.disconnect(); }catch(error){}
@@ -16167,6 +16632,7 @@ if(textFilePreviewRemove){
     if(!text || !voiceConnected) return;
     aiVoiceAddTranscript('user',text,'keyboard');
     voiceLastCompletedUser = text;
+    voiceThinkingStartedAt = Date.now();
     aiVoiceShowCaption('user',text,false);
     aiVoiceSend({ realtimeInput:{ text } });
     const intentPromise = aiVoiceHandleCompletedUser(text);
@@ -16396,6 +16862,9 @@ if(textFilePreviewRemove){
   });
   window.addEventListener('message',event => {
     if(event.data?.type === 'hv-ai-editor-closing') aiEndVoiceMode(false);
+    if(event.data?.type === 'hv-ai-voice-host-geometry'){
+      aiVoiceSetHostGeometry(event.data.rect);
+    }
   });
   if(typeof ResizeObserver === 'function' && voiceModeEl){
     voiceResizeObserver = new ResizeObserver(() => {
@@ -16864,12 +17333,11 @@ async function aiUpdateMessageWithGeneratedImage(systemId, imageBase64, imageMim
 
   aiRemoveImageLoadingCard(systemId);
 
-  const meta =
-    msg.querySelector('.thought-meta');
+    const meta =
+      msg.querySelector('.thought-meta');
 
-  if(meta){
-    meta.textContent =
-      'Thought for ' + durationSec + 's';
+    if(meta){
+      meta.textContent = aiFormatThoughtDuration(durationSec,false);
   }
 
   const img =
@@ -17439,9 +17907,21 @@ aiNotifyParent(
       msg.querySelector('.thought-meta');
 
     if(meta){
-      meta.textContent = 'Thinking for ' + elapsedSec + 's';
+      meta.textContent = aiFormatThoughtDuration(elapsedSec,true);
     }
 
+  }
+
+  function aiFormatThoughtDuration(seconds,isThinking){
+    const numeric = Number(seconds);
+    if(isThinking){
+      return Number.isFinite(numeric) && numeric >= 1
+        ? 'Thinking for ' + Math.floor(numeric) + 's'
+        : 'Thinking…';
+    }
+    return Number.isFinite(numeric) && numeric >= 1
+      ? 'Thought for ' + Math.round(numeric) + 's'
+      : 'Thought for <1s';
   }
 
   async function updateMessageWithThought(systemId, text, durationSec){
@@ -17459,7 +17939,7 @@ aiNotifyParent(
       msg.querySelector('.thought-meta');
 
     if(meta){
-      meta.textContent = 'Thought for ' + durationSec + 's';
+      meta.textContent = aiFormatThoughtDuration(durationSec,false);
     }
 
     let textEl =
@@ -17539,8 +18019,8 @@ chatEl.scrollTop =
 
     meta.textContent =
       thoughtSec !== null && thoughtSec !== undefined
-        ? 'Thought for ' + thoughtSec + 's'
-        : 'Thinking for 0s';
+        ? aiFormatThoughtDuration(thoughtSec,false)
+        : aiFormatThoughtDuration(0,true);
 
     msg.appendChild(meta);
 
@@ -31643,14 +32123,24 @@ if(hvSubmitPresetSend){
         }
 
         body.voice-floating-host .app{
+          position:fixed !important;
+          left:var(--voice-host-left,0px) !important;
+          top:var(--voice-host-top,0px) !important;
+          width:var(--voice-host-width,100vw) !important;
+          height:var(--voice-host-height,100dvh) !important;
+          max-width:none !important;
+          max-height:none !important;
+          background:#0f0f0f !important;
           border:0 !important;
+          border-radius:12px !important;
           box-shadow:none !important;
-          pointer-events:none !important;
+          overflow:visible !important;
+          pointer-events:auto !important;
         }
 
         body.voice-floating-host .app > :not(.voice-mode){
-          visibility:hidden !important;
-          pointer-events:none !important;
+          visibility:visible !important;
+          pointer-events:auto !important;
         }
 
         body.voice-floating-host .voice-mode{
@@ -31742,17 +32232,72 @@ if(hvSubmitPresetSend){
 
   }
 
+  function hvSendAiVoiceHostGeometry(){
+    if(!aiFrame.classList.contains('hv-ai-voice-floating')) return;
+    const rect = frameWrap.getBoundingClientRect();
+    try{
+      aiFrame.contentWindow?.postMessage({
+        type:'hv-ai-voice-host-geometry',
+        rect:{
+          left:rect.left,
+          top:rect.top,
+          width:rect.width,
+          height:rect.height
+        }
+      },'*');
+    }catch(error){}
+  }
+
+  function hvRaiseVoiceCommandSurface(){
+    document.querySelectorAll('.hv-ai-voice-command-surface').forEach(element => {
+      element.classList.remove('hv-ai-voice-command-surface');
+    });
+    requestAnimationFrame(() => {
+      const dialogs = [...document.querySelectorAll('[role="dialog"][aria-modal="true"]')];
+      dialogs.forEach(dialog => {
+        const style = getComputedStyle(dialog);
+        const rect = dialog.getBoundingClientRect();
+        if(
+          style.display === 'none' ||
+          style.visibility === 'hidden' ||
+          Number(style.opacity || 1) <= 0 ||
+          rect.width <= 0 ||
+          rect.height <= 0
+        ){
+          return;
+        }
+        let surface = dialog;
+        let parent = dialog.parentElement;
+        while(parent && parent !== document.body){
+          if(getComputedStyle(parent).position === 'fixed') surface = parent;
+          parent = parent.parentElement;
+        }
+        surface.classList.add('hv-ai-voice-command-surface');
+      });
+    });
+  }
+
   window.addEventListener('message',event => {
-    if(
-      event.source !== aiFrame.contentWindow ||
-      event.data?.type !== 'hv-ai-voice-floating'
-    ){
+    if(event.source !== aiFrame.contentWindow) return;
+    if(event.data?.type === 'hv-ai-voice-floating'){
+      const active = event.data.active === true;
+      aiFrame.classList.toggle('hv-ai-voice-floating',active);
+      document.body.classList.toggle('hv-ai-voice-floating-host',active);
+      if(active){
+        hvSendAiVoiceHostGeometry();
+      }else{
+        document.querySelectorAll('.hv-ai-voice-command-surface').forEach(element => {
+          element.classList.remove('hv-ai-voice-command-surface');
+        });
+      }
       return;
     }
-    const active = event.data.active === true;
-    aiFrame.classList.toggle('hv-ai-voice-floating',active);
-    document.body.classList.toggle('hv-ai-voice-floating-host',active);
+    if(event.data?.type === 'hv-ai-control-activated'){
+      hvRaiseVoiceCommandSurface();
+    }
   });
+
+  window.addEventListener('resize',hvSendAiVoiceHostGeometry);
 
   aiBtn.addEventListener('click', () => {
 

@@ -15,7 +15,12 @@ const GEMINI_VOICE_UI_ACTIONS = new Set([
   'OPEN_LIBRARY',
   'OPEN_CHAT_HISTORY',
   'ADD_IMAGE',
-  'ATTACH_CODE_FILE'
+  'ATTACH_CODE_FILE',
+  'CLICK_CONTROL',
+  'SEARCH_CODE',
+  'FILL_CONTROL',
+  'SAVE_CODE',
+  'SAVED_VERSION_ACTION'
 ]);
 const GEMINI_LIVE_VOICES = new Set([
   'Zephyr', 'Puck', 'Charon', 'Kore', 'Fenrir', 'Leda', 'Orus', 'Aoede',
@@ -241,9 +246,10 @@ function createVoiceSystemInstruction(editorContext, language, hasIntroduced){
     'request without claiming it is complete. The application will route the stabilized',
     'final transcript into the dedicated Gemini coding pipeline, which performs the',
     'actual code change. Never claim an edit was applied until that pipeline confirms it.',
-    'For commands to create a new chat, open Projects, Library, Chat History, add an',
-    'image, or attach a code file/link, acknowledge naturally; the application will',
-    'execute the matching interface action.',
+    'When the user asks you to click, press, open, select, validate, download, or',
+    'otherwise operate a named website control, acknowledge naturally; the application',
+    'will resolve the exact visible button and execute it. Existing confirmation dialogs',
+    'remain responsible for destructive actions, so never claim a deletion is confirmed.',
     '',
     'Protect the project. Never expose credentials, silently delete working features,',
     'overwrite saved work, invent test results, or hide limitations. Give concise',
@@ -262,12 +268,25 @@ async function classifyVoiceIntent(request, env, origin){
     : '';
   const prompt = [
     'Classify this stabilized voice transcript for an HTML editor.',
-    'UI_ACTION means the user is directing the app interface to create a new chat,',
-    'open Projects, open Library, open Chat History, add an image, or attach/add a',
-    'code file or link. Choose the matching action value.',
-    'ACTIONABLE means the user is directing the editor to create, edit, fix,',
-    'replace, remove, format, debug, validate, or otherwise change code or a',
-    'project. CONVERSATIONAL means a question, explanation request, greeting,',
+    'UI_ACTION means the user is explicitly directing the app interface to click, press,',
+    'open, select, validate, download, or activate a website or AI-editor control.',
+    'Use a dedicated action for New Chat, Projects, Library, Chat History, Add Image,',
+    'and Attach Code File. Use SEARCH_CODE when the user asks to find text in the code',
+    'editor, with the search text in value. Use FILL_CONTROL when the user explicitly',
+    'asks to enter a value in a named visible field, with its accessible name in target',
+    'and the requested contents in value. Use SAVE_CODE when the user asks to save the',
+    'current code with a specific name; put that name in value. Use SAVED_VERSION_ACTION',
+    'only when the transcript explicitly says saved version or saved versions and asks',
+    'to update, pin, unpin, delete, share, or add one to a project. Put the operation in',
+    'target and the exact saved-version name in value. Never infer SAVED_VERSION_ACTION',
+    'from an ambiguous reference to code. For every other control use CLICK_CONTROL and put its concise',
+    'visible or accessible button name in target (for example Validate HTML, Download,',
+    'Saved Codes, Community Presets, Settings, Format, Compress, or Live Preview).',
+    'ACTIONABLE means the user is directing the coding model to create, edit, fix,',
+    'replace, remove, debug, or otherwise change code or a project. If the user asks',
+    'to click or use an existing Format, Compress, Validate, Download, Search, Save,',
+    'or other interface button, classify it as UI_ACTION instead. CONVERSATIONAL means',
+    'a question, explanation request, greeting,',
     'discussion, or clarification that should stay in the live conversation.',
     'Use meaning and context, not a single keyword. Return only JSON.',
     '',
@@ -303,13 +322,20 @@ async function classifyVoiceIntent(request, env, origin){
                   'OPEN_LIBRARY',
                   'OPEN_CHAT_HISTORY',
                   'ADD_IMAGE',
-                  'ATTACH_CODE_FILE'
+                  'ATTACH_CODE_FILE',
+                  'CLICK_CONTROL',
+                  'SEARCH_CODE',
+                  'FILL_CONTROL',
+                  'SAVE_CODE',
+                  'SAVED_VERSION_ACTION'
                 ]
               },
+              target:{ type:'STRING' },
+              value:{ type:'STRING' },
               confidence:{ type:'NUMBER' },
               reason:{ type:'STRING' }
             },
-            required:['intent','action','confidence']
+            required:['intent','action','target','value','confidence']
           }
         }
       })
@@ -347,9 +373,34 @@ async function classifyVoiceIntent(request, env, origin){
     : result.intent === 'UI_ACTION'
       ? 'UI_ACTION'
       : 'CONVERSATIONAL';
-  const uiAction = intent === 'UI_ACTION' &&
-    GEMINI_VOICE_UI_ACTIONS.has(result.action)
+  const requestedAction = GEMINI_VOICE_UI_ACTIONS.has(result.action)
     ? result.action
+    : null;
+  const uiTarget = requestedAction === 'CLICK_CONTROL' &&
+    typeof result.target === 'string'
+    ? result.target.trim().slice(0, 120)
+    : (
+        requestedAction === 'FILL_CONTROL' ||
+        requestedAction === 'SAVED_VERSION_ACTION'
+      ) && typeof result.target === 'string'
+      ? result.target.trim().slice(0, 120)
+      : null;
+  const uiValue = (
+    requestedAction === 'SEARCH_CODE' ||
+    requestedAction === 'FILL_CONTROL' ||
+    requestedAction === 'SAVE_CODE' ||
+    requestedAction === 'SAVED_VERSION_ACTION'
+  ) && typeof result.value === 'string'
+    ? result.value.slice(0, 4000)
+    : null;
+  const uiAction = intent === 'UI_ACTION' &&
+    requestedAction &&
+    (requestedAction !== 'CLICK_CONTROL' || uiTarget) &&
+    (requestedAction !== 'SEARCH_CODE' || uiValue) &&
+    (requestedAction !== 'FILL_CONTROL' || (uiTarget && uiValue !== null)) &&
+    (requestedAction !== 'SAVE_CODE' || uiValue) &&
+    (requestedAction !== 'SAVED_VERSION_ACTION' || (uiTarget && uiValue))
+    ? requestedAction
     : null;
   const confidence = Number.isFinite(Number(result.confidence))
     ? Math.max(0, Math.min(1, Number(result.confidence)))
@@ -359,6 +410,8 @@ async function classifyVoiceIntent(request, env, origin){
     actionable:intent === 'ACTIONABLE' && confidence >= 0.6,
     intent,
     uiAction,
+    uiTarget,
+    uiValue,
     confidence,
     reason:typeof result.reason === 'string'
       ? result.reason.slice(0, 240)

@@ -281,6 +281,8 @@ test('classifies stabilized coding commands with the dedicated intent route', as
     actionable:true,
     intent:'ACTIONABLE',
     uiAction:null,
+    uiTarget:null,
+    uiValue:null,
     confidence:0.97,
     reason:'The user requested a code change.'
   });
@@ -319,8 +321,150 @@ test('classifies supported Voice Mode interface commands', async t => {
     actionable:false,
     intent:'UI_ACTION',
     uiAction:'OPEN_PROJECTS',
+    uiTarget:null,
+    uiValue:null,
     confidence:0.99,
     reason:'The user asked to open Projects.'
+  });
+});
+
+test('classifies named controls and code-search values for Voice Mode', async t => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+  });
+
+  let call = 0;
+  globalThis.fetch = async () => {
+    call += 1;
+    return Response.json({
+      candidates:[{
+        content:{
+          parts:[{
+            text:JSON.stringify(call === 1
+              ? {
+                  intent:'UI_ACTION',
+                  action:'CLICK_CONTROL',
+                  target:'Validate HTML',
+                  value:'',
+                  confidence:0.99,
+                  reason:'The user asked to press Validate HTML.'
+                }
+              : {
+                  intent:'UI_ACTION',
+                  action:'SEARCH_CODE',
+                  target:'Search editor code',
+                  value:'contact-form',
+                  confidence:0.98,
+                  reason:'The user asked to search the editor.'
+                })
+          }]
+        }
+      }]
+    });
+  };
+
+  const clickResponse = await worker.fetch(
+    createJsonRequest('/api/ai/voice-intent', {
+      transcript:'Click the Validate HTML button.'
+    }),
+    TEST_ENV
+  );
+  assert.equal(clickResponse.status, 200);
+  assert.deepEqual(await clickResponse.json(), {
+    actionable:false,
+    intent:'UI_ACTION',
+    uiAction:'CLICK_CONTROL',
+    uiTarget:'Validate HTML',
+    uiValue:null,
+    confidence:0.99,
+    reason:'The user asked to press Validate HTML.'
+  });
+
+  const searchResponse = await worker.fetch(
+    createJsonRequest('/api/ai/voice-intent', {
+      transcript:'Search the code for contact-form.'
+    }),
+    TEST_ENV
+  );
+  assert.equal(searchResponse.status, 200);
+  assert.deepEqual(await searchResponse.json(), {
+    actionable:false,
+    intent:'UI_ACTION',
+    uiAction:'SEARCH_CODE',
+    uiTarget:null,
+    uiValue:'contact-form',
+    confidence:0.98,
+    reason:'The user asked to search the editor.'
+  });
+});
+
+test('classifies named saves and explicit saved-version actions', async t => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+  });
+
+  let call = 0;
+  globalThis.fetch = async () => {
+    call += 1;
+    return Response.json({
+      candidates:[{
+        content:{
+          parts:[{
+            text:JSON.stringify(call === 1
+              ? {
+                  intent:'UI_ACTION',
+                  action:'SAVE_CODE',
+                  target:'Save Version',
+                  value:'Landing page v2',
+                  confidence:0.99,
+                  reason:'The user supplied a name for the current code.'
+                }
+              : {
+                  intent:'UI_ACTION',
+                  action:'SAVED_VERSION_ACTION',
+                  target:'update',
+                  value:'Landing page v2',
+                  confidence:0.98,
+                  reason:'The user explicitly identified a saved version.'
+                })
+          }]
+        }
+      }]
+    });
+  };
+
+  const saveResponse = await worker.fetch(
+    createJsonRequest('/api/ai/voice-intent', {
+      transcript:'Save this code as Landing page v2.'
+    }),
+    TEST_ENV
+  );
+  assert.deepEqual(await saveResponse.json(), {
+    actionable:false,
+    intent:'UI_ACTION',
+    uiAction:'SAVE_CODE',
+    uiTarget:null,
+    uiValue:'Landing page v2',
+    confidence:0.99,
+    reason:'The user supplied a name for the current code.'
+  });
+
+  const savedVersionResponse = await worker.fetch(
+    createJsonRequest('/api/ai/voice-intent', {
+      transcript:'Update the saved version named Landing page v2.'
+    }),
+    TEST_ENV
+  );
+  assert.deepEqual(await savedVersionResponse.json(), {
+    actionable:false,
+    intent:'UI_ACTION',
+    uiAction:'SAVED_VERSION_ACTION',
+    uiTarget:'update',
+    uiValue:'Landing page v2',
+    confidence:0.98,
+    reason:'The user explicitly identified a saved version.'
   });
 });
 
