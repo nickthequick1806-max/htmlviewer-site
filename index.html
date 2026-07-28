@@ -10075,6 +10075,7 @@ html.hv-light-mode .hv-toast{
 
   .voice-entry-wrap:hover .voice-entry-menu,
   .voice-entry-wrap:focus-within .voice-entry-menu,
+  .voice-entry-wrap.hover-open .voice-entry-menu,
   .voice-entry-wrap.menu-open .voice-entry-menu{
     opacity:1;
     visibility:visible;
@@ -15960,6 +15961,20 @@ if(textFilePreviewRemove){
     aiVoiceSetState('processing','Thinking');
   }
 
+  let voiceEntryHoverTimer = 0;
+  voiceEntryWrap?.addEventListener('pointerenter',() => {
+    clearTimeout(voiceEntryHoverTimer);
+    voiceEntryWrap.classList.add('hover-open');
+  });
+  voiceEntryWrap?.addEventListener('pointerleave',() => {
+    clearTimeout(voiceEntryHoverTimer);
+    voiceEntryHoverTimer = setTimeout(() => {
+      if(!voiceEntryWrap.classList.contains('menu-open') && !voiceEntryWrap.contains(document.activeElement)){
+        voiceEntryWrap.classList.remove('hover-open');
+      }
+    },260);
+  });
+
   if(micBtn){
     micBtn.addEventListener('click',event => {
       event.stopPropagation();
@@ -15970,12 +15985,14 @@ if(textFilePreviewRemove){
 
   voiceToTextBtn?.addEventListener('click',() => {
     voiceEntryWrap?.classList.remove('menu-open');
+    voiceEntryWrap?.classList.remove('hover-open');
     micBtn?.setAttribute('aria-expanded','false');
     aiStartVoiceToText();
   });
 
   voiceToVoiceBtn?.addEventListener('click',() => {
     voiceEntryWrap?.classList.remove('menu-open');
+    voiceEntryWrap?.classList.remove('hover-open');
     micBtn?.setAttribute('aria-expanded','false');
     aiStartVoiceMode();
   });
