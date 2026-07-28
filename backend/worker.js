@@ -166,6 +166,7 @@ async function sendContactMessage(request, env, origin){
   const body = await readJson(request, MAX_FORM_BODY_BYTES);
   const name = requireText(body.name, 'name', 80);
   const message = requireText(body.message, 'message', 3000);
+  const category = requireContactCategory(body.category);
   const payload = {
     username:'HTML Viewer Contact',
     allowed_mentions:{ parse:[] },
@@ -174,7 +175,10 @@ async function sendContactMessage(request, env, origin){
         title:'New Contact Message',
         description:message,
         color:3447003,
-        fields:[{ name:'Name', value:name, inline:true }],
+        fields:[
+          { name:'Name', value:name, inline:true },
+          { name:'Category', value:category, inline:true }
+        ],
         footer:{ text:'HTML Viewer Contact Form' },
         timestamp:new Date().toISOString()
       }
@@ -186,6 +190,15 @@ async function sendContactMessage(request, env, origin){
   });
 
   return jsonResponse({ ok:true }, 200, origin);
+}
+
+function requireContactCategory(value){
+  const category = typeof value === 'string' ? value.trim() : 'General';
+  const allowed = new Set(['General','Bug Report','Feature Request']);
+  if(!allowed.has(category)){
+    throw new PublicError(400, 'The contact category is not allowed.');
+  }
+  return category;
 }
 
 async function sendCommunityPreset(request, env, origin){

@@ -5052,6 +5052,66 @@ body.hv-resizing-active iframe{
   text-align:right;
 }
 
+.hv-storage-section{margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,.08)}
+.hv-storage-heading{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.hv-storage-heading-icon{width:38px;height:38px;flex:0 0 auto;display:grid;place-items:center;border:1px solid rgba(255,255,255,.11);border-radius:11px;background:rgba(255,255,255,.045);color:#f4f4f5}
+.hv-storage-heading h3{margin:0;color:#f5f5f5;font-size:15px;font-weight:850}
+.hv-storage-heading p{margin:4px 0 0;color:#71717a;font-size:11px;line-height:1.5}
+.hv-storage-summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.hv-storage-summary-card,.hv-storage-usage-card,.hv-storage-action-card{border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.025)}
+.hv-storage-summary-card{min-height:78px;padding:14px}
+.hv-storage-summary-label{color:#71717a;font-size:11px;font-weight:750}
+.hv-storage-summary-value{margin-top:7px;color:#f5f5f5;font-size:20px;font-weight:900}
+.hv-storage-usage-card{margin-top:10px;padding:14px}
+.hv-storage-usage-top,.hv-storage-usage-meta,.hv-storage-action-head,.hv-storage-export-result{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hv-storage-usage-title{color:#e4e4e7;font-size:12px;font-weight:850}
+.hv-storage-status{padding:4px 8px;border:1px solid rgba(34,197,94,.25);border-radius:999px;background:rgba(34,197,94,.09);color:#86efac;font-size:10px;font-weight:850}
+.hv-storage-status.getting-full{border-color:rgba(245,158,11,.28);background:rgba(245,158,11,.10);color:#fcd34d}
+.hv-storage-status.high-usage,.hv-storage-status.critical{border-color:rgba(239,68,68,.28);background:rgba(239,68,68,.10);color:#fca5a5}
+.hv-storage-meter{height:9px;margin:13px 0 10px;overflow:hidden;border-radius:999px;background:#080808;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.hv-storage-meter-fill{width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#22c55e,#4ade80);transition:width .3s ease,background .2s ease}
+.hv-storage-meter-fill.getting-full{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.hv-storage-meter-fill.high-usage,.hv-storage-meter-fill.critical{background:linear-gradient(90deg,#ef4444,#fb7185)}
+.hv-storage-usage-meta{align-items:flex-start;color:#71717a;font-size:10px;line-height:1.45}
+.hv-storage-usage-meta strong{display:block;color:#d4d4d8;font-size:11px}
+.hv-storage-safe-note{margin-top:11px;padding-top:11px;border-top:1px solid rgba(255,255,255,.06);color:#71717a;font-size:10px;line-height:1.5}
+.hv-storage-action-card{margin-top:10px;padding:14px}
+.hv-storage-action-head strong{display:block;color:#f4f4f5;font-size:12px}
+.hv-storage-action-head span{display:block;margin-top:4px;color:#71717a;font-size:10px;line-height:1.45}
+.hv-storage-action-button{min-height:38px;flex:0 0 auto;padding:0 13px;display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:#f4f4f5;color:#111;font:800 11px/1 Inter,system-ui,sans-serif;cursor:pointer;transition:.15s ease}
+.hv-storage-action-button:hover{transform:translateY(-1px);background:#fff}
+.hv-storage-action-button:disabled{opacity:.55;cursor:wait;transform:none}
+.hv-storage-action-button.danger{border-color:rgba(239,68,68,.32);background:rgba(239,68,68,.11);color:#fca5a5}
+.hv-storage-progress{display:none;margin-top:12px}
+.hv-storage-progress.active{display:block}
+.hv-storage-progress-track{height:6px;overflow:hidden;border-radius:999px;background:#080808}
+.hv-storage-progress-fill{width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#60a5fa,#a78bfa);transition:width .25s ease}
+.hv-storage-progress-copy{margin-top:7px;display:flex;justify-content:space-between;gap:10px;color:#71717a;font-size:10px}
+.hv-storage-export-result{min-height:18px;margin-top:8px;color:#a1a1aa;font-size:10px}
+.hv-storage-export-result.error{color:#fca5a5}
+.hv-storage-bulk-grid{margin-top:10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hv-storage-bulk-button{min-height:38px;padding:0 11px;display:flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(255,255,255,.025);color:#d4d4d8;font:750 10px/1.2 Inter,system-ui,sans-serif;text-align:left;cursor:pointer}
+.hv-storage-bulk-button:hover{border-color:rgba(239,68,68,.28);background:rgba(239,68,68,.07);color:#fecaca}
+.hv-clear-data-warning{padding:13px;border:1px solid rgba(239,68,68,.25);border-radius:12px;background:rgba(239,68,68,.07);color:#fecaca;font-size:12px;line-height:1.6}
+.hv-clear-data-list{margin:13px 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;list-style:none}
+.hv-clear-data-list li{display:flex;gap:7px;color:#a1a1aa;font-size:11px}
+.hv-clear-data-list i{margin-top:2px;color:#f87171}
+.hv-clear-data-recommend{margin-bottom:13px;color:#a1a1aa;font-size:11px;line-height:1.5}
+.hv-clear-data-label{display:block;margin-bottom:7px;color:#e4e4e7;font-size:11px;font-weight:800}
+.hv-clear-data-input{width:100%;height:43px;padding:0 12px;border:1px solid rgba(255,255,255,.10);border-radius:10px;background:#080808;color:#f5f5f5;outline:0;font:700 13px Inter,system-ui,sans-serif}
+.hv-clear-data-input:focus{border-color:rgba(239,68,68,.48);box-shadow:0 0 0 3px rgba(239,68,68,.10)}
+.hv-clear-data-actions{margin-top:14px;display:flex;justify-content:flex-end;gap:9px}
+.hv-clear-data-result{display:none;margin-top:13px;padding:11px;border:1px solid rgba(255,255,255,.08);border-radius:10px;color:#a1a1aa;font-size:11px;line-height:1.55;white-space:pre-line}
+.hv-clear-data-result.show{display:block}
+.hv-contact-categories{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.hv-contact-category{min-height:42px;border:1px solid rgba(255,255,255,.09);border-radius:10px;background:rgba(255,255,255,.025);color:#a1a1aa;display:flex;align-items:center;justify-content:center;gap:7px;font:800 11px Inter,system-ui,sans-serif;cursor:pointer;transition:.15s ease}
+.hv-contact-category:hover,.hv-contact-category.active{border-color:rgba(96,165,250,.40);background:rgba(59,130,246,.11);color:#dbeafe}
+.hv-validator-loading{position:absolute;inset:0;z-index:20;display:grid;place-items:center;border-radius:inherit;background:rgba(8,8,8,.58);backdrop-filter:blur(8px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .16s ease,visibility .16s ease}
+.hv-validator-card.loading .hv-validator-loading{opacity:1;visibility:visible;pointer-events:auto}
+.hv-validator-loading-card{min-width:190px;padding:18px;border:1px solid rgba(255,255,255,.11);border-radius:15px;background:rgba(18,18,18,.94);box-shadow:0 20px 55px rgba(0,0,0,.45);color:#f4f4f5;text-align:center;font-size:12px;font-weight:800}
+.hv-validator-loading-spinner{width:28px;height:28px;margin:0 auto 10px;border:3px solid rgba(255,255,255,.13);border-top-color:#f4f4f5;border-radius:50%;animation:hvStorageSpin .7s linear infinite}
+@keyframes hvStorageSpin{to{transform:rotate(360deg)}}
+
 .hv-toast-stack{
   position:fixed;
   z-index:1000010;
@@ -5339,6 +5399,10 @@ html.hv-light-mode .hv-faq-card,
 html.hv-light-mode .hv-update-card,
 html.hv-light-mode .hv-history-card,
 html.hv-light-mode .hv-setting-row,
+html.hv-light-mode .hv-storage-summary-card,
+html.hv-light-mode .hv-storage-usage-card,
+html.hv-light-mode .hv-storage-action-card,
+html.hv-light-mode .hv-storage-bulk-button,
 html.hv-light-mode .hv-saveitem,
 html.hv-light-mode .hv-project-card,
 html.hv-light-mode .hv-codecard,
@@ -5469,6 +5533,29 @@ html.hv-light-mode .hv-toast{
   .hv-setting-row .hv-setting-select{
     margin-left:auto;
   }
+
+  .hv-storage-action-head{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .hv-storage-action-button{
+    width:100%;
+  }
+
+  .hv-storage-usage-meta{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media (max-width:560px){
+  .hv-storage-summary-grid,
+  .hv-storage-bulk-grid,
+  .hv-clear-data-list{
+    grid-template-columns:1fr;
+  }
+
 }
 
 @media (max-width:700px), (min-width:701px) and (max-width:1024px){
@@ -10263,6 +10350,8 @@ const textFileModalContent = document.getElementById('text-file-modal-content');
 
   let selectedImageBase64 = null;
   let selectedImageMime = null;
+  let selectedImageLibraryId = null;
+  let selectedImageLibraryPromise = null;
   
   let selectedTextFile = null;
 let pendingDeleteChatId = null;
@@ -10322,6 +10411,7 @@ let aiLibraryFilter = 'all';
 let aiLibrarySortKey = 'date';
 let aiLibrarySortDirection = 'desc';
 let aiLibraryMenuItemId = null;
+const aiActiveObjectUrls = new Set();
 
 function aiLibraryOpenDb(){
 
@@ -10745,6 +10835,7 @@ async function aiLibraryAddItem(data){
     size:Number(data?.size || 0),
     createdAt:Number(data?.createdAt || Date.now()),
     source:String(data?.source || 'user'),
+    chatId:String(data?.chatId || currentChatId || ''),
     base64:kind === 'image' ? String(data?.base64 || '') : '',
     content:kind === 'file' ? String(data?.content || '') : '',
     language:kind === 'file' ? String(data?.language || 'text') : ''
@@ -10781,12 +10872,13 @@ async function aiLibraryAddItem(data){
 
   aiLibrarySaveFallback();
   aiRenderLibrary();
+  aiNotifyStorageChanged();
 
   return item;
 
 }
 
-async function aiLibraryDeleteItem(itemId){
+async function aiLibraryDeleteItem(itemId,options){
 
   if(!itemId){
     return;
@@ -10794,6 +10886,8 @@ async function aiLibraryDeleteItem(itemId){
 
   const item =
     aiLibraryItems.find(entry => entry.id === itemId);
+
+  const settings = options && typeof options === 'object' ? options : {};
 
   try{
 
@@ -10803,22 +10897,64 @@ async function aiLibraryDeleteItem(itemId){
 
   }catch(e){
     console.warn('Library delete failed.', e);
+    aiNotifyParent('error','Library item not deleted','The stored record could not be removed. Please try again.');
+    return false;
   }
 
   aiLibraryItems =
     aiLibraryItems.filter(item => item.id !== itemId);
 
-  aiLibrarySaveFallback();
+  try{
+    const fallbackItems = aiLibraryLoadFallback().filter(entry => entry?.id !== itemId);
+    if(fallbackItems.length){
+      localStorage.setItem(AI_LIBRARY_FALLBACK_KEY,JSON.stringify(fallbackItems));
+    }else{
+      localStorage.removeItem(AI_LIBRARY_FALLBACK_KEY);
+    }
+  }catch(error){
+    console.warn('Library fallback cleanup failed.',error);
+  }
+
+  if(!settings.skipChatCleanup){
+    let chatsChanged = false;
+    Object.values(chats).forEach(chat => {
+      if(!Array.isArray(chat?.history)) return;
+      chat.history.forEach(message => {
+        if(Array.isArray(message?._libraryIds)){
+          const nextIds = message._libraryIds.filter(id => id !== itemId);
+          if(nextIds.length !== message._libraryIds.length){
+            message._libraryIds = nextIds;
+            chatsChanged = true;
+          }
+        }
+        if(!Array.isArray(message?.parts)) return;
+        const nextParts = message.parts.filter(part => part?._libraryId !== itemId);
+        if(nextParts.length !== message.parts.length){
+          message.parts = nextParts;
+          chatsChanged = true;
+        }
+      });
+    });
+    if(chatsChanged){
+      saveChats();
+      renderHistoryList();
+      if(currentChatId) renderChat();
+    }
+  }
+
   aiLibraryHideMenu();
   aiRenderLibrary();
+  aiNotifyStorageChanged();
 
-  if(item){
+  if(item && !settings.silent){
     aiNotifyParent(
       'delete',
       item.kind === 'image' ? 'Library image deleted' : 'Library file deleted',
       'Deleted "' + (item.name || (item.kind === 'image' ? 'image' : 'file')) + '" from the AI library.'
     );
   }
+
+  return true;
 
 }
 
@@ -11199,6 +11335,8 @@ function aiLibraryDownloadItem(item){
     const objectUrl =
       URL.createObjectURL(blob);
 
+    aiActiveObjectUrls.add(objectUrl);
+
     const downloadAnchor =
       document.createElement('a');
 
@@ -11233,6 +11371,7 @@ function aiLibraryDownloadItem(item){
     setTimeout(() => {
       downloadAnchor.remove();
       URL.revokeObjectURL(objectUrl);
+      aiActiveObjectUrls.delete(objectUrl);
     }, 1500);
 
   }catch(error){
@@ -11348,7 +11487,7 @@ function aiCloseLibraryModal(){
 
 }
 
-function aiLibrarySaveGeneratedCodeFiles(text){
+async function aiLibrarySaveGeneratedCodeFiles(text){
 
   const raw =
     String(text || '');
@@ -11356,7 +11495,7 @@ function aiLibrarySaveGeneratedCodeFiles(text){
   const matches =
     Array.from(raw.matchAll(/```([^\n`]*)\n?([\s\S]*?)```/g));
 
-  matches.forEach((match, index) => {
+  const saves = matches.map((match, index) => {
 
     const language =
       String(match[1] || 'text').trim() || 'text';
@@ -11365,13 +11504,13 @@ function aiLibrarySaveGeneratedCodeFiles(text){
       String(match[2] || '').replace(/^\n+|\n+$/g, '');
 
     if(!code.trim()){
-      return;
+      return null;
     }
 
     const extension =
       aiLibraryCodeExtension(language);
 
-    aiLibraryAddItem({
+    return aiLibraryAddItem({
       kind:'file',
       name:aiLibraryGeneratedName('AI_Code_' + (index + 1), extension, language),
       mime:aiLibraryMimeFromExtension(extension),
@@ -11382,6 +11521,9 @@ function aiLibrarySaveGeneratedCodeFiles(text){
     });
 
   });
+
+  const items = await Promise.all(saves.filter(Boolean));
+  return items.filter(Boolean);
 
 }
 
@@ -11558,6 +11700,17 @@ const AI_ALLOWED_MODEL_IDS = new Set(Object.keys(AI_MODEL_DETAILS));
 
 function aiNormalizeModelId(modelId){
   return AI_ALLOWED_MODEL_IDS.has(modelId) ? modelId : AI_DEFAULT_MODEL_ID;
+}
+
+function aiNotifyStorageChanged(){
+  try{
+    if(window.parent && window.parent !== window){
+      window.parent.postMessage({
+        source:'hv-ai-editor',
+        kind:'storage-changed'
+      },'*');
+    }
+  }catch(error){}
 }
 
 function aiGetModelData(modelId){
@@ -11800,6 +11953,7 @@ function saveChats(){
       'gemini_chats',
       JSON.stringify(chats)
     );
+    aiNotifyStorageChanged();
 
   }catch(e){}
 
@@ -11895,13 +12049,25 @@ function loadChat(chatId){
 
 }
 
-function deleteChat(chatId){
+async function deleteChat(chatId,options){
 
   if(!chats[chatId]){
     return;
   }
 
-  const deletedTitle = chats[chatId].title || 'New chat';
+  const settings = options && typeof options === 'object' ? options : {};
+
+  const deletedChat = chats[chatId];
+  const deletedTitle = deletedChat.title || 'New chat';
+  const libraryIds = new Set();
+  (deletedChat.history || []).forEach(message => {
+    (message?._libraryIds || []).forEach(itemId => {
+      if(itemId) libraryIds.add(itemId);
+    });
+    (message?.parts || []).forEach(part => {
+      if(part?._libraryId) libraryIds.add(part._libraryId);
+    });
+  });
   delete chats[chatId];
 
   if(currentChatId === chatId){
@@ -11938,9 +12104,69 @@ function deleteChat(chatId){
 
   saveChats();
   renderHistoryList();
-  aiNotifyParent('delete', 'AI chat deleted', 'Deleted "' + deletedTitle + '".');
+
+  for(const libraryId of libraryIds){
+    await aiLibraryDeleteItem(libraryId,{ silent:true,skipChatCleanup:true });
+  }
+
+  aiNotifyStorageChanged();
+  if(!settings.silent){
+    aiNotifyParent('delete', 'AI chat deleted', 'Deleted "' + deletedTitle + '".');
+  }
 
 }
+
+window.aiRevokeAllBlobUrls = function(){
+  [...aiActiveObjectUrls].forEach(url => {
+    try{ URL.revokeObjectURL(url); }catch(error){}
+    aiActiveObjectUrls.delete(url);
+  });
+};
+
+window.aiPrepareForStorageClear = function(scope){
+  const target = String(scope || 'all');
+
+  if(target === 'all' || target === 'ai-library'){
+    if(aiLibraryDb){
+      try{ aiLibraryDb.close(); }catch(error){}
+    }
+    aiLibraryDb = null;
+    aiLibraryItems = [];
+    aiLibraryUsesFallback = true;
+    selectedImageBase64 = null;
+    selectedImageMime = null;
+    selectedImageLibraryId = null;
+    selectedImageLibraryPromise = null;
+    selectedTextFile = null;
+    aiRenderLibrary();
+  }
+
+  if(target === 'all' || target === 'ai-history'){
+    chats = {};
+    currentChatId = null;
+    conversationHistory = [];
+    hasSentMessageInCurrentChat = false;
+    renderChat();
+    renderHistoryList();
+  }
+
+  window.aiRevokeAllBlobUrls();
+};
+
+window.aiResumeAfterStorageClear = function(scope){
+  const target = String(scope || '');
+  if(target === 'ai-library'){
+    aiLibraryUsesFallback = false;
+    aiLibraryReady = aiLibraryLoadItems();
+  }
+};
+
+window.aiStorageBridge = Object.freeze({
+  addLibraryItem:data => aiLibraryAddItem(data),
+  deleteLibraryItem:(itemId,options) => aiLibraryDeleteItem(itemId,options),
+  deleteConversation:chatId => deleteChat(chatId),
+  reloadConversations:() => loadChats()
+});
 
 function togglePinChat(chatId){
 
@@ -12019,9 +12245,20 @@ function aiSanitizeHistoryForGemini(history){
     }
 
     const parts =
-      (msg.parts || []).filter(part => {
-        return part.text || part.inline_data;
-      });
+      (msg.parts || []).map(part => {
+        if(part?.text){
+          return { text:String(part.text) };
+        }
+        if(part?.inline_data){
+          return {
+            inline_data:{
+              mime_type:String(part.inline_data.mime_type || 'application/octet-stream'),
+              data:String(part.inline_data.data || '')
+            }
+          };
+        }
+        return null;
+      }).filter(Boolean);
 
     return {
       role:msg.role,
@@ -12144,7 +12381,10 @@ function aiFormatBytes(bytes){
 
 }
 
-function aiClearTextFileAttachment(){
+function aiClearTextFileAttachment(removeStored){
+
+  const libraryId = selectedTextFile?.libraryId || null;
+  const libraryPromise = selectedTextFile?.libraryPromise || null;
 
   selectedTextFile =
     null;
@@ -12155,6 +12395,14 @@ function aiClearTextFileAttachment(){
 
   if(textFileInput){
     textFileInput.value = '';
+  }
+
+  if(removeStored && libraryId){
+    aiLibraryDeleteItem(libraryId);
+  }else if(removeStored && libraryPromise){
+    libraryPromise.then(item => {
+      if(item?.id) aiLibraryDeleteItem(item.id);
+    }).catch(() => null);
   }
 
 }
@@ -12619,12 +12867,23 @@ const filePart =
 
   });
   
-  function aiClearImageAttachment(){
+  function aiClearImageAttachment(removeStored){
+
+  const libraryId =
+    selectedImageLibraryId;
+  const libraryPromise =
+    selectedImageLibraryPromise;
 
   selectedImageBase64 =
     null;
 
   selectedImageMime =
+    null;
+
+  selectedImageLibraryId =
+    null;
+
+  selectedImageLibraryPromise =
     null;
 
   if(imagePreviewImg){
@@ -12639,6 +12898,14 @@ const filePart =
     imageInput.value = '';
   }
 
+  if(removeStored && libraryId){
+    aiLibraryDeleteItem(libraryId);
+  }else if(removeStored && libraryPromise){
+    libraryPromise.then(item => {
+      if(item?.id) aiLibraryDeleteItem(item.id);
+    }).catch(() => null);
+  }
+
 }
 
 if(imagePreviewRemove){
@@ -12648,7 +12915,7 @@ if(imagePreviewRemove){
     e.preventDefault();
     e.stopPropagation();
 
-    aiClearImageAttachment();
+    aiClearImageAttachment(true);
 
     if(inputEl){
       inputEl.focus();
@@ -12689,14 +12956,24 @@ if(imagePreviewRemove){
       imagePreview.style.display =
         'block';
 
-      aiLibraryAddItem({
+      const uploadedBase64 =
+        selectedImageBase64;
+
+      selectedImageLibraryPromise = aiLibraryAddItem({
         kind:'image',
         name:file.name || aiLibraryGeneratedName('Uploaded_Image', aiLibraryExtensionFromMime(file.type), ''),
         mime:file.type || 'image/png',
         size:file.size || aiLibraryBase64Size(selectedImageBase64),
         base64:selectedImageBase64,
-        source:'user'
+        source:'user',
+        chatId:currentChatId
       });
+
+      selectedImageLibraryPromise.then(item => {
+        if(selectedImageBase64 === uploadedBase64){
+          selectedImageLibraryId = item?.id || null;
+        }
+      }).catch(() => null);
 
     };
 
@@ -12746,15 +13023,22 @@ textFileInput.addEventListener('change', () => {
 
     aiShowTextFilePreview();
 
-    aiLibraryAddItem({
+    selectedTextFile.libraryPromise = aiLibraryAddItem({
       kind:'file',
       name:selectedTextFile.name,
       mime:selectedTextFile.type,
       size:selectedTextFile.size,
       content:selectedTextFile.text,
       language:selectedTextFile.lang,
-      source:'user'
+      source:'user',
+      chatId:currentChatId
     });
+
+    selectedTextFile.libraryPromise.then(item => {
+      if(selectedTextFile && item){
+        selectedTextFile.libraryId = item.id;
+      }
+    }).catch(() => null);
 
   };
 
@@ -12769,7 +13053,7 @@ if(textFilePreviewRemove){
     e.preventDefault();
     e.stopPropagation();
 
-    aiClearTextFileAttachment();
+    aiClearTextFileAttachment(true);
 
   });
 
@@ -13286,7 +13570,7 @@ function aiRemoveImageLoadingCard(systemId){
 
 }
 
-function aiUpdateMessageWithGeneratedImage(systemId, imageBase64, imageMime, prompt, durationSec){
+async function aiUpdateMessageWithGeneratedImage(systemId, imageBase64, imageMime, prompt, durationSec){
 
   const msg =
     document.getElementById(systemId);
@@ -13366,7 +13650,7 @@ function aiUpdateMessageWithGeneratedImage(systemId, imageBase64, imageMime, pro
 
   }
 
-  aiLibraryAddItem({
+  const libraryItem = await aiLibraryAddItem({
     kind:'image',
     name:aiLibraryGeneratedName(
       'AI_Image',
@@ -13376,11 +13660,14 @@ function aiUpdateMessageWithGeneratedImage(systemId, imageBase64, imageMime, pro
     mime:imageMime || 'image/png',
     size:aiLibraryBase64Size(imageBase64),
     base64:imageBase64,
-    source:'ai'
+    source:'ai',
+    chatId:currentChatId
   });
 
   chatEl.scrollTop =
     chatEl.scrollHeight;
+
+  return libraryItem;
 
 }
 
@@ -13488,7 +13775,7 @@ const timerInterval =
 
     clearInterval(timerInterval);
 
-    aiUpdateMessageWithGeneratedImage(
+    const generatedLibraryItem = await aiUpdateMessageWithGeneratedImage(
       systemId,
       imageResult.base64,
       imageResult.mime,
@@ -13507,7 +13794,8 @@ const timerInterval =
           inline_data:{
             mime_type:imageResult.mime,
             data:imageResult.base64
-          }
+          },
+          _libraryId:generatedLibraryItem?.id || ''
         }
       ],
       thoughtSec:durationSec
@@ -13566,6 +13854,16 @@ if(aiShouldUseImageModel(text, model)){
       createNewChat();
     }
 
+    if(selectedImageLibraryPromise){
+      const item = await selectedImageLibraryPromise.catch(() => null);
+      if(item) selectedImageLibraryId = item.id;
+    }
+
+    if(selectedTextFile?.libraryPromise){
+      const item = await selectedTextFile.libraryPromise.catch(() => null);
+      if(item && selectedTextFile) selectedTextFile.libraryId = item.id;
+    }
+
     const userParts =
   buildUserParts(
     promptText,
@@ -13580,6 +13878,20 @@ const visibleUserParts =
     selectedImageMime,
     selectedTextFile
   );
+
+  const visibleImagePart =
+    visibleUserParts.find(part => part && part.inline_data);
+
+  if(visibleImagePart && selectedImageLibraryId){
+    visibleImagePart._libraryId = selectedImageLibraryId;
+  }
+
+  const visibleFilePart =
+    visibleUserParts.find(part => part && part.file_data);
+
+  if(visibleFilePart && selectedTextFile?.libraryId){
+    visibleFilePart._libraryId = selectedTextFile.libraryId;
+  }
   
   const sentReplyContext =
   aiCloneReplyContextForMessage();
@@ -13686,7 +13998,7 @@ const timerInterval =
 
       clearInterval(timerInterval);
 
-      updateMessageWithThought(
+      const generatedCodeItems = await updateMessageWithThought(
         systemId,
         resText,
         durationSec
@@ -13700,6 +14012,7 @@ const timerInterval =
       chat.history.push({
   role:'model',
   parts:[{ text:resText }],
+  _libraryIds:generatedCodeItems.map(item => item.id),
   thoughtSec:durationSec
 });
 
@@ -13848,13 +14161,13 @@ aiNotifyParent(
 
   }
 
-  function updateMessageWithThought(systemId, text, durationSec){
+  async function updateMessageWithThought(systemId, text, durationSec){
 
     const msg =
       document.getElementById(systemId);
 
     if(!msg){
-      return;
+      return [];
     }
     
     msg.classList.remove('ai-thinking');
@@ -13884,7 +14197,8 @@ aiNotifyParent(
     textEl.innerHTML =
   formatMessageText(text);
 
-aiLibrarySaveGeneratedCodeFiles(text);
+const generatedCodeItems =
+  await aiLibrarySaveGeneratedCodeFiles(text);
 
 aiEnsureMessageReplyButton(
   msg,
@@ -13893,6 +14207,8 @@ aiEnsureMessageReplyButton(
 
 chatEl.scrollTop =
   chatEl.scrollHeight;
+
+  return generatedCodeItems;
 
   }
 
@@ -15002,6 +15318,7 @@ function aiInitProjects(){
         PROJECTS_STORAGE_KEY,
         JSON.stringify(projects)
       );
+      aiNotifyStorageChanged();
 
     }catch(error){
       console.warn('Unable to save projects.', error);
@@ -15559,22 +15876,19 @@ function aiInitProjects(){
 
   }
 
-  function aiDeleteProject(projectId){
+  async function aiDeleteProject(projectId){
 
     if(!projects[projectId]){
       return;
     }
 
-    Object.keys(chats).forEach(chatId => {
+    const projectChatIds = Object.keys(chats).filter(chatId =>
+      chats[chatId] && chats[chatId].projectId === projectId
+    );
 
-      const chat =
-        chats[chatId];
-
-      if(chat && chat.projectId === projectId){
-        chat.projectId = null;
-      }
-
-    });
+    for(const chatId of projectChatIds){
+      await deleteChat(chatId,{ silent:true });
+    }
 
     const deletedProjectName = projects[projectId].name || 'Untitled Project';
     delete projects[projectId];
@@ -16449,6 +16763,12 @@ loadChats();
   <div class="hv-popup-backdrop"></div>
 
   <div class="hv-validator-card">
+    <div class="hv-validator-loading" id="hvValidatorLoading" role="status" aria-live="polite" aria-hidden="true">
+      <div class="hv-validator-loading-card">
+        <div class="hv-validator-loading-spinner" aria-hidden="true"></div>
+        Loading validator code…
+      </div>
+    </div>
 
     <div class="hv-validator-top">
 
@@ -16681,6 +17001,11 @@ loadChats();
     </header>
     <div class="hv-nav-center-body">
       <form class="hv-contact-form" id="hvContactForm">
+        <div class="hv-contact-categories" role="group" aria-label="Message category">
+          <button class="hv-contact-category active" type="button" data-contact-category="General" aria-pressed="true"><i class="fa-solid fa-message"></i>General</button>
+          <button class="hv-contact-category" type="button" data-contact-category="Bug Report" aria-pressed="false"><i class="fa-solid fa-bug"></i>Bug Report</button>
+          <button class="hv-contact-category" type="button" data-contact-category="Feature Request" aria-pressed="false"><i class="fa-solid fa-lightbulb"></i>Feature Request</button>
+        </div>
         <div class="hv-contact-inline">
           <label for="hvContactName">Name</label>
           <input class="hv-contact-input" id="hvContactName" name="name" maxlength="80" placeholder="Your name" autocomplete="name" required>
@@ -16857,7 +17182,147 @@ loadChats();
           <button class="hv-setting-toggle" id="hvSettingSounds" type="button" role="switch" aria-checked="false" aria-label="Toggle UI sounds"></button>
         </div>
       </div>
+
+      <section class="hv-storage-section" aria-labelledby="hvStorageDataTitle">
+        <div class="hv-storage-heading">
+          <div class="hv-storage-heading-icon"><i class="fa-solid fa-hard-drive"></i></div>
+          <div>
+            <h3 id="hvStorageDataTitle">Storage &amp; Data</h3>
+            <p>Review, download, or permanently clear information saved by HTML Viewer on this device.</p>
+          </div>
+        </div>
+
+        <div class="hv-storage-summary-grid">
+          <div class="hv-storage-summary-card">
+            <div class="hv-storage-summary-label">Files loaded since last clear</div>
+            <div class="hv-storage-summary-value" id="hvStoredFileCount">0</div>
+          </div>
+          <div class="hv-storage-summary-card">
+            <div class="hv-storage-summary-label">Size</div>
+            <div class="hv-storage-summary-value" id="hvStoredFileSize">0 B</div>
+          </div>
+        </div>
+
+        <div class="hv-storage-usage-card">
+          <div class="hv-storage-usage-top">
+            <div class="hv-storage-usage-title">Browser storage usage</div>
+            <div class="hv-storage-status" id="hvStorageStatus">Checking</div>
+          </div>
+          <div class="hv-storage-meter" role="progressbar" aria-label="Browser storage usage" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="hv-storage-meter-fill" id="hvStorageMeterFill"></div>
+          </div>
+          <div class="hv-storage-usage-meta">
+            <div><strong id="hvStorageUsage">0 B</strong>Current usage</div>
+            <div><strong id="hvStorageQuota">Unavailable</strong>Estimated quota</div>
+            <div><strong id="hvStoragePercent">0%</strong>Usage</div>
+            <div><strong id="hvStorageSafeLimit">Unavailable</strong>Recommended limit</div>
+          </div>
+          <div class="hv-storage-safe-note">Staying below 70% of the browser-provided quota can reduce storage-failure and performance risks, but it cannot guarantee that storage will remain available.</div>
+        </div>
+
+        <div class="hv-storage-action-card">
+          <div class="hv-storage-action-head">
+            <div>
+              <strong>Download your data</strong>
+              <span>Build one ZIP containing readable storage records and available original files.</span>
+            </div>
+            <button class="hv-storage-action-button" id="hvDownloadSiteData" type="button">
+              <i class="fa-solid fa-file-zipper"></i>
+              Download data
+            </button>
+          </div>
+          <div class="hv-storage-progress" id="hvStorageExportProgress" aria-live="polite">
+            <div class="hv-storage-progress-track"><div class="hv-storage-progress-fill" id="hvStorageExportProgressFill"></div></div>
+            <div class="hv-storage-progress-copy"><span id="hvStorageExportStage">Scanning saved data</span><span id="hvStorageExportPercent">0%</span></div>
+          </div>
+          <div class="hv-storage-export-result" id="hvStorageExportResult" aria-live="polite"></div>
+        </div>
+
+        <div class="hv-storage-action-card">
+          <div class="hv-storage-action-head">
+            <div>
+              <strong>Clear saved sections</strong>
+              <span>Remove one local collection and its references without affecting other saved data.</span>
+            </div>
+          </div>
+          <div class="hv-storage-bulk-grid">
+            <button class="hv-storage-bulk-button" type="button" data-hv-bulk-clear="saved"><i class="fa-solid fa-code-branch"></i>Clear Saved Versions</button>
+            <button class="hv-storage-bulk-button" type="button" data-hv-bulk-clear="history"><i class="fa-solid fa-clock-rotate-left"></i>Clear Code History</button>
+            <button class="hv-storage-bulk-button" type="button" data-hv-bulk-clear="ai-history"><i class="fa-solid fa-comments"></i>Clear AI conversations</button>
+            <button class="hv-storage-bulk-button" type="button" data-hv-bulk-clear="ai-library"><i class="fa-solid fa-photo-film"></i>Clear AI library</button>
+          </div>
+        </div>
+
+        <div class="hv-storage-action-card">
+          <div class="hv-storage-action-head">
+            <div>
+              <strong>Clear site data</strong>
+              <span>Permanently remove all browser-stored data owned by this site.</span>
+            </div>
+            <button class="hv-storage-action-button danger" id="hvClearSiteData" type="button">
+              <i class="fa-solid fa-trash-can"></i>
+              Clear site data
+            </button>
+          </div>
+        </div>
+      </section>
       <div class="hv-settings-note">Settings are saved automatically on this device.</div>
+    </div>
+  </section>
+</div>
+
+<div class="hv-nav-center-modal" id="hvClearDataModal" aria-hidden="true">
+  <div class="hv-nav-center-backdrop" data-hv-clear-close></div>
+  <section class="hv-nav-center-panel" role="dialog" aria-modal="true" aria-labelledby="hvClearDataTitle">
+    <header class="hv-nav-center-head">
+      <div class="hv-nav-center-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+      <div>
+        <h2 class="hv-nav-center-title" id="hvClearDataTitle">Permanently clear site data</h2>
+        <div class="hv-nav-center-sub">This action cannot be undone.</div>
+      </div>
+      <button class="hv-nav-center-close" type="button" data-hv-clear-close aria-label="Close clear data confirmation"><i class="fa-solid fa-xmark"></i></button>
+    </header>
+    <div class="hv-nav-center-body">
+      <div class="hv-clear-data-warning">Warning: This will permanently clear all saved data you have throughout this site, including locally saved files, images, playlists, settings, lyrics, caches, and other browser-stored information.</div>
+      <ul class="hv-clear-data-list">
+        <li><i class="fa-solid fa-xmark"></i><span>Editor drafts and restore points</span></li>
+        <li><i class="fa-solid fa-xmark"></i><span>Saved versions and projects</span></li>
+        <li><i class="fa-solid fa-xmark"></i><span>Code and AI histories</span></li>
+        <li><i class="fa-solid fa-xmark"></i><span>AI files, images, and attachments</span></li>
+        <li><i class="fa-solid fa-xmark"></i><span>Favorites and local settings</span></li>
+        <li><i class="fa-solid fa-xmark"></i><span>App caches and OPFS files, if present</span></li>
+      </ul>
+      <div class="hv-clear-data-recommend">Download your data first if you may need it later. This clears only data owned by HTML Viewer on this origin; it cannot clear browser history or unrelated files on your computer.</div>
+      <label class="hv-clear-data-label" for="hvClearDataInput">Type CLEAR to continue</label>
+      <input class="hv-clear-data-input" id="hvClearDataInput" autocomplete="off" spellcheck="false" aria-describedby="hvClearDataResult">
+      <div class="hv-clear-data-result" id="hvClearDataResult" aria-live="assertive"></div>
+      <div class="hv-clear-data-actions">
+        <button class="hv-storage-action-button" type="button" data-hv-clear-close>Cancel</button>
+        <button class="hv-storage-action-button danger" id="hvClearDataConfirm" type="button" disabled>Permanently clear site data</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="hv-nav-center-modal" id="hvBulkClearModal" aria-hidden="true">
+  <div class="hv-nav-center-backdrop" data-hv-bulk-close></div>
+  <section class="hv-nav-center-panel" role="dialog" aria-modal="true" aria-labelledby="hvBulkClearTitle">
+    <header class="hv-nav-center-head">
+      <div class="hv-nav-center-icon"><i class="fa-solid fa-trash"></i></div>
+      <div>
+        <h2 class="hv-nav-center-title" id="hvBulkClearTitle">Clear saved data</h2>
+        <div class="hv-nav-center-sub" id="hvBulkClearDescription">Permanently remove this locally saved collection.</div>
+      </div>
+      <button class="hv-nav-center-close" type="button" data-hv-bulk-close aria-label="Close confirmation"><i class="fa-solid fa-xmark"></i></button>
+    </header>
+    <div class="hv-nav-center-body">
+      <div class="hv-clear-data-warning" id="hvBulkClearWarning">This action permanently removes the selected records from this website's browser storage.</div>
+      <div class="hv-clear-data-recommend">Download your data first if you may need these records later.</div>
+      <div class="hv-clear-data-result" id="hvBulkClearResult" aria-live="assertive"></div>
+      <div class="hv-clear-data-actions">
+        <button class="hv-storage-action-button" type="button" data-hv-bulk-close>Cancel</button>
+        <button class="hv-storage-action-button danger" id="hvBulkClearConfirm" type="button">Clear saved data</button>
+      </div>
     </div>
   </section>
 </div>
@@ -18153,7 +18618,7 @@ function hvRenderValidatorEmptyState(container){
 }
 
 function hvDownloadValidatorFile(filename, text, type){
-  const url = URL.createObjectURL(
+  const url = hvCreateTrackedObjectUrl(
     new Blob([String(text || '')], {
       type:type || 'text/plain;charset=utf-8'
     })
@@ -18166,7 +18631,7 @@ function hvDownloadValidatorFile(filename, text, type){
   link.click();
   link.remove();
 
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  setTimeout(() => hvRevokeTrackedObjectUrl(url), 1000);
 }
 
 function hvBuildValidatorReport(diagnostics){
@@ -18207,6 +18672,8 @@ function hvInitValidatorUi(){
   }
 
   const popup = document.getElementById('hvValidatorPopup');
+  const card = popup ? popup.querySelector('.hv-validator-card') : null;
+  const loading = document.getElementById('hvValidatorLoading');
   const openButton = document.getElementById('hvValidatorBtn');
   const closeButton = document.getElementById('hvValidatorClose');
   const input = document.getElementById('hvValidatorInput');
@@ -18237,6 +18704,7 @@ function hvInitValidatorUi(){
 
   const backdrop = popup.querySelector('.hv-popup-backdrop');
   const highlightContent = highlight.querySelector('.hv-validator-highlight-content');
+  let validatorLoadRevision = 0;
 
   hvValidatorUiInitialized = true;
 
@@ -18325,14 +18793,34 @@ function hvInitValidatorUi(){
   }
 
   function closeValidator(){
+    validatorLoadRevision++;
+    if(card) card.classList.remove('loading');
+    if(loading) loading.setAttribute('aria-hidden','true');
     popup.classList.remove('show');
   }
 
-  openButton.addEventListener('click', () => {
-    input.value = els.code ? els.code.value : '';
+  openButton.addEventListener('click', async () => {
+    const revision = ++validatorLoadRevision;
     hvResetValidatorResults();
-    hvUpdateValidatorEditor();
     popup.classList.add('show');
+    if(card) card.classList.add('loading');
+    if(loading) loading.setAttribute('aria-hidden','false');
+
+    await hvYieldToBrowser();
+    await hvYieldToBrowser();
+
+    if(revision !== validatorLoadRevision || !popup.classList.contains('show')){
+      return;
+    }
+
+    input.value = els.code ? els.code.value : '';
+    hvUpdateValidatorEditor();
+
+    await hvYieldToBrowser();
+    if(revision === validatorLoadRevision){
+      if(card) card.classList.remove('loading');
+      if(loading) loading.setAttribute('aria-hidden','true');
+    }
   });
 
   closeButton.addEventListener('click', closeValidator);
@@ -18539,6 +19027,7 @@ if(document.readyState === 'loading'){
 
     function storeSaved(list){
       localStorage.setItem(LS_SAVED, JSON.stringify(list.slice(0, 8)));
+      if(typeof window.hvStorageChanged === 'function') window.hvStorageChanged();
     }
 
     function loadCommunityFavoriteIds(){
@@ -18564,6 +19053,7 @@ if(document.readyState === 'loading'){
         LS_COMMUNITY_FAVORITES,
         JSON.stringify(unique)
       );
+      if(typeof window.hvStorageChanged === 'function') window.hvStorageChanged();
 
       return unique;
     }
@@ -18616,6 +19106,7 @@ if(document.readyState === 'loading'){
         LS_SAVED_PROJECTS,
         JSON.stringify(projects)
       );
+      if(typeof window.hvStorageChanged === 'function') window.hvStorageChanged();
     }
 
     function hvPruneSavedProjects(){
@@ -18664,6 +19155,10 @@ if(document.readyState === 'loading'){
     }
 
     function saveLast(){
+
+  if(window.hvSiteClearInProgress){
+    return;
+  }
 
   const text =
     currentText();
@@ -20237,12 +20732,12 @@ window.hvRenderPreview =
     function downloadCode(filename, text){
       const a = document.createElement('a');
       const blob = new Blob([text || ''], { type: 'text/html' });
-      a.href = URL.createObjectURL(blob);
+      a.href = hvCreateTrackedObjectUrl(blob);
       a.download = (filename || 'code').replace(/\.[^.]+$/, '') + '.html';
       document.body.appendChild(a);
       a.click();
       a.remove();
-      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      setTimeout(() => hvRevokeTrackedObjectUrl(a.href), 1000);
 
       if(typeof window.hvNotify === 'function'){
         window.hvNotify('download', 'Your HTML code download is ready.');
@@ -23695,7 +24190,7 @@ function hvDownloadFile(filename, text, extension = 'html', mimeType = 'text/htm
   );
 
   const url =
-    URL.createObjectURL(blob);
+    hvCreateTrackedObjectUrl(blob);
 
   const a =
     document.createElement('a');
@@ -23712,7 +24207,7 @@ function hvDownloadFile(filename, text, extension = 'html', mimeType = 'text/htm
   a.remove();
 
   setTimeout(() => {
-    URL.revokeObjectURL(url);
+    hvRevokeTrackedObjectUrl(url);
   }, 1000);
 
   if(typeof window.hvNotify === 'function'){
@@ -24269,6 +24764,7 @@ function hvStoreUiSettings(){
     HV_UI_SETTINGS_KEY,
     JSON.stringify(hvUiSettings)
   );
+  if(typeof window.hvStorageChanged === 'function') window.hvStorageChanged();
 }
 
 function hvSetSwitchState(button, active){
@@ -24499,6 +24995,7 @@ function hvStoreCodeHistory(items){
       HV_CODE_HISTORY_KEY,
       JSON.stringify(next)
     );
+    if(typeof window.hvStorageChanged === 'function') window.hvStorageChanged();
     return true;
   }catch(error){
     console.warn('Code history could not be saved locally.', error);
@@ -24728,6 +25225,9 @@ function hvOpenNavModal(name){
 
   if(name === 'settings'){
     hvApplyUiSettings(false);
+    if(typeof window.hvStorageChanged === 'function'){
+      window.hvStorageChanged();
+    }
   }
 
   if(name === 'contact'){
@@ -25059,6 +25559,19 @@ const hvContactForm =
   document.getElementById('hvContactForm');
 
 if(hvContactForm){
+  let hvContactCategory = 'General';
+
+  hvContactForm.querySelectorAll('[data-contact-category]').forEach(button => {
+    button.addEventListener('click',() => {
+      hvContactCategory = button.dataset.contactCategory || 'General';
+      hvContactForm.querySelectorAll('[data-contact-category]').forEach(item => {
+        const active = item === button;
+        item.classList.toggle('active',active);
+        item.setAttribute('aria-pressed',String(active));
+      });
+    });
+  });
+
   hvContactForm.addEventListener('submit', async event => {
     event.preventDefault();
 
@@ -25091,7 +25604,7 @@ if(hvContactForm){
       const response = await fetch(hvBackendEndpoint('/api/contact'), {
         method:'POST',
         headers:{ 'Content-Type':'application/json' },
-        body:JSON.stringify({ name, message })
+        body:JSON.stringify({ name, message, category:hvContactCategory })
       });
 
       if(!response.ok){
@@ -25104,6 +25617,12 @@ if(hvContactForm){
       }
 
       hvContactForm.reset();
+      hvContactCategory = 'General';
+      hvContactForm.querySelectorAll('[data-contact-category]').forEach(item => {
+        const active = item.dataset.contactCategory === 'General';
+        item.classList.toggle('active',active);
+        item.setAttribute('aria-pressed',String(active));
+      });
       if(status){
         status.textContent = 'Message sent successfully.';
         status.className = 'hv-contact-status success';
@@ -25124,9 +25643,1286 @@ if(hvContactForm){
   });
 }
 
+/* =========================
+   STORAGE & DATA
+========================= */
+
+const HV_SITE_STORAGE_REGISTRY = Object.freeze({
+  localStorage:[
+    { key:'hv_last_code_v4', group:'editor' },
+    { key:'hv_last_name_v4', group:'editor' },
+    { key:'hv_font_v4', group:'settings' },
+    { key:'hv_saved_versions_v4', group:'saved' },
+    { key:'hv_community_favorites_v1', group:'settings' },
+    { key:'hv_saved_projects_v1', group:'saved' },
+    { key:'hv_local_storage_notice_ack_v1', group:'settings' },
+    { key:'hv_restore_code_v4', group:'editor' },
+    { key:'hv_restore_name_v4', group:'editor' },
+    { key:'hv_code_history_v1', group:'history' },
+    { key:'hv_ui_settings_v1', group:'settings' },
+    { key:'gemini_chats', group:'ai-history' },
+    { key:'gemini_projects', group:'ai-history' },
+    { key:'html_viewer_ai_library_fallback', group:'ai-library' }
+  ],
+  sessionStorage:[],
+  indexedDB:[
+    { name:'html_viewer_ai_library', version:1, stores:['items'], group:'ai-library' }
+  ],
+  cacheNames:[],
+  cachePrefixes:['html-viewer-','html_viewer_','hv-'],
+  serviceWorkers:[],
+  opfs:{ ownedRoot:true }
+});
+
+window.HV_SITE_STORAGE_REGISTRY = HV_SITE_STORAGE_REGISTRY;
+
+const hvStorageElements = {
+  fileCount:document.getElementById('hvStoredFileCount'),
+  fileSize:document.getElementById('hvStoredFileSize'),
+  status:document.getElementById('hvStorageStatus'),
+  usage:document.getElementById('hvStorageUsage'),
+  quota:document.getElementById('hvStorageQuota'),
+  percent:document.getElementById('hvStoragePercent'),
+  safeLimit:document.getElementById('hvStorageSafeLimit'),
+  meter:document.querySelector('.hv-storage-meter'),
+  meterFill:document.getElementById('hvStorageMeterFill'),
+  download:document.getElementById('hvDownloadSiteData'),
+  clear:document.getElementById('hvClearSiteData'),
+  exportProgress:document.getElementById('hvStorageExportProgress'),
+  exportFill:document.getElementById('hvStorageExportProgressFill'),
+  exportStage:document.getElementById('hvStorageExportStage'),
+  exportPercent:document.getElementById('hvStorageExportPercent'),
+  exportResult:document.getElementById('hvStorageExportResult')
+};
+
+const hvActiveBlobUrls = new Set();
+let hvStorageRefreshTimer = null;
+let hvStorageRefreshPromise = null;
+let hvSiteClearReloadScheduled = false;
+let hvPendingBulkClear = '';
+
+function formatStorageSize(bytes){
+  const value = Math.max(0, Number(bytes) || 0);
+  const units = ['B','KB','MB','GB','TB'];
+  if(value < 1024) return Math.round(value) + ' B';
+  const unitIndex = Math.min(
+    units.length - 1,
+    Math.floor(Math.log(value) / Math.log(1024))
+  );
+  const scaled = value / Math.pow(1024, unitIndex);
+  const precision = scaled >= 100 ? 0 : scaled >= 10 ? 1 : 2;
+  return scaled.toFixed(precision).replace(/\.0+$|(\.\d*[1-9])0+$/,'$1') + ' ' + units[unitIndex];
+}
+
+function hvTextByteSize(value){
+  const text = String(value == null ? '' : value);
+  if(typeof TextEncoder === 'function'){
+    return new TextEncoder().encode(text).byteLength;
+  }
+  return new Blob([text]).size;
+}
+
+function hvBase64ByteSize(value){
+  const clean = String(value || '')
+    .replace(/^data:[^,]*;base64,/i,'')
+    .replace(/\s/g,'');
+  if(!clean) return 0;
+  const padding = clean.endsWith('==') ? 2 : clean.endsWith('=') ? 1 : 0;
+  return Math.max(0, Math.floor(clean.length * 3 / 4) - padding);
+}
+
+function hvSafeExportName(value, fallback){
+  const clean = String(value || fallback || 'item')
+    .replace(/[\\/:*?"<>|\u0000-\u001f]/g,'-')
+    .replace(/\s+/g,' ')
+    .trim()
+    .slice(0,160);
+  return clean || fallback || 'item';
+}
+
+function hvExtensionForMime(mime){
+  const type = String(mime || '').toLowerCase().split(';')[0];
+  const map = {
+    'text/html':'html','text/css':'css','text/javascript':'js',
+    'application/javascript':'js','application/json':'json',
+    'text/plain':'txt','text/markdown':'md','text/xml':'xml',
+    'application/xml':'xml','image/png':'png','image/jpeg':'jpg',
+    'image/webp':'webp','image/gif':'gif','image/svg+xml':'svg',
+    'audio/mpeg':'mp3','audio/wav':'wav','audio/ogg':'ogg',
+    'audio/mp4':'m4a','application/pdf':'pdf'
+  };
+  return map[type] || 'bin';
+}
+
+function hvFolderForMime(mime, hint){
+  const type = String(mime || '').toLowerCase();
+  const label = String(hint || '').toLowerCase();
+  if(type.startsWith('image/') || label.includes('thumbnail')) return 'images';
+  if(type.startsWith('audio/')) return 'audio';
+  if(label.includes('lyric')) return 'lyrics';
+  return 'files';
+}
+
+function hvJsonCloneForExport(value){
+  const seen = new WeakSet();
+  return JSON.parse(JSON.stringify(value, (key, item) => {
+    if(item instanceof Blob){
+      return {
+        __type:item instanceof File ? 'File' : 'Blob',
+        name:item instanceof File ? item.name : undefined,
+        type:item.type || 'application/octet-stream',
+        size:item.size,
+        lastModified:item instanceof File ? item.lastModified : undefined
+      };
+    }
+    if(item && typeof item === 'object'){
+      if(seen.has(item)) return '[Circular]';
+      seen.add(item);
+    }
+    return item;
+  }));
+}
+
+function hvParseStoredValue(raw){
+  try{
+    return { parsed:true, value:JSON.parse(raw) };
+  }catch(error){
+    return { parsed:false, value:raw };
+  }
+}
+
+function hvDescriptorFromRecord(record, source, path){
+  if(record instanceof Blob){
+    return {
+      name:record instanceof File ? record.name : 'blob-' + path + '.' + hvExtensionForMime(record.type),
+      mime:record.type || 'application/octet-stream',
+      size:record.size,
+      createdAt:record instanceof File && record.lastModified
+        ? new Date(record.lastModified).toISOString()
+        : null,
+      source,path,blob:record
+    };
+  }
+
+  if(!record || typeof record !== 'object') return null;
+
+  if(record.inline_data && typeof record.inline_data.data === 'string'){
+    const mime = String(record.inline_data.mime_type || 'application/octet-stream');
+    return {
+      name:'attachment-' + path + '.' + hvExtensionForMime(mime),
+      mime,
+      size:hvBase64ByteSize(record.inline_data.data),
+      createdAt:null,
+      source,path,
+      base64:record.inline_data.data
+    };
+  }
+
+  if(record.file_data && typeof record.file_data === 'object'){
+    const file = record.file_data;
+    const mime = String(file.mime_type || file.type || 'text/plain');
+    return {
+      name:hvSafeExportName(file.name,'attachment.' + hvExtensionForMime(mime)),
+      mime,
+      size:Number(file.size) || hvTextByteSize(file.text || file.content || ''),
+      createdAt:null,
+      source,path,
+      text:String(file.text || file.content || '')
+    };
+  }
+
+  if(
+    (record.kind === 'image' || record.kind === 'file') &&
+    (typeof record.base64 === 'string' || typeof record.content === 'string')
+  ){
+    const mime = String(record.mime || (record.kind === 'image' ? 'image/png' : 'text/plain'));
+    return {
+      name:hvSafeExportName(record.name,(record.kind === 'image' ? 'image.' : 'file.') + hvExtensionForMime(mime)),
+      mime,
+      size:Number(record.size) || (
+        record.kind === 'image'
+          ? hvBase64ByteSize(record.base64)
+          : hvTextByteSize(record.content)
+      ),
+      createdAt:record.createdAt ? new Date(Number(record.createdAt)).toISOString() : null,
+      source,path,
+      base64:record.kind === 'image' ? record.base64 : null,
+      text:record.kind === 'file' ? record.content : null
+    };
+  }
+
+  if(typeof record.text === 'string' && record.name && (
+    source.includes('hv_saved_versions_v4') ||
+    source.includes('hv_code_history_v1')
+  )){
+    return {
+      name:hvSafeExportName(record.name,'code') + (
+        /\.[a-z0-9]{1,8}$/i.test(String(record.name)) ? '' : '.html'
+      ),
+      mime:'text/html',
+      size:hvTextByteSize(record.text),
+      createdAt:record.ts || record.importedAt
+        ? new Date(Number(record.ts || record.importedAt)).toISOString()
+        : null,
+      source,path,text:record.text
+    };
+  }
+
+  return null;
+}
+
+function hvExtractFileDescriptors(value, source, path, output){
+  const list = output || [];
+  const currentPath = path || 'root';
+  const descriptor = hvDescriptorFromRecord(value,source,currentPath);
+
+  if(descriptor){
+    list.push(descriptor);
+    return list;
+  }
+
+  if(!value || typeof value !== 'object') return list;
+
+  if(Array.isArray(value)){
+    value.forEach((item,index) => {
+      hvExtractFileDescriptors(item,source,currentPath + '[' + index + ']',list);
+    });
+    return list;
+  }
+
+  Object.entries(value).forEach(([key,item]) => {
+    hvExtractFileDescriptors(item,source,currentPath + '.' + key,list);
+  });
+  return list;
+}
+
+function hvIsAppSessionKey(key){
+  return HV_SITE_STORAGE_REGISTRY.sessionStorage.some(item => item.key === key) ||
+    /^(?:hv_|gemini_|html_viewer_)/.test(String(key || ''));
+}
+
+function collectLocalStorageExport(){
+  const values = {};
+  const files = [];
+  const errors = [];
+
+  HV_SITE_STORAGE_REGISTRY.localStorage.forEach(entry => {
+    try{
+      const raw = localStorage.getItem(entry.key);
+      if(raw === null) return;
+      const parsed = hvParseStoredValue(raw);
+      values[entry.key] = parsed.value;
+      hvExtractFileDescriptors(parsed.value,'localStorage/' + entry.key,entry.key,files);
+    }catch(error){
+      errors.push('localStorage/' + entry.key + ': ' + (error.message || error));
+    }
+  });
+
+  return { values,files,errors };
+}
+
+function collectSessionStorageExport(){
+  const values = {};
+  const files = [];
+  const errors = [];
+
+  try{
+    for(let index = 0; index < sessionStorage.length; index++){
+      const key = sessionStorage.key(index);
+      if(!hvIsAppSessionKey(key)) continue;
+      const raw = sessionStorage.getItem(key);
+      const parsed = hvParseStoredValue(raw);
+      values[key] = parsed.value;
+      hvExtractFileDescriptors(parsed.value,'sessionStorage/' + key,key,files);
+    }
+  }catch(error){
+    errors.push('sessionStorage: ' + (error.message || error));
+  }
+
+  return { values,files,errors };
+}
+
+async function hvKnownDatabaseExists(name){
+  if(!window.indexedDB) return false;
+  if(typeof indexedDB.databases !== 'function') return true;
+  try{
+    const databases = await indexedDB.databases();
+    return databases.some(item => item && item.name === name);
+  }catch(error){
+    return true;
+  }
+}
+
+function hvOpenDatabase(name){
+  return new Promise((resolve,reject) => {
+    const request = indexedDB.open(name);
+    let createdByScan = false;
+    request.onupgradeneeded = () => {
+      createdByScan = true;
+      try{ request.transaction.abort(); }catch(error){}
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => {
+      if(createdByScan){
+        try{ indexedDB.deleteDatabase(name); }catch(error){}
+        resolve(null);
+      }else{
+        reject(request.error || new Error('Unable to open ' + name));
+      }
+    };
+  });
+}
+
+function hvReadStoreRecords(db,storeName){
+  return new Promise((resolve,reject) => {
+    const records = [];
+    let transaction;
+    try{
+      transaction = db.transaction(storeName,'readonly');
+    }catch(error){
+      reject(error);
+      return;
+    }
+    const request = transaction.objectStore(storeName).openCursor();
+    request.onsuccess = () => {
+      const cursor = request.result;
+      if(!cursor) return;
+      records.push({ key:cursor.key, value:cursor.value });
+      cursor.continue();
+    };
+    request.onerror = () => reject(request.error || new Error('Unable to read ' + storeName));
+    transaction.oncomplete = () => resolve(records);
+    transaction.onerror = () => reject(transaction.error || new Error('Unable to read ' + storeName));
+  });
+}
+
+async function collectIndexedDBExport(){
+  const databases = {};
+  const files = [];
+  const errors = [];
+
+  if(!window.indexedDB){
+    errors.push('IndexedDB is not supported by this browser.');
+    return { databases,files,errors,unsupported:true };
+  }
+
+  for(const config of HV_SITE_STORAGE_REGISTRY.indexedDB){
+    let db = null;
+    try{
+      if(!(await hvKnownDatabaseExists(config.name))) continue;
+      db = await hvOpenDatabase(config.name);
+      if(!db) continue;
+      const storeNames = config.stores.filter(name => db.objectStoreNames.contains(name));
+      databases[config.name] = { version:db.version, stores:{} };
+
+      for(const storeName of storeNames){
+        const records = await hvReadStoreRecords(db,storeName);
+        databases[config.name].stores[storeName] = records.map(record => ({
+          key:record.key,
+          value:hvJsonCloneForExport(record.value)
+        }));
+        records.forEach((record,index) => {
+          hvExtractFileDescriptors(
+            record.value,
+            'indexedDB/' + config.name + '/' + storeName,
+            String(record.key ?? index),
+            files
+          );
+        });
+        await hvYieldToBrowser();
+      }
+    }catch(error){
+      errors.push('IndexedDB/' + config.name + ': ' + (error.message || error));
+    }finally{
+      if(db) db.close();
+    }
+  }
+
+  return { databases,files,errors };
+}
+
+async function hvAppCacheNames(){
+  if(!window.caches) return [];
+  const names = await caches.keys();
+  return names.filter(name =>
+    HV_SITE_STORAGE_REGISTRY.cacheNames.includes(name) ||
+    HV_SITE_STORAGE_REGISTRY.cachePrefixes.some(prefix => name.startsWith(prefix))
+  );
+}
+
+async function collectCacheStorageExport(){
+  const entries = [];
+  const files = [];
+  const errors = [];
+  if(!window.caches){
+    return { entries,files,errors,unsupported:true };
+  }
+
+  try{
+    for(const cacheName of await hvAppCacheNames()){
+      const cache = await caches.open(cacheName);
+      const requests = await cache.keys();
+      for(let index = 0; index < requests.length; index++){
+        try{
+          const request = requests[index];
+          const response = await cache.match(request);
+          if(!response) continue;
+          const blob = await response.blob();
+          const url = new URL(request.url);
+          const name = hvSafeExportName(
+            url.pathname.split('/').filter(Boolean).pop(),
+            'cache-item-' + (index + 1) + '.' + hvExtensionForMime(blob.type)
+          );
+          entries.push({
+            cacheName,
+            url:request.url,
+            method:request.method,
+            status:response.status,
+            mime:blob.type || response.headers.get('Content-Type') || 'application/octet-stream',
+            size:blob.size,
+            headers:Object.fromEntries(response.headers.entries())
+          });
+          files.push({
+            name,mime:blob.type || 'application/octet-stream',
+            size:blob.size,createdAt:null,
+            source:'cacheStorage/' + cacheName,path:request.url,blob
+          });
+        }catch(error){
+          errors.push('Cache/' + cacheName + ': ' + (error.message || error));
+        }
+        if(index % 20 === 0) await hvYieldToBrowser();
+      }
+    }
+  }catch(error){
+    errors.push('Cache Storage: ' + (error.message || error));
+  }
+  return { entries,files,errors };
+}
+
+async function hvWalkOpfs(directory,path,files,errors){
+  for await (const [name,handle] of directory.entries()){
+    const nextPath = path ? path + '/' + name : name;
+    try{
+      if(handle.kind === 'directory'){
+        await hvWalkOpfs(handle,nextPath,files,errors);
+      }else{
+        const file = await handle.getFile();
+        files.push({
+          name:file.name || name,
+          mime:file.type || 'application/octet-stream',
+          size:file.size,
+          createdAt:file.lastModified ? new Date(file.lastModified).toISOString() : null,
+          source:'opfs',path:nextPath,blob:file
+        });
+      }
+    }catch(error){
+      errors.push('OPFS/' + nextPath + ': ' + (error.message || error));
+    }
+    if(files.length % 20 === 0) await hvYieldToBrowser();
+  }
+}
+
+async function collectOPFSExport(){
+  const files = [];
+  const errors = [];
+  if(!navigator.storage || typeof navigator.storage.getDirectory !== 'function'){
+    return { files,errors,unsupported:true };
+  }
+  try{
+    const root = await navigator.storage.getDirectory();
+    await hvWalkOpfs(root,'',files,errors);
+  }catch(error){
+    errors.push('OPFS: ' + (error.message || error));
+  }
+  return { files,errors };
+}
+
+async function scanLocalSiteData(){
+  const local = collectLocalStorageExport();
+  const session = collectSessionStorageExport();
+  const [indexed,cache,opfs] = await Promise.all([
+    collectIndexedDBExport(),
+    collectCacheStorageExport(),
+    collectOPFSExport()
+  ]);
+  const files = [
+    ...local.files,
+    ...session.files,
+    ...indexed.files,
+    ...cache.files,
+    ...opfs.files
+  ];
+  return {
+    localStorage:local,
+    sessionStorage:session,
+    indexedDB:indexed,
+    cacheStorage:cache,
+    opfs,
+    files,
+    errors:[
+      ...local.errors,...session.errors,...indexed.errors,...cache.errors,...opfs.errors
+    ]
+  };
+}
+
+function calculateStoredFileStats(scan){
+  const files = Array.isArray(scan?.files) ? scan.files : [];
+  return {
+    count:files.length,
+    size:files.reduce((total,item) => total + Math.max(0,Number(item.size) || 0),0)
+  };
+}
+
+function hvStorageStatusForPercent(percent){
+  if(percent >= 90) return { label:'Critical',className:'critical' };
+  if(percent >= 80) return { label:'High usage',className:'high-usage' };
+  if(percent >= 60) return { label:'Getting full',className:'getting-full' };
+  return { label:'Healthy',className:'healthy' };
+}
+
+async function refreshStorageEstimate(scan){
+  const stats = calculateStoredFileStats(scan || await scanLocalSiteData());
+  if(hvStorageElements.fileCount) hvStorageElements.fileCount.textContent = String(stats.count);
+  if(hvStorageElements.fileSize) hvStorageElements.fileSize.textContent = formatStorageSize(stats.size);
+
+  let usage = 0;
+  let quota = 0;
+  let supported = false;
+  try{
+    if(navigator.storage && typeof navigator.storage.estimate === 'function'){
+      const estimate = await navigator.storage.estimate();
+      usage = Math.max(0,Number(estimate.usage) || 0);
+      quota = Math.max(0,Number(estimate.quota) || 0);
+      supported = quota > 0;
+    }
+  }catch(error){}
+
+  const percent = supported ? Math.min(100,usage / quota * 100) : 0;
+  const status = supported
+    ? hvStorageStatusForPercent(percent)
+    : { label:'Unavailable',className:'healthy' };
+
+  if(hvStorageElements.usage) hvStorageElements.usage.textContent = supported ? formatStorageSize(usage) : 'Unavailable';
+  if(hvStorageElements.quota) hvStorageElements.quota.textContent = supported ? formatStorageSize(quota) : 'Unavailable';
+  if(hvStorageElements.percent) hvStorageElements.percent.textContent = supported ? percent.toFixed(percent >= 10 ? 1 : 2) + '%' : 'Unavailable';
+  if(hvStorageElements.safeLimit) hvStorageElements.safeLimit.textContent = supported ? formatStorageSize(quota * .7) : 'Unavailable';
+  if(hvStorageElements.status){
+    hvStorageElements.status.textContent = status.label;
+    hvStorageElements.status.className = 'hv-storage-status ' + status.className;
+  }
+  if(hvStorageElements.meterFill){
+    hvStorageElements.meterFill.style.width = percent + '%';
+    hvStorageElements.meterFill.className = 'hv-storage-meter-fill ' + status.className;
+  }
+  if(hvStorageElements.meter){
+    hvStorageElements.meter.setAttribute('aria-valuenow',String(Math.round(percent)));
+    hvStorageElements.meter.setAttribute('aria-valuetext',supported ? percent.toFixed(1) + '%' : 'Storage estimate unavailable');
+  }
+  return { ...stats,usage,quota,percent,supported,status:status.label };
+}
+
+async function hvRefreshStorageData(){
+  if(hvStorageRefreshPromise) return hvStorageRefreshPromise;
+  hvStorageRefreshPromise = (async () => {
+    const scan = await scanLocalSiteData();
+    await refreshStorageEstimate(scan);
+    return scan;
+  })().finally(() => {
+    hvStorageRefreshPromise = null;
+  });
+  return hvStorageRefreshPromise;
+}
+
+window.hvStorageChanged = function(){
+  clearTimeout(hvStorageRefreshTimer);
+  hvStorageRefreshTimer = setTimeout(() => {
+    const run = () => hvRefreshStorageData().catch(error => {
+      console.warn('Storage statistics could not be refreshed.',error);
+    });
+    if(typeof requestIdleCallback === 'function'){
+      requestIdleCallback(run,{ timeout:1400 });
+    }else{
+      run();
+    }
+  },900);
+};
+
+function hvYieldToBrowser(){
+  return new Promise(resolve => {
+    if(typeof requestAnimationFrame === 'function'){
+      requestAnimationFrame(() => resolve());
+    }else{
+      setTimeout(resolve,0);
+    }
+  });
+}
+
+function hvSetExportProgress(stage,percent){
+  const value = Math.max(0,Math.min(100,Number(percent) || 0));
+  if(hvStorageElements.exportProgress) hvStorageElements.exportProgress.classList.add('active');
+  if(hvStorageElements.exportStage) hvStorageElements.exportStage.textContent = stage;
+  if(hvStorageElements.exportPercent) hvStorageElements.exportPercent.textContent = Math.round(value) + '%';
+  if(hvStorageElements.exportFill) hvStorageElements.exportFill.style.width = value + '%';
+}
+
+function hvLoadExternalScript(url){
+  return new Promise((resolve,reject) => {
+    const script = document.createElement('script');
+    script.src = url;
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = () => {
+      script.remove();
+      reject(new Error('Unable to load ZIP library from ' + new URL(url).hostname));
+    };
+    document.head.appendChild(script);
+  });
+}
+
+async function hvLoadZipLibrary(){
+  if(typeof window.JSZip === 'function') return window.JSZip;
+  const sources = [
+    'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'
+  ];
+  const failures = [];
+  for(const source of sources){
+    try{
+      await hvLoadExternalScript(source);
+      if(typeof window.JSZip === 'function') return window.JSZip;
+    }catch(error){
+      failures.push(error.message);
+    }
+  }
+  throw new Error('The ZIP library could not be loaded. ' + failures.join(' '));
+}
+
+function buildDataManifest(){
+  return {
+    application:'HTML Viewer',
+    origin:location.origin,
+    exportedAt:new Date().toISOString(),
+    schemaVersion:1,
+    items:[],
+    partialErrors:[]
+  };
+}
+
+function hvUniqueZipPath(path,used){
+  const normalized = String(path).replace(/^\/+/,'');
+  const lower = normalized.toLowerCase();
+  if(!used.has(lower)){
+    used.add(lower);
+    return normalized;
+  }
+  const dot = normalized.lastIndexOf('.');
+  const base = dot > normalized.lastIndexOf('/') ? normalized.slice(0,dot) : normalized;
+  const extension = dot > normalized.lastIndexOf('/') ? normalized.slice(dot) : '';
+  let number = 2;
+  let candidate;
+  do{
+    candidate = base + ' (' + number + ')' + extension;
+    number++;
+  }while(used.has(candidate.toLowerCase()));
+  used.add(candidate.toLowerCase());
+  return candidate;
+}
+
+function hvDescriptorBlob(descriptor){
+  if(descriptor.blob instanceof Blob) return descriptor.blob;
+  if(descriptor.base64){
+    const binary = atob(
+      String(descriptor.base64)
+        .replace(/^data:[^,]*;base64,/i,'')
+        .replace(/\s/g,'')
+    );
+    const bytes = new Uint8Array(binary.length);
+    for(let index = 0; index < binary.length; index++) bytes[index] = binary.charCodeAt(index);
+    return new Blob([bytes],{ type:descriptor.mime || 'application/octet-stream' });
+  }
+  return new Blob([String(descriptor.text || '')],{
+    type:descriptor.mime || 'text/plain;charset=utf-8'
+  });
+}
+
+async function createSiteDataZip(scan,onProgress){
+  const JSZipClass = await hvLoadZipLibrary();
+  const zip = new JSZipClass();
+  const manifest = buildDataManifest();
+  const usedPaths = new Set();
+  const add = (path,data,mime,source,createdAt,size) => {
+    const uniquePath = hvUniqueZipPath(path,usedPaths);
+    zip.file(uniquePath,data);
+    manifest.items.push({
+      name:uniquePath,
+      mimeType:mime || 'application/octet-stream',
+      size:Number(size) || (
+        typeof data === 'string' ? hvTextByteSize(data) : Number(data?.size) || 0
+      ),
+      sourceStorageSystem:source,
+      knownCreationDate:createdAt || null,
+      exportDate:manifest.exportedAt
+    });
+    return uniquePath;
+  };
+
+  const localJson = JSON.stringify(scan.localStorage.values,null,2);
+  const sessionJson = JSON.stringify(scan.sessionStorage.values,null,2);
+  add('settings/localStorage.json',localJson,'application/json','localStorage',null);
+  add('settings/sessionStorage.json',sessionJson,'application/json','sessionStorage',null);
+
+  for(const [dbName,dbData] of Object.entries(scan.indexedDB.databases)){
+    for(const [storeName,records] of Object.entries(dbData.stores)){
+      const json = JSON.stringify(records,null,2);
+      add(
+        'database/' + hvSafeExportName(dbName,'database') + '/' + hvSafeExportName(storeName,'store') + '.json',
+        json,'application/json','IndexedDB/' + dbName + '/' + storeName,null
+      );
+    }
+  }
+
+  const cacheJson = JSON.stringify(scan.cacheStorage.entries,null,2);
+  add('cache/cache-index.json',cacheJson,'application/json','Cache Storage',null);
+
+  for(let index = 0; index < scan.files.length; index++){
+    const descriptor = scan.files[index];
+    try{
+      const folder = descriptor.source === 'opfs'
+        ? 'files/opfs'
+        : descriptor.source.startsWith('cacheStorage/')
+          ? 'cache/files'
+          : hvFolderForMime(descriptor.mime,descriptor.name);
+      const relativeName = descriptor.source === 'opfs' && descriptor.path
+        ? String(descriptor.path).split('/').map(part => hvSafeExportName(part,'item')).join('/')
+        : hvSafeExportName(
+            descriptor.name,
+            'item-' + (index + 1) + '.' + hvExtensionForMime(descriptor.mime)
+          );
+      const path = folder + '/' + relativeName;
+      const blob = hvDescriptorBlob(descriptor);
+      add(path,blob,descriptor.mime,descriptor.source,descriptor.createdAt,descriptor.size);
+    }catch(error){
+      manifest.partialErrors.push(
+        descriptor.source + '/' + descriptor.path + ': ' + (error.message || error)
+      );
+    }
+    if(index % 15 === 0){
+      if(onProgress) onProgress('Preparing files',30 + Math.min(25,index / Math.max(1,scan.files.length) * 25));
+      await hvYieldToBrowser();
+    }
+  }
+
+  manifest.partialErrors.push(...scan.errors);
+  const manifestJson = JSON.stringify(manifest,null,2);
+  add('manifest.json',manifestJson,'application/json','export manifest',null);
+
+  if(onProgress) onProgress('Building ZIP',60);
+  const blob = await zip.generateAsync(
+    {
+      type:'blob',
+      compression:'DEFLATE',
+      compressionOptions:{ level:6 },
+      platform:'DOS'
+    },
+    metadata => {
+      if(onProgress) onProgress('Building ZIP',60 + metadata.percent * .38);
+    }
+  );
+
+  return {
+    blob,
+    manifest,
+    fileCount:scan.files.length,
+    totalFileSize:scan.files.reduce((total,item) => total + (Number(item.size) || 0),0)
+  };
+}
+
+function hvCreateTrackedObjectUrl(blob){
+  const url = URL.createObjectURL(blob);
+  hvActiveBlobUrls.add(url);
+  return url;
+}
+
+function hvRevokeTrackedObjectUrl(url){
+  if(!url) return;
+  try{ URL.revokeObjectURL(url); }catch(error){}
+  hvActiveBlobUrls.delete(url);
+}
+
+async function downloadSiteData(){
+  if(hvStorageElements.download) hvStorageElements.download.disabled = true;
+  if(hvStorageElements.exportResult){
+    hvStorageElements.exportResult.textContent = '';
+    hvStorageElements.exportResult.classList.remove('error');
+  }
+
+  try{
+    hvSetExportProgress('Scanning saved data',5);
+    const scan = await scanLocalSiteData();
+    hvSetExportProgress('Preparing files',28);
+    await hvYieldToBrowser();
+    const result = await createSiteDataZip(scan,hvSetExportProgress);
+    hvSetExportProgress('Download ready',100);
+
+    const now = new Date();
+    const stamp = [
+      now.getFullYear(),
+      String(now.getMonth() + 1).padStart(2,'0'),
+      String(now.getDate()).padStart(2,'0')
+    ].join('-') + '-' + [
+      String(now.getHours()).padStart(2,'0'),
+      String(now.getMinutes()).padStart(2,'0')
+    ].join('-');
+    const url = hvCreateTrackedObjectUrl(result.blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'music-player-data-' + stamp + '.zip';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => hvRevokeTrackedObjectUrl(url),1500);
+
+    if(hvStorageElements.exportResult){
+      const partial = result.manifest.partialErrors.length;
+      hvStorageElements.exportResult.textContent =
+        result.fileCount + ' files · ' + formatStorageSize(result.totalFileSize) +
+        (partial ? ' · ' + partial + ' source warning' + (partial === 1 ? '' : 's') + ' recorded in manifest.json' : '');
+    }
+    if(typeof window.hvNotify === 'function'){
+      window.hvNotify('download','Your site-data ZIP is ready.');
+    }
+  }catch(error){
+    hvSetExportProgress('Export could not finish',0);
+    if(hvStorageElements.exportResult){
+      hvStorageElements.exportResult.textContent = error.message || String(error);
+      hvStorageElements.exportResult.classList.add('error');
+    }
+    if(typeof window.hvNotify === 'function'){
+      window.hvNotify('error','Site data could not be exported.');
+    }
+  }finally{
+    if(hvStorageElements.download) hvStorageElements.download.disabled = false;
+  }
+}
+
+function hvPrepareAiFrameForClear(scope){
+  const frame = document.getElementById('hvAiEditorFrame');
+  try{
+    if(frame?.contentWindow && typeof frame.contentWindow.aiPrepareForStorageClear === 'function'){
+      frame.contentWindow.aiPrepareForStorageClear(scope);
+    }
+  }catch(error){}
+}
+
+function hvResumeAiFrameAfterClear(scope){
+  const frame = document.getElementById('hvAiEditorFrame');
+  try{
+    if(frame?.contentWindow && typeof frame.contentWindow.aiResumeAfterStorageClear === 'function'){
+      frame.contentWindow.aiResumeAfterStorageClear(scope);
+    }
+  }catch(error){}
+}
+
+async function clearLocalStorageData(group){
+  const errors = [];
+  const entries = HV_SITE_STORAGE_REGISTRY.localStorage.filter(entry => !group || entry.group === group);
+  entries.forEach(entry => {
+    try{
+      localStorage.removeItem(entry.key);
+      if(localStorage.getItem(entry.key) !== null){
+        errors.push('localStorage/' + entry.key + ' still exists after deletion.');
+      }
+    }catch(error){
+      errors.push('localStorage/' + entry.key + ': ' + (error.message || error));
+    }
+  });
+
+  try{
+    const keys = [];
+    if(group){
+      HV_SITE_STORAGE_REGISTRY.sessionStorage
+        .filter(entry => entry.group === group)
+        .forEach(entry => keys.push(entry.key));
+    }else{
+      for(let index = 0; index < sessionStorage.length; index++){
+        const key = sessionStorage.key(index);
+        if(hvIsAppSessionKey(key)) keys.push(key);
+      }
+    }
+    keys.forEach(key => sessionStorage.removeItem(key));
+  }catch(error){
+    errors.push('sessionStorage: ' + (error.message || error));
+  }
+  return errors;
+}
+
+function hvDeleteDatabase(name){
+  return new Promise(resolve => {
+    if(!window.indexedDB){
+      resolve('IndexedDB is not supported by this browser.');
+      return;
+    }
+    let settled = false;
+    const finish = error => {
+      if(settled) return;
+      settled = true;
+      resolve(error || null);
+    };
+    const request = indexedDB.deleteDatabase(name);
+    request.onsuccess = () => finish(null);
+    request.onerror = () => finish(
+      'IndexedDB/' + name + ': ' + (request.error?.message || 'delete failed')
+    );
+    request.onblocked = () => finish(
+      'IndexedDB/' + name + ': deletion was blocked by an open page.'
+    );
+    setTimeout(() => finish('IndexedDB/' + name + ': deletion timed out.'),5000);
+  });
+}
+
+async function clearIndexedDBData(group){
+  const errors = [];
+  hvPrepareAiFrameForClear(group || 'all');
+  await hvYieldToBrowser();
+  const databases = HV_SITE_STORAGE_REGISTRY.indexedDB.filter(item => !group || item.group === group);
+  for(const database of databases){
+    const error = await hvDeleteDatabase(database.name);
+    if(error) errors.push(error);
+  }
+  return errors;
+}
+
+async function clearCacheStorageData(){
+  const errors = [];
+  if(!window.caches) return errors;
+  try{
+    for(const name of await hvAppCacheNames()){
+      try{
+        const deleted = await caches.delete(name);
+        if(!deleted) errors.push('Cache/' + name + ': cache was not deleted.');
+      }catch(error){
+        errors.push('Cache/' + name + ': ' + (error.message || error));
+      }
+    }
+  }catch(error){
+    errors.push('Cache Storage: ' + (error.message || error));
+  }
+  return errors;
+}
+
+async function clearOPFSData(){
+  const errors = [];
+  if(!navigator.storage || typeof navigator.storage.getDirectory !== 'function') return errors;
+  try{
+    const root = await navigator.storage.getDirectory();
+    const names = [];
+    for await (const [name] of root.entries()) names.push(name);
+    for(const name of names){
+      try{
+        await root.removeEntry(name,{ recursive:true });
+      }catch(error){
+        errors.push('OPFS/' + name + ': ' + (error.message || error));
+      }
+    }
+  }catch(error){
+    errors.push('OPFS: ' + (error.message || error));
+  }
+  return errors;
+}
+
+function resetStorageStatistics(){
+  if(hvStorageElements.fileCount) hvStorageElements.fileCount.textContent = '0';
+  if(hvStorageElements.fileSize) hvStorageElements.fileSize.textContent = '0 B';
+  if(hvStorageElements.usage) hvStorageElements.usage.textContent = '0 B';
+  if(hvStorageElements.percent) hvStorageElements.percent.textContent = '0%';
+  if(hvStorageElements.meterFill) hvStorageElements.meterFill.style.width = '0%';
+}
+
+function hvRevokeAllBlobUrls(){
+  [...hvActiveBlobUrls].forEach(hvRevokeTrackedObjectUrl);
+  const frame = document.getElementById('hvAiEditorFrame');
+  try{
+    if(frame?.contentWindow && typeof frame.contentWindow.aiRevokeAllBlobUrls === 'function'){
+      frame.contentWindow.aiRevokeAllBlobUrls();
+    }
+  }catch(error){}
+}
+
+async function clearAllSiteData(){
+  window.hvSiteClearInProgress = true;
+  const errors = [];
+  hvPrepareAiFrameForClear('all');
+  hvRevokeAllBlobUrls();
+
+  const results = await Promise.all([
+    clearLocalStorageData(),
+    clearIndexedDBData(),
+    clearCacheStorageData(),
+    clearOPFSData()
+  ]);
+  results.forEach(list => errors.push(...list));
+
+  if('serviceWorker' in navigator && HV_SITE_STORAGE_REGISTRY.serviceWorkers.length){
+    try{
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      for(const registration of registrations){
+        if(HV_SITE_STORAGE_REGISTRY.serviceWorkers.some(scope => registration.scope === scope)){
+          if(!(await registration.unregister())){
+            errors.push('Service worker ' + registration.scope + ' could not be unregistered.');
+          }
+        }
+      }
+    }catch(error){
+      errors.push('Service workers: ' + (error.message || error));
+    }
+  }
+
+  const remaining = await scanLocalSiteData();
+  const remainingStats = calculateStoredFileStats(remaining);
+  if(remainingStats.count){
+    errors.push(remainingStats.count + ' stored file record' + (remainingStats.count === 1 ? '' : 's') + ' remain.');
+  }
+  errors.push(...remaining.errors);
+
+  try{
+    if(typeof window.hvSetCode === 'function'){
+      window.hvSetCode('','Untitled');
+    }
+    if(typeof renderSavedMenu === 'function') renderSavedMenu();
+    hvRenderCodeHistory();
+  }catch(error){
+    errors.push('In-memory editor reset: ' + (error.message || error));
+  }
+
+  if(errors.length){
+    await refreshStorageEstimate(remaining);
+    if(remaining.errors.length){
+      if(hvStorageElements.fileCount) hvStorageElements.fileCount.textContent = 'Unavailable';
+      if(hvStorageElements.fileSize) hvStorageElements.fileSize.textContent = 'Unavailable';
+    }
+    window.hvSiteClearInProgress = false;
+    return { ok:false,errors };
+  }
+
+  resetStorageStatistics();
+  window.hvSiteClearInProgress = false;
+  return { ok:true,errors:[] };
+}
+
+function openClearDataConfirmation(){
+  const modal = document.getElementById('hvClearDataModal');
+  const input = document.getElementById('hvClearDataInput');
+  const confirm = document.getElementById('hvClearDataConfirm');
+  const result = document.getElementById('hvClearDataResult');
+  if(!modal || !input || !confirm) return;
+  input.value = '';
+  confirm.disabled = true;
+  if(result){
+    result.textContent = '';
+    result.classList.remove('show');
+  }
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden','false');
+  setTimeout(() => input.focus(),40);
+}
+
+function hvCloseClearDataConfirmation(){
+  const modal = document.getElementById('hvClearDataModal');
+  const confirm = document.getElementById('hvClearDataConfirm');
+  if(confirm?.dataset.running === 'true') return;
+  modal?.classList.remove('open');
+  modal?.setAttribute('aria-hidden','true');
+}
+
+const HV_BULK_CLEAR_COPY = {
+  saved:{
+    title:'Clear Saved Versions',
+    description:'Permanently remove all saved code versions and saved-version projects.',
+    label:'Clear Saved Versions'
+  },
+  history:{
+    title:'Clear Code History',
+    description:'Permanently remove every locally stored import-history entry.',
+    label:'Clear Code History'
+  },
+  'ai-history':{
+    title:'Clear AI conversations',
+    description:'Permanently remove AI conversations, prompts, responses, and AI projects.',
+    label:'Clear AI conversations'
+  },
+  'ai-library':{
+    title:'Clear AI library',
+    description:'Permanently remove locally stored AI images, generated code files, and uploaded library attachments.',
+    label:'Clear AI library'
+  }
+};
+
+function hvOpenBulkClearConfirmation(group){
+  const copy = HV_BULK_CLEAR_COPY[group];
+  const modal = document.getElementById('hvBulkClearModal');
+  if(!copy || !modal) return;
+  hvPendingBulkClear = group;
+  document.getElementById('hvBulkClearTitle').textContent = copy.title;
+  document.getElementById('hvBulkClearDescription').textContent = copy.description;
+  document.getElementById('hvBulkClearConfirm').textContent = copy.label;
+  const result = document.getElementById('hvBulkClearResult');
+  if(result){
+    result.textContent = '';
+    result.classList.remove('show');
+  }
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden','false');
+}
+
+function hvCloseBulkClearConfirmation(){
+  const modal = document.getElementById('hvBulkClearModal');
+  const confirm = document.getElementById('hvBulkClearConfirm');
+  if(confirm?.dataset.running === 'true') return;
+  hvPendingBulkClear = '';
+  modal?.classList.remove('open');
+  modal?.setAttribute('aria-hidden','true');
+}
+
+async function hvClearBulkGroup(group){
+  const errors = [];
+  if(group === 'saved'){
+    errors.push(...await clearLocalStorageData('saved'));
+    try{
+      if(typeof renderSavedMenu === 'function') renderSavedMenu();
+    }catch(error){}
+  }else if(group === 'history'){
+    errors.push(...await clearLocalStorageData('history'));
+    hvRenderCodeHistory();
+  }else if(group === 'ai-history'){
+    hvPrepareAiFrameForClear('ai-history');
+    errors.push(...await clearLocalStorageData('ai-history'));
+  }else if(group === 'ai-library'){
+    hvPrepareAiFrameForClear('ai-library');
+    errors.push(...await clearLocalStorageData('ai-library'));
+    errors.push(...await clearIndexedDBData('ai-library'));
+    if(!errors.length) hvResumeAiFrameAfterClear('ai-library');
+  }
+  window.hvStorageChanged();
+  return errors;
+}
+
+if(hvStorageElements.download){
+  hvStorageElements.download.addEventListener('click',downloadSiteData);
+}
+
+if(hvStorageElements.clear){
+  hvStorageElements.clear.addEventListener('click',openClearDataConfirmation);
+}
+
+document.querySelectorAll('[data-hv-clear-close]').forEach(button => {
+  button.addEventListener('click',hvCloseClearDataConfirmation);
+});
+
+const hvClearDataInput = document.getElementById('hvClearDataInput');
+const hvClearDataConfirm = document.getElementById('hvClearDataConfirm');
+if(hvClearDataInput && hvClearDataConfirm){
+  hvClearDataInput.addEventListener('input',() => {
+    hvClearDataConfirm.disabled = hvClearDataInput.value !== 'CLEAR';
+  });
+  hvClearDataConfirm.addEventListener('click',async () => {
+    if(hvClearDataInput.value !== 'CLEAR' || hvClearDataConfirm.dataset.running === 'true') return;
+    const result = document.getElementById('hvClearDataResult');
+    hvClearDataConfirm.dataset.running = 'true';
+    hvClearDataConfirm.disabled = true;
+    hvClearDataConfirm.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Clearing site data';
+    if(result){
+      result.textContent = 'Clearing app-owned browser storage…';
+      result.classList.add('show');
+    }
+    const outcome = await clearAllSiteData();
+    delete hvClearDataConfirm.dataset.running;
+    if(outcome.ok){
+      if(result) result.textContent = 'All site-owned data was cleared successfully. Reloading to a clean first-run state…';
+      if(!hvSiteClearReloadScheduled){
+        hvSiteClearReloadScheduled = true;
+        setTimeout(() => location.reload(),900);
+      }
+    }else{
+      if(result){
+        result.textContent = 'Some data could not be cleared:\n• ' + outcome.errors.join('\n• ');
+      }
+      hvClearDataConfirm.innerHTML = 'Retry clear site data';
+      hvClearDataConfirm.disabled = hvClearDataInput.value !== 'CLEAR';
+    }
+  });
+}
+
+document.querySelectorAll('[data-hv-bulk-clear]').forEach(button => {
+  button.addEventListener('click',() => hvOpenBulkClearConfirmation(button.dataset.hvBulkClear));
+});
+
+document.querySelectorAll('[data-hv-bulk-close]').forEach(button => {
+  button.addEventListener('click',hvCloseBulkClearConfirmation);
+});
+
+const hvBulkClearConfirm = document.getElementById('hvBulkClearConfirm');
+if(hvBulkClearConfirm){
+  hvBulkClearConfirm.addEventListener('click',async () => {
+    if(!hvPendingBulkClear || hvBulkClearConfirm.dataset.running === 'true') return;
+    const group = hvPendingBulkClear;
+    const result = document.getElementById('hvBulkClearResult');
+    hvBulkClearConfirm.dataset.running = 'true';
+    hvBulkClearConfirm.disabled = true;
+    hvBulkClearConfirm.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Clearing';
+    const errors = await hvClearBulkGroup(group);
+    delete hvBulkClearConfirm.dataset.running;
+    hvBulkClearConfirm.disabled = false;
+    if(errors.length){
+      if(result){
+        result.textContent = 'Some records could not be cleared:\n• ' + errors.join('\n• ');
+        result.classList.add('show');
+      }
+      hvBulkClearConfirm.textContent = 'Retry';
+    }else{
+      if(typeof window.hvNotify === 'function'){
+        window.hvNotify('delete',HV_BULK_CLEAR_COPY[group].title + ' completed.');
+      }
+      hvCloseBulkClearConfirmation();
+      await hvRefreshStorageData();
+    }
+  });
+}
+
+window.scanLocalSiteData = scanLocalSiteData;
+window.calculateStoredFileStats = calculateStoredFileStats;
+window.formatStorageSize = formatStorageSize;
+window.refreshStorageEstimate = refreshStorageEstimate;
+window.collectLocalStorageExport = collectLocalStorageExport;
+window.collectIndexedDBExport = collectIndexedDBExport;
+window.collectCacheStorageExport = collectCacheStorageExport;
+window.collectOPFSExport = collectOPFSExport;
+window.buildDataManifest = buildDataManifest;
+window.createSiteDataZip = createSiteDataZip;
+window.downloadSiteData = downloadSiteData;
+window.openClearDataConfirmation = openClearDataConfirmation;
+window.clearLocalStorageData = clearLocalStorageData;
+window.clearIndexedDBData = clearIndexedDBData;
+window.clearCacheStorageData = clearCacheStorageData;
+window.clearOPFSData = clearOPFSData;
+window.clearAllSiteData = clearAllSiteData;
+window.resetStorageStatistics = resetStorageStatistics;
+
+window.addEventListener('message',event => {
+  const frame = document.getElementById('hvAiEditorFrame');
+  if(
+    event.data?.source === 'hv-ai-editor' &&
+    event.data?.kind === 'storage-changed' &&
+    frame &&
+    event.source === frame.contentWindow
+  ){
+    window.hvStorageChanged();
+  }
+});
+
 hvApplyUiSettings(false);
 hvRenderFaq();
 hvRenderCodeHistory();
+window.hvStorageChanged();
 
 /* =========================
    LIVE PREVIEW DEVICE LAYOUT MODES

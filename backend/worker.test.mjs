@@ -206,3 +206,77 @@ test('returns a setup error when the Workers AI binding is missing', async () =>
     error:'Cloudflare Workers AI is not configured.'
   });
 });
+
+test('sends the selected contact category in the Discord embed', async t => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+  });
+
+  let discordPayload;
+  globalThis.fetch = async (url,init) => {
+    assert.match(String(url), /^https:\/\/discord\.com\/api\/webhooks\//);
+    discordPayload = JSON.parse(init.body);
+    return Response.json({ id:'message-id' });
+  };
+
+  const response = await worker.fetch(
+    new Request('https://worker.example/api/contact', {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        Origin:ALLOWED_ORIGIN
+      },
+      body:JSON.stringify({
+        name:'Test User',
+        message:'The editor toolbar overlaps on mobile.',
+        category:'Bug Report'
+      })
+    }),
+    {
+      ...TEST_ENV,
+      DISCORD_WEBHOOK_URL:'https://discord.com/api/webhooks/123/test-token'
+    }
+  );
+
+  assert.equal(response.status,200);
+  assert.deepEqual(
+    discordPayload.embeds[0].fields.find(field => field.name === 'Category'),
+    { name:'Category',value:'Bug Report',inline:true }
+  );
+});
+
+test('rejects unknown contact categories before calling Discord', async t => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+  });
+
+  globalThis.fetch = async () => {
+    throw new Error('Discord should not be called.');
+  };
+
+  const response = await worker.fetch(
+    new Request('https://worker.example/api/contact', {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        Origin:ALLOWED_ORIGIN
+      },
+      body:JSON.stringify({
+        name:'Test User',
+        message:'Hello',
+        category:'Security'
+      })
+    }),
+    {
+      ...TEST_ENV,
+      DISCORD_WEBHOOK_URL:'https://discord.com/api/webhooks/123/test-token'
+    }
+  );
+
+  assert.equal(response.status,400);
+  assert.deepEqual(await response.json(), {
+    error:'The contact category is not allowed.'
+  });
+});

@@ -19,6 +19,9 @@ The Worker provides these routes:
 - `POST /api/contact`
 - `POST /api/community-preset`
 
+The contact route accepts `General`, `Bug Report`, or `Feature Request` as its
+`category` value and includes the selected category in the Discord embed.
+
 ## 1. Replace the old credentials first
 
 The old credentials were inside a browser-delivered HTML file. Treat them
