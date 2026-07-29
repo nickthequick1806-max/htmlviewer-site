@@ -399,6 +399,47 @@ test('classifies named controls and code-search values for Voice Mode', async t 
   });
 });
 
+test('routes explicit Voice Mode image requests to the FLUX action', async t => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+  });
+
+  globalThis.fetch = async () => Response.json({
+    candidates:[{
+      content:{
+        parts:[{
+          text:JSON.stringify({
+            intent:'UI_ACTION',
+            action:'GENERATE_IMAGE',
+            target:'FLUX.2 Klein 4B',
+            value:'a polished onyx dashboard illustration',
+            confidence:0.99,
+            reason:'The user explicitly requested an image generation.'
+          })
+        }]
+      }
+    }]
+  });
+
+  const response = await worker.fetch(
+    createJsonRequest('/api/ai/voice-intent', {
+      transcript:'Generate an image of a polished onyx dashboard illustration.'
+    }),
+    TEST_ENV
+  );
+  assert.equal(response.status, 200);
+  assert.deepEqual(await response.json(), {
+    actionable:false,
+    intent:'UI_ACTION',
+    uiAction:'GENERATE_IMAGE',
+    uiTarget:null,
+    uiValue:'a polished onyx dashboard illustration',
+    confidence:0.99,
+    reason:'The user explicitly requested an image generation.'
+  });
+});
+
 test('classifies named saves and explicit saved-version actions', async t => {
   const originalFetch = globalThis.fetch;
   t.after(() => {

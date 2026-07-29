@@ -20,7 +20,8 @@ const GEMINI_VOICE_UI_ACTIONS = new Set([
   'SEARCH_CODE',
   'FILL_CONTROL',
   'SAVE_CODE',
-  'SAVED_VERSION_ACTION'
+  'SAVED_VERSION_ACTION',
+  'GENERATE_IMAGE'
 ]);
 const GEMINI_LIVE_VOICES = new Set([
   'Zephyr', 'Puck', 'Charon', 'Kore', 'Fenrir', 'Leda', 'Orus', 'Aoede',
@@ -282,6 +283,8 @@ async function classifyVoiceIntent(request, env, origin){
     'from an ambiguous reference to code. For every other control use CLICK_CONTROL and put its concise',
     'visible or accessible button name in target (for example Validate HTML, Download,',
     'Saved Codes, Community Presets, Settings, Format, Compress, or Live Preview).',
+    'Use GENERATE_IMAGE when the user explicitly asks to create, generate, render, or',
+    'design an image. Put the full visual prompt in value so the app can route it to FLUX.',
     'ACTIONABLE means the user is directing the coding model to create, edit, fix,',
     'replace, remove, debug, or otherwise change code or a project. If the user asks',
     'to click or use an existing Format, Compress, Validate, Download, Search, Save,',
@@ -327,7 +330,8 @@ async function classifyVoiceIntent(request, env, origin){
                   'SEARCH_CODE',
                   'FILL_CONTROL',
                   'SAVE_CODE',
-                  'SAVED_VERSION_ACTION'
+                  'SAVED_VERSION_ACTION',
+                  'GENERATE_IMAGE'
                 ]
               },
               target:{ type:'STRING' },
@@ -389,7 +393,8 @@ async function classifyVoiceIntent(request, env, origin){
     requestedAction === 'SEARCH_CODE' ||
     requestedAction === 'FILL_CONTROL' ||
     requestedAction === 'SAVE_CODE' ||
-    requestedAction === 'SAVED_VERSION_ACTION'
+    requestedAction === 'SAVED_VERSION_ACTION' ||
+    requestedAction === 'GENERATE_IMAGE'
   ) && typeof result.value === 'string'
     ? result.value.slice(0, 4000)
     : null;
@@ -399,7 +404,8 @@ async function classifyVoiceIntent(request, env, origin){
     (requestedAction !== 'SEARCH_CODE' || uiValue) &&
     (requestedAction !== 'FILL_CONTROL' || (uiTarget && uiValue !== null)) &&
     (requestedAction !== 'SAVE_CODE' || uiValue) &&
-    (requestedAction !== 'SAVED_VERSION_ACTION' || (uiTarget && uiValue))
+    (requestedAction !== 'SAVED_VERSION_ACTION' || (uiTarget && uiValue)) &&
+    (requestedAction !== 'GENERATE_IMAGE' || uiValue)
     ? requestedAction
     : null;
   const confidence = Number.isFinite(Number(result.confidence))

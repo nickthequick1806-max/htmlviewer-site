@@ -101,6 +101,10 @@
       --muted:#9ca3af;
       --accent:#ffffff;
       --accent2:#e5e5e5;
+      --hv-accent:#ffffff;
+      --hv-accent-soft:rgba(255,255,255,.07);
+      --hv-accent-border:rgba(255,255,255,.34);
+      --hv-accent-glow:rgba(255,255,255,.12);
       --good:#22c55e;
       --danger:#ef4444;
       --radius:10px;
@@ -2308,6 +2312,302 @@ body { margin: 0; padding: 0; }
   transform:scale(1);
 }
 
+/* Action feedback belongs to the editable source viewport only. */
+.hv-body{
+  position:relative;
+}
+
+.hv-body > .hv-code-action-overlay,
+.hv-body > .hv-copy-overlay{
+  inset:0;
+  border-radius:0;
+}
+
+/* =========================
+   LIVE PREVIEW PROMO + GITHUB
+========================= */
+
+.hv-preview .hv-head{
+  position:relative;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  gap:12px;
+}
+
+.hv-preview-promo{
+  position:relative;
+  z-index:3;
+  width:max-content;
+  min-width:0;
+  max-width:560px;
+  height:42px;
+  padding:0 10px 0 8px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  border:1px solid rgba(245,194,66,.5);
+  border-radius:11px;
+  background:
+    linear-gradient(90deg,rgba(245,158,11,.12),rgba(245,158,11,.045)),
+    #11100d;
+  color:#f5f5f5;
+  box-shadow:0 8px 26px rgba(0,0,0,.3),inset 0 1px rgba(255,255,255,.05);
+  justify-self:center;
+  transform:none;
+  cursor:pointer;
+  transition:border-color .16s ease,background .16s ease,transform .16s ease,opacity .16s ease;
+}
+
+.hv-preview-promo:hover,
+.hv-preview-promo:focus-visible{
+  border-color:rgba(250,204,21,.78);
+  background:
+    linear-gradient(90deg,rgba(245,158,11,.18),rgba(245,158,11,.07)),
+    #14120d;
+  outline:0;
+  transform:scale(1.012);
+}
+
+.hv-preview-promo-icon{
+  width:30px;
+  height:30px;
+  flex:0 0 auto;
+  display:grid;
+  place-items:center;
+  border-right:1px solid rgba(250,204,21,.22);
+  color:#facc15;
+}
+
+.hv-preview-promo-copy{
+  min-width:0;
+  overflow:hidden;
+  color:#d4d4d8;
+  font-size:11px;
+  font-weight:700;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.hv-preview-promo-copy strong{
+  color:#fde68a;
+}
+
+.hv-preview-promo-badge{
+  height:25px;
+  padding:0 9px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border:1px solid rgba(250,204,21,.28);
+  border-radius:999px;
+  color:#fde68a;
+  font-size:9px;
+  font-weight:850;
+  white-space:nowrap;
+}
+
+.hv-preview-promo-badge i{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#facc15;
+  box-shadow:0 0 10px rgba(250,204,21,.8);
+  animation:hvPromoLivePulse 1.8s ease-in-out infinite;
+}
+
+@keyframes hvPromoLivePulse{
+  50%{opacity:.45;transform:scale(.75)}
+}
+
+.hv-preview-promo.compact{
+  width:38px;
+  min-width:38px;
+  max-width:38px;
+  padding:0;
+  justify-content:center;
+}
+
+.hv-preview-promo.compact:hover,
+.hv-preview-promo.compact:focus-visible{
+  transform:scale(1.04);
+}
+
+.hv-preview-promo.compact .hv-preview-promo-icon{
+  width:100%;
+  border:0;
+}
+
+.hv-preview-promo.compact .hv-preview-promo-copy,
+.hv-preview-promo.compact .hv-preview-promo-badge{
+  display:none;
+}
+
+.hv-preview-controls .hv-preview-promo.compact{
+  width:34px;
+  min-width:34px;
+  max-width:34px;
+  height:34px;
+  flex:0 0 34px;
+  justify-self:auto;
+  border-radius:8px;
+}
+
+.hv-github-publish-btn{
+  width:auto !important;
+  min-width:38px;
+  padding:0 10px !important;
+  gap:7px;
+}
+
+.hv-github-publish-btn[hidden],
+.hv-preview-promo[hidden]{
+  display:none !important;
+}
+
+.hv-github-publish-label{
+  font-size:10px;
+  font-weight:850;
+}
+
+/* =========================
+   THREE-PANEL AI TAB MODE
+========================= */
+
+.hv-ai-tab-panel,
+.hv-ai-tab-resizer{
+  display:none;
+}
+
+.hv-ai-tab-panel{
+  min-width:0;
+  min-height:0;
+  height:100%;
+}
+
+.hv-ai-tab-panel .hv-panel{
+  height:100%;
+}
+
+.hv-ai-tab-frame-host{
+  position:relative;
+  height:calc(100% - var(--header-height));
+  min-height:0;
+  overflow:hidden;
+  background:#0a0a0a;
+}
+
+.hv-ai-tab-frame-host .hv-ai-editor-frame{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transform:none;
+}
+
+.hv-layout.hv-ai-tab-mode{
+  --hv-ai-tab-code:calc((100% - 24px) * .30);
+  --hv-ai-tab-preview:calc((100% - 24px) * .35);
+  --hv-ai-tab-ai:calc((100% - 24px) * .35);
+  display:grid !important;
+  grid-template-columns:
+    minmax(260px,var(--hv-ai-tab-code))
+    12px
+    minmax(300px,var(--hv-ai-tab-preview))
+    12px
+    minmax(320px,var(--hv-ai-tab-ai));
+  align-items:stretch;
+}
+
+.hv-layout.hv-ai-tab-mode > .hv-editor,
+.hv-layout.hv-ai-tab-mode > .hv-preview,
+.hv-layout.hv-ai-tab-mode > .hv-ai-tab-panel{
+  width:auto !important;
+  min-width:0 !important;
+  max-width:none !important;
+  height:100% !important;
+  flex:none !important;
+}
+
+.hv-layout.hv-ai-tab-mode > .hv-split-resizer,
+.hv-layout.hv-ai-tab-mode > .hv-ai-tab-panel{
+  display:block;
+}
+
+.hv-layout.hv-ai-tab-mode > .hv-split-resizer{
+  position:relative;
+  left:auto !important;
+  width:12px;
+  height:100%;
+}
+
+.hv-layout.hv-ai-tab-mode > .hv-handle{
+  display:none !important;
+}
+
+.hv-layout.hv-code-preview-disabled{
+  grid-template-columns:0 0 minmax(320px,var(--hv-ai-tab-preview)) 12px minmax(320px,var(--hv-ai-tab-ai));
+}
+
+.hv-layout.hv-code-preview-disabled > .hv-editor,
+.hv-layout.hv-code-preview-disabled > #hvSplitResize,
+.hv-layout:not(.hv-ai-tab-mode).hv-code-preview-disabled > .hv-handle{
+  display:none !important;
+}
+
+.hv-layout:not(.hv-ai-tab-mode).hv-code-preview-disabled > .hv-preview{
+  width:100% !important;
+  min-width:0 !important;
+  max-width:none !important;
+  flex:1 1 100% !important;
+}
+
+.hv-layout.hv-live-preview-disabled > .hv-preview,
+.hv-layout.hv-live-preview-disabled > #hvSplitResize,
+.hv-layout.hv-ai-tab-mode.hv-live-preview-disabled > #hvAiTabResize{
+  display:none !important;
+}
+
+.hv-layout.hv-ai-tab-mode.hv-live-preview-disabled{
+  grid-template-columns:minmax(260px,1fr) 12px minmax(320px,1fr);
+}
+
+.hv-layout.hv-ai-tab-mode.hv-live-preview-disabled > .hv-ai-tab-panel{
+  grid-column:3;
+}
+
+@media (max-width:1024px){
+  .hv-layout.hv-ai-tab-mode{
+    display:flex !important;
+    flex-direction:column !important;
+    height:auto !important;
+  }
+
+  .hv-layout.hv-ai-tab-mode > .hv-editor,
+  .hv-layout.hv-ai-tab-mode > .hv-preview,
+  .hv-layout.hv-ai-tab-mode > .hv-ai-tab-panel{
+    width:100% !important;
+    min-width:0 !important;
+    height:650px !important;
+  }
+
+  .hv-layout.hv-ai-tab-mode > .hv-split-resizer{
+    display:none !important;
+  }
+
+  .hv-preview-promo{
+    min-width:0;
+  }
+
+  .hv-github-publish-label{
+    display:none;
+  }
+}
+
 /* =========================
    EXPAND MODE FIX AFTER DEVICE MODES
 ========================= */
@@ -2980,6 +3280,84 @@ body.hv-resizing-active iframe{
   font-size:14px;
 }
 
+.hv-community-preview-modal{
+  z-index:10020;
+}
+
+.hv-community-preview-panel{
+  width:min(1080px,calc(100vw - 28px));
+  max-height:min(90vh,860px);
+}
+
+.hv-community-preview-head{
+  min-height:86px;
+  height:auto;
+  padding-top:12px;
+  padding-bottom:12px;
+}
+
+.hv-community-preview-copy{
+  min-width:0;
+}
+
+.hv-community-preview-meta{
+  margin-top:5px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:#71717a;
+  font-size:10px;
+}
+
+.hv-community-preview-meta span + span::before{
+  content:"·";
+  margin-right:12px;
+}
+
+.hv-community-preview-stage{
+  position:relative;
+  min-height:420px;
+  height:min(62vh,650px);
+  overflow:hidden;
+  background:#080808;
+}
+
+.hv-community-preview-stage iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  background:#fff;
+}
+
+.hv-community-preview-loading{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  background:rgba(8,8,8,.76);
+  color:#d4d4d8;
+  font-size:11px;
+  transition:opacity .16s ease,visibility .16s ease;
+}
+
+.hv-community-preview-loading.hidden{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+
+.hv-community-preview-actions{
+  min-height:64px;
+  padding:10px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+
 /* =========================
    UPLOAD MODAL SHARE LINK LOADER
 ========================= */
@@ -3426,6 +3804,17 @@ body.hv-resizing-active iframe{
   visibility:visible !important;
   pointer-events:auto !important;
   transform:none !important;
+  transition:opacity .18s ease !important;
+  will-change:opacity;
+}
+
+.hv-ai-editor-frame.hv-ai-voice-floating.hv-ai-voice-launching{
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+.hv-ai-editor-frame.hv-ai-voice-floating.hv-ai-voice-pass-through{
+  pointer-events:none !important;
 }
 
 .hv-ai-editor-frame.hv-ai-voice-floating.hv-ai-voice-modal-behind{
@@ -3434,6 +3823,24 @@ body.hv-resizing-active iframe{
 
 body.hv-ai-voice-floating-host .hv-ai-voice-command-surface{
   z-index:1000010 !important;
+}
+
+body.hv-ai-voice-floating-host .hv-modal.open,
+body.hv-ai-voice-floating-host .hv-popup.show,
+body.hv-ai-voice-floating-host .hv-nav-center-modal.open,
+body.hv-ai-voice-floating-host .hv-submit-modal.show,
+body.hv-ai-voice-floating-host .hv-validator-modal.open,
+body.hv-ai-voice-floating-host .hv-download-modal.open{
+  z-index:1000010 !important;
+}
+
+body.hv-ai-voice-floating-host:has(.hv-modal.open) .hv-ai-editor-frame.hv-ai-voice-floating,
+body.hv-ai-voice-floating-host:has(.hv-popup.show) .hv-ai-editor-frame.hv-ai-voice-floating,
+body.hv-ai-voice-floating-host:has(.hv-nav-center-modal.open) .hv-ai-editor-frame.hv-ai-voice-floating,
+body.hv-ai-voice-floating-host:has(.hv-submit-modal.show) .hv-ai-editor-frame.hv-ai-voice-floating,
+body.hv-ai-voice-floating-host:has(.hv-validator-modal.open) .hv-ai-editor-frame.hv-ai-voice-floating,
+body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.hv-ai-voice-floating{
+  z-index:40 !important;
 }
 
 #hvAiEditorToggle.active{
@@ -4704,6 +5111,19 @@ body.hv-ai-voice-floating-host .hv-ai-voice-command-surface{
   gap:9px;
 }
 
+.hv-update-list{
+  max-height:548px;
+  padding-right:6px;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:#444 #111;
+}
+
+.hv-update-list::-webkit-scrollbar{width:6px}
+.hv-update-list::-webkit-scrollbar-track{border-radius:999px;background:#111}
+.hv-update-list::-webkit-scrollbar-thumb{border-radius:999px;background:#444}
+
 .hv-faq-card{
   overflow:hidden;
   border:1px solid rgba(255,255,255,.08);
@@ -4846,7 +5266,8 @@ body.hv-ai-voice-floating-host .hv-ai-voice-command-surface{
 
 .hv-update-card{
   width:100%;
-  padding:15px;
+  min-height:130px;
+  padding:14px;
   border:1px solid rgba(255,255,255,.08);
   border-radius:13px;
   background:rgba(255,255,255,.025);
@@ -4854,6 +5275,9 @@ body.hv-ai-voice-floating-host .hv-ai-voice-command-surface{
   font-family:inherit;
   text-align:left;
   cursor:pointer;
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr);
+  gap:12px;
   transition:transform .16s ease,border-color .16s ease,background .16s ease;
 }
 
@@ -4863,6 +5287,24 @@ body.hv-ai-voice-floating-host .hv-ai-voice-command-surface{
   border-color:rgba(56,189,248,.34);
   background:rgba(14,165,233,.07);
   outline:0;
+}
+
+.hv-update-card-icon{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:11px;
+  background:#151515;
+  color:#e4e4e7;
+  font-size:15px;
+}
+
+.hv-update-card-main{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
 }
 
 .hv-update-meta{
@@ -4896,9 +5338,31 @@ body.hv-ai-voice-floating-host .hv-ai-voice-command-surface{
 }
 
 .hv-update-date{
-  margin-top:10px;
   color:#64646d;
   font-size:11px;
+}
+
+.hv-update-footer{
+  margin-top:auto;
+  padding:10px 0 4px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.hv-update-view-more{
+  min-height:29px;
+  padding:0 10px;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:8px;
+  background:rgba(255,255,255,.04);
+  color:#d4d4d8;
+  font-size:10px;
+  font-weight:850;
 }
 
 .hv-history-card{
@@ -5296,6 +5760,492 @@ body.hv-ai-voice-floating-host .hv-ai-voice-command-surface{
   color:#71717a;
   font-size:11px;
   line-height:1.55;
+}
+
+.hv-settings-form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:13px;
+}
+
+.hv-settings-field{
+  min-width:0;
+}
+
+.hv-settings-field.full{
+  grid-column:1/-1;
+}
+
+.hv-settings-field > label{
+  display:block;
+  margin:0 0 7px;
+  color:#a1a1aa;
+  font-size:10px;
+  font-weight:850;
+}
+
+.hv-settings-input-wrap{
+  min-height:43px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:10px;
+  background:#090a0b;
+  transition:border-color .16s ease,box-shadow .16s ease;
+}
+
+.hv-settings-input-wrap:focus-within{
+  border-color:var(--hv-accent-border,rgba(255,255,255,.32));
+  box-shadow:0 0 0 3px var(--hv-accent-soft,rgba(255,255,255,.06));
+}
+
+.hv-settings-input,
+.hv-settings-form-select{
+  width:100%;
+  height:41px;
+  min-width:0;
+  padding:0 12px;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#f4f4f5;
+  font:700 12px/1 Inter,system-ui,sans-serif;
+}
+
+.hv-settings-form-select{
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:10px;
+  background:#090a0b;
+}
+
+.hv-settings-secret-action{
+  width:31px;
+  height:31px;
+  flex:0 0 auto;
+  display:grid;
+  place-items:center;
+  border:0;
+  border-radius:8px;
+  background:transparent;
+  color:#71717a;
+  cursor:pointer;
+}
+
+.hv-settings-secret-action:last-child{
+  margin-right:4px;
+}
+
+.hv-settings-secret-action:hover{
+  background:var(--hv-accent-soft,rgba(255,255,255,.06));
+  color:var(--hv-accent,#fff);
+}
+
+.hv-settings-config-actions{
+  margin-top:16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.hv-settings-connection-status{
+  min-width:0;
+  color:#71717a;
+  font-size:10px;
+  line-height:1.5;
+}
+
+.hv-settings-connection-status.success{color:#86efac}
+.hv-settings-connection-status.error{color:#fca5a5}
+
+.hv-settings-config-button{
+  min-height:39px;
+  padding:0 14px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:10px;
+  background:linear-gradient(135deg,#343438,#222225);
+  color:#fff;
+  font-size:10px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.hv-settings-config-button:hover,
+.hv-settings-config-button:focus-visible{
+  border-color:var(--hv-accent-border,rgba(255,255,255,.36));
+  color:var(--hv-accent,#fff);
+  outline:0;
+}
+
+.hv-github-guide{
+  margin-top:17px;
+  padding:14px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  background:rgba(255,255,255,.022);
+}
+
+.hv-github-guide strong{
+  display:block;
+  color:#e4e4e7;
+  font-size:11px;
+}
+
+.hv-github-guide ol{
+  margin:10px 0 0;
+  padding-left:19px;
+  color:#85858d;
+  font-size:10px;
+  line-height:1.7;
+}
+
+.hv-github-guide b{
+  color:#d4d4d8;
+}
+
+.hv-github-guide p{
+  margin:8px 0 0;
+  color:#85858d;
+  font-size:10px;
+  line-height:1.65;
+}
+
+.hv-github-guide a{
+  color:var(--hv-accent,#f4f4f5);
+  font-weight:850;
+  text-underline-offset:3px;
+}
+
+.hv-github-guide a:hover,
+.hv-github-guide a:focus-visible{
+  color:#fff;
+  outline:0;
+}
+
+.hv-accent-picker{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.hv-accent-native{
+  width:40px;
+  height:36px;
+  padding:3px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:9px;
+  background:#111;
+  cursor:pointer;
+}
+
+.hv-accent-swatch{
+  width:27px;
+  height:27px;
+  padding:0;
+  border:2px solid transparent;
+  border-radius:50%;
+  background:var(--swatch);
+  box-shadow:0 0 0 1px rgba(255,255,255,.12);
+  cursor:pointer;
+}
+
+.hv-accent-swatch.active{
+  border-color:#090909;
+  box-shadow:0 0 0 2px var(--swatch),0 0 18px color-mix(in srgb,var(--swatch) 34%,transparent);
+}
+
+.hv-shortcuts-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.hv-shortcut-row{
+  min-height:54px;
+  padding:9px 11px;
+  display:grid;
+  grid-template-columns:minmax(160px,1fr) auto;
+  align-items:center;
+  gap:12px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:11px;
+  background:rgba(255,255,255,.022);
+}
+
+.hv-shortcut-copy strong{
+  display:block;
+  color:#e4e4e7;
+  font-size:11px;
+}
+
+.hv-shortcut-copy span{
+  display:block;
+  margin-top:4px;
+  color:#696970;
+  font-size:9px;
+}
+
+.hv-shortcut-key{
+  min-width:118px;
+  min-height:34px;
+  padding:0 10px;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:9px;
+  background:#101010;
+  color:#d4d4d8;
+  font:800 10px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  cursor:pointer;
+}
+
+.hv-shortcut-key.listening{
+  border-color:var(--hv-accent-border,rgba(255,255,255,.42));
+  color:var(--hv-accent,#fff);
+  animation:hvShortcutListen 1.1s ease-in-out infinite;
+}
+
+@keyframes hvShortcutListen{50%{box-shadow:0 0 0 4px var(--hv-accent-soft,rgba(255,255,255,.06))}}
+
+.hv-shortcuts-actions{
+  margin-top:14px;
+  display:flex;
+  justify-content:flex-end;
+  gap:9px;
+}
+
+/* =========================
+   GITHUB PUBLISHING MODALS
+========================= */
+
+.hv-github-modal{
+  z-index:1000020;
+}
+
+.hv-github-publish-confirm{
+  width:min(520px,calc(100vw - 26px));
+}
+
+.hv-github-confirm-hero{
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+}
+
+.hv-github-confirm-icon{
+  width:54px;
+  height:54px;
+  flex:0 0 auto;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  background:#a7f3d0;
+  color:#07110d;
+  font-size:22px;
+}
+
+.hv-github-confirm-copy h3{
+  margin:0;
+  color:#f4f4f5;
+  font-size:18px;
+}
+
+.hv-github-confirm-copy p{
+  margin:7px 0 0;
+  color:#85858d;
+  font-size:11px;
+  line-height:1.55;
+}
+
+.hv-github-repo-name{
+  margin-top:15px;
+}
+
+.hv-github-dialog-actions{
+  margin-top:15px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+
+.hv-github-progress-card{
+  width:min(560px,calc(100vw - 26px));
+  padding:28px;
+  border:1px solid rgba(167,243,208,.24);
+  border-radius:18px;
+  background:#0d1010;
+  box-shadow:0 30px 100px rgba(0,0,0,.72);
+  text-align:center;
+}
+
+.hv-github-progress-icon{
+  width:80px;
+  height:80px;
+  margin:0 auto 15px;
+  display:grid;
+  place-items:center;
+  border-radius:22px;
+  background:#a7f3d0;
+  color:#07110d;
+  font-size:30px;
+  box-shadow:0 0 0 1px rgba(167,243,208,.3),0 0 46px rgba(52,211,153,.12);
+}
+
+.hv-github-progress-card.danger{
+  border-color:rgba(251,113,133,.3);
+}
+
+.hv-github-progress-card.danger .hv-github-progress-icon{
+  background:#fda4af;
+}
+
+.hv-github-progress-kicker{
+  color:#6ee7b7;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+
+.hv-github-progress-card.danger .hv-github-progress-kicker{color:#fda4af}
+
+.hv-github-progress-title{
+  margin:11px 0 7px;
+  color:#f4f4f5;
+  font-size:19px;
+}
+
+.hv-github-progress-desc{
+  color:#71717a;
+  font-size:10px;
+}
+
+.hv-github-progress-track{
+  height:6px;
+  margin:20px 0 12px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#23272a;
+}
+
+.hv-github-progress-fill{
+  width:0;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,#6ee7b7,#d1fae5);
+  transition:width .3s ease;
+}
+
+.hv-github-progress-card.danger .hv-github-progress-fill{
+  background:linear-gradient(90deg,#fb7185,#fecdd3);
+}
+
+.hv-github-progress-steps{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
+}
+
+.hv-github-progress-step{
+  min-height:38px;
+  padding:6px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:9px;
+  color:#52525b;
+  font-size:8px;
+  font-weight:850;
+}
+
+.hv-github-progress-step.active,
+.hv-github-progress-step.done{
+  border-color:rgba(110,231,183,.28);
+  color:#a7f3d0;
+}
+
+.hv-github-manager-panel{
+  width:min(980px,calc(100vw - 28px));
+}
+
+.hv-github-manager-url{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px;
+}
+
+.hv-github-manager-grid{
+  margin-top:12px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.hv-github-manager-card{
+  padding:14px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  background:rgba(255,255,255,.02);
+}
+
+.hv-github-manager-card.danger{border-color:rgba(251,113,133,.2)}
+
+.hv-github-manager-card strong{
+  display:block;
+  color:#f4f4f5;
+  font-size:11px;
+}
+
+.hv-github-manager-card p{
+  margin:5px 0 12px;
+  color:#71717a;
+  font-size:9px;
+  line-height:1.55;
+}
+
+.hv-github-commit-list{
+  margin-top:12px;
+  max-height:230px;
+  overflow:auto;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;
+}
+
+.hv-github-commit-row{
+  min-height:58px;
+  padding:10px 12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.hv-github-commit-row:last-child{border-bottom:0}
+.hv-github-commit-row i{color:#71717a}
+.hv-github-commit-main{min-width:0;flex:1}
+.hv-github-commit-main strong{display:block;overflow:hidden;color:#d4d4d8;font-size:10px;text-overflow:ellipsis;white-space:nowrap}
+.hv-github-commit-main span{display:block;margin-top:4px;color:#626269;font-size:8px}
+
+@media (max-width:720px){
+  .hv-settings-form-grid,
+  .hv-github-manager-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hv-settings-field.full{
+    grid-column:auto;
+  }
+
+  .hv-preview-promo{
+    justify-self:start;
+  }
+
+  .hv-github-progress-card{
+    padding:20px 14px;
+  }
 }
 
 .hv-storage-section{margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,.08)}
@@ -6360,6 +7310,69 @@ html.hv-light-mode .hv-toast{
   from{opacity:0;transform:translateY(-5px) scale(.985)}
   to{opacity:1;transform:translateY(0) scale(1)}
 }
+
+/* User-selected interaction accent. */
+#html-viewer-app :is(
+  .hv-btn,
+  .hv-ibtn,
+  .hv-nav-dot-btn,
+  .hv-mobile-actions-btn,
+  .hv-nav-center-close,
+  .hv-settings-tab,
+  .hv-setting-toggle,
+  .hv-search-mode-btn,
+  .hv-search-icon-btn,
+  .hv-save-action-btn,
+  .hv-community-view-btn,
+  .hv-community-favorite-btn,
+  .hv-settings-config-button
+):hover,
+#html-viewer-app :is(
+  .hv-btn,
+  .hv-ibtn,
+  .hv-nav-dot-btn,
+  .hv-mobile-actions-btn,
+  .hv-nav-center-close,
+  .hv-settings-tab,
+  .hv-setting-toggle,
+  .hv-search-mode-btn,
+  .hv-search-icon-btn,
+  .hv-save-action-btn,
+  .hv-community-view-btn,
+  .hv-community-favorite-btn,
+  .hv-settings-config-button
+):focus-visible{
+  border-color:var(--hv-accent-border) !important;
+  color:var(--hv-accent) !important;
+  box-shadow:0 0 0 3px var(--hv-accent-soft);
+}
+
+#html-viewer-app .hv-settings-tab.active,
+#html-viewer-app .hv-search-mode-btn.active,
+#html-viewer-app .hv-setting-toggle.active{
+  border-color:var(--hv-accent-border);
+}
+
+#html-viewer-app .hv-setting-toggle.active::after{
+  background:var(--hv-accent);
+}
+
+#html-viewer-app .hv-update-card:hover,
+#html-viewer-app .hv-history-card:hover,
+#html-viewer-app .hv-codecard:hover{
+  border-color:var(--hv-accent-border);
+  box-shadow:0 12px 28px var(--hv-accent-glow);
+}
+
+#html-viewer-app #hvLayout.hv-ai-tab-mode.hv-live-preview-disabled > .hv-editor{
+  width:auto !important;
+  max-width:none !important;
+  flex:none !important;
+}
+
+#html-viewer-app #hvLayout.hv-ai-tab-mode.hv-code-preview-disabled > .hv-editor{
+  display:none !important;
+}
   </style>
 </head>
 <body>
@@ -6721,6 +7734,19 @@ html.hv-light-mode .hv-toast{
     role="tooltip"
     aria-hidden="true"
   ></div>
+
+  <div class="hv-code-action-overlay" id="hvCodeActionOverlay">
+    <div class="hv-code-action-box" id="hvCodeActionText">
+      Code Updated
+    </div>
+  </div>
+
+  <div class="hv-copy-overlay" id="hvCopyOverlay">
+    <div class="hv-copy-overlay-box">
+      <i class="fa-solid fa-check"></i>
+      <span>Code Copied</span>
+    </div>
+  </div>
 </div>
 
         <div class="hv-footer">
@@ -6733,29 +7759,27 @@ html.hv-light-mode .hv-toast{
         </div>
       </div>
     </div>
-    
-    <div class="hv-code-action-overlay" id="hvCodeActionOverlay">
-  <div class="hv-code-action-box" id="hvCodeActionText">
-    Code Updated
-  </div>
-</div>
-    
-<div class="hv-copy-overlay" id="hvCopyOverlay">
-  <div class="hv-copy-overlay-box">
-    <i class="fa-solid fa-check"></i>
-    <span>Code Copied</span>
-  </div>
-</div>
 
 <div class="hv-split-resizer" id="hvSplitResize" title="Drag to resize">
   <div class="hv-split-grip"></div>
 </div>
 
-<div class="hv-preview" id="hvMobilePreviewPanel" role="tabpanel" aria-labelledby="hvMobilePreviewTab">
+    <div class="hv-preview" id="hvMobilePreviewPanel" role="tabpanel" aria-labelledby="hvMobilePreviewTab">
       <div class="hv-panel">
         <div class="hv-head">
           <div class="hv-title"><span>Live Preview</span></div>
+          <button class="hv-preview-promo" id="hvPreviewPromo" type="button" aria-label="AI Voice Mode is now live">
+            <span class="hv-preview-promo-icon"><i class="fa-solid fa-microphone-lines"></i></span>
+            <span class="hv-preview-promo-copy"><strong>AI Voice Mode</strong> is now live — try it in the HTML editor!</span>
+            <span class="hv-preview-promo-badge"><i></i>Now Live</span>
+          </button>
           <div class="hv-group hv-preview-controls">
+
+  <button class="hv-ibtn hv-tip hv-github-publish-btn" id="hvGithubPublishButton" type="button" aria-label="Publish to GitHub Pages" hidden>
+    <i class="fa-brands fa-github" aria-hidden="true"></i>
+    <span class="hv-github-publish-label">Publish</span>
+    <span class="hv-tooltip">Publish to GitHub Pages</span>
+  </button>
 
   <button class="hv-ibtn hv-tip" id="hvAiEditorToggle" aria-label="AI HTML Editor">
     <i class="fa-solid fa-robot" aria-hidden="true"></i>
@@ -6829,6 +7853,23 @@ html.hv-light-mode .hv-toast{
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="hv-split-resizer hv-ai-tab-resizer" id="hvAiTabResize" title="Drag to resize AI editor">
+      <div class="hv-split-grip"></div>
+    </div>
+
+    <div class="hv-ai-tab-panel" id="hvAiTabPanel" aria-label="AI HTML Editor panel">
+      <div class="hv-panel">
+        <div class="hv-head">
+          <div class="hv-title"><span>AI HTML Editor</span><span class="hv-sub">Tab Mode</span></div>
+          <button class="hv-ibtn hv-tip" id="hvAiTabFocus" type="button" aria-label="Focus AI HTML Editor">
+            <i class="fa-solid fa-robot" aria-hidden="true"></i>
+            <span class="hv-tooltip">AI Editor</span>
+          </button>
+        </div>
+        <div class="hv-ai-tab-frame-host" id="hvAiTabFrameHost"></div>
       </div>
     </div>
 
@@ -10164,6 +11205,13 @@ html.hv-light-mode .hv-toast{
     transform:translate(-50%,0) scale(1);
   }
 
+  .voice-entry-wrap.suppress-hover .voice-entry-menu{
+    opacity:0 !important;
+    visibility:hidden !important;
+    pointer-events:none !important;
+    transform:translate(-50%,7px) scale(.97) !important;
+  }
+
   .voice-entry-menu button{
     min-height:34px;
     padding:0 9px;
@@ -10852,6 +11900,19 @@ html.hv-light-mode .hv-toast{
   }
 
   .voice-mode.active{display:flex;animation:voicePlayerIn .22s cubic-bezier(.2,.8,.2,1)}
+  .voice-mode.active.opening-prepared{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    animation:none;
+  }
+  .voice-mode.active.closing{
+    animation:voicePlayerOut .18s ease forwards;
+    pointer-events:none;
+  }
+  @keyframes voicePlayerOut{
+    to{opacity:0;transform:translateY(5px) scale(.985)}
+  }
   .voice-mode:fullscreen{left:0 !important;top:0 !important;width:100vw !important;height:100dvh !important;max-width:none;max-height:none;border:0;border-radius:0}
   .voice-mode.dragging,.voice-mode.resizing{transition:none;user-select:none}
   .app.voice-active .chat{display:flex}
@@ -14886,6 +15947,7 @@ if(textFilePreviewRemove){
   let voiceMuted = false;
   let voiceManualActivity = false;
   let voiceLastActivityAt = 0;
+  let voiceLastInputTranscriptAt = 0;
   let voiceMediaStream = null;
   let voiceInputContext = null;
   let voiceOutputContext = null;
@@ -14916,6 +15978,7 @@ if(textFilePreviewRemove){
   let voiceCaptionHideTimer = 0;
   let voiceGeometrySaveTimer = 0;
   let voiceResizeObserver = null;
+  let voicePointerInsideCard = true;
   let voicePreFullscreenGeometry = null;
   const voiceVizState = {
     level:0,
@@ -15311,7 +16374,12 @@ if(textFilePreviewRemove){
   }
 
   async function aiVoiceEnsureOutputContext(){
-    if(voiceOutputContext && voiceOutputContext.state !== 'closed') return;
+    if(voiceOutputContext && voiceOutputContext.state !== 'closed'){
+      if(voiceOutputContext.state === 'suspended'){
+        await voiceOutputContext.resume();
+      }
+      return;
+    }
     if(voiceOutputContextPromise) return voiceOutputContextPromise;
     voiceOutputContextPromise = (async () => {
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -15441,6 +16509,16 @@ if(textFilePreviewRemove){
 
   function aiVoiceFallbackUiAction(text){
     const normalized = String(text || '').toLowerCase().replace(/\s+/g,' ').trim();
+    const imageMatch = normalized.match(
+      /\b(?:generate|create|make|render|design)\s+(?:me\s+|an?\s+|the\s+)?(?:new\s+)?(?:image|picture|illustration|graphic|logo|icon|poster|wallpaper)\s*(?:of|for|showing|with|that\s+shows|:)?\s*(.*)$/
+    );
+    if(imageMatch){
+      return {
+        action:'GENERATE_IMAGE',
+        target:'FLUX.2 Klein 4B',
+        value:String(imageMatch[1] || text || '').trim()
+      };
+    }
     const patterns = [
       ['NEW_CHAT',/\b(?:create|start|open|make)\s+(?:a\s+)?new\s+chat\b/],
       ['OPEN_PROJECTS',/\b(?:open|show|view|go\s+to)\s+(?:the\s+)?projects?(?:\s+section)?\b/],
@@ -15747,6 +16825,13 @@ if(textFilePreviewRemove){
       }
       return true;
     }
+    if(action === 'GENERATE_IMAGE'){
+      const prompt = String(value || '').trim();
+      if(!prompt) return false;
+      aiVoiceShowCaption('assistant','Generating that image with FLUX.2 Klein 4B.',false);
+      await aiSendImageGenerationMessage(prompt);
+      return true;
+    }
     if(action === 'CLICK_CONTROL'){
       const button = aiVoiceFindNamedControl(target);
       if(!button) return false;
@@ -15907,6 +16992,15 @@ if(textFilePreviewRemove){
         result?.uiAction &&
         Number(result.confidence || 0) >= .6
       ){
+        if(
+          result.uiAction === 'OPEN_CHAT_HISTORY' &&
+          !/\b(?:open|show|view|go\s+to)\s+(?:the\s+)?(?:chat\s+)?history(?:\s+section)?\b/i.test(clean)
+        ){
+          voiceIntentOutcomes.set(clean,'conversational');
+          aiVoiceSyncToNormalChat('user',clean);
+          if(assistantText) aiVoiceSyncToNormalChat('assistant',assistantText);
+          return;
+        }
         voiceIntentOutcomes.set(clean,'ui-action');
         aiVoiceSyncToNormalChat('user',clean);
         if(assistantText) aiVoiceSyncToNormalChat('assistant',assistantText);
@@ -15962,11 +17056,14 @@ if(textFilePreviewRemove){
     }
     const content = message.serverContent;
     if(content?.interrupted){
-      aiVoiceStopPlayback();
-      aiVoiceSetState(voiceMuted ? 'muted' : 'listening',voiceMuted ? 'Muted' : 'Listening');
+      if(Date.now() - voiceLastInputTranscriptAt < 1800){
+        aiVoiceStopPlayback();
+        aiVoiceSetState(voiceMuted ? 'muted' : 'listening',voiceMuted ? 'Muted' : 'Listening');
+      }
     }
     const inputText = content?.inputTranscription?.text;
     if(inputText){
+      voiceLastInputTranscriptAt = Date.now();
       if(!voiceInputDraft && !voiceThinkingStartedAt) voiceThinkingStartedAt = Date.now();
       voiceInputDraft = aiVoiceMergeTranscript(voiceInputDraft,inputText);
       aiVoiceShowCaption('user',voiceInputDraft,true);
@@ -16350,6 +17447,24 @@ if(textFilePreviewRemove){
     voiceVisualFrame = requestAnimationFrame(aiVoiceDrawVisualizer);
   }
 
+  function aiVoicePublishCardRect(){
+    if(!voiceModeEl?.classList.contains('active')) return;
+    const rect = voiceModeEl.getBoundingClientRect();
+    try{
+      window.parent?.postMessage({
+        type:'hv-ai-voice-card-rect',
+        rect:{
+          left:rect.left,
+          top:rect.top,
+          right:rect.right,
+          bottom:rect.bottom,
+          width:rect.width,
+          height:rect.height
+        }
+      },'*');
+    }catch(error){}
+  }
+
   function aiVoiceApplyPlayerGeometry(){
     if(!voiceModeEl || document.fullscreenElement === voiceModeEl) return;
     const viewportWidth = Math.max(320,window.innerWidth);
@@ -16373,6 +17488,7 @@ if(textFilePreviewRemove){
       height:height + 'px',
       transform:'none'
     });
+    aiVoicePublishCardRect();
   }
 
   function aiVoiceSavePlayerGeometry(){
@@ -16452,6 +17568,7 @@ if(textFilePreviewRemove){
         width:width + 'px',
         height:height + 'px'
       });
+      aiVoicePublishCardRect();
     };
     const end = () => {
       voiceModeEl.classList.remove('dragging','resizing');
@@ -16460,6 +17577,7 @@ if(textFilePreviewRemove){
       target.removeEventListener('pointerup',end);
       target.removeEventListener('pointercancel',end);
       aiVoiceSavePlayerGeometry();
+      aiVoicePublishCardRect();
     };
     target.addEventListener('pointermove',move);
     target.addEventListener('pointerup',end);
@@ -16501,17 +17619,27 @@ if(textFilePreviewRemove){
     aiVoiceLoadTranscript();
     voiceSessionWanted = true;
     voiceReconnectAttempts = 0;
-    if(appEl) appEl.classList.add('voice-active');
     aiVoiceCaptureHostGeometry();
+    document.documentElement.classList.add('voice-floating-host');
+    document.body.classList.add('voice-floating-host');
+    if(appEl) appEl.classList.add('voice-active');
     if(voiceModeEl){
-      voiceModeEl.classList.add('active');
+      voiceModeEl.classList.remove('closing');
+      voiceModeEl.classList.add('active','opening-prepared');
       voiceModeEl.setAttribute('aria-hidden','false');
       aiVoiceApplyPlayerGeometry();
     }
-    document.documentElement.classList.add('voice-floating-host');
-    document.body.classList.add('voice-floating-host');
     try{
-      window.parent?.postMessage({ type:'hv-ai-voice-floating',active:true },'*');
+      window.parent?.postMessage({
+        type:'hv-ai-voice-floating',
+        active:true,
+        launching:true
+      },'*');
+    }catch(error){}
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    voiceModeEl?.classList.remove('opening-prepared');
+    try{
+      window.parent?.postMessage({ type:'hv-ai-voice-launch-ready' },'*');
     }catch(error){}
     aiVoiceSetState('connecting','Connecting');
     aiVoiceShowCaption('assistant','Connecting securely to Gemini Live…',false);
@@ -16592,11 +17720,13 @@ if(textFilePreviewRemove){
     }
     cancelAnimationFrame(voiceVisualFrame);
     if(returnToChat){
-      if(appEl) appEl.classList.remove('voice-active');
       if(voiceModeEl){
-        voiceModeEl.classList.remove('active');
+        voiceModeEl.classList.add('closing');
         voiceModeEl.setAttribute('aria-hidden','true');
       }
+      await new Promise(resolve => setTimeout(resolve,180));
+      if(appEl) appEl.classList.remove('voice-active');
+      if(voiceModeEl) voiceModeEl.classList.remove('active','closing');
       if(voiceSettingsPopover) voiceSettingsPopover.classList.remove('open');
       if(document.fullscreenElement) document.exitFullscreen().catch(() => {});
       document.documentElement.classList.remove('voice-floating-host');
@@ -16644,6 +17774,7 @@ if(textFilePreviewRemove){
   let voiceEntryHoverTimer = 0;
   voiceEntryWrap?.addEventListener('pointerenter',() => {
     clearTimeout(voiceEntryHoverTimer);
+    voiceEntryWrap.classList.remove('suppress-hover');
     voiceEntryWrap.classList.add('hover-open');
   });
   voiceEntryWrap?.addEventListener('pointerleave',() => {
@@ -16651,6 +17782,7 @@ if(textFilePreviewRemove){
     voiceEntryHoverTimer = setTimeout(() => {
       if(!voiceEntryWrap.classList.contains('menu-open') && !voiceEntryWrap.contains(document.activeElement)){
         voiceEntryWrap.classList.remove('hover-open');
+        voiceEntryWrap.classList.remove('suppress-hover');
       }
     },260);
   });
@@ -16666,6 +17798,7 @@ if(textFilePreviewRemove){
   voiceToTextBtn?.addEventListener('click',() => {
     voiceEntryWrap?.classList.remove('menu-open');
     voiceEntryWrap?.classList.remove('hover-open');
+    voiceEntryWrap?.classList.add('suppress-hover');
     micBtn?.setAttribute('aria-expanded','false');
     aiStartVoiceToText();
   });
@@ -16673,6 +17806,7 @@ if(textFilePreviewRemove){
   voiceToVoiceBtn?.addEventListener('click',() => {
     voiceEntryWrap?.classList.remove('menu-open');
     voiceEntryWrap?.classList.remove('hover-open');
+    voiceEntryWrap?.classList.add('suppress-hover');
     micBtn?.setAttribute('aria-expanded','false');
     aiStartVoiceMode();
   });
@@ -16861,16 +17995,42 @@ if(textFilePreviewRemove){
     aiVoiceApplyPlayerGeometry();
   });
   window.addEventListener('message',event => {
-    if(event.data?.type === 'hv-ai-editor-closing') aiEndVoiceMode(false);
+    if(event.data?.type === 'hv-ai-editor-closing' && !voiceSessionWanted) aiEndVoiceMode(false);
+    if(event.data?.type === 'hv-ai-open-voice-mode'){
+      try{
+        window.parent?.postMessage({ type:'hv-ai-voice-launch-accepted' },'*');
+      }catch(error){}
+      aiStartVoiceMode();
+      return;
+    }
     if(event.data?.type === 'hv-ai-voice-host-geometry'){
       aiVoiceSetHostGeometry(event.data.rect);
     }
   });
+  document.addEventListener('pointermove',event => {
+    if(!voiceModeEl?.classList.contains('active')) return;
+    const rect = voiceModeEl.getBoundingClientRect();
+    const inside = (
+      event.clientX >= rect.left &&
+      event.clientX <= rect.right &&
+      event.clientY >= rect.top &&
+      event.clientY <= rect.bottom
+    );
+    if(inside === voicePointerInsideCard) return;
+    voicePointerInsideCard = inside;
+    try{
+      window.parent?.postMessage({
+        type:'hv-ai-voice-pointer-zone',
+        inside
+      },'*');
+    }catch(error){}
+  },true);
   if(typeof ResizeObserver === 'function' && voiceModeEl){
     voiceResizeObserver = new ResizeObserver(() => {
       if(voiceModeEl.classList.contains('active') && !voiceModeEl.classList.contains('resizing')){
         const rect = voiceModeEl.getBoundingClientRect();
         voiceModeEl.classList.toggle('compact',rect.width < 430 || rect.height < 520);
+        aiVoicePublishCardRect();
       }
     });
     voiceResizeObserver.observe(voiceModeEl);
@@ -17147,8 +18307,13 @@ function aiClearReplyContext(){
 ========================= */
 
 function aiShouldUseImageModel(text, model){
-
-  return model === AI_IMAGE_MODEL_ID;
+  if(model === AI_IMAGE_MODEL_ID) return true;
+  const normalized = String(text || '').toLowerCase().replace(/\s+/g,' ').trim();
+  if(!normalized) return false;
+  if(/^\/(?:image|img)\b/.test(normalized) || /^image\s*:/.test(normalized)) return true;
+  const explicitGeneration = /\b(?:generate|create|make|render|design)\s+(?:me\s+|an?\s+|the\s+)?(?:new\s+)?(?:image|picture|illustration|graphic|logo|icon|poster|wallpaper)\b/.test(normalized);
+  const codingContext = /\b(?:html|css|javascript|code|element|tag|component|section|gallery|image\s+element|img\s+tag)\b/.test(normalized);
+  return explicitGeneration && !codingContext;
 
 }
 
@@ -17503,13 +18668,9 @@ async function aiSendImageGenerationMessage(text){
   null
 );
 
-if(modelSelect && modelSelect.value === AI_IMAGE_MODEL_ID){
-
-  setTimeout(() => {
-    aiAttachImageLoadingCard(systemId);
-  }, 0);
-
-}
+setTimeout(() => {
+  aiAttachImageLoadingCard(systemId);
+}, 0);
 
 const timerInterval =
   startThinkingTimer(systemId);
@@ -17784,12 +18945,24 @@ aiNotifyParent(
 
       updateMessageUI(
         systemId,
-        'Error: ' + (err.message || 'Failed to call Gemini.')
+        aiFormatGeminiFailure(err)
       );
       return '';
 
     }
 
+  }
+
+  function aiFormatGeminiFailure(error){
+    const failureMessage = String(error?.message || 'Failed to call Gemini.');
+    const quotaLimited = /\b(?:429|quota|rate[\s-]?limit|resource[_\s-]?exhausted|too many requests)\b/i
+      .test(failureMessage);
+    return 'Error: ' + failureMessage +
+      (
+        quotaLimited
+          ? '\n\nYour current Gemini quota may be limited. Set up your own API key in Settings → Gemini Configuration. [Get your API key here](https://aistudio.google.com/api-keys).'
+          : ''
+      );
   }
 
   function buildUserParts(text, imageBase64, imageMime){
@@ -17832,9 +19005,66 @@ aiNotifyParent(
 }
 
   async function callGeminiWithHistory(model, history){
+    let customConfig = null;
+    try{
+      customConfig = JSON.parse(
+        window.parent?.localStorage?.getItem('hv_gemini_config_v1') || 'null'
+      );
+    }catch(error){}
 
-    const res =
-      await fetch(aiBackendEndpoint('/api/ai/gemini'), {
+    async function callDirectGemini(apiKey,requestedModel){
+      const cleanModel = String(requestedModel || model || 'gemini-3.6-flash')
+        .trim()
+        .replace(/^models\//,'');
+      const response = await fetch(
+        'https://generativelanguage.googleapis.com/v1beta/models/' +
+          encodeURIComponent(cleanModel) +
+          ':generateContent',
+        {
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json',
+            'x-goog-api-key':apiKey
+          },
+          body:JSON.stringify({ contents:history })
+        }
+      );
+      if(!response.ok){
+        throw new Error(await aiReadBackendError(
+          response,
+          'Gemini API error (' + response.status + ')'
+        ));
+      }
+      return response.json();
+    }
+
+    let data;
+    if(customConfig?.mode === 'custom' && customConfig.primaryKey){
+      const attempts = [
+        [customConfig.primaryKey,customConfig.primaryModel || model],
+        [customConfig.backupKey,customConfig.fallbackModel],
+        [customConfig.backupKey || customConfig.primaryKey,customConfig.highVolumeModel]
+      ].filter(([key,configuredModel],index,list) => (
+        key &&
+        configuredModel &&
+        list.findIndex(([otherKey,otherModel]) => (
+          otherKey === key && otherModel === configuredModel
+        )) === index
+      ));
+      let lastError;
+      for(const [apiKey,configuredModel] of attempts){
+        try{
+          data = await callDirectGemini(apiKey,configuredModel);
+          break;
+        }catch(error){
+          lastError = error;
+        }
+      }
+      if(!data){
+        throw lastError || new Error('The custom Gemini request failed.');
+      }
+    }else{
+      const res = await fetch(aiBackendEndpoint('/api/ai/gemini'), {
         method:'POST',
         headers:{
           'Content-Type':'application/json'
@@ -17845,22 +19075,18 @@ aiNotifyParent(
         })
       });
 
-    if(!res.ok){
-
-      const errText = await aiReadBackendError(
-        res,
-        res.statusText
-      );
-
-      throw new Error(
-        'Gemini API error (' + res.status + '): ' +
-        (errText || res.statusText)
-      );
-
+      if(!res.ok){
+        const errText = await aiReadBackendError(
+          res,
+          res.statusText
+        );
+        throw new Error(
+          'Gemini API error (' + res.status + '): ' +
+          (errText || res.statusText)
+        );
+      }
+      data = await res.json();
     }
-
-    const data =
-      await res.json();
 
     const candidate =
       data.candidates && data.candidates[0];
@@ -20015,6 +21241,34 @@ loadChats();
   </div>
 </div>
 
+<!-- COMMUNITY PRESET PREVIEW -->
+<div class="hv-modal hv-community-preview-modal" id="hvCommunityPreviewModal" aria-hidden="true">
+  <div class="hv-modal-backdrop" id="hvCommunityPreviewBackdrop"></div>
+  <section class="hv-modal-panel hv-community-preview-panel" role="dialog" aria-modal="true" aria-labelledby="hvCommunityPreviewTitle">
+    <header class="hv-modal-head hv-community-preview-head">
+      <div class="hv-community-preview-copy">
+        <div class="hv-modal-title" id="hvCommunityPreviewTitle">Community Preset</div>
+        <div class="hv-community-preview-meta">
+          <span id="hvCommunityPreviewAuthor"></span>
+          <span id="hvCommunityPreviewDate"></span>
+        </div>
+        <div class="hv-modal-sub" id="hvCommunityPreviewDescription"></div>
+      </div>
+      <button class="hv-ibtn" id="hvCommunityPreviewClose" type="button" aria-label="Close community preset preview"><i class="fa-solid fa-xmark"></i></button>
+    </header>
+    <div class="hv-community-preview-stage">
+      <div class="hv-community-preview-loading" id="hvCommunityPreviewLoading"><i class="fa-solid fa-circle-notch fa-spin"></i><span>Loading preset preview…</span></div>
+      <iframe id="hvCommunityPreviewFrame" title="Community preset live preview" sandbox="allow-scripts allow-forms allow-modals allow-popups"></iframe>
+    </div>
+    <footer class="hv-community-preview-actions">
+      <button class="hv-modal-primary-btn" id="hvCommunityPreviewLoad" type="button" disabled>
+        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+        Load Community Preset
+      </button>
+    </footer>
+  </section>
+</div>
+
 <!-- SUBMIT COMMUNITY PRESET MODAL -->
 <div class="hv-submit-overlay" id="hvSubmitPresetModal" aria-hidden="true">
   <div class="hv-submit-backdrop" id="hvSubmitPresetBackdrop"></div>
@@ -20904,6 +22158,9 @@ loadChats();
             <button class="hv-settings-tab active" type="button" role="tab" aria-selected="true" data-hv-settings-tab="general"><i class="fa-solid fa-sliders"></i><span>General</span></button>
             <button class="hv-settings-tab" type="button" role="tab" aria-selected="false" data-hv-settings-tab="appearance"><i class="fa-solid fa-palette"></i><span>Appearance</span></button>
             <button class="hv-settings-tab" type="button" role="tab" aria-selected="false" data-hv-settings-tab="notifications"><i class="fa-solid fa-bell"></i><span>Notifications</span></button>
+            <button class="hv-settings-tab" type="button" role="tab" aria-selected="false" data-hv-settings-tab="github"><i class="fa-brands fa-github"></i><span>GitHub Configuration</span></button>
+            <button class="hv-settings-tab" type="button" role="tab" aria-selected="false" data-hv-settings-tab="gemini"><i class="fa-solid fa-wand-magic-sparkles"></i><span>Gemini Configuration</span></button>
+            <button class="hv-settings-tab" type="button" role="tab" aria-selected="false" data-hv-settings-tab="shortcuts"><i class="fa-solid fa-keyboard"></i><span>Keyboard Shortcuts</span></button>
             <button class="hv-settings-tab" type="button" role="tab" aria-selected="false" data-hv-settings-tab="storage"><i class="fa-solid fa-hard-drive"></i><span>Storage &amp; Data</span></button>
           </nav>
           <button class="hv-settings-save-close" id="hvSettingsSaveClose" type="button"><i class="fa-solid fa-check"></i>Save &amp; Close</button>
@@ -20922,6 +22179,24 @@ loadChats();
             <div class="hv-setting-row-desc">Show the preview panel and update it as code changes.</div>
           </div>
           <button class="hv-setting-toggle" id="hvSettingLivePreview" type="button" role="switch" aria-checked="true" aria-label="Toggle live preview"></button>
+        </div>
+
+        <div class="hv-setting-row">
+          <div class="hv-setting-row-icon"><i class="fa-solid fa-code"></i></div>
+          <div class="hv-setting-row-main">
+            <div class="hv-setting-row-title">Code Preview</div>
+            <div class="hv-setting-row-desc">Show the editable code section. Turn this off for a live-preview-only workspace.</div>
+          </div>
+          <button class="hv-setting-toggle" id="hvSettingCodePreview" type="button" role="switch" aria-checked="true" aria-label="Toggle code section"></button>
+        </div>
+
+        <div class="hv-setting-row">
+          <div class="hv-setting-row-icon"><i class="fa-solid fa-table-columns"></i></div>
+          <div class="hv-setting-row-main">
+            <div class="hv-setting-row-title">AI Editor Tab Mode</div>
+            <div class="hv-setting-row-desc">Show Code, Live Preview, and AI HTML Editor together as three resizable panels.</div>
+          </div>
+          <button class="hv-setting-toggle" id="hvSettingAiTabMode" type="button" role="switch" aria-checked="false" aria-label="Toggle AI editor tab mode"></button>
         </div>
 
         <div class="hv-setting-row">
@@ -20952,6 +22227,21 @@ loadChats();
             <option value="light">Light</option>
           </select>
         </div>
+
+        <div class="hv-setting-row">
+          <div class="hv-setting-row-icon"><i class="fa-solid fa-droplet"></i></div>
+          <div class="hv-setting-row-main">
+            <div class="hv-setting-row-title">Accent Color</div>
+            <div class="hv-setting-row-desc">Use a custom accent for hover, focus, and selected interactive controls.</div>
+          </div>
+          <div class="hv-accent-picker" id="hvAccentPicker">
+            <input class="hv-accent-native" id="hvSettingAccentColor" type="color" value="#ffffff" aria-label="Choose accent color">
+            <button class="hv-accent-swatch" type="button" style="--swatch:#ffffff" data-accent="#ffffff" aria-label="White accent"></button>
+            <button class="hv-accent-swatch" type="button" style="--swatch:#a7f3d0" data-accent="#a7f3d0" aria-label="Mint accent"></button>
+            <button class="hv-accent-swatch" type="button" style="--swatch:#facc15" data-accent="#facc15" aria-label="Gold accent"></button>
+            <button class="hv-accent-swatch" type="button" style="--swatch:#c4b5fd" data-accent="#c4b5fd" aria-label="Violet accent"></button>
+          </div>
+        </div>
             </div>
           </section>
 
@@ -20961,6 +22251,15 @@ loadChats();
               <p>Control local action confirmations and their optional UI sounds.</p>
             </div>
             <div class="hv-settings-list">
+        <div class="hv-setting-row">
+          <div class="hv-setting-row-icon"><i class="fa-solid fa-bullhorn"></i></div>
+          <div class="hv-setting-row-main">
+            <div class="hv-setting-row-title">Promo Notifications</div>
+            <div class="hv-setting-row-desc">Show compact product announcements in the Live Preview header.</div>
+          </div>
+          <button class="hv-setting-toggle" id="hvSettingPromoNotifications" type="button" role="switch" aria-checked="true" aria-label="Toggle promo notifications"></button>
+        </div>
+
         <div class="hv-setting-row">
           <div class="hv-setting-row-icon"><i class="fa-solid fa-bell"></i></div>
           <div class="hv-setting-row-main">
@@ -20978,6 +22277,125 @@ loadChats();
           </div>
           <button class="hv-setting-toggle" id="hvSettingSounds" type="button" role="switch" aria-checked="false" aria-label="Toggle UI sounds"></button>
         </div>
+            </div>
+          </section>
+
+          <section class="hv-settings-section" role="tabpanel" data-hv-settings-section="github" hidden>
+            <div class="hv-settings-section-head">
+              <h3>GitHub Configuration</h3>
+              <p>Connect a fine-grained token saved only in this browser, then publish the current editor code to GitHub Pages.</p>
+            </div>
+            <div class="hv-settings-form-grid">
+              <div class="hv-settings-field">
+                <label for="hvGithubMode">Mode</label>
+                <select class="hv-settings-form-select" id="hvGithubMode">
+                  <option value="pages">GitHub Pages API</option>
+                </select>
+              </div>
+              <div class="hv-settings-field">
+                <label for="hvGithubToken">Fine-grained personal access token</label>
+                <div class="hv-settings-input-wrap">
+                  <input class="hv-settings-input" id="hvGithubToken" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_...">
+                  <button class="hv-settings-secret-action" type="button" data-secret-toggle="hvGithubToken" aria-label="Show GitHub token"><i class="fa-solid fa-eye"></i></button>
+                  <button class="hv-settings-secret-action" type="button" data-secret-copy="hvGithubToken" aria-label="Copy GitHub token"><i class="fa-regular fa-copy"></i></button>
+                </div>
+              </div>
+              <div class="hv-settings-field">
+                <label for="hvGithubOwner">GitHub username / owner</label>
+                <div class="hv-settings-input-wrap"><input class="hv-settings-input" id="hvGithubOwner" autocomplete="username" spellcheck="false" placeholder="your-github-username"></div>
+              </div>
+              <div class="hv-settings-field">
+                <label for="hvGithubRepoPrefix">Repository prefix</label>
+                <div class="hv-settings-input-wrap"><input class="hv-settings-input" id="hvGithubRepoPrefix" spellcheck="false" value="htmlviewer" placeholder="htmlviewer"></div>
+              </div>
+              <div class="hv-settings-field">
+                <label for="hvGithubBranch">Publishing branch</label>
+                <div class="hv-settings-input-wrap"><input class="hv-settings-input" id="hvGithubBranch" spellcheck="false" value="main" placeholder="main"></div>
+              </div>
+            </div>
+            <div class="hv-settings-config-actions">
+              <div class="hv-settings-connection-status" id="hvGithubConnectionStatus">Not connected. Your token never leaves this browser except in requests sent directly to GitHub.</div>
+              <button class="hv-settings-config-button" id="hvGithubConnect" type="button"><i class="fa-brands fa-github"></i>Connect GitHub</button>
+            </div>
+            <div class="hv-github-guide">
+              <strong>How to create the required fine-grained token</strong>
+              <ol>
+                <li>Click your GitHub account, open <b>Settings</b>, then <b>Developer settings</b>.</li>
+                <li>Open <b>Personal access tokens</b> → <b>Fine-grained tokens</b>, then click <b>Generate new token</b>.</li>
+                <li>Add a name, set expiration to <b>No expiration</b> if that matches your security policy, and choose <b>All repositories</b>.</li>
+                <li>Add repository permissions: <b>Administration — Read and write</b>, <b>Contents — Read and write</b>, and <b>Pages — Read and write</b>.</li>
+                <li>Generate the token, paste it above, and click <b>Connect GitHub</b>.</li>
+              </ol>
+            </div>
+          </section>
+
+          <section class="hv-settings-section" role="tabpanel" data-hv-settings-section="gemini" hidden>
+            <div class="hv-settings-section-head">
+              <h3>Gemini Configuration</h3>
+              <p>Optionally use your own Gemini API keys and model names for AI Editor text and code requests. Keys remain in this browser.</p>
+            </div>
+            <div class="hv-settings-form-grid">
+              <div class="hv-settings-field">
+                <label for="hvGeminiMode">Mode</label>
+                <select class="hv-settings-form-select" id="hvGeminiMode">
+                  <option value="project">Secure project backend</option>
+                  <option value="custom">Gemini API</option>
+                </select>
+              </div>
+              <div class="hv-settings-field">
+                <label for="hvGeminiPrimaryKey">Gemini Primary API Key</label>
+                <div class="hv-settings-input-wrap">
+                  <input class="hv-settings-input" id="hvGeminiPrimaryKey" type="password" autocomplete="off" spellcheck="false" placeholder="AIza...">
+                  <button class="hv-settings-secret-action" type="button" data-secret-toggle="hvGeminiPrimaryKey" aria-label="Show primary Gemini key"><i class="fa-solid fa-eye"></i></button>
+                  <button class="hv-settings-secret-action" type="button" data-secret-copy="hvGeminiPrimaryKey" aria-label="Copy primary Gemini key"><i class="fa-regular fa-copy"></i></button>
+                </div>
+              </div>
+              <div class="hv-settings-field">
+                <label for="hvGeminiBackupKey">Gemini Backup API Key</label>
+                <div class="hv-settings-input-wrap">
+                  <input class="hv-settings-input" id="hvGeminiBackupKey" type="password" autocomplete="off" spellcheck="false" placeholder="Optional backup key">
+                  <button class="hv-settings-secret-action" type="button" data-secret-toggle="hvGeminiBackupKey" aria-label="Show backup Gemini key"><i class="fa-solid fa-eye"></i></button>
+                  <button class="hv-settings-secret-action" type="button" data-secret-copy="hvGeminiBackupKey" aria-label="Copy backup Gemini key"><i class="fa-regular fa-copy"></i></button>
+                </div>
+              </div>
+              <div class="hv-settings-field full">
+                <label for="hvGeminiPrimaryModel">Primary model</label>
+                <div class="hv-settings-input-wrap"><input class="hv-settings-input" id="hvGeminiPrimaryModel" spellcheck="false" value="gemini-3.6-flash"></div>
+              </div>
+              <div class="hv-settings-field full">
+                <label for="hvGeminiFallbackModel">Fallback model</label>
+                <div class="hv-settings-input-wrap"><input class="hv-settings-input" id="hvGeminiFallbackModel" spellcheck="false" value="gemini-3.5-flash-lite"></div>
+              </div>
+              <div class="hv-settings-field full">
+                <label for="hvGeminiHighVolumeModel">High-volume fallback model</label>
+                <div class="hv-settings-input-wrap"><input class="hv-settings-input" id="hvGeminiHighVolumeModel" spellcheck="false" value="gemini-3.5-flash-lite"></div>
+              </div>
+            </div>
+            <div class="hv-settings-config-actions">
+              <div class="hv-settings-connection-status" id="hvGeminiConfigStatus">The secure project backend remains active until Gemini API mode is selected and saved.</div>
+              <button class="hv-settings-config-button" id="hvGeminiSaveConfig" type="button"><i class="fa-solid fa-floppy-disk"></i>Save Gemini Configuration</button>
+            </div>
+            <div class="hv-github-guide hv-gemini-guide">
+              <strong>How to set up your Gemini API key and models</strong>
+              <ol>
+                <li>Open <a href="https://aistudio.google.com/api-keys" target="_blank" rel="noopener noreferrer">Google AI Studio API Keys</a>, sign in, and create an API key for your Google Cloud project.</li>
+                <li>Copy the key into <b>Gemini Primary API Key</b>. You may add a second key as an optional backup.</li>
+                <li>Open the official <a href="https://ai.google.dev/gemini-api/docs/models" target="_blank" rel="noopener noreferrer">Gemini models guide</a> to find currently available model IDs and capabilities.</li>
+                <li>Paste the exact model ID into the primary or fallback fields, select <b>Gemini API</b> mode, then save the configuration.</li>
+              </ol>
+              <p>Keys and model preferences are saved only in this browser. Voice Mode continues to use the secure project backend.</p>
+            </div>
+          </section>
+
+          <section class="hv-settings-section" role="tabpanel" data-hv-settings-section="shortcuts" hidden>
+            <div class="hv-settings-section-head">
+              <h3>Keyboard Shortcuts</h3>
+              <p>Select a key combination, press the replacement shortcut, then save the full set locally.</p>
+            </div>
+            <div class="hv-shortcuts-list" id="hvShortcutsList"></div>
+            <div class="hv-shortcuts-actions">
+              <button class="hv-settings-config-button" id="hvResetShortcuts" type="button"><i class="fa-solid fa-arrow-rotate-left"></i>Reset shortcuts</button>
+              <button class="hv-settings-config-button" id="hvSaveShortcuts" type="button"><i class="fa-solid fa-floppy-disk"></i>Save shortcuts</button>
             </div>
           </section>
 
@@ -21128,6 +22546,108 @@ loadChats();
       <div class="hv-clear-data-actions">
         <button class="hv-storage-action-button" type="button" data-hv-bulk-close>Cancel</button>
         <button class="hv-storage-action-button danger" id="hvBulkClearConfirm" type="button">Clear saved data</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="hv-nav-center-modal hv-github-modal" id="hvGithubPublishModal" aria-hidden="true">
+  <div class="hv-nav-center-backdrop" data-hv-github-publish-close></div>
+  <section class="hv-nav-center-panel hv-github-publish-confirm" role="dialog" aria-modal="true" aria-labelledby="hvGithubPublishTitle">
+    <div class="hv-nav-center-body">
+      <div class="hv-github-confirm-hero">
+        <div class="hv-github-confirm-icon"><i class="fa-brands fa-github"></i></div>
+        <div class="hv-github-confirm-copy">
+          <h3 id="hvGithubPublishTitle">Publish this website to GitHub Pages?</h3>
+          <p>The current HTML Viewer code will be uploaded as <b>index.html</b> to a new public repository and configured as a GitHub Pages website.</p>
+        </div>
+      </div>
+      <div class="hv-github-repo-name hv-settings-field">
+        <label for="hvGithubPublishRepoName">Repository name</label>
+        <div class="hv-settings-input-wrap"><input class="hv-settings-input" id="hvGithubPublishRepoName" spellcheck="false"></div>
+      </div>
+      <div class="hv-settings-connection-status error" id="hvGithubPublishError" aria-live="assertive"></div>
+      <div class="hv-github-dialog-actions">
+        <button class="hv-settings-config-button" type="button" data-hv-github-publish-close>Cancel</button>
+        <button class="hv-settings-config-button" id="hvGithubPublishConfirm" type="button"><i class="fa-solid fa-check"></i>Publish website</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="hv-nav-center-modal hv-github-modal" id="hvGithubProgressModal" aria-hidden="true">
+  <div class="hv-nav-center-backdrop"></div>
+  <section class="hv-github-progress-card" role="dialog" aria-modal="true" aria-labelledby="hvGithubProgressTitle">
+    <div class="hv-github-progress-icon" id="hvGithubProgressIcon"><i class="fa-brands fa-github"></i></div>
+    <div class="hv-github-progress-kicker" id="hvGithubProgressKicker">GitHub Pages deployment</div>
+    <h3 class="hv-github-progress-title" id="hvGithubProgressTitle">Preparing repository</h3>
+    <div class="hv-github-progress-desc" id="hvGithubProgressDescription">Creating a secure public deployment from the current editor code.</div>
+    <div class="hv-github-progress-track"><div class="hv-github-progress-fill" id="hvGithubProgressFill"></div></div>
+    <div class="hv-github-progress-steps">
+      <div class="hv-github-progress-step" data-github-step="repository"><i class="fa-solid fa-box-archive"></i><span>Repository</span></div>
+      <div class="hv-github-progress-step" data-github-step="upload"><i class="fa-solid fa-code"></i><span>Upload</span></div>
+      <div class="hv-github-progress-step" data-github-step="pages"><i class="fa-brands fa-github"></i><span>GitHub Pages</span></div>
+      <div class="hv-github-progress-step" data-github-step="live"><i class="fa-solid fa-globe"></i><span>Live</span></div>
+    </div>
+  </section>
+</div>
+
+<div class="hv-nav-center-modal hv-github-modal" id="hvGithubManagerModal" aria-hidden="true">
+  <div class="hv-nav-center-backdrop" data-hv-github-manager-close></div>
+  <section class="hv-nav-center-panel hv-github-manager-panel" role="dialog" aria-modal="true" aria-labelledby="hvGithubManagerTitle">
+    <header class="hv-nav-center-head">
+      <div class="hv-nav-center-icon"><i class="fa-brands fa-github"></i></div>
+      <div>
+        <h2 class="hv-nav-center-title" id="hvGithubManagerTitle">GitHub Pages deployment</h2>
+        <div class="hv-nav-center-sub" id="hvGithubManagerSubtitle">Published website and repository activity.</div>
+      </div>
+      <button class="hv-nav-center-close" type="button" data-hv-github-manager-close aria-label="Close GitHub deployment manager"><i class="fa-solid fa-xmark"></i></button>
+    </header>
+    <div class="hv-nav-center-body">
+      <div class="hv-github-manager-url">
+        <div class="hv-settings-input-wrap">
+          <input class="hv-settings-input" id="hvGithubLiveUrl" readonly aria-label="Published GitHub Pages URL">
+          <button class="hv-settings-secret-action" id="hvGithubCopyLiveUrl" type="button" aria-label="Copy published URL"><i class="fa-regular fa-copy"></i></button>
+        </div>
+        <button class="hv-settings-config-button" id="hvGithubOpenLiveUrl" type="button"><i class="fa-solid fa-arrow-up-right-from-square"></i>Open</button>
+      </div>
+      <div class="hv-github-manager-grid">
+        <section class="hv-github-manager-card">
+          <strong><i class="fa-solid fa-cloud-arrow-up"></i> Commit and deploy a new change</strong>
+          <p>Publish the latest HTML currently loaded in the editor to the existing repository.</p>
+          <div class="hv-settings-input-wrap"><input class="hv-settings-input" id="hvGithubCommitMessage" value="Update website from HTML Viewer" maxlength="180"></div>
+          <button class="hv-settings-config-button" id="hvGithubCommitLatest" type="button"><i class="fa-solid fa-cloud-arrow-up"></i>Commit latest build</button>
+        </section>
+        <section class="hv-github-manager-card danger">
+          <strong><i class="fa-solid fa-trash-can"></i> Delete repository entirely</strong>
+          <p>Permanently remove the GitHub repository and clear this live website connection.</p>
+          <button class="hv-settings-config-button" id="hvGithubDeleteRepository" type="button"><i class="fa-solid fa-trash-can"></i>Delete repository</button>
+        </section>
+      </div>
+      <div class="hv-github-commit-list" id="hvGithubCommitList" aria-live="polite"></div>
+    </div>
+  </section>
+</div>
+
+<div class="hv-nav-center-modal hv-github-modal" id="hvGithubDeleteModal" aria-hidden="true">
+  <div class="hv-nav-center-backdrop" data-hv-github-delete-close></div>
+  <section class="hv-nav-center-panel hv-github-publish-confirm" role="dialog" aria-modal="true" aria-labelledby="hvGithubDeleteTitle">
+    <div class="hv-nav-center-body">
+      <div class="hv-github-confirm-hero">
+        <div class="hv-github-confirm-icon" style="background:#fda4af"><i class="fa-solid fa-trash-can"></i></div>
+        <div class="hv-github-confirm-copy">
+          <h3 id="hvGithubDeleteTitle">Delete this GitHub repository?</h3>
+          <p>This permanently deletes the connected repository and its GitHub Pages website. Type <b>DELETE</b> to continue.</p>
+        </div>
+      </div>
+      <div class="hv-github-repo-name hv-settings-field">
+        <label for="hvGithubDeleteInput">Type DELETE</label>
+        <div class="hv-settings-input-wrap"><input class="hv-settings-input" id="hvGithubDeleteInput" autocomplete="off" spellcheck="false"></div>
+      </div>
+      <div class="hv-settings-connection-status error" id="hvGithubDeleteError" aria-live="assertive"></div>
+      <div class="hv-github-dialog-actions">
+        <button class="hv-settings-config-button" type="button" data-hv-github-delete-close>Cancel</button>
+        <button class="hv-settings-config-button" id="hvGithubDeleteConfirm" type="button" disabled><i class="fa-solid fa-trash-can"></i>Delete repository</button>
       </div>
     </div>
   </section>
@@ -25848,6 +27368,80 @@ async function hvLoadCommunityPreset(item){
   }
 }
 
+const hvCommunityPreviewModal = document.getElementById('hvCommunityPreviewModal');
+const hvCommunityPreviewBackdrop = document.getElementById('hvCommunityPreviewBackdrop');
+const hvCommunityPreviewClose = document.getElementById('hvCommunityPreviewClose');
+const hvCommunityPreviewFrame = document.getElementById('hvCommunityPreviewFrame');
+const hvCommunityPreviewLoading = document.getElementById('hvCommunityPreviewLoading');
+const hvCommunityPreviewLoad = document.getElementById('hvCommunityPreviewLoad');
+let hvCommunityPreviewSelection = null;
+
+function hvCloseCommunityPreview(){
+  hvCommunityPreviewSelection = null;
+  if(hvCommunityPreviewFrame) hvCommunityPreviewFrame.srcdoc = '';
+  if(hvCommunityPreviewModal){
+    hvCommunityPreviewModal.classList.remove('open');
+    hvCommunityPreviewModal.setAttribute('aria-hidden','true');
+  }
+  if(hvCommunityPreviewLoad) hvCommunityPreviewLoad.disabled = true;
+  if(hvCommunityPreviewLoading) hvCommunityPreviewLoading.classList.remove('hidden');
+}
+
+async function hvOpenCommunityPreview(item){
+  if(!item || !item.shareLink || !hvCommunityPreviewModal) return;
+  const title = document.getElementById('hvCommunityPreviewTitle');
+  const author = document.getElementById('hvCommunityPreviewAuthor');
+  const date = document.getElementById('hvCommunityPreviewDate');
+  const description = document.getElementById('hvCommunityPreviewDescription');
+  if(title) title.textContent = item.title || 'Community Preset';
+  if(author) author.textContent = 'Submitted by ' + getCommunitySubmittedBy(item);
+  if(date) date.textContent = getCommunitySubmittedDate(item);
+  if(description) description.textContent = item.subtitle || 'Community submitted HTML layout.';
+  hvCommunityPreviewModal.classList.add('open');
+  hvCommunityPreviewModal.setAttribute('aria-hidden','false');
+  if(hvCommunityPreviewLoading){
+    hvCommunityPreviewLoading.classList.remove('hidden');
+    hvCommunityPreviewLoading.querySelector('i').className = 'fa-solid fa-circle-notch fa-spin';
+    hvCommunityPreviewLoading.querySelector('span').textContent = 'Loading preset preview…';
+  }
+  if(hvCommunityPreviewLoad) hvCommunityPreviewLoad.disabled = true;
+  try{
+    const payload = await hvGetShareDataFromLink(item.shareLink);
+    if(!payload || typeof payload.text !== 'string'){
+      throw new Error('Share link does not contain layout code.');
+    }
+    hvCommunityPreviewSelection = { item,payload };
+    if(hvCommunityPreviewFrame){
+      hvCommunityPreviewFrame.onload = () => {
+        hvCommunityPreviewLoading?.classList.add('hidden');
+      };
+      hvCommunityPreviewFrame.srcdoc = payload.text;
+    }else{
+      hvCommunityPreviewLoading?.classList.add('hidden');
+    }
+    if(hvCommunityPreviewLoad) hvCommunityPreviewLoad.disabled = false;
+  }catch(error){
+    if(hvCommunityPreviewLoading){
+      hvCommunityPreviewLoading.querySelector('i').className = 'fa-solid fa-triangle-exclamation';
+      hvCommunityPreviewLoading.querySelector('span').textContent = 'This preset preview could not be loaded.';
+    }
+    console.error('Community preset preview error.',error);
+  }
+}
+
+hvCommunityPreviewBackdrop?.addEventListener('click',hvCloseCommunityPreview);
+hvCommunityPreviewClose?.addEventListener('click',hvCloseCommunityPreview);
+hvCommunityPreviewLoad?.addEventListener('click',() => {
+  const selected = hvCommunityPreviewSelection;
+  if(!selected) return;
+  setCode(
+    selected.payload.text,
+    selected.payload.name || selected.item.title || 'Community Preset'
+  );
+  hvCloseCommunityPreview();
+  closeCodesModal();
+});
+
     function openCodesModal(){
       hvCommunityView = 'all';
       const searchInput = document.getElementById('hvCommunitySearch');
@@ -26291,6 +27885,11 @@ if(hvCompressIcon){
 
   hvExpandBtn.addEventListener('click', () => {
 
+    if(hvLayout.classList.contains('hv-ai-tab-mode')){
+      document.getElementById('hvAiTabFocus')?.click();
+      return;
+    }
+
     const isExpanded =
       hvLayout.classList.contains('hv-expanded');
 
@@ -26620,7 +28219,7 @@ hvDownloadPopup.classList.remove('show');
         entry.id === card.dataset.communityId
       );
       if(!item) return;
-      hvLoadCommunityPreset(item);
+      hvOpenCommunityPreview(item);
     });
 
     els.codesList.addEventListener('keydown', (e) => {
@@ -26643,12 +28242,14 @@ hvDownloadPopup.classList.remove('show');
 
       if(item){
         e.preventDefault();
-        hvLoadCommunityPreset(item);
+        hvOpenCommunityPreview(item);
       }
     });
 
     document.addEventListener('keydown', (e) => {
       if(e.key === 'Escape'){
+
+  hvCloseCommunityPreview();
 
   closeCodesModal();
   
@@ -27815,12 +29416,41 @@ if(hvSearchBar && hvSearchInput && hvCodeEditor){
 
   document.addEventListener('keydown', e => {
 
-    if(e.ctrlKey && e.key.toLowerCase() === 'h'){
+    const isSearchShortcut =
+      typeof window.hvShortcutMatches === 'function'
+        ? window.hvShortcutMatches('search',e)
+        : e.ctrlKey && !e.altKey && !e.shiftKey && e.key.toLowerCase() === 'h';
+
+    if(isSearchShortcut){
 
       e.preventDefault();
       e.stopPropagation();
 
-      hvToggleSearchBar();
+      const selectionStart = Math.min(
+        hvCodeEditor.selectionStart,
+        hvCodeEditor.selectionEnd
+      );
+      const selectionEnd = Math.max(
+        hvCodeEditor.selectionStart,
+        hvCodeEditor.selectionEnd
+      );
+      const selectedCode = selectionEnd > selectionStart
+        ? hvCodeEditor.value.slice(selectionStart,selectionEnd)
+        : '';
+
+      if(selectedCode){
+        hvSearchInput.value = selectedCode;
+      }
+
+      if(!hvSearchBar.classList.contains('open')){
+        hvOpenSearchBar();
+      }else{
+        hvBuildMatches(true);
+        hvRefreshLiveSearchHighlight();
+        if(hvMatches.length) hvSelectMatch(0,false);
+        hvSearchInput.focus();
+        hvSearchInput.select();
+      }
 
     }
 
@@ -28545,8 +30175,20 @@ const hvSettingLivePreview =
 const hvSettingAutoUpdate =
   document.getElementById('hvSettingAutoUpdate');
 
+const hvSettingCodePreview =
+  document.getElementById('hvSettingCodePreview');
+
+const hvSettingAiTabMode =
+  document.getElementById('hvSettingAiTabMode');
+
 const hvSettingAppearance =
   document.getElementById('hvSettingAppearance');
+
+const hvSettingAccentColor =
+  document.getElementById('hvSettingAccentColor');
+
+const hvSettingPromoNotifications =
+  document.getElementById('hvSettingPromoNotifications');
 
 const hvSettingNotifications =
   document.getElementById('hvSettingNotifications');
@@ -28555,6 +30197,32 @@ const hvSettingSounds =
   document.getElementById('hvSettingSounds');
 
 const HV_WEBSITE_UPDATES = [
+  {
+    title:'GitHub Pages publishing and connected AI',
+    version:'v5.5',
+    date:'July 29, 2026',
+    icon:'fa-code-branch',
+    description:'Added local GitHub and Gemini configuration, one-click GitHub Pages publishing, repository updates, deployment history, and safe repository deletion.',
+    details:[
+      ['fa-brands fa-github','GitHub Pages workflow','Create a repository, upload the current HTML, enable Pages, open the live site, and commit later editor changes.'],
+      ['fa-key','Device-only configuration','GitHub and optional Gemini credentials stay in this browser and are sent only to their corresponding provider.'],
+      ['fa-clock-rotate-left','Repository activity','Review recent commits and the current public URL from a dedicated deployment manager.'],
+      ['fa-keyboard','Custom shortcuts','Remap common editor, validation, preview, AI, and navigation actions from Settings.']
+    ]
+  },
+  {
+    title:'Workspace personalization and preset previews',
+    version:'v5.4',
+    date:'July 29, 2026',
+    icon:'fa-wand-magic-sparkles',
+    description:'Introduced accent colors, promo controls, code-only visibility, a three-panel AI tab workspace, and live Community Preset previews before loading.',
+    details:[
+      ['fa-table-columns','Resizable three-panel mode','Use Code, Live Preview, and AI HTML Editor together with independent split controls.'],
+      ['fa-palette','Accent colors','Choose a local accent color for interactive hover, focus, and selected states.'],
+      ['fa-window-maximize','Preset showcase','Open a safe live preview with submission details before loading a Community Preset into the editor.'],
+      ['fa-bullhorn','Optional promotions','Keep product announcements in the preview header or disable them from Notification settings.']
+    ]
+  },
   {
     title:'Live Voice Mode and service dashboard',
     version:'v5.3',
@@ -28642,30 +30310,51 @@ const hvStatusCheckedAt = document.getElementById('hvStatusCheckedAt');
 let hvStatusRequestPromise = null;
 let hvStatusLastLoaded = 0;
 
+function hvUpdateIconClass(value){
+  const classes = String(value || 'fa-sparkles').trim();
+  return /\bfa-(?:brands|regular|light|thin)\b/.test(classes)
+    ? classes
+    : 'fa-solid ' + classes;
+}
+
 function hvRenderWebsiteUpdates(){
   if(!hvUpdateList) return;
   const fragment = document.createDocumentFragment();
   HV_WEBSITE_UPDATES.forEach((update,index) => {
     const card = document.createElement('button');
+    const iconWrap = document.createElement('span');
+    const icon = document.createElement('i');
+    const main = document.createElement('span');
     const meta = document.createElement('div');
     const title = document.createElement('h3');
     const version = document.createElement('span');
     const description = document.createElement('div');
+    const footer = document.createElement('span');
     const date = document.createElement('div');
+    const viewMore = document.createElement('span');
     card.type = 'button';
     card.className = 'hv-update-card';
     card.dataset.hvUpdateIndex = String(index);
+    iconWrap.className = 'hv-update-card-icon';
+    icon.className = hvUpdateIconClass(update.icon);
+    main.className = 'hv-update-card-main';
     meta.className = 'hv-update-meta';
     title.className = 'hv-update-title';
     version.className = 'hv-update-version';
     description.className = 'hv-update-desc';
+    footer.className = 'hv-update-footer';
     date.className = 'hv-update-date';
+    viewMore.className = 'hv-update-view-more';
     title.textContent = update.title;
     version.textContent = update.version;
     description.textContent = update.description;
-    date.textContent = update.date + ' · View details';
+    date.textContent = update.date;
+    viewMore.innerHTML = 'View more <i class="fa-solid fa-arrow-right"></i>';
+    iconWrap.append(icon);
     meta.append(title,version);
-    card.append(meta,description,date);
+    footer.append(date,viewMore);
+    main.append(meta,description,footer);
+    card.append(iconWrap,main);
     fragment.append(card);
   });
   hvUpdateList.replaceChildren(fragment);
@@ -28686,7 +30375,7 @@ function hvOpenUpdateDetails(index){
   if(version) version.textContent = update.version;
   if(heading) heading.textContent = update.title;
   if(description) description.textContent = update.description;
-  if(icon) icon.className = 'fa-solid ' + update.icon;
+  if(icon) icon.className = hvUpdateIconClass(update.icon);
   if(grid){
     const fragment = document.createDocumentFragment();
     update.details.forEach(detail => {
@@ -28695,7 +30384,7 @@ function hvOpenUpdateDetails(index){
       const detailTitle = document.createElement('strong');
       const detailCopy = document.createElement('span');
       card.className = 'hv-update-detail-item';
-      detailIcon.className = 'fa-solid ' + detail[0];
+      detailIcon.className = hvUpdateIconClass(detail[0]);
       detailTitle.textContent = detail[1];
       detailCopy.textContent = detail[2];
       card.append(detailIcon,detailTitle,detailCopy);
@@ -28970,7 +30659,13 @@ function hvLoadUiSettings(){
   return {
     livePreview:stored.livePreview !== false,
     autoUpdate:stored.autoUpdate !== false,
+    codePreview:stored.codePreview !== false,
+    aiEditorTabMode:Boolean(stored.aiEditorTabMode),
     appearance:stored.appearance === 'light' ? 'light' : 'dark',
+    accentColor:/^#[0-9a-f]{6}$/i.test(String(stored.accentColor || ''))
+      ? String(stored.accentColor).toLowerCase()
+      : '#ffffff',
+    promoNotifications:stored.promoNotifications !== false,
     notifications:Boolean(stored.notifications),
     sounds:Boolean(stored.sounds)
   };
@@ -28995,6 +30690,24 @@ function hvSetSwitchState(button, active){
   button.setAttribute('aria-checked', String(Boolean(active)));
 }
 
+function hvApplyAccentColor(value){
+  const color = /^#[0-9a-f]{6}$/i.test(String(value || ''))
+    ? String(value).toLowerCase()
+    : '#ffffff';
+  const red = parseInt(color.slice(1,3),16);
+  const green = parseInt(color.slice(3,5),16);
+  const blue = parseInt(color.slice(5,7),16);
+  const root = document.documentElement.style;
+  root.setProperty('--hv-accent',color);
+  root.setProperty('--hv-accent-soft','rgba(' + red + ',' + green + ',' + blue + ',.08)');
+  root.setProperty('--hv-accent-border','rgba(' + red + ',' + green + ',' + blue + ',.38)');
+  root.setProperty('--hv-accent-glow','rgba(' + red + ',' + green + ',' + blue + ',.14)');
+  if(hvSettingAccentColor) hvSettingAccentColor.value = color;
+  document.querySelectorAll('[data-accent]').forEach(button => {
+    button.classList.toggle('active',button.dataset.accent.toLowerCase() === color);
+  });
+}
+
 function hvApplyUiSettings(refreshPreview = false){
   document.documentElement.classList.toggle(
     'hv-light-mode',
@@ -29003,19 +30716,43 @@ function hvApplyUiSettings(refreshPreview = false){
 
   const layout = document.getElementById('hvLayout');
   if(layout){
+    if(!hvUiSettings.codePreview && !hvUiSettings.livePreview){
+      hvUiSettings.livePreview = true;
+    }
     layout.classList.toggle(
       'hv-live-preview-disabled',
       !hvUiSettings.livePreview
+    );
+    layout.classList.toggle(
+      'hv-code-preview-disabled',
+      !hvUiSettings.codePreview
+    );
+    layout.classList.toggle(
+      'hv-ai-tab-mode',
+      hvUiSettings.aiEditorTabMode
     );
   }
 
   hvSetSwitchState(hvSettingLivePreview, hvUiSettings.livePreview);
   hvSetSwitchState(hvSettingAutoUpdate, hvUiSettings.autoUpdate);
+  hvSetSwitchState(hvSettingCodePreview, hvUiSettings.codePreview);
+  hvSetSwitchState(hvSettingAiTabMode, hvUiSettings.aiEditorTabMode);
+  hvSetSwitchState(hvSettingPromoNotifications, hvUiSettings.promoNotifications);
   hvSetSwitchState(hvSettingNotifications, hvUiSettings.notifications);
   hvSetSwitchState(hvSettingSounds, hvUiSettings.sounds);
+  hvApplyAccentColor(hvUiSettings.accentColor);
 
   if(hvSettingAppearance){
     hvSettingAppearance.value = hvUiSettings.appearance;
+  }
+
+  const promo = document.getElementById('hvPreviewPromo');
+  if(promo){
+    promo.hidden = !hvUiSettings.promoNotifications || !hvUiSettings.livePreview;
+  }
+
+  if(typeof window.hvSyncAiEditorTabMode === 'function'){
+    window.hvSyncAiEditorTabMode(hvUiSettings.aiEditorTabMode);
   }
 
   if(
@@ -29029,6 +30766,10 @@ function hvApplyUiSettings(refreshPreview = false){
   if(typeof window.hvSyncMobilePreviewAvailability === 'function'){
     window.hvSyncMobilePreviewAvailability(hvUiSettings.livePreview);
   }
+
+  if(typeof window.hvSyncMobileCodeAvailability === 'function'){
+    window.hvSyncMobileCodeAvailability(hvUiSettings.codePreview);
+  }
 }
 
 window.hvIsLivePreviewEnabled = () =>
@@ -29036,6 +30777,12 @@ window.hvIsLivePreviewEnabled = () =>
 
 window.hvIsLivePreviewAutoUpdateEnabled = () =>
   hvUiSettings.autoUpdate;
+
+window.hvIsCodePreviewEnabled = () =>
+  hvUiSettings.codePreview;
+
+window.hvIsAiEditorTabMode = () =>
+  hvUiSettings.aiEditorTabMode;
 
 function hvPlayUiSound(type){
   if(!hvUiSettings.sounds){
@@ -29586,8 +31333,11 @@ function hvSetMobileView(view){
   const previewAvailable =
     typeof window.hvIsLivePreviewEnabled !== 'function' ||
     window.hvIsLivePreviewEnabled();
+  const codeAvailable =
+    typeof window.hvIsCodePreviewEnabled !== 'function' ||
+    window.hvIsCodePreviewEnabled();
 
-  const showPreview = view === 'preview' && previewAvailable;
+  const showPreview = previewAvailable && (view === 'preview' || !codeAvailable);
   hvMobileLayout.classList.toggle('hv-mobile-show-preview', showPreview);
   hvMobileLayout.classList.toggle('hv-mobile-show-code', !showPreview);
   hvMobileCodeTab.classList.toggle('active', !showPreview);
@@ -29601,6 +31351,13 @@ window.hvSyncMobilePreviewAvailability = enabled => {
   hvMobilePreviewTab.disabled = !enabled;
   hvMobilePreviewTab.setAttribute('aria-disabled', String(!enabled));
   if(!enabled) hvSetMobileView('code');
+};
+
+window.hvSyncMobileCodeAvailability = enabled => {
+  if(!hvMobileCodeTab) return;
+  hvMobileCodeTab.disabled = !enabled;
+  hvMobileCodeTab.setAttribute('aria-disabled',String(!enabled));
+  if(!enabled) hvSetMobileView('preview');
 };
 
 if(hvMobileActionsBtn && hvMobileActionsMenu){
@@ -29647,6 +31404,71 @@ document.querySelectorAll('[data-ai-proxy]').forEach(button => {
   });
 });
 
+const hvPreviewPromo = document.getElementById('hvPreviewPromo');
+const hvPreviewPanelForPromo = document.getElementById('hvMobilePreviewPanel');
+const hvPreviewControlsForPromo = hvPreviewPanelForPromo?.querySelector('.hv-preview-controls');
+const hvAiEditorToggleForPromo = document.getElementById('hvAiEditorToggle');
+const hvPreviewHeadForPromo = hvPreviewPanelForPromo?.querySelector('.hv-head');
+let hvPromoVoiceLaunchTimer = null;
+
+function hvSyncPreviewPromoSize(){
+  if(!hvPreviewPromo || !hvPreviewPanelForPromo) return;
+  const aiTabMode = document.getElementById('hvLayout')?.classList.contains('hv-ai-tab-mode');
+  if(aiTabMode && hvPreviewControlsForPromo && hvAiEditorToggleForPromo){
+    if(hvAiEditorToggleForPromo.nextElementSibling !== hvPreviewPromo){
+      hvAiEditorToggleForPromo.insertAdjacentElement('afterend',hvPreviewPromo);
+    }
+  }else if(hvPreviewHeadForPromo && hvPreviewControlsForPromo){
+    if(hvPreviewPromo.parentElement !== hvPreviewHeadForPromo){
+      hvPreviewHeadForPromo.insertBefore(hvPreviewPromo,hvPreviewControlsForPromo);
+    }
+  }
+  hvPreviewPromo.classList.toggle(
+    'compact',
+    aiTabMode || hvPreviewPanelForPromo.getBoundingClientRect().width < 820
+  );
+}
+
+hvPreviewPromo?.addEventListener('click',() => {
+  const aiFrame = document.getElementById('hvAiEditorFrame');
+  if(!hvAiEditorToggleForPromo?.classList.contains('active')){
+    hvAiEditorToggleForPromo?.click();
+  }
+  clearInterval(hvPromoVoiceLaunchTimer);
+  let attempts = 0;
+  const requestVoiceMode = () => {
+    attempts += 1;
+    try{
+      aiFrame?.contentWindow?.postMessage({ type:'hv-ai-open-voice-mode' },'*');
+    }catch(error){}
+    if(attempts >= 30){
+      clearInterval(hvPromoVoiceLaunchTimer);
+      hvPromoVoiceLaunchTimer = null;
+    }
+  };
+  requestVoiceMode();
+  hvPromoVoiceLaunchTimer = setInterval(requestVoiceMode,100);
+});
+
+window.addEventListener('message',event => {
+  const aiFrame = document.getElementById('hvAiEditorFrame');
+  if(
+    event.source === aiFrame?.contentWindow &&
+    event.data?.type === 'hv-ai-voice-launch-accepted'
+  ){
+    clearInterval(hvPromoVoiceLaunchTimer);
+    hvPromoVoiceLaunchTimer = null;
+  }
+});
+
+if(typeof ResizeObserver === 'function' && hvPreviewPanelForPromo){
+  const hvPreviewPromoObserver = new ResizeObserver(hvSyncPreviewPromoSize);
+  hvPreviewPromoObserver.observe(hvPreviewPanelForPromo);
+}
+
+window.addEventListener('resize',hvSyncPreviewPromoSize);
+hvSyncPreviewPromoSize();
+
 document.addEventListener('click', event => {
   if(
     hvMobileActionsMenu &&
@@ -29688,6 +31510,12 @@ if(hvFaqList){
     if(!question) return;
     const card = question.closest('.hv-faq-card');
     const open = !card.classList.contains('open');
+    hvFaqList.querySelectorAll('.hv-faq-card.open').forEach(otherCard => {
+      if(otherCard === card) return;
+      otherCard.classList.remove('open');
+      otherCard.querySelector('.hv-faq-question')?.setAttribute('aria-expanded','false');
+      otherCard.querySelector('.hv-faq-answer')?.setAttribute('aria-hidden','true');
+    });
     card.classList.toggle('open', open);
     question.setAttribute('aria-expanded', String(open));
     const answer = card.querySelector('.hv-faq-answer');
@@ -29714,6 +31542,22 @@ document.querySelectorAll('[data-hv-settings-tab]').forEach(button => {
 const hvSettingsSaveClose = document.getElementById('hvSettingsSaveClose');
 if(hvSettingsSaveClose){
   hvSettingsSaveClose.addEventListener('click',() => {
+    const savedGithub = hvLoadGithubConfig();
+    const githubDraft = hvGithubConfigFromFields();
+    hvWriteLocalConfig(HV_GITHUB_CONFIG_KEY,{
+      ...githubDraft,
+      connected:Boolean(
+        savedGithub.connected &&
+        savedGithub.token === githubDraft.token &&
+        savedGithub.owner === githubDraft.owner
+      ),
+      verifiedAt:savedGithub.verifiedAt
+    });
+    if(!hvSaveGeminiConfig()){
+      hvActivateSettingsTab('gemini');
+      return;
+    }
+    hvPopulateGithubConfig();
     hvStoreUiSettings();
     hvApplyUiSettings(true);
     hvCloseNavModals();
@@ -29752,11 +31596,48 @@ if(hvHistoryList){
 if(hvSettingLivePreview){
   hvSettingLivePreview.addEventListener('click', () => {
     hvUiSettings.livePreview = !hvUiSettings.livePreview;
+    if(!hvUiSettings.livePreview && !hvUiSettings.codePreview){
+      hvUiSettings.codePreview = true;
+    }
     hvStoreUiSettings();
     hvApplyUiSettings(true);
     window.hvNotify(
       'settings',
       hvUiSettings.livePreview ? 'Live Preview enabled.' : 'Live Preview disabled.'
+    );
+  });
+}
+
+if(hvSettingCodePreview){
+  hvSettingCodePreview.addEventListener('click', () => {
+    hvUiSettings.codePreview = !hvUiSettings.codePreview;
+    if(!hvUiSettings.codePreview){
+      hvUiSettings.livePreview = true;
+    }
+    hvStoreUiSettings();
+    hvApplyUiSettings(false);
+    window.hvNotify(
+      'settings',
+      hvUiSettings.codePreview
+        ? 'Code section enabled.'
+        : 'Code section hidden. Live Preview remains visible.'
+    );
+  });
+}
+
+if(hvSettingAiTabMode){
+  hvSettingAiTabMode.addEventListener('click', () => {
+    hvUiSettings.aiEditorTabMode = !hvUiSettings.aiEditorTabMode;
+    if(hvUiSettings.aiEditorTabMode){
+      hvUiSettings.livePreview = true;
+    }
+    hvStoreUiSettings();
+    hvApplyUiSettings(false);
+    window.hvNotify(
+      'settings',
+      hvUiSettings.aiEditorTabMode
+        ? 'Three-panel AI Editor Tab Mode enabled.'
+        : 'AI Editor returned to Live Preview mode.'
     );
   });
 }
@@ -29788,6 +31669,40 @@ if(hvSettingAppearance){
   });
 }
 
+if(hvSettingAccentColor){
+  hvSettingAccentColor.addEventListener('input',() => {
+    hvUiSettings.accentColor = hvSettingAccentColor.value.toLowerCase();
+    hvApplyAccentColor(hvUiSettings.accentColor);
+  });
+  hvSettingAccentColor.addEventListener('change',() => {
+    hvStoreUiSettings();
+    window.hvNotify('settings','Accent color updated.');
+  });
+}
+
+document.querySelectorAll('[data-accent]').forEach(button => {
+  button.addEventListener('click',() => {
+    hvUiSettings.accentColor = button.dataset.accent.toLowerCase();
+    hvStoreUiSettings();
+    hvApplyAccentColor(hvUiSettings.accentColor);
+    window.hvNotify('settings','Accent color updated.');
+  });
+});
+
+if(hvSettingPromoNotifications){
+  hvSettingPromoNotifications.addEventListener('click',() => {
+    hvUiSettings.promoNotifications = !hvUiSettings.promoNotifications;
+    hvStoreUiSettings();
+    hvApplyUiSettings(false);
+    window.hvNotify(
+      'settings',
+      hvUiSettings.promoNotifications
+        ? 'Promo notifications enabled.'
+        : 'Promo notifications hidden.'
+    );
+  });
+}
+
 if(hvSettingNotifications){
   hvSettingNotifications.addEventListener('click', () => {
     hvUiSettings.notifications = !hvUiSettings.notifications;
@@ -29810,6 +31725,813 @@ if(hvSettingSounds){
     );
   });
 }
+
+/* =========================
+   LOCAL CONNECTION SETTINGS
+========================= */
+
+const HV_GITHUB_CONFIG_KEY = 'hv_github_config_v1';
+const HV_GITHUB_PUBLICATION_KEY = 'hv_github_publication_v1';
+const HV_GEMINI_CONFIG_KEY = 'hv_gemini_config_v1';
+const HV_SHORTCUTS_KEY = 'hv_keyboard_shortcuts_v1';
+
+function hvReadLocalConfig(key,fallback){
+  try{
+    const value = JSON.parse(localStorage.getItem(key) || '');
+    return value && typeof value === 'object' ? value : fallback;
+  }catch(error){
+    return fallback;
+  }
+}
+
+function hvWriteLocalConfig(key,value){
+  localStorage.setItem(key,JSON.stringify(value));
+  if(typeof window.hvStorageChanged === 'function') window.hvStorageChanged();
+}
+
+function hvSetConnectionStatus(element,message,type){
+  if(!element) return;
+  element.textContent = message;
+  element.classList.remove('success','error');
+  if(type) element.classList.add(type);
+}
+
+const hvGithubFields = {
+  mode:document.getElementById('hvGithubMode'),
+  token:document.getElementById('hvGithubToken'),
+  owner:document.getElementById('hvGithubOwner'),
+  repoPrefix:document.getElementById('hvGithubRepoPrefix'),
+  branch:document.getElementById('hvGithubBranch'),
+  status:document.getElementById('hvGithubConnectionStatus'),
+  connect:document.getElementById('hvGithubConnect')
+};
+const hvGithubPublishButton = document.getElementById('hvGithubPublishButton');
+const hvGithubPublishModal = document.getElementById('hvGithubPublishModal');
+const hvGithubProgressModal = document.getElementById('hvGithubProgressModal');
+const hvGithubManagerModal = document.getElementById('hvGithubManagerModal');
+const hvGithubDeleteModal = document.getElementById('hvGithubDeleteModal');
+
+function hvLoadGithubConfig(){
+  const stored = hvReadLocalConfig(HV_GITHUB_CONFIG_KEY,{});
+  return {
+    mode:'pages',
+    token:String(stored.token || ''),
+    owner:String(stored.owner || ''),
+    repoPrefix:String(stored.repoPrefix || 'htmlviewer'),
+    branch:String(stored.branch || 'main'),
+    accountLogin:String(stored.accountLogin || stored.owner || ''),
+    connected:stored.connected === true,
+    verifiedAt:Number(stored.verifiedAt || 0)
+  };
+}
+
+function hvLoadGithubPublication(){
+  const stored = hvReadLocalConfig(HV_GITHUB_PUBLICATION_KEY,null);
+  return stored && stored.owner && stored.repo ? stored : null;
+}
+
+function hvSanitizeGithubName(value,fallback){
+  const clean = String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]+/g,'-')
+    .replace(/^[._-]+|[._-]+$/g,'')
+    .replace(/-{2,}/g,'-')
+    .slice(0,100);
+  return clean || fallback;
+}
+
+function hvGithubConfigFromFields(){
+  return {
+    mode:'pages',
+    token:hvGithubFields.token?.value.trim() || '',
+    owner:hvGithubFields.owner?.value.trim() || '',
+    repoPrefix:hvSanitizeGithubName(
+      hvGithubFields.repoPrefix?.value,
+      'htmlviewer'
+    ),
+    branch:String(hvGithubFields.branch?.value || 'main')
+      .trim()
+      .replace(/^refs\/heads\//,'')
+      .slice(0,120) || 'main',
+    accountLogin:hvLoadGithubConfig().accountLogin,
+    connected:hvLoadGithubConfig().connected,
+    verifiedAt:hvLoadGithubConfig().verifiedAt
+  };
+}
+
+function hvSyncGithubPublishButton(){
+  const config = hvLoadGithubConfig();
+  if(!hvGithubPublishButton) return;
+  hvGithubPublishButton.hidden = !(config.connected && config.token && config.owner);
+  hvGithubPublishButton.classList.toggle(
+    'published',
+    Boolean(hvLoadGithubPublication())
+  );
+}
+
+function hvPopulateGithubConfig(){
+  const config = hvLoadGithubConfig();
+  if(hvGithubFields.mode) hvGithubFields.mode.value = 'pages';
+  if(hvGithubFields.token) hvGithubFields.token.value = config.token;
+  if(hvGithubFields.owner) hvGithubFields.owner.value = config.owner;
+  if(hvGithubFields.repoPrefix) hvGithubFields.repoPrefix.value = config.repoPrefix;
+  if(hvGithubFields.branch) hvGithubFields.branch.value = config.branch;
+  hvSetConnectionStatus(
+    hvGithubFields.status,
+    config.connected
+      ? 'Connected as ' + config.owner + '. Configuration is stored only on this device.'
+      : 'Not connected. Your token never leaves this browser except in requests sent directly to GitHub.',
+    config.connected ? 'success' : ''
+  );
+  if(hvGithubFields.connect){
+    hvGithubFields.connect.innerHTML = config.connected
+      ? '<i class="fa-brands fa-github"></i>Reconnect GitHub'
+      : '<i class="fa-brands fa-github"></i>Connect GitHub';
+  }
+  hvSyncGithubPublishButton();
+}
+
+async function hvGithubRequest(path,options = {}){
+  const config = hvLoadGithubConfig();
+  if(!config.token) throw new Error('Connect GitHub in Settings first.');
+  const response = await fetch('https://api.github.com' + path,{
+    ...options,
+    headers:{
+      Accept:'application/vnd.github+json',
+      Authorization:'Bearer ' + config.token,
+      'X-GitHub-Api-Version':'2026-03-10',
+      ...(options.body ? { 'Content-Type':'application/json' } : {}),
+      ...(options.headers || {})
+    }
+  });
+  if(response.status === 204) return null;
+  const raw = await response.text();
+  let data = null;
+  try{ data = raw ? JSON.parse(raw) : null; }catch(error){}
+  if(!response.ok){
+    const apiMessage = data?.message || raw || ('GitHub returned ' + response.status + '.');
+    const error = new Error(apiMessage);
+    error.status = response.status;
+    error.data = data;
+    throw error;
+  }
+  return data;
+}
+
+async function hvConnectGithub(){
+  const draft = hvGithubConfigFromFields();
+  if(!draft.token){
+    hvSetConnectionStatus(hvGithubFields.status,'Add a fine-grained personal access token.','error');
+    return false;
+  }
+  if(hvGithubFields.connect){
+    hvGithubFields.connect.disabled = true;
+    hvGithubFields.connect.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>Connecting';
+  }
+  hvWriteLocalConfig(HV_GITHUB_CONFIG_KEY,{ ...draft,connected:false,verifiedAt:0 });
+  try{
+    const user = await hvGithubRequest('/user');
+    const owner = draft.owner || user?.login || '';
+    if(!owner) throw new Error('GitHub did not return an account name.');
+    const config = {
+      ...draft,
+      owner,
+      accountLogin:String(user?.login || owner),
+      connected:true,
+      verifiedAt:Date.now()
+    };
+    hvWriteLocalConfig(HV_GITHUB_CONFIG_KEY,config);
+    hvPopulateGithubConfig();
+    window.hvNotify?.('settings','GitHub connected as ' + owner + '.');
+    return true;
+  }catch(error){
+    hvWriteLocalConfig(HV_GITHUB_CONFIG_KEY,{ ...draft,connected:false,verifiedAt:0 });
+    hvSetConnectionStatus(
+      hvGithubFields.status,
+      'Connection failed: ' + (error.message || 'Check the token and permissions.'),
+      'error'
+    );
+    return false;
+  }finally{
+    if(hvGithubFields.connect) hvGithubFields.connect.disabled = false;
+  }
+}
+
+function hvOpenGithubModal(modal){
+  if(!modal) return;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+}
+
+function hvCloseGithubModal(modal){
+  if(!modal) return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden','true');
+  if(!document.querySelector('.hv-nav-center-modal.open')){
+    document.body.style.overflow = '';
+  }
+}
+
+function hvUtf8Base64(value){
+  const bytes = new TextEncoder().encode(String(value || ''));
+  let binary = '';
+  for(let index = 0; index < bytes.length; index += 0x8000){
+    binary += String.fromCharCode(...bytes.subarray(index,index + 0x8000));
+  }
+  return btoa(binary);
+}
+
+function hvGithubCurrentCode(){
+  return document.getElementById('hvCode')?.value || '';
+}
+
+function hvGithubSuggestedRepoName(){
+  const config = hvLoadGithubConfig();
+  const title = document.getElementById('hvFileName')?.textContent || 'website';
+  return hvSanitizeGithubName(
+    config.repoPrefix + '-' + title.replace(/\.[^.]+$/,''),
+    config.repoPrefix + '-website'
+  );
+}
+
+function hvSetGithubProgress(step,title,description,percent,mode = 'publish'){
+  if(!hvGithubProgressModal) return;
+  hvGithubProgressModal.classList.toggle('danger',mode === 'delete');
+  const icon = document.getElementById('hvGithubProgressIcon');
+  const kicker = document.getElementById('hvGithubProgressKicker');
+  const titleEl = document.getElementById('hvGithubProgressTitle');
+  const descEl = document.getElementById('hvGithubProgressDescription');
+  const fill = document.getElementById('hvGithubProgressFill');
+  if(icon) icon.innerHTML = mode === 'delete'
+    ? '<i class="fa-solid fa-trash-can"></i>'
+    : '<i class="fa-brands fa-github"></i>';
+  if(kicker) kicker.textContent = mode === 'delete' ? 'GitHub deployment' : 'GitHub Pages deployment';
+  if(titleEl) titleEl.textContent = title;
+  if(descEl) descEl.textContent = description;
+  if(fill) fill.style.width = Math.max(0,Math.min(100,percent)) + '%';
+  hvGithubProgressModal.querySelectorAll('[data-github-step]').forEach(item => {
+    const order = ['repository','upload','pages','live'];
+    const activeIndex = order.indexOf(step);
+    const itemIndex = order.indexOf(item.dataset.githubStep);
+    item.classList.toggle('active',itemIndex <= activeIndex);
+  });
+}
+
+async function hvGithubEnsureBranch(owner,repo,branch,defaultBranch){
+  if(!branch || branch === defaultBranch) return defaultBranch;
+  try{
+    await hvGithubRequest(
+      '/repos/' + encodeURIComponent(owner) + '/' + encodeURIComponent(repo) +
+      '/git/ref/heads/' + encodeURIComponent(branch)
+    );
+    return branch;
+  }catch(error){
+    if(error.status !== 404) throw error;
+  }
+  const baseRef = await hvGithubRequest(
+    '/repos/' + encodeURIComponent(owner) + '/' + encodeURIComponent(repo) +
+    '/git/ref/heads/' + encodeURIComponent(defaultBranch)
+  );
+  await hvGithubRequest(
+    '/repos/' + encodeURIComponent(owner) + '/' + encodeURIComponent(repo) + '/git/refs',
+    {
+      method:'POST',
+      body:JSON.stringify({
+        ref:'refs/heads/' + branch,
+        sha:baseRef?.object?.sha
+      })
+    }
+  );
+  return branch;
+}
+
+async function hvGithubUploadIndex(owner,repo,branch,message){
+  const basePath = '/repos/' + encodeURIComponent(owner) + '/' + encodeURIComponent(repo);
+  let sha = '';
+  try{
+    const existing = await hvGithubRequest(
+      basePath + '/contents/index.html?ref=' + encodeURIComponent(branch)
+    );
+    sha = existing?.sha || '';
+  }catch(error){
+    if(error.status !== 404) throw error;
+  }
+  return hvGithubRequest(basePath + '/contents/index.html',{
+    method:'PUT',
+    body:JSON.stringify({
+      message:String(message || 'Publish website from HTML Viewer').slice(0,180),
+      content:hvUtf8Base64(hvGithubCurrentCode()),
+      branch,
+      ...(sha ? { sha } : {})
+    })
+  });
+}
+
+async function hvGithubEnablePages(owner,repo,branch){
+  const path = '/repos/' + encodeURIComponent(owner) + '/' + encodeURIComponent(repo) + '/pages';
+  try{
+    return await hvGithubRequest(path,{
+      method:'POST',
+      body:JSON.stringify({
+        build_type:'legacy',
+        source:{ branch,path:'/' }
+      })
+    });
+  }catch(error){
+    if(error.status !== 409 && error.status !== 422) throw error;
+    return hvGithubRequest(path,{
+      method:'PUT',
+      body:JSON.stringify({
+        build_type:'legacy',
+        source:{ branch,path:'/' }
+      })
+    });
+  }
+}
+
+async function hvPublishGithubRepository(){
+  const config = hvLoadGithubConfig();
+  const repoInput = document.getElementById('hvGithubPublishRepoName');
+  const errorBox = document.getElementById('hvGithubPublishError');
+  const repo = hvSanitizeGithubName(repoInput?.value,hvGithubSuggestedRepoName());
+  const code = hvGithubCurrentCode();
+  if(!code.trim()){
+    hvSetConnectionStatus(errorBox,'Add HTML to the code editor before publishing.','error');
+    return;
+  }
+  if(!config.connected || !config.token || !config.owner){
+    hvSetConnectionStatus(errorBox,'Connect GitHub in Settings before publishing.','error');
+    return;
+  }
+  const confirm = document.getElementById('hvGithubPublishConfirm');
+  if(confirm) confirm.disabled = true;
+  hvCloseGithubModal(hvGithubPublishModal);
+  hvOpenGithubModal(hvGithubProgressModal);
+  try{
+    hvSetGithubProgress('repository','Creating ' + repo,'Creating a public GitHub repository.',18);
+    const createPath = (
+      config.accountLogin &&
+      config.owner.toLowerCase() !== config.accountLogin.toLowerCase()
+    )
+      ? '/orgs/' + encodeURIComponent(config.owner) + '/repos'
+      : '/user/repos';
+    const repository = await hvGithubRequest(createPath,{
+      method:'POST',
+      body:JSON.stringify({
+        name:repo,
+        description:'Published from HTML Viewer',
+        private:false,
+        auto_init:true
+      })
+    });
+    const owner = repository?.owner?.login || config.owner;
+    const defaultBranch = repository?.default_branch || 'main';
+    const branch = await hvGithubEnsureBranch(owner,repo,config.branch,defaultBranch);
+    hvSetGithubProgress('upload','Uploading website','Writing the current editor code to index.html.',48);
+    await hvGithubUploadIndex(owner,repo,branch,'Publish website from HTML Viewer');
+    hvSetGithubProgress('pages','Enabling GitHub Pages','Configuring the publishing branch and public website.',76);
+    const pages = await hvGithubEnablePages(owner,repo,branch);
+    const url = pages?.html_url || (
+      'https://' + owner.toLowerCase() + '.github.io/' + repo + '/'
+    );
+    const publication = {
+      owner,
+      repo,
+      branch,
+      url,
+      createdAt:Date.now(),
+      updatedAt:Date.now()
+    };
+    hvWriteLocalConfig(HV_GITHUB_PUBLICATION_KEY,publication);
+    hvSetGithubProgress('live',repo + ' is live','The repository is connected and GitHub Pages is deploying.',100);
+    hvSyncGithubPublishButton();
+    window.hvNotify?.('download','Website published to GitHub Pages.');
+    await new Promise(resolve => setTimeout(resolve,700));
+    hvCloseGithubModal(hvGithubProgressModal);
+    await hvOpenGithubManager();
+  }catch(error){
+    hvCloseGithubModal(hvGithubProgressModal);
+    hvOpenGithubModal(hvGithubPublishModal);
+    hvSetConnectionStatus(
+      errorBox,
+      'Publishing failed: ' + (error.message || 'Check repository permissions.'),
+      'error'
+    );
+  }finally{
+    if(confirm) confirm.disabled = false;
+  }
+}
+
+async function hvRenderGithubCommits(publication){
+  const list = document.getElementById('hvGithubCommitList');
+  if(!list) return;
+  list.textContent = 'Loading repository activity…';
+  try{
+    const commits = await hvGithubRequest(
+      '/repos/' + encodeURIComponent(publication.owner) + '/' +
+      encodeURIComponent(publication.repo) + '/commits?sha=' +
+      encodeURIComponent(publication.branch) + '&per_page=8'
+    );
+    const fragment = document.createDocumentFragment();
+    (Array.isArray(commits) ? commits : []).forEach(item => {
+      const row = document.createElement('div');
+      const copy = document.createElement('div');
+      const title = document.createElement('strong');
+      const meta = document.createElement('span');
+      const badge = document.createElement('span');
+      row.className = 'hv-github-commit-row';
+      copy.className = 'hv-github-commit-copy';
+      badge.className = 'hv-github-commit-badge';
+      title.textContent = item?.commit?.message?.split('\n')[0] || 'Repository update';
+      meta.textContent = (item?.sha || '').slice(0,7) + ' · ' +
+        new Date(item?.commit?.author?.date || Date.now()).toLocaleString();
+      badge.textContent = publication.branch;
+      copy.append(title,meta);
+      row.append(copy,badge);
+      fragment.append(row);
+    });
+    list.replaceChildren(fragment);
+    if(!list.children.length) list.textContent = 'No commits were returned for this branch.';
+  }catch(error){
+    list.textContent = 'Repository activity could not be loaded: ' + error.message;
+  }
+}
+
+async function hvOpenGithubManager(){
+  const publication = hvLoadGithubPublication();
+  if(!publication){
+    hvOpenGithubPublishConfirm();
+    return;
+  }
+  const urlInput = document.getElementById('hvGithubLiveUrl');
+  const title = document.getElementById('hvGithubManagerTitle');
+  const subtitle = document.getElementById('hvGithubManagerSubtitle');
+  if(urlInput) urlInput.value = publication.url;
+  if(title) title.textContent = publication.repo + ' is live';
+  if(subtitle) subtitle.textContent = publication.owner + '/' + publication.repo + ' · ' + publication.branch;
+  hvOpenGithubModal(hvGithubManagerModal);
+  await hvRenderGithubCommits(publication);
+}
+
+function hvOpenGithubPublishConfirm(){
+  const errorBox = document.getElementById('hvGithubPublishError');
+  const repoInput = document.getElementById('hvGithubPublishRepoName');
+  hvSetConnectionStatus(errorBox,'','');
+  if(repoInput) repoInput.value = hvGithubSuggestedRepoName();
+  hvOpenGithubModal(hvGithubPublishModal);
+  setTimeout(() => repoInput?.focus(),50);
+}
+
+async function hvCommitLatestGithubBuild(){
+  const publication = hvLoadGithubPublication();
+  if(!publication) return;
+  const message = document.getElementById('hvGithubCommitMessage')?.value.trim() ||
+    'Update website from HTML Viewer';
+  const button = document.getElementById('hvGithubCommitLatest');
+  if(button) button.disabled = true;
+  hvCloseGithubModal(hvGithubManagerModal);
+  hvOpenGithubModal(hvGithubProgressModal);
+  try{
+    hvSetGithubProgress('upload','Committing latest build','Uploading the current editor code to GitHub.',55);
+    await hvGithubUploadIndex(
+      publication.owner,
+      publication.repo,
+      publication.branch,
+      message
+    );
+    publication.updatedAt = Date.now();
+    hvWriteLocalConfig(HV_GITHUB_PUBLICATION_KEY,publication);
+    hvSetGithubProgress('live','Latest build committed','GitHub Pages is deploying the new commit.',100);
+    window.hvNotify?.('save','Latest code committed to GitHub.');
+    await new Promise(resolve => setTimeout(resolve,650));
+    hvCloseGithubModal(hvGithubProgressModal);
+    await hvOpenGithubManager();
+  }catch(error){
+    hvCloseGithubModal(hvGithubProgressModal);
+    hvOpenGithubModal(hvGithubManagerModal);
+    const list = document.getElementById('hvGithubCommitList');
+    if(list) list.textContent = 'Commit failed: ' + error.message;
+  }finally{
+    if(button) button.disabled = false;
+  }
+}
+
+async function hvDeleteGithubRepository(){
+  const publication = hvLoadGithubPublication();
+  const errorBox = document.getElementById('hvGithubDeleteError');
+  if(!publication) return;
+  hvCloseGithubModal(hvGithubDeleteModal);
+  hvCloseGithubModal(hvGithubManagerModal);
+  hvOpenGithubModal(hvGithubProgressModal);
+  try{
+    hvSetGithubProgress('repository','Deleting ' + publication.repo,'Removing the repository and GitHub Pages website.',55,'delete');
+    await hvGithubRequest(
+      '/repos/' + encodeURIComponent(publication.owner) + '/' +
+      encodeURIComponent(publication.repo),
+      { method:'DELETE' }
+    );
+    localStorage.removeItem(HV_GITHUB_PUBLICATION_KEY);
+    window.hvStorageChanged?.();
+    hvSetGithubProgress('live','Repository deleted','The local publishing connection has been cleared.',100,'delete');
+    hvSyncGithubPublishButton();
+    window.hvNotify?.('delete','GitHub repository deleted.');
+    await new Promise(resolve => setTimeout(resolve,700));
+    hvCloseGithubModal(hvGithubProgressModal);
+  }catch(error){
+    hvCloseGithubModal(hvGithubProgressModal);
+    hvOpenGithubModal(hvGithubDeleteModal);
+    hvSetConnectionStatus(errorBox,'Deletion failed: ' + error.message,'error');
+  }
+}
+
+hvGithubFields.connect?.addEventListener('click',hvConnectGithub);
+hvGithubPublishButton?.addEventListener('click',() => {
+  if(hvLoadGithubPublication()) hvOpenGithubManager();
+  else hvOpenGithubPublishConfirm();
+});
+document.getElementById('hvGithubPublishConfirm')?.addEventListener('click',hvPublishGithubRepository);
+document.getElementById('hvGithubCommitLatest')?.addEventListener('click',hvCommitLatestGithubBuild);
+document.getElementById('hvGithubDeleteRepository')?.addEventListener('click',() => {
+  const input = document.getElementById('hvGithubDeleteInput');
+  const errorBox = document.getElementById('hvGithubDeleteError');
+  if(input) input.value = '';
+  hvSetConnectionStatus(errorBox,'','');
+  const confirm = document.getElementById('hvGithubDeleteConfirm');
+  if(confirm) confirm.disabled = true;
+  hvOpenGithubModal(hvGithubDeleteModal);
+});
+document.getElementById('hvGithubDeleteInput')?.addEventListener('input',event => {
+  const confirm = document.getElementById('hvGithubDeleteConfirm');
+  if(confirm) confirm.disabled = event.target.value !== 'DELETE';
+});
+document.getElementById('hvGithubDeleteConfirm')?.addEventListener('click',hvDeleteGithubRepository);
+document.getElementById('hvGithubOpenLiveUrl')?.addEventListener('click',() => {
+  const url = hvLoadGithubPublication()?.url;
+  if(url) window.open(url,'_blank','noopener,noreferrer');
+});
+document.getElementById('hvGithubCopyLiveUrl')?.addEventListener('click',async () => {
+  const url = hvLoadGithubPublication()?.url;
+  if(!url) return;
+  await navigator.clipboard.writeText(url);
+  window.hvNotify?.('copy','Published URL copied.');
+});
+document.querySelectorAll('[data-hv-github-publish-close]').forEach(button => {
+  button.addEventListener('click',() => hvCloseGithubModal(hvGithubPublishModal));
+});
+document.querySelectorAll('[data-hv-github-manager-close]').forEach(button => {
+  button.addEventListener('click',() => hvCloseGithubModal(hvGithubManagerModal));
+});
+document.querySelectorAll('[data-hv-github-delete-close]').forEach(button => {
+  button.addEventListener('click',() => hvCloseGithubModal(hvGithubDeleteModal));
+});
+hvPopulateGithubConfig();
+
+document.querySelectorAll('[data-secret-toggle]').forEach(button => {
+  button.addEventListener('click',() => {
+    const input = document.getElementById(button.dataset.secretToggle);
+    if(!input) return;
+    const show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    button.innerHTML = '<i class="fa-solid ' + (show ? 'fa-eye-slash' : 'fa-eye') + '"></i>';
+    button.setAttribute('aria-label',(show ? 'Hide ' : 'Show ') + (input.getAttribute('aria-label') || input.id));
+  });
+});
+
+document.querySelectorAll('[data-secret-copy]').forEach(button => {
+  button.addEventListener('click',async () => {
+    const input = document.getElementById(button.dataset.secretCopy);
+    if(!input?.value) return;
+    try{
+      await navigator.clipboard.writeText(input.value);
+      window.hvNotify?.('settings','Configuration value copied.');
+    }catch(error){
+      input.select();
+      document.execCommand('copy');
+    }
+  });
+});
+
+const hvGeminiFields = {
+  mode:document.getElementById('hvGeminiMode'),
+  primaryKey:document.getElementById('hvGeminiPrimaryKey'),
+  backupKey:document.getElementById('hvGeminiBackupKey'),
+  primaryModel:document.getElementById('hvGeminiPrimaryModel'),
+  fallbackModel:document.getElementById('hvGeminiFallbackModel'),
+  highVolumeModel:document.getElementById('hvGeminiHighVolumeModel'),
+  status:document.getElementById('hvGeminiConfigStatus'),
+  save:document.getElementById('hvGeminiSaveConfig')
+};
+
+function hvLoadGeminiConfig(){
+  const stored = hvReadLocalConfig(HV_GEMINI_CONFIG_KEY,{});
+  return {
+    mode:stored.mode === 'custom' ? 'custom' : 'project',
+    primaryKey:String(stored.primaryKey || ''),
+    backupKey:String(stored.backupKey || ''),
+    primaryModel:String(stored.primaryModel || 'gemini-3.6-flash'),
+    fallbackModel:String(stored.fallbackModel || 'gemini-3.5-flash-lite'),
+    highVolumeModel:String(stored.highVolumeModel || 'gemini-3.5-flash-lite')
+  };
+}
+
+function hvPopulateGeminiConfig(){
+  const config = hvLoadGeminiConfig();
+  Object.keys(hvGeminiFields).forEach(key => {
+    if(key === 'status' || key === 'save') return;
+    if(hvGeminiFields[key]) hvGeminiFields[key].value = config[key];
+  });
+  hvSetConnectionStatus(
+    hvGeminiFields.status,
+    config.mode === 'custom'
+      ? 'Custom Gemini API mode is active for text and code requests.'
+      : 'Secure project backend mode is active.',
+    config.mode === 'custom' ? 'success' : ''
+  );
+}
+
+function hvSaveGeminiConfig(){
+  const config = {
+    mode:hvGeminiFields.mode?.value === 'custom' ? 'custom' : 'project',
+    primaryKey:hvGeminiFields.primaryKey?.value.trim() || '',
+    backupKey:hvGeminiFields.backupKey?.value.trim() || '',
+    primaryModel:hvGeminiFields.primaryModel?.value.trim() || 'gemini-3.6-flash',
+    fallbackModel:hvGeminiFields.fallbackModel?.value.trim() || 'gemini-3.5-flash-lite',
+    highVolumeModel:hvGeminiFields.highVolumeModel?.value.trim() || 'gemini-3.5-flash-lite'
+  };
+  if(config.mode === 'custom' && !config.primaryKey){
+    hvSetConnectionStatus(hvGeminiFields.status,'Add a primary Gemini API key before enabling Gemini API mode.','error');
+    return false;
+  }
+  hvWriteLocalConfig(HV_GEMINI_CONFIG_KEY,config);
+  hvSetConnectionStatus(
+    hvGeminiFields.status,
+    config.mode === 'custom'
+      ? 'Custom Gemini configuration saved locally.'
+      : 'Secure project backend configuration saved.',
+    'success'
+  );
+  window.hvNotify?.('settings','Gemini configuration saved on this device.');
+  return true;
+}
+
+hvGeminiFields.save?.addEventListener('click',hvSaveGeminiConfig);
+hvPopulateGeminiConfig();
+
+/* =========================
+   CUSTOM KEYBOARD SHORTCUTS
+========================= */
+
+const HV_SHORTCUT_DEFINITIONS = [
+  { id:'search',label:'Search and replace',description:'Open search and prefill selected code.',default:'Ctrl+H' },
+  { id:'save',label:'Save current code',description:'Open the Save Version dialog.',default:'Ctrl+S' },
+  { id:'format',label:'Format HTML',description:'Format the current editor source.',default:'Ctrl+Shift+F' },
+  { id:'compress',label:'Compress HTML',description:'Compress the current editor source.',default:'Ctrl+Alt+M' },
+  { id:'validate',label:'Validate HTML',description:'Open the HTML validator.',default:'Ctrl+Shift+V' },
+  { id:'download',label:'Download code',description:'Open the Download dialog.',default:'Ctrl+Shift+D' },
+  { id:'ai',label:'AI HTML Editor',description:'Open or focus the AI editor.',default:'Ctrl+Shift+A' },
+  { id:'refresh',label:'Refresh preview',description:'Render the current code in Live Preview.',default:'Ctrl+Alt+R' },
+  { id:'community',label:'Community Presets',description:'Open Community Presets.',default:'Ctrl+Shift+C' }
+];
+
+function hvLoadShortcuts(){
+  const stored = hvReadLocalConfig(HV_SHORTCUTS_KEY,{});
+  const result = {};
+  HV_SHORTCUT_DEFINITIONS.forEach(item => {
+    result[item.id] = typeof stored[item.id] === 'string' && stored[item.id]
+      ? stored[item.id]
+      : item.default;
+  });
+  return result;
+}
+
+let hvKeyboardShortcuts = hvLoadShortcuts();
+let hvShortcutDraft = { ...hvKeyboardShortcuts };
+let hvShortcutCaptureId = '';
+
+function hvNormalizeShortcutKey(key){
+  const aliases = {
+    ' ':'Space',
+    ArrowUp:'Up',
+    ArrowDown:'Down',
+    ArrowLeft:'Left',
+    ArrowRight:'Right',
+    Escape:'Esc'
+  };
+  if(aliases[key]) return aliases[key];
+  if(key.length === 1) return key.toUpperCase();
+  return key.charAt(0).toUpperCase() + key.slice(1);
+}
+
+function hvShortcutFromEvent(event){
+  if(['Control','Shift','Alt','Meta'].includes(event.key)) return '';
+  const parts = [];
+  if(event.ctrlKey) parts.push('Ctrl');
+  if(event.metaKey) parts.push('Meta');
+  if(event.altKey) parts.push('Alt');
+  if(event.shiftKey) parts.push('Shift');
+  parts.push(hvNormalizeShortcutKey(event.key));
+  return parts.join('+');
+}
+
+window.hvShortcutMatches = (id,event) => {
+  const expected = hvKeyboardShortcuts[id];
+  return Boolean(expected && hvShortcutFromEvent(event) === expected);
+};
+
+function hvRenderShortcuts(){
+  const list = document.getElementById('hvShortcutsList');
+  if(!list) return;
+  const fragment = document.createDocumentFragment();
+  HV_SHORTCUT_DEFINITIONS.forEach(item => {
+    const row = document.createElement('div');
+    const copy = document.createElement('div');
+    const title = document.createElement('strong');
+    const description = document.createElement('span');
+    const key = document.createElement('button');
+    row.className = 'hv-shortcut-row';
+    copy.className = 'hv-shortcut-copy';
+    key.className = 'hv-shortcut-key' + (hvShortcutCaptureId === item.id ? ' listening' : '');
+    key.type = 'button';
+    key.dataset.shortcutId = item.id;
+    title.textContent = item.label;
+    description.textContent = item.description;
+    key.textContent = hvShortcutCaptureId === item.id ? 'Press shortcut…' : hvShortcutDraft[item.id];
+    copy.append(title,description);
+    row.append(copy,key);
+    fragment.append(row);
+  });
+  list.replaceChildren(fragment);
+}
+
+document.getElementById('hvShortcutsList')?.addEventListener('click',event => {
+  const button = event.target.closest('[data-shortcut-id]');
+  if(!button) return;
+  hvShortcutCaptureId = button.dataset.shortcutId;
+  hvRenderShortcuts();
+});
+
+document.addEventListener('keydown',event => {
+  if(!hvShortcutCaptureId) return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  if(event.key === 'Escape'){
+    hvShortcutCaptureId = '';
+    hvRenderShortcuts();
+    return;
+  }
+  const shortcut = hvShortcutFromEvent(event);
+  if(!shortcut || !event.ctrlKey && !event.metaKey && !event.altKey) return;
+  const duplicate = Object.entries(hvShortcutDraft).find(([id,value]) => (
+    id !== hvShortcutCaptureId && value === shortcut
+  ));
+  if(duplicate){
+    window.hvNotify?.('error','That shortcut is already assigned.');
+    return;
+  }
+  hvShortcutDraft[hvShortcutCaptureId] = shortcut;
+  hvShortcutCaptureId = '';
+  hvRenderShortcuts();
+},true);
+
+document.getElementById('hvResetShortcuts')?.addEventListener('click',() => {
+  hvShortcutDraft = Object.fromEntries(
+    HV_SHORTCUT_DEFINITIONS.map(item => [item.id,item.default])
+  );
+  hvRenderShortcuts();
+});
+
+document.getElementById('hvSaveShortcuts')?.addEventListener('click',() => {
+  hvKeyboardShortcuts = { ...hvShortcutDraft };
+  hvWriteLocalConfig(HV_SHORTCUTS_KEY,hvKeyboardShortcuts);
+  window.hvNotify?.('settings','Keyboard shortcuts saved.');
+});
+
+document.addEventListener('keydown',event => {
+  if(hvShortcutCaptureId || event.defaultPrevented) return;
+  const action = HV_SHORTCUT_DEFINITIONS.find(item => (
+    item.id !== 'search' && window.hvShortcutMatches(item.id,event)
+  ));
+  if(!action) return;
+  const targets = {
+    save:'hvSaveCurrent',
+    format:'hvFormatIcon',
+    compress:'hvCompressIcon',
+    validate:'hvValidatorBtn',
+    download:'hvDownloadPopupBtn',
+    ai:'hvAiEditorToggle',
+    refresh:'hvReload',
+    community:'hvCodesBtn'
+  };
+  const target = document.getElementById(targets[action.id]);
+  if(!target || target.disabled) return;
+  event.preventDefault();
+  event.stopPropagation();
+  target.click();
+});
+
+hvRenderShortcuts();
 
 const hvContactForm =
   document.getElementById('hvContactForm');
@@ -29917,6 +32639,10 @@ const HV_SITE_STORAGE_REGISTRY = Object.freeze({
     { key:'hv_code_history_v1', group:'history' },
     { key:'hv_ui_settings_v1', group:'settings' },
     { key:'hv_ai_voice_preferences_v1', group:'settings' },
+    { key:'hv_github_config_v1', group:'settings', sensitive:true },
+    { key:'hv_github_publication_v1', group:'settings' },
+    { key:'hv_gemini_config_v1', group:'settings', sensitive:true },
+    { key:'hv_keyboard_shortcuts_v1', group:'settings' },
     { key:'gemini_chats', group:'ai-history' },
     { key:'gemini_projects', group:'ai-history' },
     { key:'html_viewer_ai_library_fallback', group:'ai-library' }
@@ -30167,6 +32893,13 @@ function collectLocalStorageExport(){
     try{
       const raw = localStorage.getItem(entry.key);
       if(raw === null) return;
+      if(entry.sensitive){
+        values[entry.key] = {
+          redacted:true,
+          note:'Secret-bearing configuration remains on this device and is not included in exports.'
+        };
+        return;
+      }
       const parsed = hvParseStoredValue(raw);
       values[entry.key] = parsed.value;
       hvExtractFileDescriptors(parsed.value,'localStorage/' + entry.key,entry.key,files);
@@ -31342,6 +34075,13 @@ window.hvStorageChanged();
       device = 'desktop';
     }
 
+    if(hvLayout.classList.contains('hv-ai-tab-mode')){
+      hvDeviceBtns.forEach(btn => {
+        btn.classList.toggle('active',btn.dataset.device === device);
+      });
+      return;
+    }
+
     if(hvDeviceSwitchFrame){
       cancelAnimationFrame(hvDeviceSwitchFrame);
       hvDeviceSwitchFrame = null;
@@ -31714,7 +34454,10 @@ window.hvStorageChanged();
 
   function hvStartResize(e){
 
-    if(window.innerWidth <= 1024){
+    if(
+      window.innerWidth <= 1024 ||
+      hvLayout.classList.contains('hv-ai-tab-mode')
+    ){
       return;
     }
 
@@ -31816,6 +34559,94 @@ window.hvStorageChanged();
   hvResizer.addEventListener('pointerup', hvStopResize);
   hvResizer.addEventListener('pointercancel', hvStopResize);
 
+})();
+
+/* =========================
+   THREE-PANEL TAB RESIZING
+========================= */
+
+(function(){
+  const layout = document.getElementById('hvLayout');
+  const code = layout?.querySelector('.hv-editor');
+  const preview = layout?.querySelector('.hv-preview');
+  const ai = document.getElementById('hvAiTabPanel');
+  const first = document.getElementById('hvSplitResize');
+  const second = document.getElementById('hvAiTabResize');
+  if(!layout || !code || !preview || !ai || !first || !second) return;
+
+  const minimums = { code:260,preview:300,ai:320 };
+
+  function contentWidth(){
+    const styles = getComputedStyle(layout);
+    return Math.max(
+      1,
+      layout.clientWidth -
+      (parseFloat(styles.paddingLeft) || 0) -
+      (parseFloat(styles.paddingRight) || 0)
+    );
+  }
+
+  function setColumns(codeWidth,previewWidth,aiWidth){
+    layout.style.setProperty('--hv-ai-tab-code',Math.round(codeWidth) + 'px');
+    layout.style.setProperty('--hv-ai-tab-preview',Math.round(previewWidth) + 'px');
+    layout.style.setProperty('--hv-ai-tab-ai',Math.round(aiWidth) + 'px');
+  }
+
+  function startResize(event,kind){
+    if(
+      event.button !== 0 ||
+      window.innerWidth <= 1024 ||
+      !layout.classList.contains('hv-ai-tab-mode')
+    ) return;
+    event.preventDefault();
+    const target = event.currentTarget;
+    const startX = event.clientX;
+    const startCode = code.getBoundingClientRect().width;
+    const startPreview = preview.getBoundingClientRect().width;
+    const startAi = ai.getBoundingClientRect().width;
+    const usable = contentWidth() - first.offsetWidth - second.offsetWidth;
+    layout.classList.add('hv-is-resizing');
+    document.body.classList.add('hv-resizing-active');
+    try{ target.setPointerCapture(event.pointerId); }catch(error){}
+
+    const move = moveEvent => {
+      const delta = moveEvent.clientX - startX;
+      if(kind === 'code'){
+        if(layout.classList.contains('hv-code-preview-disabled')) return;
+        const nextCode = Math.max(
+          minimums.code,
+          Math.min(startCode + delta,usable - minimums.preview - startAi)
+        );
+        const nextPreview = Math.max(minimums.preview,usable - nextCode - startAi);
+        setColumns(nextCode,nextPreview,startAi);
+      }else{
+        const fixedCode = layout.classList.contains('hv-code-preview-disabled') ? 0 : startCode;
+        const pairWidth = usable - fixedCode;
+        const nextPreview = Math.max(
+          minimums.preview,
+          Math.min(startPreview + delta,pairWidth - minimums.ai)
+        );
+        const nextAi = Math.max(minimums.ai,pairWidth - nextPreview);
+        setColumns(fixedCode || minimums.code,nextPreview,nextAi);
+      }
+    };
+
+    const end = () => {
+      layout.classList.remove('hv-is-resizing');
+      document.body.classList.remove('hv-resizing-active');
+      try{ target.releasePointerCapture(event.pointerId); }catch(error){}
+      target.removeEventListener('pointermove',move);
+      target.removeEventListener('pointerup',end);
+      target.removeEventListener('pointercancel',end);
+    };
+
+    target.addEventListener('pointermove',move);
+    target.addEventListener('pointerup',end);
+    target.addEventListener('pointercancel',end);
+  }
+
+  first.addEventListener('pointerdown',event => startResize(event,'code'));
+  second.addEventListener('pointerdown',event => startResize(event,'ai'));
 })();
 
 /* =========================
@@ -32032,6 +34863,15 @@ if(hvSubmitPresetSend){
   const previewFrame =
     document.getElementById('hvFrame');
 
+  const aiTabPanel =
+    document.getElementById('hvAiTabPanel');
+
+  const aiTabHost =
+    document.getElementById('hvAiTabFrameHost');
+
+  const aiTabFocus =
+    document.getElementById('hvAiTabFocus');
+
   if(!aiBtn || !aiFrame || !aiTemplate || !frameWrap){
     console.warn('AI editor toggle missing required elements.');
     return;
@@ -32039,6 +34879,8 @@ if(hvSubmitPresetSend){
 
   let aiOpen = false;
   let aiTransitionTimer = null;
+  let hvVoiceCardRect = null;
+  let hvVoiceSurfaceObserver = null;
 
   function hvGetAiTemplateHtml(){
 
@@ -32184,16 +35026,30 @@ if(hvSubmitPresetSend){
 
   }
 
-  function openAiEditorPreview(){
-
-    clearTimeout(aiTransitionTimer);
-
+  function hvEnsureAiInitialized(){
     if(aiFrame.dataset.hvInitialized !== 'true'){
       aiFrame.srcdoc = hvBuildAiEditorHtml();
       aiFrame.dataset.hvInitialized = 'true';
     }
+  }
+
+  function hvAiTabModeEnabled(){
+    return document.getElementById('hvLayout')?.classList.contains('hv-ai-tab-mode');
+  }
+
+  function openAiEditorPreview(){
+
+    clearTimeout(aiTransitionTimer);
+
+    hvEnsureAiInitialized();
 
     aiOpen = true;
+
+    if(hvAiTabModeEnabled()){
+      aiBtn.classList.add('active');
+      aiTabPanel?.classList.add('active');
+      return;
+    }
 
     frameWrap.classList.add('hv-ai-mode');
     aiBtn.classList.add('active');
@@ -32210,6 +35066,13 @@ if(hvSubmitPresetSend){
   }
 
   function closeAiEditorPreview(){
+
+    if(hvAiTabModeEnabled()){
+      aiOpen = true;
+      aiBtn.classList.add('active');
+      aiTabPanel?.classList.add('active');
+      return;
+    }
 
     aiOpen = false;
 
@@ -32234,7 +35097,10 @@ if(hvSubmitPresetSend){
 
   function hvSendAiVoiceHostGeometry(){
     if(!aiFrame.classList.contains('hv-ai-voice-floating')) return;
-    const rect = frameWrap.getBoundingClientRect();
+    const host = hvAiTabModeEnabled() && aiTabHost
+      ? aiTabHost
+      : frameWrap;
+    const rect = host.getBoundingClientRect();
     try{
       aiFrame.contentWindow?.postMessage({
         type:'hv-ai-voice-host-geometry',
@@ -32249,11 +35115,14 @@ if(hvSubmitPresetSend){
   }
 
   function hvRaiseVoiceCommandSurface(){
-    document.querySelectorAll('.hv-ai-voice-command-surface').forEach(element => {
-      element.classList.remove('hv-ai-voice-command-surface');
-    });
     requestAnimationFrame(() => {
-      const dialogs = [...document.querySelectorAll('[role="dialog"][aria-modal="true"]')];
+      const dialogs = [...document.querySelectorAll(
+        '[role="dialog"][aria-modal="true"],' +
+        '.hv-modal.open,.hv-popup.show,.hv-nav-center-modal.open,' +
+        '.hv-submit-modal.show,.hv-validator-modal.open,.hv-download-modal.open'
+      )];
+      let hasVisibleSurface = false;
+      const visibleSurfaces = new Set();
       dialogs.forEach(dialog => {
         const style = getComputedStyle(dialog);
         const rect = dialog.getBoundingClientRect();
@@ -32266,30 +35135,102 @@ if(hvSubmitPresetSend){
         ){
           return;
         }
+        hasVisibleSurface = true;
         let surface = dialog;
         let parent = dialog.parentElement;
         while(parent && parent !== document.body){
           if(getComputedStyle(parent).position === 'fixed') surface = parent;
           parent = parent.parentElement;
         }
-        surface.classList.add('hv-ai-voice-command-surface');
+        visibleSurfaces.add(surface);
       });
+      document.querySelectorAll('.hv-ai-voice-command-surface').forEach(element => {
+        if(!visibleSurfaces.has(element)){
+          element.classList.remove('hv-ai-voice-command-surface');
+        }
+      });
+      visibleSurfaces.forEach(surface => {
+        if(!surface.classList.contains('hv-ai-voice-command-surface')){
+          surface.classList.add('hv-ai-voice-command-surface');
+        }
+      });
+      aiFrame.classList.toggle(
+        'hv-ai-voice-modal-behind',
+        hasVisibleSurface && aiFrame.classList.contains('hv-ai-voice-floating')
+      );
     });
   }
+
+  function hvVoicePointInsideCard(clientX,clientY){
+    return Boolean(
+      hvVoiceCardRect &&
+      clientX >= hvVoiceCardRect.left &&
+      clientX <= hvVoiceCardRect.right &&
+      clientY >= hvVoiceCardRect.top &&
+      clientY <= hvVoiceCardRect.bottom
+    );
+  }
+
+  document.addEventListener('pointermove',event => {
+    if(!aiFrame.classList.contains('hv-ai-voice-floating')) return;
+    if(hvVoicePointInsideCard(event.clientX,event.clientY)){
+      aiFrame.classList.remove('hv-ai-voice-pass-through');
+    }
+  },true);
 
   window.addEventListener('message',event => {
     if(event.source !== aiFrame.contentWindow) return;
     if(event.data?.type === 'hv-ai-voice-floating'){
       const active = event.data.active === true;
       aiFrame.classList.toggle('hv-ai-voice-floating',active);
+      aiFrame.classList.toggle(
+        'hv-ai-voice-launching',
+        active && event.data.launching === true
+      );
       document.body.classList.toggle('hv-ai-voice-floating-host',active);
       if(active){
         hvSendAiVoiceHostGeometry();
+        if(!hvVoiceSurfaceObserver && typeof MutationObserver === 'function'){
+          hvVoiceSurfaceObserver = new MutationObserver(hvRaiseVoiceCommandSurface);
+          hvVoiceSurfaceObserver.observe(document.body,{
+            attributes:true,
+            attributeFilter:['class','aria-hidden'],
+            subtree:true
+          });
+        }
       }else{
+        hvVoiceCardRect = null;
+        aiFrame.classList.remove(
+          'hv-ai-voice-pass-through',
+          'hv-ai-voice-modal-behind',
+          'hv-ai-voice-launching'
+        );
+        hvVoiceSurfaceObserver?.disconnect();
+        hvVoiceSurfaceObserver = null;
         document.querySelectorAll('.hv-ai-voice-command-surface').forEach(element => {
           element.classList.remove('hv-ai-voice-command-surface');
         });
       }
+      return;
+    }
+    if(event.data?.type === 'hv-ai-voice-launch-ready'){
+      aiFrame.classList.remove('hv-ai-voice-launching');
+      return;
+    }
+    if(event.data?.type === 'hv-ai-voice-card-rect'){
+      const rect = event.data.rect || {};
+      if(
+        [rect.left,rect.top,rect.right,rect.bottom].every(Number.isFinite)
+      ){
+        hvVoiceCardRect = rect;
+      }
+      return;
+    }
+    if(event.data?.type === 'hv-ai-voice-pointer-zone'){
+      aiFrame.classList.toggle(
+        'hv-ai-voice-pass-through',
+        event.data.inside !== true
+      );
       return;
     }
     if(event.data?.type === 'hv-ai-control-activated'){
@@ -32299,7 +35240,42 @@ if(hvSubmitPresetSend){
 
   window.addEventListener('resize',hvSendAiVoiceHostGeometry);
 
+  window.hvSyncAiEditorTabMode = enabled => {
+    const active = enabled === true;
+    if(active){
+      hvEnsureAiInitialized();
+      if(aiTabHost && aiFrame.parentElement !== aiTabHost){
+        aiTabHost.append(aiFrame);
+      }
+      frameWrap.classList.remove('hv-ai-mode','hv-ai-visible');
+      if(previewPanel) previewPanel.classList.remove('hv-ai-active');
+      aiOpen = true;
+      aiBtn.classList.add('active');
+      aiTabPanel?.classList.add('active');
+      hvSyncPreviewPromoSize();
+      requestAnimationFrame(hvSendAiVoiceHostGeometry);
+      return;
+    }
+    if(aiFrame.parentElement !== frameWrap){
+      const loader = document.getElementById('hvPreviewLoader');
+      frameWrap.insertBefore(aiFrame,loader || null);
+    }
+    aiTabPanel?.classList.remove('active');
+    aiFrame.classList.remove('hv-ai-voice-modal-behind');
+    aiOpen = false;
+    aiBtn.classList.remove('active');
+    frameWrap.classList.remove('hv-ai-mode','hv-ai-visible');
+    if(previewPanel) previewPanel.classList.remove('hv-ai-active');
+    hvSyncPreviewPromoSize();
+  };
+
   aiBtn.addEventListener('click', () => {
+
+    if(hvAiTabModeEnabled()){
+      openAiEditorPreview();
+      try{ aiFrame.contentWindow?.focus(); }catch(error){}
+      return;
+    }
 
     if(aiOpen){
       closeAiEditorPreview();
@@ -32320,6 +35296,13 @@ if(hvSubmitPresetSend){
     });
 
   }
+
+  aiTabFocus?.addEventListener('click',() => {
+    openAiEditorPreview();
+    try{ aiFrame.contentWindow?.focus(); }catch(error){}
+  });
+
+  window.hvSyncAiEditorTabMode(hvAiTabModeEnabled());
 
 })();
 
