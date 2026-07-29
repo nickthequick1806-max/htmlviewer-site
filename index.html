@@ -26008,7 +26008,7 @@ function hvSyncTabPreviewViewport(){
     const viewport = { width:390,height:844 };
     const availableWidth = Math.max(1,frameWrap.clientWidth);
     const availableHeight = Math.max(1,frameWrap.clientHeight);
-    const scale = Math.max(.35,Math.min(2,availableWidth / viewport.width));
+    const scale = Math.max(.35,availableWidth / viewport.width);
     const fittedViewportHeight = Math.max(320,availableHeight / scale);
     frameWrap.classList.add('hv-tab-preview-fit');
     frameWrap.style.setProperty('--hv-tab-preview-width',viewport.width + 'px');
