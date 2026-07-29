@@ -216,6 +216,18 @@ test('creates a one-use Gemini Live token with Charon as the default voice', asy
     data.config.systemInstruction.parts[0].text,
     /ONYX online/
   );
+  assert.match(
+    data.config.systemInstruction.parts[0].text,
+    /autonomously improve/
+  );
+  assert.match(
+    data.config.systemInstruction.parts[0].text,
+    /FLUX\.2 Klein 4B/
+  );
+  assert.match(
+    data.config.systemInstruction.parts[0].text,
+    /activate the final publish action/
+  );
 });
 
 test('rejects unsupported Gemini Live voices before provisioning a token', async t => {

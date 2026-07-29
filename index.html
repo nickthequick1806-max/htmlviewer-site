@@ -2164,10 +2164,10 @@ body { margin: 0; padding: 0; }
 }
 
 .hv-layout.hv-device-phone .hv-preview{
-  flex:0 0 clamp(330px, 28vw, 430px);
-  width:clamp(330px, 28vw, 430px);
-  min-width:330px;
-  max-width:430px;
+  flex:0 0 clamp(440px, 34vw, 540px);
+  width:clamp(440px, 34vw, 540px);
+  min-width:440px;
+  max-width:540px;
 }
 
 .hv-layout.hv-device-phone .hv-frame{
@@ -2335,6 +2335,9 @@ body { margin: 0; padding: 0; }
 }
 
 .hv-preview-promo{
+  --hv-promo-rgb:245,194,66;
+  --hv-promo-strong:#facc15;
+  --hv-promo-copy:#fde68a;
   position:relative;
   z-index:3;
   width:max-content;
@@ -2345,24 +2348,25 @@ body { margin: 0; padding: 0; }
   display:flex;
   align-items:center;
   gap:9px;
-  border:1px solid rgba(245,194,66,.5);
+  border:1px solid rgba(var(--hv-promo-rgb),.5);
   border-radius:11px;
   background:
-    linear-gradient(90deg,rgba(245,158,11,.12),rgba(245,158,11,.045)),
+    linear-gradient(90deg,rgba(var(--hv-promo-rgb),.13),rgba(var(--hv-promo-rgb),.045)),
     #11100d;
   color:#f5f5f5;
   box-shadow:0 8px 26px rgba(0,0,0,.3),inset 0 1px rgba(255,255,255,.05);
   justify-self:center;
   transform:none;
   cursor:pointer;
+  overflow:hidden;
   transition:border-color .16s ease,background .16s ease,transform .16s ease,opacity .16s ease;
 }
 
 .hv-preview-promo:hover,
 .hv-preview-promo:focus-visible{
-  border-color:rgba(250,204,21,.78);
+  border-color:rgba(var(--hv-promo-rgb),.78);
   background:
-    linear-gradient(90deg,rgba(245,158,11,.18),rgba(245,158,11,.07)),
+    linear-gradient(90deg,rgba(var(--hv-promo-rgb),.2),rgba(var(--hv-promo-rgb),.07)),
     #14120d;
   outline:0;
   transform:scale(1.012);
@@ -2374,8 +2378,32 @@ body { margin: 0; padding: 0; }
   flex:0 0 auto;
   display:grid;
   place-items:center;
-  border-right:1px solid rgba(250,204,21,.22);
-  color:#facc15;
+  border-right:1px solid rgba(var(--hv-promo-rgb),.22);
+  color:var(--hv-promo-strong);
+}
+
+.hv-preview-promo-icon,
+.hv-preview-promo-copy,
+.hv-preview-promo-badge{
+  transition:opacity .24s ease,transform .24s cubic-bezier(.2,.75,.2,1);
+}
+
+.hv-preview-promo.rotating-out .hv-preview-promo-icon,
+.hv-preview-promo.rotating-out .hv-preview-promo-copy,
+.hv-preview-promo.rotating-out .hv-preview-promo-badge{
+  opacity:0;
+  transform:translateY(-13px);
+}
+
+.hv-preview-promo.rotating-in .hv-preview-promo-icon,
+.hv-preview-promo.rotating-in .hv-preview-promo-copy,
+.hv-preview-promo.rotating-in .hv-preview-promo-badge{
+  animation:hvPromoSlideIn .32s cubic-bezier(.2,.8,.2,1) both;
+}
+
+@keyframes hvPromoSlideIn{
+  from{opacity:0;transform:translateY(13px)}
+  to{opacity:1;transform:translateY(0)}
 }
 
 .hv-preview-promo-copy{
@@ -2389,7 +2417,7 @@ body { margin: 0; padding: 0; }
 }
 
 .hv-preview-promo-copy strong{
-  color:#fde68a;
+  color:var(--hv-promo-copy);
 }
 
 .hv-preview-promo-badge{
@@ -2399,9 +2427,9 @@ body { margin: 0; padding: 0; }
   display:inline-flex;
   align-items:center;
   gap:6px;
-  border:1px solid rgba(250,204,21,.28);
+  border:1px solid rgba(var(--hv-promo-rgb),.28);
   border-radius:999px;
-  color:#fde68a;
+  color:var(--hv-promo-copy);
   font-size:9px;
   font-weight:850;
   white-space:nowrap;
@@ -2411,8 +2439,8 @@ body { margin: 0; padding: 0; }
   width:6px;
   height:6px;
   border-radius:50%;
-  background:#facc15;
-  box-shadow:0 0 10px rgba(250,204,21,.8);
+  background:var(--hv-promo-strong);
+  box-shadow:0 0 10px rgba(var(--hv-promo-rgb),.8);
   animation:hvPromoLivePulse 1.8s ease-in-out infinite;
 }
 
@@ -2455,9 +2483,20 @@ body { margin: 0; padding: 0; }
 
 .hv-github-publish-btn{
   width:auto !important;
+  height:34px;
   min-width:38px;
   padding:0 10px !important;
+  display:inline-flex !important;
+  flex-direction:row !important;
+  align-items:center !important;
+  justify-content:center !important;
   gap:7px;
+  white-space:nowrap;
+}
+
+.hv-github-publish-btn > i{
+  width:auto !important;
+  flex:0 0 auto;
 }
 
 .hv-github-publish-btn[hidden],
@@ -2510,10 +2549,11 @@ body { margin: 0; padding: 0; }
 }
 
 .hv-layout.hv-ai-tab-mode{
-  --hv-ai-tab-code:calc((100% - 28px) * .30);
-  --hv-ai-tab-preview:calc((100% - 28px) * .35);
-  --hv-ai-tab-ai:calc((100% - 28px) * .35);
+  --hv-ai-tab-code:calc((100% - 28px) * .28);
+  --hv-ai-tab-preview:calc((100% - 28px) * .38);
+  --hv-ai-tab-ai:calc((100% - 28px) * .34);
   display:grid !important;
+  padding:0 10px 10px 10px !important;
   grid-template-columns:
     minmax(260px,var(--hv-ai-tab-code))
     14px
@@ -2529,10 +2569,12 @@ body { margin: 0; padding: 0; }
 .hv-layout.hv-ai-tab-mode > .hv-ai-tab-panel{
   width:auto !important;
   min-width:0 !important;
+  min-height:0 !important;
   max-width:none !important;
   height:100% !important;
   flex:none !important;
   padding:0 !important;
+  overflow:hidden !important;
 }
 
 .hv-layout.hv-ai-tab-mode > .hv-ai-tab-panel{
@@ -2553,6 +2595,24 @@ body { margin: 0; padding: 0; }
 .hv-layout.hv-ai-tab-mode > :is(.hv-editor,.hv-preview,.hv-ai-tab-panel) > .hv-panel{
   width:100% !important;
   height:100% !important;
+  min-height:0 !important;
+  overflow:hidden !important;
+}
+
+.hv-layout.hv-ai-tab-mode .hv-framewrap.hv-tab-preview-fit{
+  align-items:flex-start;
+  justify-content:flex-start;
+}
+
+.hv-layout.hv-ai-tab-mode .hv-framewrap.hv-tab-preview-fit .hv-frame{
+  width:var(--hv-tab-preview-width,1280px) !important;
+  height:var(--hv-tab-preview-height,720px) !important;
+  max-width:none !important;
+  max-height:none !important;
+  flex:0 0 auto;
+  transform:scale(var(--hv-tab-preview-scale,1));
+  transform-origin:top left;
+  transition:none !important;
 }
 
 .hv-layout.hv-ai-tab-mode.hv-is-resizing{
@@ -6087,6 +6147,16 @@ body.hv-ai-voice-floating-host .hv-tooltip{
 
 .hv-github-modal{
   z-index:1000020;
+  isolation:isolate;
+}
+
+.hv-github-modal > .hv-nav-center-backdrop{
+  z-index:0;
+}
+
+.hv-github-modal > :is(.hv-nav-center-panel,.hv-github-progress-card){
+  position:relative;
+  z-index:1;
 }
 
 .hv-github-publish-confirm{
@@ -6136,6 +6206,8 @@ body.hv-ai-voice-floating-host .hv-tooltip{
 }
 
 .hv-github-progress-card{
+  position:relative;
+  z-index:1;
   width:min(560px,calc(100vw - 26px));
   padding:28px;
   border:1px solid rgba(167,243,208,.24);
@@ -6233,12 +6305,21 @@ body.hv-ai-voice-floating-host .hv-tooltip{
 
 .hv-github-manager-panel{
   width:min(980px,calc(100vw - 28px));
+  overflow:hidden;
+}
+
+.hv-github-manager-panel .hv-nav-center-body{
+  padding:14px;
 }
 
 .hv-github-manager-url{
   display:grid;
   grid-template-columns:minmax(0,1fr) auto;
   gap:8px;
+  padding:10px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  background:#090b0b;
 }
 
 .hv-github-manager-grid{
@@ -6249,13 +6330,57 @@ body.hv-ai-voice-floating-host .hv-tooltip{
 }
 
 .hv-github-manager-card{
-  padding:14px;
+  min-height:184px;
+  padding:15px;
+  display:flex;
+  flex-direction:column;
   border:1px solid rgba(255,255,255,.08);
-  border-radius:12px;
-  background:rgba(255,255,255,.02);
+  border-radius:14px;
+  background:linear-gradient(145deg,rgba(110,231,183,.035),rgba(255,255,255,.012));
 }
 
-.hv-github-manager-card.danger{border-color:rgba(251,113,133,.2)}
+.hv-github-manager-card.danger{
+  border-color:rgba(251,113,133,.2);
+  background:linear-gradient(145deg,rgba(251,113,133,.035),rgba(255,255,255,.012));
+}
+
+.hv-github-manager-card-head{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+}
+
+.hv-github-manager-card-icon{
+  width:38px;
+  height:38px;
+  flex:0 0 38px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(110,231,183,.22);
+  border-radius:10px;
+  background:rgba(110,231,183,.055);
+  color:#6ee7b7;
+}
+
+.hv-github-manager-card.danger .hv-github-manager-card-icon{
+  border-color:rgba(251,113,133,.24);
+  background:rgba(251,113,133,.055);
+  color:#fb7185;
+}
+
+.hv-github-manager-kicker{
+  display:block;
+  margin-bottom:4px;
+  color:#6ee7b7;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.hv-github-manager-card.danger .hv-github-manager-kicker{
+  color:#fb7185;
+}
 
 .hv-github-manager-card strong{
   display:block;
@@ -6270,12 +6395,47 @@ body.hv-ai-voice-floating-host .hv-tooltip{
   line-height:1.55;
 }
 
-.hv-github-commit-list{
+.hv-github-manager-card .hv-settings-input-wrap{
+  margin-top:auto;
+}
+
+.hv-github-manager-card > .hv-settings-config-button{
+  width:100%;
+  margin-top:9px;
+}
+
+.hv-github-activity-head{
   margin-top:12px;
+  padding:11px 12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  border:1px solid rgba(255,255,255,.07);
+  border-bottom:0;
+  border-radius:12px 12px 0 0;
+  background:#0b0c0c;
+}
+
+.hv-github-activity-head strong{
+  color:#e4e4e7;
+  font-size:11px;
+}
+
+.hv-github-activity-head span{
+  color:#64646d;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.hv-github-commit-list{
   max-height:230px;
   overflow:auto;
   border:1px solid rgba(255,255,255,.07);
-  border-radius:12px;
+  border-radius:0 0 12px 12px;
+  background:#090a0a;
 }
 
 .hv-github-commit-row{
@@ -6289,9 +6449,18 @@ body.hv-ai-voice-floating-host .hv-tooltip{
 
 .hv-github-commit-row:last-child{border-bottom:0}
 .hv-github-commit-row i{color:#71717a}
-.hv-github-commit-main{min-width:0;flex:1}
-.hv-github-commit-main strong{display:block;overflow:hidden;color:#d4d4d8;font-size:10px;text-overflow:ellipsis;white-space:nowrap}
-.hv-github-commit-main span{display:block;margin-top:4px;color:#626269;font-size:8px}
+.hv-github-commit-copy{min-width:0;flex:1}
+.hv-github-commit-copy strong{display:block;overflow:hidden;color:#d4d4d8;font-size:10px;text-overflow:ellipsis;white-space:nowrap}
+.hv-github-commit-copy span{display:block;margin-top:4px;color:#626269;font-size:8px}
+.hv-github-commit-badge{
+  padding:4px 7px;
+  border:1px solid rgba(96,165,250,.12);
+  border-radius:6px;
+  background:rgba(59,130,246,.08);
+  color:#93c5fd;
+  font-size:8px;
+  font-weight:850;
+}
 
 @media (max-width:720px){
   .hv-settings-form-grid,
@@ -6670,6 +6839,53 @@ html.hv-light-mode .hv-nav-stat-card{
   background:#f8fafc !important;
   color:#172033 !important;
   border-color:#d8dee8 !important;
+}
+
+html.hv-light-mode :is(
+  .hv-download-card,.hv-community-card,.hv-community-preview-card,
+  .hv-submit-card,.hv-update-detail-card,.hv-update-detail-item,
+  .hv-status-summary,.hv-status-service,.hv-status-incidents,
+  .hv-settings-config-card,.hv-settings-guide,.hv-shortcut-row,
+  .hv-storage-file-card,.hv-clear-data-card,.hv-bulk-clear-card,
+  .hv-contact-card,.hv-legal-card,.hv-project-picker-card,
+  .hv-github-publish-card,.hv-github-manager-card
+){
+  background:#ffffff !important;
+  color:#111827 !important;
+  border-color:#d8dee8 !important;
+  box-shadow:0 14px 38px rgba(15,23,42,.1) !important;
+}
+
+html.hv-light-mode :is(
+  .hv-download-title,.hv-community-title,.hv-community-card-title,
+  .hv-update-detail-title,.hv-status-service strong,.hv-status-incidents h3,
+  .hv-settings-section h3,.hv-settings-config-card h4,.hv-settings-guide h4,
+  .hv-shortcut-row strong,.hv-storage-action-head strong,.hv-storage-metric strong
+){
+  color:#111827 !important;
+}
+
+html.hv-light-mode :is(
+  .hv-download-sub,.hv-community-sub,.hv-community-card p,
+  .hv-update-detail-description,.hv-status-service small,.hv-status-service a,
+  .hv-settings-section p,.hv-settings-guide p,.hv-settings-guide li,
+  .hv-shortcut-row span,.hv-storage-action-head span,.hv-storage-metric span
+){
+  color:#64748b !important;
+}
+
+html.hv-light-mode :is(
+  .hv-btn,.hv-ibtn,.hv-nav-dot-btn,.hv-setting-toggle,
+  .hv-settings-tab,.hv-settings-save-close,.hv-validator-secondary-btn,
+  .hv-download-btn,.hv-storage-action-button,.hv-storage-bulk-button
+){
+  background:#f8fafc;
+  color:#111827;
+  border-color:#cbd5e1;
+}
+
+html.hv-light-mode :is(.hv-popup,.hv-modal,.hv-nav-center-modal,.hv-download-modal){
+  color:#111827;
 }
 
 html.hv-light-mode .hv-token-text{ color:#334155; }
@@ -7832,10 +8048,10 @@ html.hv-light-mode .hv-toast{
       <div class="hv-panel">
         <div class="hv-head">
           <div class="hv-title"><span>Live Preview</span></div>
-          <button class="hv-preview-promo" id="hvPreviewPromo" type="button" aria-label="AI Voice Mode is now live">
-            <span class="hv-preview-promo-icon"><i class="fa-solid fa-microphone-lines"></i></span>
-            <span class="hv-preview-promo-copy"><strong>AI Voice Mode</strong> is now live — try it in the HTML editor!</span>
-            <span class="hv-preview-promo-badge"><i></i>Now Live</span>
+          <button class="hv-preview-promo" id="hvPreviewPromo" type="button" aria-label="Open GitHub Configuration in Settings">
+            <span class="hv-preview-promo-icon"><i class="fa-brands fa-github"></i></span>
+            <span class="hv-preview-promo-copy"><strong>GitHub Connection</strong> is live — publish your code with GitHub Pages.</span>
+            <span class="hv-preview-promo-badge"><i></i>Connect</span>
           </button>
           <div class="hv-group hv-preview-controls">
 
@@ -11050,11 +11266,15 @@ html.hv-light-mode .hv-toast{
   }
 
   .app > .header{
-    display:none;
+    display:flex;
+    min-height:58px;
+    flex:0 0 auto;
+    padding:10px 12px;
   }
 
   .chat{
-    height:calc(100dvh - 150px);
+    height:auto;
+    flex:1 1 auto;
     min-height:0;
     padding:18px 12px 12px;
     scroll-padding-bottom:20px;
@@ -11109,8 +11329,9 @@ html.hv-light-mode .hv-toast{
   }
 
   .input-wrap{
-    height:150px;
-    min-height:150px;
+    height:auto;
+    min-height:136px;
+    flex:0 0 auto;
     padding:8px;
     border-radius:0;
   }
@@ -11601,11 +11822,11 @@ html.hv-light-mode .hv-toast{
   }
 
   .voice-mode[data-state="speaking"] .voice-orb{
-    box-shadow:0 0 0 13px rgba(74,222,128,.04),0 0 0 27px rgba(74,222,128,.018),0 18px 58px rgba(34,197,94,.12);
+    box-shadow:0 0 0 13px rgba(255,255,255,.04),0 0 0 27px rgba(255,255,255,.017),0 18px 58px rgba(255,255,255,.075);
   }
 
   .voice-mode[data-state="listening"] .voice-orb{
-    box-shadow:0 0 0 13px var(--hv-accent-soft),0 0 0 27px var(--hv-accent-glow),0 18px 58px var(--hv-accent-glow);
+    box-shadow:0 0 0 13px rgba(255,255,255,.04),0 0 0 27px rgba(255,255,255,.017),0 18px 58px rgba(255,255,255,.075);
   }
 
   .voice-lower{
@@ -12243,6 +12464,98 @@ html.hv-light-mode .hv-toast{
   @media (prefers-reduced-motion:reduce){
     .voice-title-wave span,.voice-caption-wave span{animation:none !important}
     .voice-mode.active{animation:none}
+  }
+
+  html.hv-ai-light-mode{
+    --bg:#eef2f7;
+    --bg-2:#ffffff;
+    --card:#ffffff;
+    --border:#d7dde7;
+    --text:#111827;
+    --text-dim:#64748b;
+    --input-bg:#f8fafc;
+    --btn-bg:#f1f5f9;
+    --btn-hover:#e2e8f0;
+    --shadow:0 18px 48px rgba(15,23,42,.14);
+    --highlight:#e2e8f0;
+    color-scheme:light;
+  }
+  html.hv-ai-light-mode body,
+  html.hv-ai-light-mode .app,
+  html.hv-ai-light-mode .chat,
+  html.hv-ai-light-mode .input-wrap{
+    background:#ffffff !important;
+    color:#111827 !important;
+  }
+  html.hv-ai-light-mode .header,
+  html.hv-ai-light-mode .input-wrap{
+    border-color:#d7dde7 !important;
+  }
+  html.hv-ai-light-mode :is(
+    .message,.feature-card,.modal,.history-card,.ai-code-block,.ai-code-head,
+    .ai-project-card,.ai-project-chat-card,.ai-library-card,.ai-model-menu,
+    .ai-model-option,.ai-model-info-card,.ai-confirm-card,.ai-create-project-card,
+    .voice-transcript-card,.voice-transcript-message,.voice-settings-popover,
+    .voice-keyboard-panel
+  ){
+    background:#ffffff !important;
+    color:#111827 !important;
+    border-color:#d7dde7 !important;
+    box-shadow:0 12px 34px rgba(15,23,42,.1);
+  }
+  html.hv-ai-light-mode .message.user,
+  html.hv-ai-light-mode .message.system{
+    background:#f8fafc !important;
+    color:#111827 !important;
+    border-color:#d7dde7 !important;
+  }
+  html.hv-ai-light-mode :is(
+    .message-text,.welcome-text,.feature-title,.header-title,.ai-projects-title,
+    .ai-library-title,.modal-title,.history-title,.voice-caption-text,
+    .voice-caption-speaker,.voice-transcript-message strong
+  ){
+    color:#111827 !important;
+  }
+  html.hv-ai-light-mode :is(
+    .chat-input,input,textarea,select,.ai-model-trigger,.voice-custom-trigger
+  ){
+    background:#f8fafc !important;
+    color:#111827 !important;
+    border-color:#cbd5e1 !important;
+  }
+  html.hv-ai-light-mode :is(.icon-btn,.voice-header-btn,.voice-control,.send-btn){
+    border-color:#cbd5e1;
+  }
+  html.hv-ai-light-mode .voice-mode{
+    background:
+      radial-gradient(circle at 50% 40%,rgba(15,23,42,.04),transparent 32%),
+      #ffffff;
+    color:#111827;
+    border-color:#cbd5e1;
+    box-shadow:0 28px 90px rgba(15,23,42,.2);
+  }
+  html.hv-ai-light-mode .voice-orb{
+    background:
+      radial-gradient(circle at 35% 30%,rgba(255,255,255,.72),transparent 28%),
+      radial-gradient(circle at 64% 70%,rgba(15,23,42,.06),transparent 34%),
+      #e5e7eb;
+    border-color:#94a3b8;
+  }
+  html.hv-ai-light-mode .ai-hover-tooltip,
+  html.hv-ai-light-mode .voice-control-tip{
+    background:#ffffff;
+    color:#111827;
+    border-color:#cbd5e1;
+  }
+  html.hv-ai-light-mode *{
+    scrollbar-color:#94a3b8 #f8fafc !important;
+  }
+  html.hv-ai-light-mode *::-webkit-scrollbar-track{
+    background:#f8fafc !important;
+  }
+  html.hv-ai-light-mode *::-webkit-scrollbar-thumb{
+    background:#94a3b8 !important;
+    border-color:#f8fafc !important;
   }
 
   </style>
@@ -16599,10 +16912,16 @@ if(textFilePreviewRemove){
     const dedicated = patterns.find(([,pattern]) => pattern.test(normalized))?.[0] || null;
     if(dedicated) return { action:dedicated,target:null };
     const saveMatch = normalized.match(
-      /\bsave\s+(?:(?:this|the|my)\s+)?(?:current\s+)?(?:code\s+)?(?:as|named|called)\s+(.+)$/
+      /\bsave\s+(?:(?:this|the|my)\s+)?(?:current\s+)?(?:code\s+)?(?:as|named|called)\s+(.+?)(?:\s+and\s+(?:then\s+)?(?:click|press)\s+save)?$/
+    ) || normalized.match(
+      /\bsave\s+(?:(?:this|the|my)\s+)?(?:current\s+)?code\b.*?\bname\s+it\s+(?:as\s+)?(.+?)(?:\s+and\s+(?:then\s+)?(?:click|press)\s+save)?$/
     );
     if(saveMatch?.[1]){
-      const name = saveMatch[1].trim();
+      const name = saveMatch[1]
+        .replace(/\s+and\s+(?:then\s+)?(?:click|press)\s+save[.!?]*$/,'')
+        .replace(/^["“]|["”]$/g,'')
+        .replace(/[.!?]+$/,'')
+        .trim();
       if(name) return { action:'SAVE_CODE',target:'Save Version',value:name };
     }
     if(/\bsaved versions?\b/.test(normalized)){
@@ -16629,10 +16948,25 @@ if(textFilePreviewRemove){
       }
     }
     if(/\b(?:validate|check)\s+(?:the\s+)?(?:html|code|markup)\b/.test(normalized)){
-      return { action:'CLICK_CONTROL',target:'Validate HTML' };
+      return { action:'VALIDATE_CODE',target:'Validate HTML' };
     }
-    if(/\bdownload\s+(?:the\s+)?(?:html|code|file|project)\b/.test(normalized)){
-      return { action:'CLICK_CONTROL',target:'Download' };
+    if(/\bdownload\s+(?:(?:the|my)\s+)?(?:current\s+)?(?:html|code|file|project)\b/.test(normalized)){
+      return { action:'DOWNLOAD_FILE',target:'Download code' };
+    }
+    if(/\b(?:restore|recover)\s+(?:the\s+)?(?:last\s+)?saved\s+(?:code|version)\b/.test(normalized)){
+      return { action:'RESTORE_CODE',target:'Restore last saved' };
+    }
+    if(/\b(?:pop\s*out|popout|open\s+(?:the\s+)?code\s+in\s+(?:a\s+)?new\s+(?:tab|window)|preview\s+in\s+(?:a\s+)?new\s+tab)\b/.test(normalized)){
+      return { action:'POPOUT_CODE',target:'Pop out code' };
+    }
+    if(
+      /\b(?:three|3)\s*dot\b/.test(normalized) &&
+      /\bsettings?\b/.test(normalized)
+    ){
+      return { action:'OPEN_NAV_ITEM',target:'settings' };
+    }
+    if(/\b(?:open|show|go\s+to)\s+(?:the\s+)?settings(?:\s+section|\s+modal)?\b/.test(normalized)){
+      return { action:'OPEN_NAV_ITEM',target:'settings' };
     }
     const searchMatch = normalized.match(
       /\b(?:search|find|look)\s+(?:(?:the|in)\s+)?(?:code|editor|html|markup)?\s*(?:for\s+)?(.+)$/
@@ -16740,6 +17074,12 @@ if(textFilePreviewRemove){
       'save code':'hvSaveCurrent',
       'saved codes':'hvSavedMenu',
       'community presets':'hvCodesBtn'
+      ,'pop out':'hvNewTab'
+      ,'pop out code':'hvNewTab'
+      ,'open code in new tab':'hvNewTab'
+      ,'three dot menu':'hvNavMenuBtn'
+      ,'3 dot menu':'hvNavMenuBtn'
+      ,'more menu':'hvNavMenuBtn'
     };
     const aliasedControl = parentDocument?.getElementById(editorAliases[normalizedTarget] || '');
     if(aliasedControl && aiVoiceIsAvailableControl(aliasedControl)) return aliasedControl;
@@ -16897,8 +17237,72 @@ if(textFilePreviewRemove){
     if(action === 'GENERATE_IMAGE'){
       const prompt = String(value || '').trim();
       if(!prompt) return false;
+      aiVoiceStopPlayback();
       aiVoiceShowCaption('assistant','Generating that image with FLUX.2 Klein 4B.',false);
-      await aiSendImageGenerationMessage(prompt);
+      await aiSendImageGenerationMessage('Generate an image: ' + prompt);
+      return true;
+    }
+    if(action === 'DOWNLOAD_FILE'){
+      let parentDocument;
+      try{ parentDocument = window.parent?.document; }catch(error){}
+      const openButton = parentDocument?.getElementById('hvDownloadPopupBtn');
+      const finalButton = parentDocument?.getElementById('hvDownloadCodeBtn');
+      if(!openButton || !finalButton) return false;
+      openButton.click();
+      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      finalButton.click();
+      aiVoiceShowCaption('assistant','Downloaded the current code.',false);
+      return true;
+    }
+    if(action === 'VALIDATE_CODE'){
+      let parentDocument;
+      try{ parentDocument = window.parent?.document; }catch(error){}
+      const openButton = parentDocument?.getElementById('hvValidatorBtn');
+      const submitButton = parentDocument?.getElementById('hvValidatorSubmit');
+      const popup = submitButton?.closest('.hv-popup');
+      if(!openButton || !submitButton) return false;
+      openButton.click();
+      const startedAt = Date.now();
+      while(
+        popup?.classList.contains('loading') &&
+        Date.now() - startedAt < 8000
+      ){
+        await new Promise(resolve => setTimeout(resolve,80));
+      }
+      if(submitButton.disabled) return false;
+      submitButton.click();
+      aiVoiceShowCaption('assistant','Validated the current HTML.',false);
+      return true;
+    }
+    if(action === 'RESTORE_CODE' || action === 'POPOUT_CODE'){
+      let parentDocument;
+      try{ parentDocument = window.parent?.document; }catch(error){}
+      const button = parentDocument?.getElementById(
+        action === 'RESTORE_CODE' ? 'hvRestore' : 'hvNewTab'
+      );
+      if(!button) return false;
+      button.click();
+      aiVoiceShowCaption(
+        'assistant',
+        action === 'RESTORE_CODE'
+          ? 'Restored the last saved code.'
+          : 'Opened the current code in a pop-out preview.',
+        false
+      );
+      return true;
+    }
+    if(action === 'OPEN_NAV_ITEM'){
+      let parentDocument;
+      try{ parentDocument = window.parent?.document; }catch(error){}
+      const menuButton = parentDocument?.getElementById('hvNavMenuBtn');
+      const item = [...(parentDocument?.querySelectorAll('#hvNavMenu [data-nav-modal]') || [])]
+        .find(button => aiVoiceNormalizeControlLabel(button.dataset.navModal) === aiVoiceNormalizeControlLabel(target));
+      if(!menuButton || !item) return false;
+      const menu = parentDocument.getElementById('hvNavMenu');
+      if(!menu?.classList.contains('open')) menuButton.click();
+      await new Promise(resolve => requestAnimationFrame(resolve));
+      item.click();
+      aiVoiceShowCaption('assistant','Opened ' + String(target || 'the requested section') + '.',false);
       return true;
     }
     if(action === 'CLICK_CONTROL'){
@@ -17039,6 +17443,225 @@ if(textFilePreviewRemove){
     return true;
   }
 
+  function aiVoiceIsExplicitCodingRequest(text){
+    const normalized = String(text || '').toLowerCase().replace(/\s+/g,' ').trim();
+    if(!normalized) return false;
+    const action = /\b(?:build|create|generate|write|implement|add|edit|modify|change|update|fix|debug|repair|refactor|redesign|improve)\b/.test(normalized);
+    const subject = /\b(?:code|html|css|javascript|website|web\s*page|page|layout|component|section|form|navigation|navbar|header|footer|button|animation|style|design|error|bug|feature)\b/.test(normalized);
+    return action && subject;
+  }
+
+  function aiVoiceShouldSkipPopout(text){
+    return /\b(?:do\s+not|don't|dont|without)\b.{0,40}\b(?:pop\s*out|popout|new\s+tab|preview\s+tab)\b/i
+      .test(String(text || ''));
+  }
+
+  function aiVoiceShouldPublishLive(text){
+    const source = String(text || '');
+    return (
+      /\b(?:push|publish|deploy)\b.{0,45}\b(?:code|site|website|page|it)\b.{0,30}\b(?:live|github|github\s+pages)\b/i.test(source) ||
+      /\b(?:push|publish|deploy)\s+(?:the\s+|this\s+|my\s+)?code\s+live\b/i.test(source)
+    );
+  }
+
+  function aiVoiceElementIsVisible(element){
+    if(!element || element.hidden) return false;
+    const styles = element.ownerDocument?.defaultView?.getComputedStyle(element);
+    const rect = element.getBoundingClientRect();
+    return Boolean(
+      styles &&
+      styles.display !== 'none' &&
+      styles.visibility !== 'hidden' &&
+      Number(styles.opacity || 1) > 0 &&
+      rect.width > 0 &&
+      rect.height > 0
+    );
+  }
+
+  async function aiVoicePublishGeneratedCode(){
+    const parentDocument = window.parent?.document;
+    const publishButton = parentDocument?.getElementById('hvGithubPublishButton');
+    if(!publishButton) throw new Error('The GitHub Publish control is unavailable.');
+    publishButton.click();
+    for(let attempt = 0;attempt < 20;attempt += 1){
+      await new Promise(resolve => setTimeout(resolve,50));
+      const confirm = parentDocument.getElementById('hvGithubPublishConfirm');
+      if(aiVoiceElementIsVisible(confirm)){
+        if(confirm.disabled){
+          throw new Error('The GitHub Publish button is not ready.');
+        }
+        confirm.click();
+        return true;
+      }
+      const commit = parentDocument.getElementById('hvGithubCommitLatest');
+      if(aiVoiceElementIsVisible(commit)){
+        if(commit.disabled){
+          throw new Error('The GitHub commit button is not ready.');
+        }
+        commit.click();
+        return true;
+      }
+    }
+    throw new Error('The GitHub publishing modal did not open.');
+  }
+
+  function aiVoiceExtractCompleteCode(responseText){
+    const source = String(responseText || '');
+    const fenced = [...source.matchAll(/```(?:html|htm|xml|css|javascript|js)?\s*([\s\S]*?)```/gi)]
+      .map(match => match[1].trim())
+      .filter(Boolean);
+    const completeDocument = fenced.find(block => (
+      /<!doctype\s+html/i.test(block) ||
+      /<html(?:\s|>)/i.test(block)
+    ));
+    if(completeDocument) return completeDocument;
+    const rawStart = source.search(/<!doctype\s+html|<html(?:\s|>)/i);
+    if(rawStart >= 0){
+      const raw = source.slice(rawStart);
+      const htmlEnd = raw.toLowerCase().lastIndexOf('</html>');
+      return (htmlEnd >= 0 ? raw.slice(0,htmlEnd + 7) : raw).trim();
+    }
+    return '';
+  }
+
+  function aiVoiceSpeakWorkflowUpdate(text){
+    const clean = String(text || '').trim();
+    if(
+      !clean ||
+      voiceMuted ||
+      !('speechSynthesis' in window) ||
+      typeof SpeechSynthesisUtterance !== 'function'
+    ){
+      return Promise.resolve();
+    }
+    aiVoiceStopPlayback();
+    const tracks = [...(voiceMediaStream?.getAudioTracks?.() || [])];
+    tracks.forEach(track => { track.enabled = false; });
+    return new Promise(resolve => {
+      const utterance = new SpeechSynthesisUtterance(clean);
+      utterance.volume = Math.max(0,Math.min(1,Number(voicePreferences.volume || .82)));
+      utterance.rate = 1.03;
+      let settled = false;
+      const finish = () => {
+        if(settled) return;
+        settled = true;
+        if(voiceSessionWanted && !voiceMuted){
+          tracks.forEach(track => { track.enabled = true; });
+        }
+        resolve();
+      };
+      utterance.onend = finish;
+      utterance.onerror = finish;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+      setTimeout(finish,Math.max(3000,clean.length * 90));
+    });
+  }
+
+  async function aiVoiceBuildImplementationPrompt(requestText){
+    const original = String(requestText || '').trim();
+    const context = aiVoiceGetEditorContext().slice(0,6500);
+    const instruction = [
+      'Rewrite the user request below as one precise production implementation prompt for an autonomous HTML/CSS/JavaScript coding agent.',
+      'Preserve every requirement and the intent of the existing project.',
+      'Require a complete, runnable HTML document in one fenced HTML block.',
+      'Require preservation of unrelated working features and compatibility with the current code.',
+      'Do not ask questions, do not add commentary, and return only the improved prompt.',
+      '',
+      'USER REQUEST:',
+      original,
+      '',
+      'CURRENT EDITOR CONTEXT:',
+      context
+    ].join('\n');
+    try{
+      const improved = await callGeminiWithHistory('gemini-3.6-flash',[
+        { role:'user',parts:[{ text:instruction }] }
+      ]);
+      if(String(improved || '').trim()) return String(improved).trim();
+    }catch(error){
+      console.warn('Prompt improvement failed; using a safe local implementation prompt.',error);
+    }
+    return [
+      'Implement this request in the existing HTML Viewer code: ' + original,
+      'Return one complete production-ready HTML document in a fenced html block.',
+      'Preserve all unrelated working code, existing behavior, accessibility, responsiveness, and visual design.',
+      'Integrate the change cleanly, avoid placeholders, and verify JavaScript references and event listeners.'
+    ].join('\n');
+  }
+
+  async function aiVoiceRunAutonomousCodingWorkflow(requestText){
+    const clean = String(requestText || '').trim();
+    if(!clean) return false;
+    const skipPopout = aiVoiceShouldSkipPopout(clean);
+    const publishLive = aiVoiceShouldPublishLive(clean);
+    voiceIntentOutcomes.set(clean,'actionable');
+    aiVoiceStopPlayback();
+    aiVoiceSyncToNormalChat('user',clean);
+    aiVoiceSetState('processing','Improving implementation prompt');
+    aiVoiceShowCaption('assistant','I’m turning that into a production implementation prompt.',false);
+    await aiVoiceSpeakWorkflowUpdate('I’m preparing the implementation now.');
+
+    const improvedPrompt = await aiVoiceBuildImplementationPrompt(clean);
+    aiVoiceSyncToNormalChat(
+      'assistant',
+      'Improved implementation prompt:\n\n' + improvedPrompt
+    );
+    aiVoiceAddTranscript('assistant','Improved implementation prompt:\n\n' + improvedPrompt,'coding-model',0);
+    aiVoiceSetState('processing','Generating production code');
+    aiVoiceShowCaption('assistant','The prompt is ready. I’m generating and applying the code now.',false);
+    await aiVoiceSpeakWorkflowUpdate('The prompt is ready. I’m generating the code now.');
+
+    if(modelSelect) modelSelect.value = 'gemini-3.6-flash';
+    if(typeof aiSyncModelTrigger === 'function') aiSyncModelTrigger();
+    inputEl.value = improvedPrompt;
+    inputEl.dispatchEvent(new Event('input',{ bubbles:true }));
+    const codingThinkingStartedAt = Date.now();
+    const responseText = await sendMessage();
+    if(!responseText){
+      throw new Error('The coding model did not return a usable response.');
+    }
+    aiVoiceAddTranscript(
+      'assistant',
+      responseText,
+      'coding-model',
+      (Date.now() - codingThinkingStartedAt) / 1000
+    );
+    const generatedCode = aiVoiceExtractCompleteCode(responseText);
+    if(!generatedCode){
+      throw new Error('The coding model response did not contain a complete HTML document.');
+    }
+    if(typeof window.parent?.hvSetCode !== 'function'){
+      throw new Error('The main code editor is unavailable.');
+    }
+    window.parent.hvSetCode(generatedCode,'ONYX Generated');
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    if(typeof window.parent?.hvForcePreviewRender === 'function'){
+      window.parent.hvForcePreviewRender();
+    }
+    if(!skipPopout){
+      const popout = window.parent?.document?.getElementById('hvNewTab');
+      if(!popout) throw new Error('The Pop Out control is unavailable.');
+      popout.click();
+    }
+    if(publishLive){
+      aiVoiceSetState('processing','Publishing code to GitHub Pages');
+      aiVoiceShowCaption('assistant','The code is ready. Iâ€™m publishing it to GitHub Pages now.',false);
+      await aiVoiceSpeakWorkflowUpdate('The code is ready. Iâ€™m publishing it now.');
+      await aiVoicePublishGeneratedCode();
+    }
+    const completion = skipPopout
+      ? 'I’ve added the code to the editor. How does that look?'
+      : 'I’ve added the code and opened it in a pop-out preview. How does that look?';
+    aiVoiceShowCaption('assistant',completion,false);
+    aiVoiceAddTranscript('assistant',completion,'coding-model',0);
+    await aiVoiceSpeakWorkflowUpdate(completion);
+    if(voiceSessionWanted){
+      aiVoiceSetState(voiceMuted ? 'muted' : 'listening',voiceMuted ? 'Muted' : 'Listening');
+    }
+    return true;
+  }
+
   async function aiVoiceHandleCompletedUser(text,assistantText){
     const clean = String(text || '').trim();
     if(!clean) return;
@@ -17047,6 +17670,10 @@ if(textFilePreviewRemove){
     voiceProcessedUsers.set(clean,Date.now());
     try{
       const fallbackAction = aiVoiceFallbackUiAction(clean);
+      if(!fallbackAction && aiVoiceIsExplicitCodingRequest(clean)){
+        await aiVoiceRunAutonomousCodingWorkflow(clean);
+        return;
+      }
       const result = fallbackAction
         ? {
             intent:'UI_ACTION',
@@ -17087,29 +17714,19 @@ if(textFilePreviewRemove){
         return;
       }
       if(result?.actionable === true && Number(result.confidence || 0) >= .6){
-        voiceIntentOutcomes.set(clean,'actionable');
-        aiVoiceShowCaption('assistant','Sending your coding request to the editor…',false);
-        aiVoiceSetState('processing','Sending to code editor');
-        if(modelSelect) modelSelect.value = 'gemini-3.6-flash';
-        if(typeof aiSyncModelTrigger === 'function') aiSyncModelTrigger();
-        inputEl.value = clean;
-        inputEl.dispatchEvent(new Event('input',{ bubbles:true }));
-        const codingThinkingStartedAt = Date.now();
-        const responseText = await sendMessage();
-        if(responseText){
-          aiVoiceAddTranscript(
-            'assistant',
-            responseText,
-            'coding-model',
-            (Date.now() - codingThinkingStartedAt) / 1000
-          );
-          aiVoiceShowCaption('assistant',responseText,false);
-        }
-        if(voiceSessionWanted) aiVoiceSetState(voiceMuted ? 'muted' : 'listening',voiceMuted ? 'Muted' : 'Listening');
+        await aiVoiceRunAutonomousCodingWorkflow(clean);
         return;
       }
     }catch(error){
-      console.warn('Voice intent classification failed; keeping the message conversational.',error);
+      console.warn('Voice command workflow failed.',error);
+      voiceIntentOutcomes.set(clean,'error');
+      const message = error?.message || 'The requested action could not be completed.';
+      aiVoiceShowCaption('assistant',message,false);
+      aiVoiceAddTranscript('assistant',message,'system',0);
+      if(voiceSessionWanted){
+        aiVoiceSetState('error','Error');
+      }
+      return;
     }
     voiceIntentOutcomes.set(clean,'conversational');
     aiVoiceSyncToNormalChat('user',clean);
@@ -17300,6 +17917,19 @@ if(textFilePreviewRemove){
     context.lineTo(last[0],last[1]);
   }
 
+  function aiVoiceAccentChannels(){
+    const value = getComputedStyle(document.documentElement)
+      .getPropertyValue('--hv-accent')
+      .trim();
+    const match = /^#([0-9a-f]{6})$/i.exec(value);
+    if(!match) return [228,228,231];
+    return [
+      parseInt(match[1].slice(0,2),16),
+      parseInt(match[1].slice(2,4),16),
+      parseInt(match[1].slice(4,6),16)
+    ];
+  }
+
   function aiVoiceDrawVisualizer(timestamp){
     if(!voiceModeEl?.classList.contains('active') || !voiceVisualizer) return;
     if(document.hidden){
@@ -17342,6 +17972,14 @@ if(textFilePreviewRemove){
       ? Math.min(orbRect.width,orbRect.height) * scale / 2
       : Math.min(width,height) * .19;
     const reduced = voiceVizState.reducedMotion;
+    const accentChannels = aiVoiceAccentChannels();
+    const accentRgba = alpha =>
+      'rgba(' +
+      accentChannels[0] + ',' +
+      accentChannels[1] + ',' +
+      accentChannels[2] + ',' +
+      Math.max(0,Math.min(1,Number(alpha) || 0)).toFixed(3) +
+      ')';
 
     aiVoiceEnsureParticles(54);
     context.save();
@@ -17427,15 +18065,15 @@ if(textFilePreviewRemove){
           centerY
         );
         const coreAlpha = Math.max(.1,.82 - layer * .1) * sideVisibility;
-        gradient.addColorStop(0,'rgba(228,228,231,0)');
-        gradient.addColorStop(.08,'rgba(228,228,231,' + (coreAlpha * .42).toFixed(3) + ')');
-        gradient.addColorStop(.28,'rgba(244,244,245,' + coreAlpha.toFixed(3) + ')');
-        gradient.addColorStop(.72,'rgba(228,228,231,' + (coreAlpha * .72).toFixed(3) + ')');
-        gradient.addColorStop(.94,'rgba(228,228,231,' + (coreAlpha * .16).toFixed(3) + ')');
-        gradient.addColorStop(1,'rgba(228,228,231,0)');
+        gradient.addColorStop(0,accentRgba(0));
+        gradient.addColorStop(.08,accentRgba(coreAlpha * .42));
+        gradient.addColorStop(.28,accentRgba(coreAlpha));
+        gradient.addColorStop(.72,accentRgba(coreAlpha * .72));
+        gradient.addColorStop(.94,accentRgba(coreAlpha * .16));
+        gradient.addColorStop(1,accentRgba(0));
         context.beginPath();
         aiVoiceSmoothPath(context,points);
-        context.strokeStyle = 'rgba(228,228,231,' + ((.055 + reactiveLevel * .11) * sideVisibility).toFixed(3) + ')';
+        context.strokeStyle = accentRgba((.055 + reactiveLevel * .11) * sideVisibility);
         context.lineWidth = Math.max(.9,3.8 - layer * .4) * scale;
         context.stroke();
         context.beginPath();
@@ -17443,7 +18081,7 @@ if(textFilePreviewRemove){
         context.strokeStyle = gradient;
         context.lineWidth = Math.max(.55,1.22 - layer * .085) * scale;
         context.shadowBlur = (6 + reactiveLevel * 16) * scale;
-        context.shadowColor = 'rgba(255,255,255,.2)';
+        context.shadowColor = accentRgba(.3);
         context.stroke();
       };
       drawSide(left,'left');
@@ -17476,10 +18114,10 @@ if(textFilePreviewRemove){
         else context.lineTo(x,y);
       }
       context.closePath();
-      context.strokeStyle = 'rgba(228,228,231,' + (layer ? .24 : .62).toFixed(2) + ')';
+      context.strokeStyle = accentRgba(layer ? .24 : .68);
       context.lineWidth = (layer ? .8 : 1.15) * scale;
       context.shadowBlur = (layer ? 3 : 6 + reactiveLevel * 10) * scale;
-      context.shadowColor = 'rgba(255,255,255,.19)';
+      context.shadowColor = accentRgba(.28);
       context.stroke();
     }
     context.shadowBlur = 0;
@@ -17497,7 +18135,7 @@ if(textFilePreviewRemove){
       const length = (3 + detail * (12 + reactiveLevel * 44) + waveformDetail * reactiveLevel * 20) * scale;
       const inner = baseRadius + (9 * scale);
       const outer = inner + length;
-      context.strokeStyle = 'rgba(228,228,231,' + (.2 + detail * .6 + waveformDetail * .16).toFixed(3) + ')';
+      context.strokeStyle = accentRgba(.22 + detail * .64 + waveformDetail * .18);
       context.lineWidth = .78 * scale;
       context.beginPath();
       context.moveTo(centerX + Math.cos(angle) * inner,centerY + Math.sin(angle) * inner);
@@ -18087,6 +18725,13 @@ if(textFilePreviewRemove){
         root.setProperty('--hv-accent-border',String(event.data.border || 'rgba(255,255,255,.38)'));
         root.setProperty('--hv-accent-glow',String(event.data.glow || 'rgba(255,255,255,.14)'));
       }
+      return;
+    }
+    if(event.data?.type === 'hv-ai-theme'){
+      document.documentElement.classList.toggle(
+        'hv-ai-light-mode',
+        event.data.appearance === 'light'
+      );
       return;
     }
     if(event.data?.type === 'hv-ai-open-voice-mode'){
@@ -22660,8 +23305,8 @@ loadChats();
       <div class="hv-github-confirm-hero">
         <div class="hv-github-confirm-icon"><i class="fa-brands fa-github"></i></div>
         <div class="hv-github-confirm-copy">
-          <h3 id="hvGithubPublishTitle">Publish this website to GitHub Pages?</h3>
-          <p>The current HTML Viewer code will be uploaded as <b>index.html</b> to a new public repository and configured as a GitHub Pages website.</p>
+          <h3 id="hvGithubPublishTitle">Publish this code to GitHub Pages?</h3>
+          <p>The current HTML Viewer code will be uploaded as <b>index.html</b> to a new public repository and configured with GitHub Pages.</p>
         </div>
       </div>
       <div class="hv-github-repo-name hv-settings-field">
@@ -22671,7 +23316,7 @@ loadChats();
       <div class="hv-settings-connection-status error" id="hvGithubPublishError" aria-live="assertive"></div>
       <div class="hv-github-dialog-actions">
         <button class="hv-settings-config-button" type="button" data-hv-github-publish-close>Cancel</button>
-        <button class="hv-settings-config-button" id="hvGithubPublishConfirm" type="button"><i class="fa-solid fa-check"></i>Publish website</button>
+        <button class="hv-settings-config-button" id="hvGithubPublishConfirm" type="button"><i class="fa-solid fa-check"></i>Publish code</button>
       </div>
     </div>
   </section>
@@ -22715,16 +23360,32 @@ loadChats();
       </div>
       <div class="hv-github-manager-grid">
         <section class="hv-github-manager-card">
-          <strong><i class="fa-solid fa-cloud-arrow-up"></i> Commit and deploy a new change</strong>
-          <p>Publish the latest HTML currently loaded in the editor to the existing repository.</p>
+          <div class="hv-github-manager-card-head">
+            <div class="hv-github-manager-card-icon"><i class="fa-solid fa-code-commit"></i></div>
+            <div>
+              <span class="hv-github-manager-kicker">Update deployment</span>
+              <strong>Commit and deploy a new change</strong>
+              <p>Publish the latest HTML currently loaded in the editor to the existing repository.</p>
+            </div>
+          </div>
           <div class="hv-settings-input-wrap"><input class="hv-settings-input" id="hvGithubCommitMessage" value="Update website from HTML Viewer" maxlength="180"></div>
           <button class="hv-settings-config-button" id="hvGithubCommitLatest" type="button"><i class="fa-solid fa-cloud-arrow-up"></i>Commit latest build</button>
         </section>
         <section class="hv-github-manager-card danger">
-          <strong><i class="fa-solid fa-trash-can"></i> Delete repository entirely</strong>
-          <p>Permanently remove the GitHub repository and clear this live website connection.</p>
+          <div class="hv-github-manager-card-head">
+            <div class="hv-github-manager-card-icon"><i class="fa-solid fa-trash-can"></i></div>
+            <div>
+              <span class="hv-github-manager-kicker">Danger zone</span>
+              <strong>Delete repository entirely</strong>
+              <p>Permanently remove the GitHub repository and clear this live code connection.</p>
+            </div>
+          </div>
           <button class="hv-settings-config-button" id="hvGithubDeleteRepository" type="button"><i class="fa-solid fa-trash-can"></i>Delete repository</button>
         </section>
+      </div>
+      <div class="hv-github-activity-head">
+        <strong>Repository activity</strong>
+        <span>Latest commits</span>
       </div>
       <div class="hv-github-commit-list" id="hvGithubCommitList" aria-live="polite"></div>
     </div>
@@ -25292,6 +25953,7 @@ function renderPreview(force = false){
     setTimeout(() => {
       hvHidePreviewLoader();
     }, 120);
+    window.hvSyncTabPreviewViewport?.();
 
   };
 
@@ -25302,6 +25964,7 @@ function renderPreview(force = false){
 
   els.frame.srcdoc =
     hvApplyDarkScrollbarTheme(previewDocument);
+  window.hvSyncTabPreviewViewport?.();
 
   /*
     Safety fallback:
@@ -25319,6 +25982,48 @@ function renderPreview(force = false){
 
 window.hvRenderPreview =
   renderPreview;
+
+window.hvForcePreviewRender = () => renderPreview(true);
+
+let hvTabPreviewFitFrame = 0;
+
+function hvSyncTabPreviewViewport(){
+  if(hvTabPreviewFitFrame) cancelAnimationFrame(hvTabPreviewFitFrame);
+  hvTabPreviewFitFrame = requestAnimationFrame(() => {
+    hvTabPreviewFitFrame = 0;
+    const layout = document.getElementById('hvLayout');
+    const frame = document.getElementById('hvFrame');
+    const frameWrap = frame?.closest('.hv-framewrap');
+    if(!layout || !frame || !frameWrap) return;
+    if(!layout.classList.contains('hv-ai-tab-mode')){
+      frameWrap.classList.remove('hv-tab-preview-fit');
+      frameWrap.style.removeProperty('--hv-tab-preview-width');
+      frameWrap.style.removeProperty('--hv-tab-preview-height');
+      frameWrap.style.removeProperty('--hv-tab-preview-scale');
+      return;
+    }
+    document.querySelectorAll('.hv-device-btn').forEach(button => {
+      button.classList.toggle('active',button.dataset.device === 'phone');
+    });
+    const viewport = { width:390,height:844 };
+    const availableWidth = Math.max(1,frameWrap.clientWidth);
+    const availableHeight = Math.max(1,frameWrap.clientHeight);
+    const scale = Math.max(.35,Math.min(2,availableWidth / viewport.width));
+    const fittedViewportHeight = Math.max(320,availableHeight / scale);
+    frameWrap.classList.add('hv-tab-preview-fit');
+    frameWrap.style.setProperty('--hv-tab-preview-width',viewport.width + 'px');
+    frameWrap.style.setProperty('--hv-tab-preview-height',fittedViewportHeight + 'px');
+    frameWrap.style.setProperty('--hv-tab-preview-scale',String(scale));
+  });
+}
+
+window.hvSyncTabPreviewViewport = hvSyncTabPreviewViewport;
+window.addEventListener('resize',hvSyncTabPreviewViewport);
+if(typeof ResizeObserver === 'function'){
+  const hvTabPreviewObserver = new ResizeObserver(hvSyncTabPreviewViewport);
+  const hvTabPreviewWrap = document.querySelector('.hv-preview .hv-framewrap');
+  if(hvTabPreviewWrap) hvTabPreviewObserver.observe(hvTabPreviewWrap);
+}
 
     let hvEditorVisualFrame = 0;
     let hvEditorSaveTimer = 0;
@@ -30835,6 +31540,12 @@ function hvApplyUiSettings(refreshPreview = false){
     'hv-light-mode',
     hvUiSettings.appearance === 'light'
   );
+  try{
+    document.getElementById('hvAiEditorFrame')?.contentWindow?.postMessage({
+      type:'hv-ai-theme',
+      appearance:hvUiSettings.appearance
+    },'*');
+  }catch(error){}
 
   const layout = document.getElementById('hvLayout');
   if(layout){
@@ -31294,6 +32005,10 @@ function hvCloseNavModals(){
 }
 
 function hvOpenNavModal(name){
+  const preserveAiEditor = (
+    name === 'settings' &&
+    document.getElementById('hvAiEditorToggle')?.classList.contains('active')
+  );
   const modal = document.querySelector(
     '.hv-nav-center-modal[data-hv-nav-modal="' + name + '"]'
   );
@@ -31341,6 +32056,11 @@ function hvOpenNavModal(name){
   modal.classList.add('open');
   modal.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
+  if(preserveAiEditor){
+    requestAnimationFrame(() => {
+      window.hvEnsureAiEditorOpen?.();
+    });
+  }
 
   setTimeout(() => {
     const focusTarget =
@@ -31531,7 +32251,100 @@ const hvPreviewPanelForPromo = document.getElementById('hvMobilePreviewPanel');
 const hvPreviewControlsForPromo = hvPreviewPanelForPromo?.querySelector('.hv-preview-controls');
 const hvAiEditorToggleForPromo = document.getElementById('hvAiEditorToggle');
 const hvPreviewHeadForPromo = hvPreviewPanelForPromo?.querySelector('.hv-head');
-let hvPromoVoiceLaunchTimer = null;
+const HV_PREVIEW_PROMOS = [
+  {
+    key:'github',
+    settingsTab:'github',
+    icon:'fa-brands fa-github',
+    title:'GitHub Connection',
+    text:'is live — publish your code with GitHub Pages.',
+    badge:'Connect',
+    color:'#86efac',
+    rgb:'134,239,172',
+    aria:'Open GitHub Configuration in Settings'
+  },
+  {
+    key:'storage',
+    settingsTab:'storage',
+    icon:'fa-solid fa-hard-drive',
+    title:'Storage Monitor',
+    text:'tracks saved files, usage, exports, and cleanup.',
+    badge:'View usage',
+    color:'#7dd3fc',
+    rgb:'125,211,252',
+    aria:'Open Storage and Data in Settings'
+  }
+];
+const HV_PREVIEW_PROMO_INTERVAL = 5 * 60 * 1000;
+let hvPreviewPromoIndex = 0;
+let hvPreviewPromoTimer = 0;
+let hvPreviewPromoTransitionTimer = 0;
+
+function hvRenderPreviewPromo(index,animate = false){
+  if(!hvPreviewPromo || !HV_PREVIEW_PROMOS.length) return;
+  const nextIndex = (
+    Number.isFinite(Number(index))
+      ? Number(index)
+      : 0
+  ) % HV_PREVIEW_PROMOS.length;
+  const normalizedIndex = nextIndex < 0
+    ? nextIndex + HV_PREVIEW_PROMOS.length
+    : nextIndex;
+  const promo = HV_PREVIEW_PROMOS[normalizedIndex];
+  const applyPromo = () => {
+    hvPreviewPromoIndex = normalizedIndex;
+    hvPreviewPromo.dataset.promo = promo.key;
+    hvPreviewPromo.dataset.settingsTab = promo.settingsTab;
+    hvPreviewPromo.style.setProperty('--hv-promo-rgb',promo.rgb);
+    hvPreviewPromo.style.setProperty('--hv-promo-strong',promo.color);
+    hvPreviewPromo.style.setProperty('--hv-promo-copy',promo.color);
+    hvPreviewPromo.setAttribute('aria-label',promo.aria);
+    const icon = hvPreviewPromo.querySelector('.hv-preview-promo-icon i');
+    const copy = hvPreviewPromo.querySelector('.hv-preview-promo-copy');
+    const badge = hvPreviewPromo.querySelector('.hv-preview-promo-badge');
+    if(icon) icon.className = promo.icon;
+    if(copy){
+      copy.replaceChildren();
+      const strong = document.createElement('strong');
+      strong.textContent = promo.title;
+      copy.append(strong,document.createTextNode(' ' + promo.text));
+    }
+    if(badge){
+      const liveDot = document.createElement('i');
+      badge.replaceChildren(liveDot,document.createTextNode(promo.badge));
+    }
+    hvPreviewPromo.classList.remove('rotating-out');
+    if(animate){
+      hvPreviewPromo.classList.add('rotating-in');
+      clearTimeout(hvPreviewPromoTransitionTimer);
+      hvPreviewPromoTransitionTimer = setTimeout(() => {
+        hvPreviewPromo.classList.remove('rotating-in');
+      },360);
+    }
+  };
+  clearTimeout(hvPreviewPromoTransitionTimer);
+  if(!animate){
+    applyPromo();
+    return;
+  }
+  hvPreviewPromo.classList.remove('rotating-in');
+  hvPreviewPromo.classList.add('rotating-out');
+  hvPreviewPromoTransitionTimer = setTimeout(applyPromo,230);
+}
+
+function hvRotatePreviewPromo(){
+  hvRenderPreviewPromo(hvPreviewPromoIndex + 1,true);
+}
+
+function hvStartPreviewPromoRotation(){
+  clearInterval(hvPreviewPromoTimer);
+  hvPreviewPromoTimer = setInterval(
+    hvRotatePreviewPromo,
+    HV_PREVIEW_PROMO_INTERVAL
+  );
+}
+
+window.hvRotatePreviewPromo = hvRotatePreviewPromo;
 
 function hvSyncPreviewPromoSize(){
   if(!hvPreviewPromo || !hvPreviewPanelForPromo) return;
@@ -31541,8 +32354,10 @@ function hvSyncPreviewPromoSize(){
     hvPreviewPanelForPromo.getBoundingClientRect().width < 820
   );
   if(compact && hvPreviewControlsForPromo && hvAiEditorToggleForPromo){
-    if(hvAiEditorToggleForPromo.previousElementSibling !== hvPreviewPromo){
-      hvAiEditorToggleForPromo.insertAdjacentElement('beforebegin',hvPreviewPromo);
+    const githubPublishButton = document.getElementById('hvGithubPublishButton');
+    const anchor = githubPublishButton || hvAiEditorToggleForPromo;
+    if(anchor.previousElementSibling !== hvPreviewPromo){
+      anchor.insertAdjacentElement('beforebegin',hvPreviewPromo);
     }
   }else if(hvPreviewHeadForPromo && hvPreviewControlsForPromo){
     if(hvPreviewPromo.parentElement !== hvPreviewHeadForPromo){
@@ -31553,35 +32368,9 @@ function hvSyncPreviewPromoSize(){
 }
 
 hvPreviewPromo?.addEventListener('click',() => {
-  const aiFrame = document.getElementById('hvAiEditorFrame');
-  if(!hvAiEditorToggleForPromo?.classList.contains('active')){
-    hvAiEditorToggleForPromo?.click();
-  }
-  clearInterval(hvPromoVoiceLaunchTimer);
-  let attempts = 0;
-  const requestVoiceMode = () => {
-    attempts += 1;
-    try{
-      aiFrame?.contentWindow?.postMessage({ type:'hv-ai-open-voice-mode' },'*');
-    }catch(error){}
-    if(attempts >= 30){
-      clearInterval(hvPromoVoiceLaunchTimer);
-      hvPromoVoiceLaunchTimer = null;
-    }
-  };
-  requestVoiceMode();
-  hvPromoVoiceLaunchTimer = setInterval(requestVoiceMode,100);
-});
-
-window.addEventListener('message',event => {
-  const aiFrame = document.getElementById('hvAiEditorFrame');
-  if(
-    event.source === aiFrame?.contentWindow &&
-    event.data?.type === 'hv-ai-voice-launch-accepted'
-  ){
-    clearInterval(hvPromoVoiceLaunchTimer);
-    hvPromoVoiceLaunchTimer = null;
-  }
+  const settingsTab = hvPreviewPromo.dataset.settingsTab || 'general';
+  hvOpenNavModal('settings');
+  hvActivateSettingsTab(settingsTab);
 });
 
 if(typeof ResizeObserver === 'function' && hvPreviewPanelForPromo){
@@ -31590,6 +32379,8 @@ if(typeof ResizeObserver === 'function' && hvPreviewPanelForPromo){
 }
 
 window.addEventListener('resize',hvSyncPreviewPromoSize);
+hvRenderPreviewPromo(0,false);
+hvStartPreviewPromoRotation();
 hvSyncPreviewPromoSize();
 
 document.addEventListener('click', event => {
@@ -31944,9 +32735,8 @@ function hvGithubConfigFromFields(){
 }
 
 function hvSyncGithubPublishButton(){
-  const config = hvLoadGithubConfig();
   if(!hvGithubPublishButton) return;
-  hvGithubPublishButton.hidden = !(config.connected && config.token && config.owner);
+  hvGithubPublishButton.hidden = false;
   hvGithubPublishButton.classList.toggle(
     'published',
     Boolean(hvLoadGithubPublication())
@@ -34202,6 +34992,7 @@ window.hvStorageChanged();
       hvDeviceBtns.forEach(btn => {
         btn.classList.toggle('active',btn.dataset.device === device);
       });
+      window.hvSyncTabPreviewViewport?.();
       return;
     }
 
@@ -34297,7 +35088,7 @@ window.hvStorageChanged();
 
     const requestedPreviewWidth =
       device === 'phone'
-        ? 390
+        ? 540
         : device === 'tablet'
           ? 760
           : null;
@@ -34447,7 +35238,7 @@ window.hvStorageChanged();
 
     let device = 'desktop';
 
-    if(width <= 460){
+    if(width <= 580){
       device = 'phone';
     } else if(width <= 820){
       device = 'tablet';
@@ -34725,6 +35516,7 @@ window.hvStorageChanged();
       if(!pendingColumns) return;
       setColumns(...pendingColumns);
       pendingColumns = null;
+      window.hvSyncTabPreviewViewport?.();
     });
   }
 
@@ -34787,6 +35579,7 @@ window.hvStorageChanged();
       document.removeEventListener('pointerup',end,true);
       document.removeEventListener('pointercancel',end,true);
       hvSyncPreviewPromoSize();
+      window.hvSyncTabPreviewViewport?.();
       window.dispatchEvent(new CustomEvent('hv-layout-resized'));
     };
 
@@ -35162,13 +35955,6 @@ if(hvSubmitPresetSend){
           background:var(--hv-accent) !important;
         }
 
-        .voice-mode[data-state="listening"] .voice-orb{
-          box-shadow:
-            0 0 0 13px var(--hv-accent-soft),
-            0 0 0 27px var(--hv-accent-glow),
-            0 18px 58px var(--hv-accent-glow) !important;
-        }
-
         .voice-live-caption[data-speaker="user"]{
           border-color:var(--hv-accent-border) !important;
         }
@@ -35538,6 +36324,12 @@ if(hvSubmitPresetSend){
   aiFrame.addEventListener('load',() => {
     hvNotifyAiVisibility();
     hvApplyAccentColor(hvUiSettings.accentColor);
+    try{
+      aiFrame.contentWindow?.postMessage({
+        type:'hv-ai-theme',
+        appearance:hvUiSettings.appearance
+      },'*');
+    }catch(error){}
     hvSendAiVoiceHostGeometry();
   });
 
@@ -35553,6 +36345,8 @@ if(hvSubmitPresetSend){
       aiTabPanel?.classList.add('active');
       hvSyncPreviewPromoSize();
       requestAnimationFrame(() => {
+        window.hvSyncTabPreviewViewport?.();
+        window.hvRenderPreview?.(true);
         hvSendAiVoiceHostGeometry();
         hvNotifyAiVisibility();
       });
@@ -35566,7 +36360,12 @@ if(hvSubmitPresetSend){
     frameWrap.classList.remove('hv-ai-mode','hv-ai-visible');
     if(previewPanel) previewPanel.classList.remove('hv-ai-active');
     hvSyncPreviewPromoSize();
+    window.hvSyncTabPreviewViewport?.();
     hvNotifyAiVisibility();
+  };
+
+  window.hvEnsureAiEditorOpen = () => {
+    openAiEditorPreview();
   };
 
   aiBtn.addEventListener('click', () => {
@@ -35589,8 +36388,10 @@ if(hvSubmitPresetSend){
 
     previewFrame.addEventListener('load', () => {
 
-      if(aiOpen){
+      if(aiOpen && !hvAiTabModeEnabled()){
         frameWrap.classList.add('hv-ai-mode', 'hv-ai-visible');
+      }else if(hvAiTabModeEnabled()){
+        frameWrap.classList.remove('hv-ai-mode','hv-ai-visible');
       }
 
     });
