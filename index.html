@@ -86,7 +86,7 @@
   </script>
   <style>
     .hv-skip-link{position:fixed;top:10px;left:10px;z-index:100000;padding:10px 14px;border-radius:9px;background:#fff;color:#111;font-weight:800;text-decoration:none;transform:translateY(-160%);transition:transform .15s ease}
-    .hv-skip-link:focus{transform:translateY(0);outline:3px solid #60a5fa;outline-offset:2px}
+    .hv-skip-link:focus{transform:translateY(0);outline:3px solid var(--hv-accent,#fff);outline-offset:2px}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hv-skip-link{transition:none}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
   </style>
   <style>
@@ -492,7 +492,7 @@
     }
 
     .hv-gutter-row.hv-active-gutter-line{
-      color:#dbeafe;
+      color:var(--hv-accent);
     }
 
     .hv-line-number,
@@ -2510,17 +2510,18 @@ body { margin: 0; padding: 0; }
 }
 
 .hv-layout.hv-ai-tab-mode{
-  --hv-ai-tab-code:calc((100% - 24px) * .30);
-  --hv-ai-tab-preview:calc((100% - 24px) * .35);
-  --hv-ai-tab-ai:calc((100% - 24px) * .35);
+  --hv-ai-tab-code:calc((100% - 28px) * .30);
+  --hv-ai-tab-preview:calc((100% - 28px) * .35);
+  --hv-ai-tab-ai:calc((100% - 28px) * .35);
   display:grid !important;
   grid-template-columns:
     minmax(260px,var(--hv-ai-tab-code))
-    12px
+    14px
     minmax(300px,var(--hv-ai-tab-preview))
-    12px
+    14px
     minmax(320px,var(--hv-ai-tab-ai));
   align-items:stretch;
+  column-gap:0 !important;
 }
 
 .hv-layout.hv-ai-tab-mode > .hv-editor,
@@ -2531,18 +2532,36 @@ body { margin: 0; padding: 0; }
   max-width:none !important;
   height:100% !important;
   flex:none !important;
+  padding:0 !important;
 }
 
-.hv-layout.hv-ai-tab-mode > .hv-split-resizer,
 .hv-layout.hv-ai-tab-mode > .hv-ai-tab-panel{
   display:block;
 }
 
 .hv-layout.hv-ai-tab-mode > .hv-split-resizer{
+  display:flex;
   position:relative;
   left:auto !important;
-  width:12px;
+  width:14px;
+  min-width:14px;
+  max-width:14px;
+  flex:0 0 14px;
   height:100%;
+}
+
+.hv-layout.hv-ai-tab-mode > :is(.hv-editor,.hv-preview,.hv-ai-tab-panel) > .hv-panel{
+  width:100% !important;
+  height:100% !important;
+}
+
+.hv-layout.hv-ai-tab-mode.hv-is-resizing{
+  transition:none !important;
+}
+
+.hv-layout.hv-ai-tab-mode.hv-is-resizing > :is(.hv-editor,.hv-preview,.hv-ai-tab-panel){
+  transition:none !important;
+  will-change:width;
 }
 
 .hv-layout.hv-ai-tab-mode > .hv-handle{
@@ -2550,7 +2569,7 @@ body { margin: 0; padding: 0; }
 }
 
 .hv-layout.hv-code-preview-disabled{
-  grid-template-columns:0 0 minmax(320px,var(--hv-ai-tab-preview)) 12px minmax(320px,var(--hv-ai-tab-ai));
+  grid-template-columns:0 0 minmax(320px,var(--hv-ai-tab-preview)) 14px minmax(320px,var(--hv-ai-tab-ai));
 }
 
 .hv-layout.hv-code-preview-disabled > .hv-editor,
@@ -2573,7 +2592,7 @@ body { margin: 0; padding: 0; }
 }
 
 .hv-layout.hv-ai-tab-mode.hv-live-preview-disabled{
-  grid-template-columns:minmax(260px,1fr) 12px minmax(320px,1fr);
+  grid-template-columns:minmax(260px,1fr) 14px minmax(320px,1fr);
 }
 
 .hv-layout.hv-ai-tab-mode.hv-live-preview-disabled > .hv-ai-tab-panel{
@@ -2672,6 +2691,7 @@ body { margin: 0; padding: 0; }
   height:99%;
   position:relative;
   cursor:col-resize;
+  touch-action:none;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -3817,6 +3837,24 @@ body.hv-resizing-active iframe{
   pointer-events:none !important;
 }
 
+body.hv-ai-voice-floating-host .hv-ai-tab-panel.hv-ai-tab-voice-detached{
+  display:block !important;
+  position:absolute !important;
+  inset:0 auto auto 0 !important;
+  width:0 !important;
+  min-width:0 !important;
+  max-width:0 !important;
+  height:0 !important;
+  min-height:0 !important;
+  overflow:visible !important;
+  border:0 !important;
+  pointer-events:none !important;
+}
+
+body.hv-resizing-active .hv-ai-editor-frame.hv-ai-voice-floating{
+  pointer-events:none !important;
+}
+
 .hv-ai-editor-frame.hv-ai-voice-floating.hv-ai-voice-modal-behind{
   z-index:40 !important;
 }
@@ -3830,7 +3868,9 @@ body.hv-ai-voice-floating-host .hv-popup.show,
 body.hv-ai-voice-floating-host .hv-nav-center-modal.open,
 body.hv-ai-voice-floating-host .hv-submit-modal.show,
 body.hv-ai-voice-floating-host .hv-validator-modal.open,
-body.hv-ai-voice-floating-host .hv-download-modal.open{
+body.hv-ai-voice-floating-host .hv-download-modal.open,
+body.hv-ai-voice-floating-host .hv-nav-menu.open,
+body.hv-ai-voice-floating-host .hv-saved-drop.open{
   z-index:1000010 !important;
 }
 
@@ -3839,8 +3879,21 @@ body.hv-ai-voice-floating-host:has(.hv-popup.show) .hv-ai-editor-frame.hv-ai-voi
 body.hv-ai-voice-floating-host:has(.hv-nav-center-modal.open) .hv-ai-editor-frame.hv-ai-voice-floating,
 body.hv-ai-voice-floating-host:has(.hv-submit-modal.show) .hv-ai-editor-frame.hv-ai-voice-floating,
 body.hv-ai-voice-floating-host:has(.hv-validator-modal.open) .hv-ai-editor-frame.hv-ai-voice-floating,
-body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.hv-ai-voice-floating{
+body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.hv-ai-voice-floating,
+body.hv-ai-voice-floating-host:has(.hv-nav-menu.open) .hv-ai-editor-frame.hv-ai-voice-floating,
+body.hv-ai-voice-floating-host:has(.hv-saved-drop.open) .hv-ai-editor-frame.hv-ai-voice-floating,
+body.hv-ai-voice-floating-host:has(.hv-tip:hover) .hv-ai-editor-frame.hv-ai-voice-floating{
   z-index:40 !important;
+}
+
+body.hv-ai-voice-floating-host:has(.hv-nav-menu.open) .hv-topbar,
+body.hv-ai-voice-floating-host:has(.hv-saved-drop.open) .hv-topbar{
+  position:relative;
+  z-index:1000012 !important;
+}
+
+body.hv-ai-voice-floating-host .hv-tooltip{
+  z-index:1000011 !important;
 }
 
 #hvAiEditorToggle.active{
@@ -4205,9 +4258,9 @@ body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.
 .hv-search-mode-btn.active,
 .hv-search-mode-btn[aria-pressed="true"]{
   color:#fff;
-  border-color:rgba(96,165,250,.65);
-  background:rgba(37,99,235,.26);
-  box-shadow:0 0 0 1px rgba(96,165,250,.18);
+  border-color:var(--hv-accent-border);
+  background:var(--hv-accent-soft);
+  box-shadow:0 0 0 1px var(--hv-accent-glow);
 }
 
 #hvSearchInput[aria-invalid="true"]{
@@ -4430,9 +4483,9 @@ body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.
 }
 
 .hv-project-card.pinned{
-  border-color:rgba(96,165,250,.38);
-  background:rgba(37,99,235,.10);
-  box-shadow:inset 3px 0 0 rgba(96,165,250,.75);
+  border-color:var(--hv-accent-border);
+  background:var(--hv-accent-soft);
+  box-shadow:inset 3px 0 0 var(--hv-accent);
 }
 
 .hv-project-card-icon{
@@ -4502,9 +4555,9 @@ body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.
 
 .hv-project-pin-btn:hover,
 .hv-project-pin-btn.active{
-  color:#bfdbfe;
-  border-color:rgba(96,165,250,.45);
-  background:rgba(37,99,235,.18);
+  color:var(--hv-accent);
+  border-color:var(--hv-accent-border);
+  background:var(--hv-accent-soft);
 }
 
 .hv-project-delete-btn:hover{
@@ -4514,15 +4567,15 @@ body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.
 }
 
 .hv-save-action-btn.project:hover{
-  background:rgba(59,130,246,.13);
-  border-color:rgba(59,130,246,.34);
-  color:#bfdbfe;
+  background:var(--hv-accent-soft);
+  border-color:var(--hv-accent-border);
+  color:var(--hv-accent);
 }
 
 .hv-save-action-btn.pin.active{
-  color:#bfdbfe;
-  border-color:rgba(96,165,250,.45);
-  background:rgba(37,99,235,.18);
+  color:var(--hv-accent);
+  border-color:var(--hv-accent-border);
+  background:var(--hv-accent-soft);
 }
 
 .hv-saveitem{
@@ -4531,16 +4584,16 @@ body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.
 
 .hv-saveitem.pinned{
   padding-left:38px !important;
-  border-color:rgba(96,165,250,.38) !important;
-  background:rgba(37,99,235,.10) !important;
-  box-shadow:inset 3px 0 0 rgba(96,165,250,.75);
+  border-color:var(--hv-accent-border) !important;
+  background:var(--hv-accent-soft) !important;
+  box-shadow:inset 3px 0 0 var(--hv-accent);
 }
 
 .hv-saveitem-pin-mark{
   position:absolute;
   left:13px;
   top:15px;
-  color:#93c5fd;
+  color:var(--hv-accent);
   font-size:11px;
   transform:rotate(-14deg);
 }
@@ -4562,9 +4615,9 @@ body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.
   height:38px;
   padding:0 12px;
   border-radius:9px;
-  border:1px solid rgba(96,165,250,.28);
-  background:rgba(37,99,235,.14);
-  color:#dbeafe;
+  border:1px solid var(--hv-accent-border);
+  background:var(--hv-accent-soft);
+  color:var(--hv-accent);
   display:inline-flex;
   align-items:center;
   justify-content:center;
@@ -4576,8 +4629,8 @@ body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.
 }
 
 .hv-saved-create-project-btn:hover{
-  border-color:rgba(96,165,250,.55);
-  background:rgba(37,99,235,.24);
+  border-color:var(--hv-accent);
+  background:var(--hv-accent-soft);
   color:#fff;
 }
 
@@ -4635,8 +4688,8 @@ body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.
 
 .hv-project-picker-item:hover,
 .hv-project-picker-item.active{
-  border-color:rgba(59,130,246,.35);
-  background:rgba(59,130,246,.10);
+  border-color:var(--hv-accent-border);
+  background:var(--hv-accent-soft);
 }
 
 .hv-project-picker-item span{
@@ -4648,7 +4701,7 @@ body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.
 }
 
 .hv-project-picker-state{
-  color:#93c5fd;
+  color:var(--hv-accent);
   font-size:11px;
   font-weight:800;
 }
@@ -4760,7 +4813,7 @@ body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.
 
 .hv-validator-line-number:hover,
 .hv-validator-line-number.active{
-  color:#dbeafe;
+  color:var(--hv-accent);
 }
 
 .hv-validator-code-wrap{
@@ -4821,7 +4874,7 @@ body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.
 }
 
 .hv-validator-input::selection{
-  background:rgba(96,165,250,.34);
+  background:var(--hv-accent-border);
 }
 
 .hv-validator-copy-btn{
@@ -5223,8 +5276,8 @@ body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.
 
 .hv-contact-input:focus,
 .hv-contact-message:focus{
-  border-color:rgba(96,165,250,.55);
-  box-shadow:0 0 0 3px rgba(59,130,246,.12);
+  border-color:var(--hv-accent-border);
+  box-shadow:0 0 0 3px var(--hv-accent-soft);
 }
 
 .hv-contact-actions{
@@ -5284,8 +5337,8 @@ body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.
 .hv-update-card:hover,
 .hv-update-card:focus-visible{
   transform:translateY(-2px);
-  border-color:rgba(56,189,248,.34);
-  background:rgba(14,165,233,.07);
+  border-color:var(--hv-accent-border);
+  background:var(--hv-accent-soft);
   outline:0;
 }
 
@@ -5324,8 +5377,8 @@ body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.
 .hv-update-version{
   padding:4px 8px;
   border-radius:999px;
-  background:rgba(59,130,246,.15);
-  color:#bfdbfe;
+  background:var(--hv-accent-soft);
+  color:var(--hv-accent);
   font-size:11px;
   font-weight:800;
 }
@@ -5382,8 +5435,8 @@ body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.
 }
 
 .hv-history-card:hover{
-  border-color:rgba(96,165,250,.34);
-  background:rgba(59,130,246,.08);
+  border-color:var(--hv-accent-border);
+  background:var(--hv-accent-soft);
 }
 
 .hv-history-card-icon{
@@ -5394,7 +5447,7 @@ body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.
   background:rgba(255,255,255,.05);
   display:grid;
   place-items:center;
-  color:#93c5fd;
+  color:var(--hv-accent);
 }
 
 .hv-history-card-main{
@@ -5561,17 +5614,17 @@ body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.
 
 .hv-update-detail-hero{
   padding:16px;
-  border:1px solid rgba(56,189,248,.20);
+  border:1px solid var(--hv-accent-border);
   border-radius:14px;
-  background:linear-gradient(135deg,rgba(14,165,233,.09),rgba(255,255,255,.02));
+  background:linear-gradient(135deg,var(--hv-accent-soft),rgba(255,255,255,.02));
 }
 
 .hv-update-detail-version{
   display:inline-flex;
   padding:5px 9px;
   border-radius:999px;
-  background:rgba(56,189,248,.13);
-  color:#bae6fd;
+  background:var(--hv-accent-soft);
+  color:var(--hv-accent);
   font-size:10px;
   font-weight:850;
 }
@@ -5728,6 +5781,17 @@ body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.
   overflow:auto;
   padding:22px;
   scrollbar-color:#3f3f46 #101010;
+}
+
+#html-viewer-app .hv-settings-content.hv-settings-content--hide-scrollbar{
+  scrollbar-width:none !important;
+  -ms-overflow-style:none !important;
+}
+
+#html-viewer-app .hv-settings-content.hv-settings-content--hide-scrollbar::-webkit-scrollbar{
+  width:0 !important;
+  height:0 !important;
+  display:none !important;
 }
 
 .hv-settings-section{
@@ -6301,7 +6365,7 @@ body.hv-ai-voice-floating-host:has(.hv-download-modal.open) .hv-ai-editor-frame.
 .hv-clear-data-result.show{display:block}
 .hv-contact-categories{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .hv-contact-category{min-height:42px;border:1px solid rgba(255,255,255,.09);border-radius:10px;background:rgba(255,255,255,.025);color:#a1a1aa;display:flex;align-items:center;justify-content:center;gap:7px;font:800 11px Inter,system-ui,sans-serif;cursor:pointer;transition:.15s ease}
-.hv-contact-category:hover,.hv-contact-category.active{border-color:rgba(96,165,250,.40);background:rgba(59,130,246,.11);color:#dbeafe}
+.hv-contact-category:hover,.hv-contact-category.active{border-color:var(--hv-accent-border);background:var(--hv-accent-soft);color:var(--hv-accent)}
 .hv-validator-loading{position:absolute;inset:0;z-index:100;display:grid;place-items:center;background:rgba(3,3,3,.52);backdrop-filter:blur(12px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .16s ease,visibility .16s ease}
 .hv-popup.loading .hv-validator-loading{opacity:1;visibility:visible;pointer-events:auto}
 .hv-validator-loading-card{min-width:190px;padding:18px;border:1px solid rgba(255,255,255,.11);border-radius:15px;background:rgba(18,18,18,.94);box-shadow:0 20px 55px rgba(0,0,0,.45);color:#f4f4f5;text-align:center;font-size:12px;font-weight:800}
@@ -6446,8 +6510,8 @@ html.hv-light-mode .hv-code-wrap.hv-native-paint .hv-code{
   height:34px;
   flex:0 0 auto;
   border-radius:9px;
-  background:rgba(59,130,246,.14);
-  color:#93c5fd;
+  background:var(--hv-accent-soft);
+  color:var(--hv-accent);
   display:grid;
   place-items:center;
 }
@@ -6548,7 +6612,7 @@ html.hv-light-mode .hv-validator-input{
 }
 
 html.hv-light-mode .hv-active-line{
-  background:rgba(59,130,246,.12) !important;
+  background:var(--hv-accent-soft) !important;
 }
 
 html.hv-light-mode .hv-nav-menu button,
@@ -7884,6 +7948,10 @@ html.hv-light-mode .hv-toast{
       --card: #141414;
       --border: #222222;
       --text: #ffffff;
+      --hv-accent:#ffffff;
+      --hv-accent-soft:rgba(255,255,255,.08);
+      --hv-accent-border:rgba(255,255,255,.38);
+      --hv-accent-glow:rgba(255,255,255,.14);
       --text-dim: #b0b0b0;
       --accent: #ffffff;
       --accent-dim: #dddddd;
@@ -11479,7 +11547,7 @@ html.hv-light-mode .hv-toast{
     box-shadow:0 0 10px currentColor;
   }
 
-  .voice-state-card[data-state="listening"] .voice-state-dot{background:#60a5fa}
+  .voice-state-card[data-state="listening"] .voice-state-dot{background:var(--hv-accent)}
   .voice-state-card[data-state="speaking"] .voice-state-dot{background:#4ade80}
   .voice-state-card[data-state="processing"] .voice-state-dot{background:#c084fc}
   .voice-state-card[data-state="muted"] .voice-state-dot{background:#f87171}
@@ -11537,7 +11605,7 @@ html.hv-light-mode .hv-toast{
   }
 
   .voice-mode[data-state="listening"] .voice-orb{
-    box-shadow:0 0 0 13px rgba(96,165,250,.045),0 0 0 27px rgba(96,165,250,.018),0 18px 58px rgba(59,130,246,.12);
+    box-shadow:0 0 0 13px var(--hv-accent-soft),0 0 0 27px var(--hv-accent-glow),0 18px 58px var(--hv-accent-glow);
   }
 
   .voice-lower{
@@ -11571,7 +11639,7 @@ html.hv-light-mode .hv-toast{
   }
 
   .voice-live-caption[data-speaker="user"]{
-    border-color:rgba(96,165,250,.28);
+    border-color:var(--hv-accent-border);
   }
 
   .voice-live-caption[data-speaker="assistant"]{
@@ -11587,7 +11655,7 @@ html.hv-light-mode .hv-toast{
     color:#4ade80;
   }
 
-  .voice-live-caption[data-speaker="user"] .voice-caption-wave{color:#60a5fa}
+  .voice-live-caption[data-speaker="user"] .voice-caption-wave{color:var(--hv-accent)}
 
   .voice-caption-wave span{
     width:2px;
@@ -15979,6 +16047,7 @@ if(textFilePreviewRemove){
   let voiceGeometrySaveTimer = 0;
   let voiceResizeObserver = null;
   let voicePointerInsideCard = true;
+  let voiceHostBounds = null;
   let voicePreFullscreenGeometry = null;
   const voiceVizState = {
     level:0,
@@ -17605,6 +17674,12 @@ if(textFilePreviewRemove){
     rootStyle.setProperty('--voice-host-top',Math.round(top) + 'px');
     rootStyle.setProperty('--voice-host-width',Math.round(width) + 'px');
     rootStyle.setProperty('--voice-host-height',Math.round(height) + 'px');
+    voiceHostBounds = {
+      left,
+      top,
+      right:left + width,
+      bottom:top + height
+    };
   }
 
   function aiVoiceCaptureHostGeometry(){
@@ -17996,6 +18071,24 @@ if(textFilePreviewRemove){
   });
   window.addEventListener('message',event => {
     if(event.data?.type === 'hv-ai-editor-closing' && !voiceSessionWanted) aiEndVoiceMode(false);
+    if(event.data?.type === 'hv-ai-editor-visibility'){
+      document.body.classList.toggle(
+        'voice-parent-ai-hidden',
+        event.data.visible !== true
+      );
+      return;
+    }
+    if(event.data?.type === 'hv-ai-accent'){
+      const root = document.documentElement.style;
+      const accent = event.data.color;
+      if(/^#[0-9a-f]{6}$/i.test(String(accent || ''))){
+        root.setProperty('--hv-accent',accent);
+        root.setProperty('--hv-accent-soft',String(event.data.soft || 'rgba(255,255,255,.08)'));
+        root.setProperty('--hv-accent-border',String(event.data.border || 'rgba(255,255,255,.38)'));
+        root.setProperty('--hv-accent-glow',String(event.data.glow || 'rgba(255,255,255,.14)'));
+      }
+      return;
+    }
     if(event.data?.type === 'hv-ai-open-voice-mode'){
       try{
         window.parent?.postMessage({ type:'hv-ai-voice-launch-accepted' },'*');
@@ -18010,12 +18103,21 @@ if(textFilePreviewRemove){
   document.addEventListener('pointermove',event => {
     if(!voiceModeEl?.classList.contains('active')) return;
     const rect = voiceModeEl.getBoundingClientRect();
-    const inside = (
+    const insideVoiceCard = (
       event.clientX >= rect.left &&
       event.clientX <= rect.right &&
       event.clientY >= rect.top &&
       event.clientY <= rect.bottom
     );
+    const insideAiHost = Boolean(
+      !document.body.classList.contains('voice-parent-ai-hidden') &&
+      voiceHostBounds &&
+      event.clientX >= voiceHostBounds.left &&
+      event.clientX <= voiceHostBounds.right &&
+      event.clientY >= voiceHostBounds.top &&
+      event.clientY <= voiceHostBounds.bottom
+    );
+    const inside = insideVoiceCard || insideAiHost;
     if(inside === voicePointerInsideCard) return;
     voicePointerInsideCard = inside;
     try{
@@ -28651,11 +28753,14 @@ hvFileInput.addEventListener('change', (e) => {
       e.preventDefault();
       e.stopPropagation();
 
+      const accentStyles =
+        getComputedStyle(document.documentElement);
+
       hvUploadDrop.style.borderColor =
-        'rgba(96,165,250,.75)';
+        accentStyles.getPropertyValue('--hv-accent-border').trim();
 
       hvUploadDrop.style.background =
-        'rgba(59,130,246,.08)';
+        accentStyles.getPropertyValue('--hv-accent-soft').trim();
 
     }
   );
@@ -28679,7 +28784,7 @@ hvFileInput.addEventListener('change', (e) => {
       e.stopPropagation();
 
       hvUploadDrop.style.borderColor =
-        'rgba(96,165,250,.22)';
+        'var(--hv-accent-border)';
 
       hvUploadDrop.style.background =
         '';
@@ -30405,6 +30510,11 @@ function hvCloseUpdateDetails(){
 function hvActivateSettingsTab(name){
   const modal = document.getElementById('hvSettingsModal');
   if(!modal) return;
+  const content = modal.querySelector('.hv-settings-content');
+  content?.classList.toggle(
+    'hv-settings-content--hide-scrollbar',
+    name === 'gemini' || name === 'shortcuts'
+  );
   modal.querySelectorAll('[data-hv-settings-tab]').forEach(button => {
     const active = button.dataset.hvSettingsTab === name;
     button.classList.toggle('active',active);
@@ -30698,14 +30808,26 @@ function hvApplyAccentColor(value){
   const green = parseInt(color.slice(3,5),16);
   const blue = parseInt(color.slice(5,7),16);
   const root = document.documentElement.style;
+  const soft = 'rgba(' + red + ',' + green + ',' + blue + ',.08)';
+  const border = 'rgba(' + red + ',' + green + ',' + blue + ',.38)';
+  const glow = 'rgba(' + red + ',' + green + ',' + blue + ',.14)';
   root.setProperty('--hv-accent',color);
-  root.setProperty('--hv-accent-soft','rgba(' + red + ',' + green + ',' + blue + ',.08)');
-  root.setProperty('--hv-accent-border','rgba(' + red + ',' + green + ',' + blue + ',.38)');
-  root.setProperty('--hv-accent-glow','rgba(' + red + ',' + green + ',' + blue + ',.14)');
+  root.setProperty('--hv-accent-soft',soft);
+  root.setProperty('--hv-accent-border',border);
+  root.setProperty('--hv-accent-glow',glow);
   if(hvSettingAccentColor) hvSettingAccentColor.value = color;
   document.querySelectorAll('[data-accent]').forEach(button => {
     button.classList.toggle('active',button.dataset.accent.toLowerCase() === color);
   });
+  try{
+    document.getElementById('hvAiEditorFrame')?.contentWindow?.postMessage({
+      type:'hv-ai-accent',
+      color,
+      soft,
+      border,
+      glow
+    },'*');
+  }catch(error){}
 }
 
 function hvApplyUiSettings(refreshPreview = false){
@@ -31414,19 +31536,20 @@ let hvPromoVoiceLaunchTimer = null;
 function hvSyncPreviewPromoSize(){
   if(!hvPreviewPromo || !hvPreviewPanelForPromo) return;
   const aiTabMode = document.getElementById('hvLayout')?.classList.contains('hv-ai-tab-mode');
-  if(aiTabMode && hvPreviewControlsForPromo && hvAiEditorToggleForPromo){
-    if(hvAiEditorToggleForPromo.nextElementSibling !== hvPreviewPromo){
-      hvAiEditorToggleForPromo.insertAdjacentElement('afterend',hvPreviewPromo);
+  const compact = Boolean(
+    aiTabMode ||
+    hvPreviewPanelForPromo.getBoundingClientRect().width < 820
+  );
+  if(compact && hvPreviewControlsForPromo && hvAiEditorToggleForPromo){
+    if(hvAiEditorToggleForPromo.previousElementSibling !== hvPreviewPromo){
+      hvAiEditorToggleForPromo.insertAdjacentElement('beforebegin',hvPreviewPromo);
     }
   }else if(hvPreviewHeadForPromo && hvPreviewControlsForPromo){
     if(hvPreviewPromo.parentElement !== hvPreviewHeadForPromo){
       hvPreviewHeadForPromo.insertBefore(hvPreviewPromo,hvPreviewControlsForPromo);
     }
   }
-  hvPreviewPromo.classList.toggle(
-    'compact',
-    aiTabMode || hvPreviewPanelForPromo.getBoundingClientRect().width < 820
-  );
+  hvPreviewPromo.classList.toggle('compact',compact);
 }
 
 hvPreviewPromo?.addEventListener('click',() => {
@@ -34575,6 +34698,8 @@ window.hvStorageChanged();
   if(!layout || !code || !preview || !ai || !first || !second) return;
 
   const minimums = { code:260,preview:300,ai:320 };
+  let resizeFrame = 0;
+  let pendingColumns = null;
 
   function contentWidth(){
     const styles = getComputedStyle(layout);
@@ -34592,6 +34717,17 @@ window.hvStorageChanged();
     layout.style.setProperty('--hv-ai-tab-ai',Math.round(aiWidth) + 'px');
   }
 
+  function queueColumns(codeWidth,previewWidth,aiWidth){
+    pendingColumns = [codeWidth,previewWidth,aiWidth];
+    if(resizeFrame) return;
+    resizeFrame = requestAnimationFrame(() => {
+      resizeFrame = 0;
+      if(!pendingColumns) return;
+      setColumns(...pendingColumns);
+      pendingColumns = null;
+    });
+  }
+
   function startResize(event,kind){
     if(
       event.button !== 0 ||
@@ -34605,12 +34741,16 @@ window.hvStorageChanged();
     const startPreview = preview.getBoundingClientRect().width;
     const startAi = ai.getBoundingClientRect().width;
     const usable = contentWidth() - first.offsetWidth - second.offsetWidth;
+    let moved = false;
     layout.classList.add('hv-is-resizing');
     document.body.classList.add('hv-resizing-active');
     try{ target.setPointerCapture(event.pointerId); }catch(error){}
 
     const move = moveEvent => {
+      moveEvent.preventDefault();
       const delta = moveEvent.clientX - startX;
+      if(!moved && Math.abs(delta) < 2) return;
+      moved = true;
       if(kind === 'code'){
         if(layout.classList.contains('hv-code-preview-disabled')) return;
         const nextCode = Math.max(
@@ -34618,7 +34758,7 @@ window.hvStorageChanged();
           Math.min(startCode + delta,usable - minimums.preview - startAi)
         );
         const nextPreview = Math.max(minimums.preview,usable - nextCode - startAi);
-        setColumns(nextCode,nextPreview,startAi);
+        queueColumns(nextCode,nextPreview,startAi);
       }else{
         const fixedCode = layout.classList.contains('hv-code-preview-disabled') ? 0 : startCode;
         const pairWidth = usable - fixedCode;
@@ -34627,22 +34767,32 @@ window.hvStorageChanged();
           Math.min(startPreview + delta,pairWidth - minimums.ai)
         );
         const nextAi = Math.max(minimums.ai,pairWidth - nextPreview);
-        setColumns(fixedCode || minimums.code,nextPreview,nextAi);
+        queueColumns(fixedCode || minimums.code,nextPreview,nextAi);
       }
     };
 
     const end = () => {
+      if(resizeFrame){
+        cancelAnimationFrame(resizeFrame);
+        resizeFrame = 0;
+      }
+      if(pendingColumns){
+        setColumns(...pendingColumns);
+        pendingColumns = null;
+      }
       layout.classList.remove('hv-is-resizing');
       document.body.classList.remove('hv-resizing-active');
       try{ target.releasePointerCapture(event.pointerId); }catch(error){}
-      target.removeEventListener('pointermove',move);
-      target.removeEventListener('pointerup',end);
-      target.removeEventListener('pointercancel',end);
+      document.removeEventListener('pointermove',move,true);
+      document.removeEventListener('pointerup',end,true);
+      document.removeEventListener('pointercancel',end,true);
+      hvSyncPreviewPromoSize();
+      window.dispatchEvent(new CustomEvent('hv-layout-resized'));
     };
 
-    target.addEventListener('pointermove',move);
-    target.addEventListener('pointerup',end);
-    target.addEventListener('pointercancel',end);
+    document.addEventListener('pointermove',move,true);
+    document.addEventListener('pointerup',end,true);
+    document.addEventListener('pointercancel',end,true);
   }
 
   first.addEventListener('pointerdown',event => startResize(event,'code'));
@@ -34880,7 +35030,9 @@ if(hvSubmitPresetSend){
   let aiOpen = false;
   let aiTransitionTimer = null;
   let hvVoiceCardRect = null;
+  let hvVoiceHostRect = null;
   let hvVoiceSurfaceObserver = null;
+  let hvVoiceHostResizeObserver = null;
 
   function hvGetAiTemplateHtml(){
 
@@ -34918,6 +35070,13 @@ if(hvSubmitPresetSend){
 
     const fillFrameCss = `
       <style>
+        :root{
+          --hv-accent:#ffffff;
+          --hv-accent-soft:rgba(255,255,255,.08);
+          --hv-accent-border:rgba(255,255,255,.38);
+          --hv-accent-glow:rgba(255,255,255,.14);
+        }
+
         html,
         body{
           width:100% !important;
@@ -34985,9 +35144,37 @@ if(hvSubmitPresetSend){
           pointer-events:auto !important;
         }
 
+        body.voice-floating-host.voice-parent-ai-hidden .app{
+          background:transparent !important;
+        }
+
+        body.voice-floating-host.voice-parent-ai-hidden .app > :not(.voice-mode){
+          visibility:hidden !important;
+          pointer-events:none !important;
+        }
+
         body.voice-floating-host .voice-mode{
           visibility:visible !important;
           pointer-events:auto !important;
+        }
+
+        .voice-state-card[data-state="listening"] .voice-state-dot{
+          background:var(--hv-accent) !important;
+        }
+
+        .voice-mode[data-state="listening"] .voice-orb{
+          box-shadow:
+            0 0 0 13px var(--hv-accent-soft),
+            0 0 0 27px var(--hv-accent-glow),
+            0 18px 58px var(--hv-accent-glow) !important;
+        }
+
+        .voice-live-caption[data-speaker="user"]{
+          border-color:var(--hv-accent-border) !important;
+        }
+
+        .voice-live-caption[data-speaker="user"] .voice-caption-wave{
+          color:var(--hv-accent) !important;
         }
       </style>
     `;
@@ -35048,6 +35235,7 @@ if(hvSubmitPresetSend){
     if(hvAiTabModeEnabled()){
       aiBtn.classList.add('active');
       aiTabPanel?.classList.add('active');
+      hvNotifyAiVisibility();
       return;
     }
 
@@ -35059,6 +35247,7 @@ if(hvSubmitPresetSend){
       requestAnimationFrame(() => {
         if(aiOpen){
           frameWrap.classList.add('hv-ai-visible');
+          hvNotifyAiVisibility();
         }
       });
     });
@@ -35071,6 +35260,7 @@ if(hvSubmitPresetSend){
       aiOpen = true;
       aiBtn.classList.add('active');
       aiTabPanel?.classList.add('active');
+      hvNotifyAiVisibility();
       return;
     }
 
@@ -35079,6 +35269,7 @@ if(hvSubmitPresetSend){
     clearTimeout(aiTransitionTimer);
     frameWrap.classList.remove('hv-ai-visible');
     aiBtn.classList.remove('active');
+    hvNotifyAiVisibility();
 
     aiTransitionTimer = setTimeout(() => {
       if(aiOpen){
@@ -35101,6 +35292,12 @@ if(hvSubmitPresetSend){
       ? aiTabHost
       : frameWrap;
     const rect = host.getBoundingClientRect();
+    hvVoiceHostRect = {
+      left:rect.left,
+      top:rect.top,
+      right:rect.right,
+      bottom:rect.bottom
+    };
     try{
       aiFrame.contentWindow?.postMessage({
         type:'hv-ai-voice-host-geometry',
@@ -35114,12 +35311,52 @@ if(hvSubmitPresetSend){
     }catch(error){}
   }
 
+  function hvNotifyAiVisibility(){
+    const visible = hvAiTabModeEnabled() || aiOpen;
+    if(
+      !visible &&
+      aiFrame.classList.contains('hv-ai-voice-floating')
+    ){
+      aiFrame.classList.add('hv-ai-voice-pass-through');
+    }
+    try{
+      aiFrame.contentWindow?.postMessage({
+        type:'hv-ai-editor-visibility',
+        visible
+      },'*');
+    }catch(error){}
+  }
+
+  function hvPlaceAiFrameForCurrentMode(force = false){
+    const tabMode = hvAiTabModeEnabled();
+    const target = tabMode ? aiTabHost : frameWrap;
+    const voiceFloating = aiFrame.classList.contains('hv-ai-voice-floating');
+
+    if(voiceFloating && !force){
+      aiTabPanel?.classList.toggle(
+        'hv-ai-tab-voice-detached',
+        !tabMode && aiFrame.parentElement === aiTabHost
+      );
+      return;
+    }
+
+    aiTabPanel?.classList.remove('hv-ai-tab-voice-detached');
+    if(!target || aiFrame.parentElement === target) return;
+    if(target === frameWrap){
+      const loader = document.getElementById('hvPreviewLoader');
+      frameWrap.insertBefore(aiFrame,loader || null);
+    }else{
+      target.append(aiFrame);
+    }
+  }
+
   function hvRaiseVoiceCommandSurface(){
     requestAnimationFrame(() => {
       const dialogs = [...document.querySelectorAll(
         '[role="dialog"][aria-modal="true"],' +
         '.hv-modal.open,.hv-popup.show,.hv-nav-center-modal.open,' +
-        '.hv-submit-modal.show,.hv-validator-modal.open,.hv-download-modal.open'
+        '.hv-submit-modal.show,.hv-validator-modal.open,.hv-download-modal.open,' +
+        '.hv-nav-menu.open,.hv-saved-drop.open'
       )];
       let hasVisibleSurface = false;
       const visibleSurfaces = new Set();
@@ -35171,10 +35408,40 @@ if(hvSubmitPresetSend){
     );
   }
 
+  function hvVoicePointInsideAiHost(clientX,clientY){
+    return Boolean(
+      (hvAiTabModeEnabled() || aiOpen) &&
+      hvVoiceHostRect &&
+      clientX >= hvVoiceHostRect.left &&
+      clientX <= hvVoiceHostRect.right &&
+      clientY >= hvVoiceHostRect.top &&
+      clientY <= hvVoiceHostRect.bottom
+    );
+  }
+
   document.addEventListener('pointermove',event => {
     if(!aiFrame.classList.contains('hv-ai-voice-floating')) return;
-    if(hvVoicePointInsideCard(event.clientX,event.clientY)){
+    if(
+      hvVoicePointInsideCard(event.clientX,event.clientY) ||
+      hvVoicePointInsideAiHost(event.clientX,event.clientY)
+    ){
       aiFrame.classList.remove('hv-ai-voice-pass-through');
+    }
+  },true);
+
+  document.addEventListener('click',() => {
+    if(!aiFrame.classList.contains('hv-ai-voice-floating')) return;
+    hvRaiseVoiceCommandSurface();
+    setTimeout(hvRaiseVoiceCommandSurface,260);
+  },true);
+
+  document.addEventListener('keydown',event => {
+    if(
+      event.key === 'Escape' &&
+      aiFrame.classList.contains('hv-ai-voice-floating')
+    ){
+      setTimeout(hvRaiseVoiceCommandSurface,20);
+      setTimeout(hvRaiseVoiceCommandSurface,260);
     }
   },true);
 
@@ -35189,17 +35456,34 @@ if(hvSubmitPresetSend){
       );
       document.body.classList.toggle('hv-ai-voice-floating-host',active);
       if(active){
+        /*
+          Start in pass-through mode so the full-viewport iframe never blocks
+          parent controls before the pointer has moved. Pointer movement over
+          the Voice card or visible AI host re-enables the iframe immediately.
+        */
+        aiFrame.classList.add('hv-ai-voice-pass-through');
+        hvPlaceAiFrameForCurrentMode();
         hvSendAiVoiceHostGeometry();
+        hvNotifyAiVisibility();
         if(!hvVoiceSurfaceObserver && typeof MutationObserver === 'function'){
           hvVoiceSurfaceObserver = new MutationObserver(hvRaiseVoiceCommandSurface);
-          hvVoiceSurfaceObserver.observe(document.body,{
-            attributes:true,
-            attributeFilter:['class','aria-hidden'],
-            subtree:true
-          });
+          const observerRoot = document.body || document.documentElement;
+          if(observerRoot?.nodeType === 1){
+            try{
+              hvVoiceSurfaceObserver.observe(observerRoot,{
+                attributes:true,
+                attributeFilter:['class','aria-hidden'],
+                subtree:true
+              });
+            }catch(error){
+              hvVoiceSurfaceObserver.disconnect();
+              hvVoiceSurfaceObserver = null;
+            }
+          }
         }
       }else{
         hvVoiceCardRect = null;
+        hvVoiceHostRect = null;
         aiFrame.classList.remove(
           'hv-ai-voice-pass-through',
           'hv-ai-voice-modal-behind',
@@ -35210,6 +35494,7 @@ if(hvSubmitPresetSend){
         document.querySelectorAll('.hv-ai-voice-command-surface').forEach(element => {
           element.classList.remove('hv-ai-voice-command-surface');
         });
+        hvPlaceAiFrameForCurrentMode(true);
       }
       return;
     }
@@ -35239,27 +35524,41 @@ if(hvSubmitPresetSend){
   });
 
   window.addEventListener('resize',hvSendAiVoiceHostGeometry);
+  window.addEventListener('hv-layout-resized',hvSendAiVoiceHostGeometry);
+
+  if(typeof ResizeObserver === 'function'){
+    hvVoiceHostResizeObserver = new ResizeObserver(() => {
+      hvSendAiVoiceHostGeometry();
+    });
+    [frameWrap,previewPanel,aiTabHost,aiTabPanel].forEach(element => {
+      if(element) hvVoiceHostResizeObserver.observe(element);
+    });
+  }
+
+  aiFrame.addEventListener('load',() => {
+    hvNotifyAiVisibility();
+    hvApplyAccentColor(hvUiSettings.accentColor);
+    hvSendAiVoiceHostGeometry();
+  });
 
   window.hvSyncAiEditorTabMode = enabled => {
     const active = enabled === true;
     if(active){
       hvEnsureAiInitialized();
-      if(aiTabHost && aiFrame.parentElement !== aiTabHost){
-        aiTabHost.append(aiFrame);
-      }
+      hvPlaceAiFrameForCurrentMode();
       frameWrap.classList.remove('hv-ai-mode','hv-ai-visible');
       if(previewPanel) previewPanel.classList.remove('hv-ai-active');
       aiOpen = true;
       aiBtn.classList.add('active');
       aiTabPanel?.classList.add('active');
       hvSyncPreviewPromoSize();
-      requestAnimationFrame(hvSendAiVoiceHostGeometry);
+      requestAnimationFrame(() => {
+        hvSendAiVoiceHostGeometry();
+        hvNotifyAiVisibility();
+      });
       return;
     }
-    if(aiFrame.parentElement !== frameWrap){
-      const loader = document.getElementById('hvPreviewLoader');
-      frameWrap.insertBefore(aiFrame,loader || null);
-    }
+    hvPlaceAiFrameForCurrentMode();
     aiTabPanel?.classList.remove('active');
     aiFrame.classList.remove('hv-ai-voice-modal-behind');
     aiOpen = false;
@@ -35267,6 +35566,7 @@ if(hvSubmitPresetSend){
     frameWrap.classList.remove('hv-ai-mode','hv-ai-visible');
     if(previewPanel) previewPanel.classList.remove('hv-ai-active');
     hvSyncPreviewPromoSize();
+    hvNotifyAiVisibility();
   };
 
   aiBtn.addEventListener('click', () => {
