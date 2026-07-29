@@ -17,6 +17,9 @@
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -118,8 +121,12 @@
       --footer-height:46px;
     }
     *{box-sizing:border-box}
+    body{
+      font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      font-weight:600;
+    }
     #html-viewer-app{
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
       color:var(--text);
       background:linear-gradient(180deg,#0a0a0a 0%,#050505 100%);
       border:1px solid rgba(255,255,255,.12);
@@ -6650,21 +6657,30 @@ body.hv-ai-voice-floating-host .hv-tooltip{
 .hv-storage-bulk-button:hover{border-color:rgba(239,68,68,.28);background:rgba(239,68,68,.07);color:#fecaca}
 
 @media (min-width:721px) and (min-height:640px){
+  [data-hv-settings-section="storage"].active{
+    height:100%;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+  }
+
   [data-hv-settings-section="storage"] .hv-settings-section-head{
-    margin-bottom:12px;
+    margin-bottom:16px;
   }
 
   [data-hv-settings-section="storage"] .hv-settings-note{
-    margin-top:8px;
+    margin-top:12px;
   }
 
   [data-hv-settings-section="storage"] .hv-storage-section{
     margin:0;
     padding:0;
+    min-height:0;
+    flex:1;
     display:grid;
     grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);
-    grid-template-rows:auto auto auto;
-    gap:9px;
+    grid-template-rows:minmax(82px,.75fr) minmax(150px,1.45fr) minmax(82px,.8fr);
+    gap:12px;
     border-top:0;
   }
 
@@ -6675,60 +6691,69 @@ body.hv-ai-voice-floating-host .hv-tooltip{
   [data-hv-settings-section="storage"] .hv-storage-summary-grid{
     grid-column:1;
     grid-row:1;
-    gap:8px;
+    gap:10px;
   }
 
   [data-hv-settings-section="storage"] .hv-storage-summary-card{
-    min-height:56px;
-    padding:10px 12px;
-    border-radius:11px;
+    min-height:82px;
+    padding:15px;
+    border-radius:13px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
   }
 
   [data-hv-settings-section="storage"] .hv-storage-summary-label{
-    font-size:9px;
+    font-size:10px;
   }
 
   [data-hv-settings-section="storage"] .hv-storage-summary-value{
-    margin-top:4px;
-    font-size:17px;
+    margin-top:7px;
+    font-size:20px;
   }
 
   [data-hv-settings-section="storage"] .hv-storage-usage-card{
     grid-column:1;
     grid-row:2 / span 2;
     margin:0;
-    padding:11px 12px;
-    border-radius:11px;
+    padding:18px;
+    border-radius:13px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
   }
 
   [data-hv-settings-section="storage"] .hv-storage-meter{
-    height:7px;
-    margin:9px 0 8px;
+    height:9px;
+    margin:16px 0 14px;
   }
 
   [data-hv-settings-section="storage"] .hv-storage-usage-meta{
     display:grid;
     grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:7px 12px;
-    font-size:8px;
-  }
-
-  [data-hv-settings-section="storage"] .hv-storage-usage-meta strong{
+    gap:14px 18px;
     font-size:10px;
   }
 
+  [data-hv-settings-section="storage"] .hv-storage-usage-meta strong{
+    font-size:12px;
+  }
+
   [data-hv-settings-section="storage"] .hv-storage-safe-note{
-    margin-top:8px;
-    padding-top:8px;
-    font-size:8px;
-    line-height:1.4;
+    margin-top:16px;
+    padding-top:14px;
+    font-size:9px;
+    line-height:1.5;
   }
 
   [data-hv-settings-section="storage"] .hv-storage-action-card{
     grid-column:2;
     margin:0;
-    padding:10px 11px;
-    border-radius:11px;
+    padding:15px;
+    border-radius:13px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
   }
 
   [data-hv-settings-section="storage"] .hv-storage-action-card:nth-child(4){
@@ -6744,37 +6769,37 @@ body.hv-ai-voice-floating-host .hv-tooltip{
   }
 
   [data-hv-settings-section="storage"] .hv-storage-action-head{
-    gap:8px;
+    gap:12px;
   }
 
   [data-hv-settings-section="storage"] .hv-storage-action-head strong{
-    font-size:10px;
+    font-size:11px;
   }
 
   [data-hv-settings-section="storage"] .hv-storage-action-head span{
-    margin-top:2px;
-    font-size:8px;
-    line-height:1.35;
+    margin-top:4px;
+    font-size:9px;
+    line-height:1.45;
   }
 
   [data-hv-settings-section="storage"] .hv-storage-action-button{
-    min-height:32px;
-    padding:0 10px;
-    border-radius:8px;
-    font-size:9px;
+    min-height:36px;
+    padding:0 12px;
+    border-radius:9px;
+    font-size:10px;
   }
 
   [data-hv-settings-section="storage"] .hv-storage-bulk-grid{
-    margin-top:7px;
-    gap:5px;
+    margin-top:10px;
+    gap:7px;
   }
 
   [data-hv-settings-section="storage"] .hv-storage-bulk-button{
-    min-height:29px;
-    padding:0 8px;
-    gap:6px;
-    border-radius:8px;
-    font-size:8px;
+    min-height:34px;
+    padding:0 10px;
+    gap:7px;
+    border-radius:9px;
+    font-size:9px;
   }
 
   [data-hv-settings-section="storage"] .hv-storage-progress{
@@ -7962,6 +7987,8 @@ html.hv-site-onboarding-active body{
     rgba(3,3,3,.78);
   backdrop-filter:blur(18px) saturate(.72);
   -webkit-backdrop-filter:blur(18px) saturate(.72);
+  font-family:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-weight:600;
 }
 
 .hv-site-onboarding.open{
@@ -7973,6 +8000,10 @@ html.hv-site-onboarding-active body{
   animation:hvSiteOnboardingOut .24s ease both;
 }
 
+.hv-site-onboarding.entering .hv-site-onboarding-panel{
+  animation:hvSiteOnboardingPanelExit .3s cubic-bezier(.4,0,.2,1) both;
+}
+
 @keyframes hvSiteOnboardingIn{
   from{opacity:0;backdrop-filter:blur(0);transform:scale(1.012)}
   to{opacity:1;backdrop-filter:blur(18px);transform:scale(1)}
@@ -7980,7 +8011,21 @@ html.hv-site-onboarding-active body{
 
 @keyframes hvSiteOnboardingOut{
   from{opacity:1}
-  to{opacity:0;transform:scale(.992)}
+  to{opacity:0;transform:scale(1.018);backdrop-filter:blur(0)}
+}
+
+@keyframes hvSiteOnboardingPanelExit{
+  from{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+  to{opacity:0;transform:translateY(-18px) scale(.975);filter:blur(5px)}
+}
+
+html.hv-site-viewer-enter #html-viewer-app{
+  animation:hvSiteViewerEnter .62s cubic-bezier(.16,1,.3,1) both;
+}
+
+@keyframes hvSiteViewerEnter{
+  from{opacity:0;transform:translateY(22px) scale(.985);filter:blur(10px)}
+  to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
 }
 
 .hv-site-onboarding-panel{
@@ -8061,9 +8106,10 @@ html.hv-site-onboarding-active body{
 .hv-site-onboarding-hero h2{
   margin:0;
   color:#fafafa;
-  font-size:clamp(28px,5vw,52px);
-  line-height:1.02;
-  letter-spacing:-.055em;
+  font-size:clamp(28px,5vw,50px);
+  line-height:1.08;
+  letter-spacing:-.045em;
+  font-weight:800;
 }
 
 .hv-site-onboarding-hero h2 span{
@@ -8075,7 +8121,8 @@ html.hv-site-onboarding-active body{
   margin:14px auto 0;
   color:#a1a1aa;
   font-size:clamp(12px,1.6vw,15px);
-  line-height:1.65;
+  line-height:1.7;
+  font-weight:600;
 }
 
 .hv-site-onboarding-features{
@@ -8119,14 +8166,16 @@ html.hv-site-onboarding-active body{
   display:block;
   margin:1px 0 5px;
   color:#f4f4f5;
-  font-size:11px;
+  font-size:12px;
+  font-weight:800;
 }
 
 .hv-site-onboarding-feature span{
   display:block;
-  color:#85858e;
-  font-size:9px;
-  line-height:1.55;
+  color:#a1a1aa;
+  font-size:10px;
+  line-height:1.6;
+  font-weight:600;
 }
 
 .hv-site-onboarding-quickstart{
@@ -8153,8 +8202,9 @@ html.hv-site-onboarding-active body{
   align-items:center;
   gap:9px;
   color:#a1a1aa;
-  font-size:9px;
-  line-height:1.4;
+  font-size:10px;
+  line-height:1.5;
+  font-weight:650;
 }
 
 .hv-site-onboarding-step b{
@@ -8232,6 +8282,9 @@ html.hv-site-onboarding-active body{
   .hv-site-onboarding-enter{
     animation:none;
     transition:none;
+  }
+  html.hv-site-viewer-enter #html-viewer-app{
+    animation:none;
   }
 }
   </style>
@@ -17235,13 +17288,26 @@ if(textFilePreviewRemove){
     if(voiceSettingsConnection) voiceSettingsConnection.textContent = label || (voiceConnected ? 'Connected' : 'Disconnected');
   }
 
+  function aiNormalizeDisplayText(value){
+    return String(value ?? '')
+      .replace(/â€”/g,'—')
+      .replace(/â€“/g,'–')
+      .replace(/â€™/g,'’')
+      .replace(/â€˜/g,'‘')
+      .replace(/â€œ/g,'“')
+      .replace(/â€/g,'”')
+      .replace(/â€¦/g,'…')
+      .replace(/Â /g,' ')
+      .replace(/Â/g,'');
+  }
+
   function aiVoiceShowCaption(role,text,active){
     if(!voiceLiveCaption || !voiceCaptionText || !voiceCaptionSpeaker) return;
     clearTimeout(voiceCaptionHideTimer);
     const isUser = role === 'user';
     voiceLiveCaption.dataset.speaker = isUser ? 'user' : 'assistant';
     voiceCaptionSpeaker.textContent = isUser ? 'You' : 'ONYX';
-    voiceCaptionText.textContent = String(text || (isUser ? 'Listening…' : 'Thinking…'));
+    voiceCaptionText.textContent = aiNormalizeDisplayText(text || (isUser ? 'Listening…' : 'Thinking…'));
     if(active !== false){
       voiceLiveCaption.classList.add('active');
     }else{
@@ -17260,7 +17326,7 @@ if(textFilePreviewRemove){
   }
 
   function aiVoiceAddTranscript(role,text,source,thoughtSec){
-    const clean = String(text || '').trim();
+    const clean = aiNormalizeDisplayText(text).trim();
     if(!clean) return null;
     const entry = {
       id:'voice-' + Date.now() + '-' + Math.random().toString(36).slice(2,7),
@@ -18494,8 +18560,8 @@ if(textFilePreviewRemove){
     }
     if(publishLive){
       aiVoiceSetState('processing','Publishing code to GitHub Pages');
-      aiVoiceShowCaption('assistant','The code is ready. Iâ€™m publishing it to GitHub Pages now.',false);
-      await aiVoiceSpeakWorkflowUpdate('The code is ready. Iâ€™m publishing it now.');
+      aiVoiceShowCaption('assistant',"The code is ready. I'm publishing it to GitHub Pages now.",false);
+      await aiVoiceSpeakWorkflowUpdate("The code is ready. I'm publishing it now.");
       await aiVoicePublishGeneratedCode();
     }
     const completion = skipPopout
@@ -20881,6 +20947,8 @@ chatEl.scrollTop =
   }
 
   function addMessageUI(role, text, hasImage, imageBase64, imageMime, id, isLive, thoughtSec, fileData, replyData){
+
+  text = aiNormalizeDisplayText(text);
 
   const msg =
     document.createElement('div');
@@ -24529,14 +24597,18 @@ window.hvApplyDarkScrollbarTheme =
         try{
           localStorage.setItem(LS_SITE_ONBOARDING,'complete');
         }catch(error){}
-        hvSiteOnboarding.classList.add('closing');
+        hvSiteOnboarding.classList.add('entering','closing');
         setTimeout(() => {
-          hvSiteOnboarding.classList.remove('open','closing');
+          hvSiteOnboarding.classList.remove('open','closing','entering');
           hvSiteOnboarding.setAttribute('aria-hidden','true');
           document.documentElement.classList.remove('hv-site-onboarding-active');
+          document.documentElement.classList.add('hv-site-viewer-enter');
+          setTimeout(() => {
+            document.documentElement.classList.remove('hv-site-viewer-enter');
+          },700);
           hvShowLocalStorageNotice();
           document.getElementById('hvCode')?.focus();
-        },240);
+        },300);
       },{ once:true });
     }else{
       hvShowLocalStorageNotice();
@@ -33324,7 +33396,7 @@ const HV_PREVIEW_PROMOS = [
     settingsTab:'',
     icon:'fa-solid fa-microphone-lines',
     title:'ONYX Voice Mode',
-    text:'is live â€” build and control HTML Viewer by voice.',
+    text:'is live - build and control HTML Viewer by voice.',
     badge:'Try Voice',
     color:'#fde047',
     rgb:'253,224,71',
