@@ -5476,6 +5476,7 @@ body.hv-ai-voice-floating-host .hv-tooltip{
   color:#d4d4d8;
   font-size:10px;
   font-weight:850;
+  transform:translateY(-6px);
 }
 
 .hv-history-card{
@@ -18707,6 +18708,21 @@ if(textFilePreviewRemove){
     }
     aiVoiceApplyPlayerGeometry();
   });
+
+  function aiVoicePreserveAudioAfterVisualSettings(){
+    if(!voiceSessionWanted) return;
+    if(voiceOutputGain && voiceOutputContext){
+      voiceOutputGain.gain.setTargetAtTime(
+        voicePreferences.volume,
+        voiceOutputContext.currentTime,
+        .025
+      );
+    }
+    if(voiceOutputContext?.state === 'suspended'){
+      voiceOutputContext.resume().catch(() => {});
+    }
+  }
+
   window.addEventListener('message',event => {
     if(event.data?.type === 'hv-ai-editor-closing' && !voiceSessionWanted) aiEndVoiceMode(false);
     if(event.data?.type === 'hv-ai-editor-visibility'){
@@ -18725,6 +18741,7 @@ if(textFilePreviewRemove){
         root.setProperty('--hv-accent-border',String(event.data.border || 'rgba(255,255,255,.38)'));
         root.setProperty('--hv-accent-glow',String(event.data.glow || 'rgba(255,255,255,.14)'));
       }
+      aiVoicePreserveAudioAfterVisualSettings();
       return;
     }
     if(event.data?.type === 'hv-ai-theme'){
@@ -18732,6 +18749,7 @@ if(textFilePreviewRemove){
         'hv-ai-light-mode',
         event.data.appearance === 'light'
       );
+      aiVoicePreserveAudioAfterVisualSettings();
       return;
     }
     if(event.data?.type === 'hv-ai-open-voice-mode'){
@@ -31548,6 +31566,10 @@ function hvApplyUiSettings(refreshPreview = false){
   }catch(error){}
 
   const layout = document.getElementById('hvLayout');
+  const aiTabModeChanged = Boolean(
+    layout &&
+    layout.classList.contains('hv-ai-tab-mode') !== hvUiSettings.aiEditorTabMode
+  );
   if(layout){
     if(!hvUiSettings.codePreview && !hvUiSettings.livePreview){
       hvUiSettings.livePreview = true;
@@ -31584,7 +31606,10 @@ function hvApplyUiSettings(refreshPreview = false){
     promo.hidden = !hvUiSettings.promoNotifications || !hvUiSettings.livePreview;
   }
 
-  if(typeof window.hvSyncAiEditorTabMode === 'function'){
+  if(
+    aiTabModeChanged &&
+    typeof window.hvSyncAiEditorTabMode === 'function'
+  ){
     window.hvSyncAiEditorTabMode(hvUiSettings.aiEditorTabMode);
   }
 
@@ -32473,7 +32498,7 @@ if(hvSettingsSaveClose){
     }
     hvPopulateGithubConfig();
     hvStoreUiSettings();
-    hvApplyUiSettings(true);
+    hvApplyUiSettings(false);
     hvCloseNavModals();
   });
 }
