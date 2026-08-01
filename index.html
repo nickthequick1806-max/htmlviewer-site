@@ -8996,9 +8996,10 @@ html.hv-site-viewer-enter #html-viewer-app{
 
     /* Chat area */
     .chat {
+      position: relative;
       flex: 1 1 auto;
       overflow-y: auto;
-      padding: 18px 18px 0 18px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -13653,7 +13654,7 @@ html.hv-site-viewer-enter #html-viewer-app{
   }
   .ai-response-more-menu button[hidden]{display:none}
   .ai-sources-panel{
-    position:absolute;z-index:80;left:0;top:58px;bottom:0;width:min(360px,92%);
+    position:absolute;z-index:80;left:0;top:58px;bottom:136px;width:min(360px,92%);
     background:#0c0c0c;border-right:1px solid rgba(255,255,255,.11);
     box-shadow:22px 0 55px rgba(0,0,0,.5);transform:translateX(-104%);opacity:0;
     visibility:hidden;transition:transform .2s ease,opacity .2s ease,visibility .2s ease;
@@ -21886,8 +21887,20 @@ async function aiSendFeedback(message,rating){
   if(!response.ok) throw new Error(await aiReadBackendError(response,'Feedback could not be sent.'));
 }
 
+function aiPositionSourcesPanel(){
+  if(!chatEl || !aiSourcesPanel) return;
+  const host = chatEl.parentElement;
+  if(!host) return;
+  if(aiSourcesPanel.parentElement !== host) host.appendChild(aiSourcesPanel);
+  const hostRect = host.getBoundingClientRect();
+  const chatRect = chatEl.getBoundingClientRect();
+  aiSourcesPanel.style.top = Math.max(0,chatRect.top - hostRect.top) + 'px';
+  aiSourcesPanel.style.bottom = Math.max(0,hostRect.bottom - chatRect.bottom) + 'px';
+}
+
 function aiRenderSources(message){
   const sources = Array.isArray(message?.citations) ? message.citations : [];
+  aiPositionSourcesPanel();
   aiSourcesList.innerHTML = '';
   if(!sources.length){
     aiSourcesList.innerHTML = '<div class="ai-sources-empty"><div><i class="fa-regular fa-map"></i><strong>No sources returned</strong>This response did not include Gemini citation metadata.</div></div>';
@@ -21938,9 +21951,12 @@ function aiOpenResponseMenu(message,button){
   sourceButton.hidden = false;
   aiUpdateReadMenu(message.messageId);
   aiResponseMoreMenu.classList.add('open'); aiResponseMoreMenu.setAttribute('aria-hidden','false');
-  const rect = button.getBoundingClientRect(); const width = aiResponseMoreMenu.offsetWidth || 200;
+  const rect = button.getBoundingClientRect();
+  const width = aiResponseMoreMenu.offsetWidth || 200;
+  const height = aiResponseMoreMenu.offsetHeight || 150;
+  const below = rect.bottom + height + 8 <= innerHeight;
   aiResponseMoreMenu.style.left = Math.max(8,Math.min(innerWidth - width - 8,rect.left)) + 'px';
-  aiResponseMoreMenu.style.top = Math.max(8,rect.bottom + 7) + 'px';
+  aiResponseMoreMenu.style.top = Math.max(8,below ? rect.bottom + 7 : rect.top - height - 7) + 'px';
 }
 
 function aiCloseResponseMenu(){ aiResponseMoreMenu?.classList.remove('open'); aiResponseMoreMenu?.setAttribute('aria-hidden','true'); }
@@ -22132,6 +22148,12 @@ async function aiSendTtsGenerationMessage(prompt){
 }
 
 function aiInitMessageTools(){
+  if(window.ResizeObserver && chatEl){
+    const sourcesResizeObserver = new ResizeObserver(() => {
+      if(aiSourcesPanel?.classList.contains('open')) aiPositionSourcesPanel();
+    });
+    sourcesResizeObserver.observe(chatEl);
+  }
   aiSourcesClose?.addEventListener('click',aiCloseSources);
   aiResponseMoreMenu?.addEventListener('click',event => {
     const action = event.target.closest('[data-ai-menu-action]')?.dataset.aiMenuAction; if(!action) return;
