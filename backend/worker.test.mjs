@@ -230,6 +230,37 @@ test('creates a one-use Gemini Live token with Charon as the default voice', asy
   );
 });
 
+test('rotates the requested professional ONYX introduction variant', async t => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+  });
+
+  globalThis.fetch = async () => Response.json({
+    name:'auth_tokens/live-intro-token',
+    expireTime:'2026-08-01T18:30:00.000Z'
+  });
+
+  const response = await worker.fetch(
+    createJsonRequest('/api/ai/live-token', {
+      voice:'Charon',
+      introductionVariant:3
+    }),
+    TEST_ENV
+  );
+  const data = await response.json();
+
+  assert.equal(response.status, 200);
+  assert.match(
+    data.config.systemInstruction.parts[0].text,
+    /ONYX at your service/
+  );
+  assert.doesNotMatch(
+    data.config.systemInstruction.parts[0].text,
+    /ONYX online\. I can inspect/
+  );
+});
+
 test('rejects unsupported Gemini Live voices before provisioning a token', async t => {
   const originalFetch = globalThis.fetch;
   t.after(() => {
@@ -408,6 +439,75 @@ test('classifies named controls and code-search values for Voice Mode', async t 
     uiValue:'contact-form',
     confidence:0.98,
     reason:'The user asked to search the editor.'
+  });
+});
+
+test('classifies preview-device and open-download Voice Mode commands', async t => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+  });
+
+  let call = 0;
+  globalThis.fetch = async () => {
+    call += 1;
+    return Response.json({
+      candidates:[{
+        content:{
+          parts:[{
+            text:JSON.stringify(call === 1
+              ? {
+                  intent:'UI_ACTION',
+                  action:'SET_PREVIEW_DEVICE',
+                  target:'Live Preview',
+                  value:'tablet',
+                  confidence:0.99,
+                  reason:'The user requested Tablet view.'
+                }
+              : {
+                  intent:'UI_ACTION',
+                  action:'OPEN_DOWNLOAD',
+                  target:'Download',
+                  value:'',
+                  confidence:0.99,
+                  reason:'The user requested the Download section.'
+                })
+          }]
+        }
+      }]
+    });
+  };
+
+  const previewResponse = await worker.fetch(
+    createJsonRequest('/api/ai/voice-intent', {
+      transcript:'Switch the Live Preview to tablet view.'
+    }),
+    TEST_ENV
+  );
+  assert.deepEqual(await previewResponse.json(), {
+    actionable:false,
+    intent:'UI_ACTION',
+    uiAction:'SET_PREVIEW_DEVICE',
+    uiTarget:null,
+    uiValue:'tablet',
+    confidence:0.99,
+    reason:'The user requested Tablet view.'
+  });
+
+  const downloadResponse = await worker.fetch(
+    createJsonRequest('/api/ai/voice-intent', {
+      transcript:'Open the Download section.'
+    }),
+    TEST_ENV
+  );
+  assert.deepEqual(await downloadResponse.json(), {
+    actionable:false,
+    intent:'UI_ACTION',
+    uiAction:'OPEN_DOWNLOAD',
+    uiTarget:null,
+    uiValue:null,
+    confidence:0.99,
+    reason:'The user requested the Download section.'
   });
 });
 

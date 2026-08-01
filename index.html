@@ -2622,6 +2622,10 @@ body { margin: 0; padding: 0; }
   transition:none !important;
 }
 
+.hv-layout.hv-ai-tab-mode .hv-device-btn[data-device="desktop"]{
+  display:none !important;
+}
+
 .hv-layout.hv-ai-tab-mode.hv-is-resizing{
   transition:none !important;
 }
@@ -8979,8 +8983,8 @@ html.hv-site-viewer-enter #html-viewer-app{
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 16px;
-      padding: 40px 24px 60px 24px; /* moved down a bit */
+      gap: clamp(10px, 2vh, 16px);
+      padding: clamp(16px, 4vh, 40px) clamp(10px, 3vw, 24px);
       text-align: center;
       flex: 1 1 auto;
       min-height: 0;
@@ -8997,14 +9001,16 @@ html.hv-site-viewer-enter #html-viewer-app{
       color: var(--text);
       line-height: 1.4;
       max-width: 520px;
+      margin: 0 auto;
     }
 
     .features {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
+      width: min(100%, 700px);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 220px));
+      gap: clamp(8px, 1.5vw, 14px);
       justify-content: center;
-      margin-top: 6px;
+      margin: 6px auto 0;
     }
 
     .feature-card {
@@ -9015,8 +9021,10 @@ html.hv-site-viewer-enter #html-viewer-app{
       display: flex;
       align-items: center;
       gap: 12px;
-      min-width: 160px;
-      max-width: 220px;
+      width: 100%;
+      min-width: 0;
+      max-width: none;
+      justify-content: center;
     }
 
     .feature-icon {
@@ -9025,9 +9033,11 @@ html.hv-site-viewer-enter #html-viewer-app{
     }
 
     .feature-title {
+      min-width: 0;
       font-size: 13px;
       font-weight: 600;
       color: var(--text);
+      overflow-wrap: anywhere;
     }
 
     /* Messages */
@@ -11951,6 +11961,7 @@ html.hv-site-viewer-enter #html-viewer-app{
     width:100%;
     max-width:430px;
     min-height:100%;
+    margin:auto;
     padding:18px 4px 28px;
     justify-content:center;
   }
@@ -13297,8 +13308,61 @@ html.hv-site-viewer-enter #html-viewer-app{
   }
 
   @media (max-width:720px){
+    .welcome-screen{
+      width:100%;
+      max-width:100%;
+      margin:auto;
+      padding:clamp(12px,4vh,26px) clamp(7px,2vw,16px);
+      gap:clamp(9px,2vh,15px);
+    }
+    .welcome-icon{
+      margin-bottom:0;
+      font-size:clamp(30px,7vw,42px);
+    }
+    .welcome-text{
+      width:min(100%,360px);
+      margin:0 auto clamp(4px,1vh,10px);
+      font-size:clamp(11px,2.5vw,14px);
+      line-height:1.45;
+    }
+    .features{
+      width:min(100%,470px);
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:clamp(6px,1.4vw,10px);
+    }
+    .feature-card{
+      width:100%;
+      min-width:0;
+      max-width:none;
+      min-height:clamp(66px,12vh,86px);
+      padding:clamp(7px,1.8vw,11px) 5px;
+      flex-direction:column;
+      justify-content:center;
+      gap:7px;
+      text-align:center;
+    }
+    .feature-icon{
+      font-size:clamp(16px,4vw,21px);
+    }
+    .feature-title{
+      min-width:0;
+      font-size:clamp(9px,2.2vw,12px);
+      line-height:1.25;
+      overflow-wrap:anywhere;
+    }
     .voice-mode{width:calc(100vw - 20px);height:min(620px,calc(100dvh - 20px));max-width:calc(100vw - 10px);max-height:calc(100dvh - 10px)}
     .voice-settings-popover{right:8px;top:48px}
+  }
+
+  @media (max-width:360px), (max-height:580px){
+    .welcome-screen{padding:8px 5px;gap:7px}
+    .welcome-icon{font-size:28px}
+    .welcome-text{font-size:10px;margin-bottom:2px}
+    .features{gap:5px}
+    .feature-card{min-height:58px;padding:6px 3px;gap:5px}
+    .feature-title{font-size:9px}
   }
 
   @media (prefers-reduced-motion:reduce){
@@ -15914,6 +15978,7 @@ function createNewChat(){
 
   hasSentMessageInCurrentChat =
     false;
+  voiceIntroductionVariant = null;
 
   renderChat();
   saveChats();
@@ -15933,6 +15998,8 @@ function loadChat(chatId){
 
   const chat =
     chats[chatId];
+
+  voiceIntroductionVariant = null;
 
   conversationHistory =
   aiSanitizeHistoryForGemini(chat.history || []);
@@ -17197,6 +17264,7 @@ if(textFilePreviewRemove){
 
   let voiceSocket = null;
   let voiceSessionWanted = false;
+  let voiceIntroductionVariant = null;
   let voiceConnected = false;
   let voiceMuted = false;
   let voiceManualActivity = false;
@@ -17216,6 +17284,19 @@ if(textFilePreviewRemove){
   let voiceVisualFrame = 0;
   let voiceReconnectTimer = 0;
   let voiceReconnectAttempts = 0;
+
+  function aiVoiceGetIntroductionVariant(){
+    if(chats[currentChatId]?.voiceIntroduced === true) return 0;
+    if(Number.isInteger(voiceIntroductionVariant)) return voiceIntroductionVariant;
+    const storageKey = 'hv_ai_voice_intro_rotation_v1';
+    let previous = -1;
+    try{
+      previous = Number.parseInt(localStorage.getItem(storageKey) || '-1',10);
+    }catch(error){}
+    voiceIntroductionVariant = (Number.isFinite(previous) ? previous + 1 : 0) % 5;
+    try{ localStorage.setItem(storageKey,String(voiceIntroductionVariant)); }catch(error){}
+    return voiceIntroductionVariant;
+  }
   let voiceNextPlaybackTime = 0;
   let voiceIsPlaying = false;
   let voiceSessionTokenData = null;
@@ -17817,6 +17898,18 @@ if(textFilePreviewRemove){
     ];
     const dedicated = patterns.find(([,pattern]) => pattern.test(normalized))?.[0] || null;
     if(dedicated) return { action:dedicated,target:null };
+    const previewDeviceMatch = normalized.match(
+      /\b(?:change|switch|set|resize|show|make|use)\b.{0,55}\b(?:preview|layout|viewport|screen|view)\b.{0,35}\b(phone|mobile|tablet|desktop)\b/
+    ) || normalized.match(
+      /\b(?:change|switch|set|resize|show|make|use)\b.{0,35}\b(phone|mobile|tablet|desktop)\b.{0,35}\b(?:preview|layout|viewport|screen|view)\b/
+    );
+    if(previewDeviceMatch?.[1]){
+      return {
+        action:'SET_PREVIEW_DEVICE',
+        target:'Live Preview',
+        value:previewDeviceMatch[1] === 'mobile' ? 'phone' : previewDeviceMatch[1]
+      };
+    }
     const saveMatch = normalized.match(
       /\bsave\s+(?:(?:this|the|my)\s+)?(?:current\s+)?(?:code\s+)?(?:as|named|called)\s+(.+?)(?:\s+and\s+(?:then\s+)?(?:click|press)\s+save)?$/
     ) || normalized.match(
@@ -17855,6 +17948,9 @@ if(textFilePreviewRemove){
     }
     if(/\b(?:validate|check)\s+(?:the\s+)?(?:html|code|markup)\b/.test(normalized)){
       return { action:'VALIDATE_CODE',target:'Validate HTML' };
+    }
+    if(/\b(?:open|show|view|go\s+to)\s+(?:the\s+)?download(?:\s+(?:section|modal|menu|options?))?\b/.test(normalized)){
+      return { action:'OPEN_DOWNLOAD',target:'Download' };
     }
     if(/\bdownload\s+(?:(?:the|my)\s+)?(?:current\s+)?(?:html|code|file|project)\b/.test(normalized)){
       return { action:'DOWNLOAD_FILE',target:'Download code' };
@@ -18151,13 +18247,41 @@ if(textFilePreviewRemove){
     if(action === 'DOWNLOAD_FILE'){
       let parentDocument;
       try{ parentDocument = window.parent?.document; }catch(error){}
-      const openButton = parentDocument?.getElementById('hvDownloadPopupBtn');
+      const openButton = parentDocument?.getElementById('hvDownloadPopupBtn') ||
+        parentDocument?.getElementById('hvDownload');
       const finalButton = parentDocument?.getElementById('hvDownloadCodeBtn');
       if(!openButton || !finalButton) return false;
       openButton.click();
       await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
       finalButton.click();
       aiVoiceShowCaption('assistant','Downloaded the current code.',false);
+      return true;
+    }
+    if(action === 'OPEN_DOWNLOAD'){
+      let parentDocument;
+      try{ parentDocument = window.parent?.document; }catch(error){}
+      const openButton = parentDocument?.getElementById('hvDownloadPopupBtn') ||
+        parentDocument?.getElementById('hvDownload');
+      if(!openButton) return false;
+      openButton.click();
+      aiVoiceShowCaption('assistant','Opened the Download section.',false);
+      return true;
+    }
+    if(action === 'SET_PREVIEW_DEVICE'){
+      let parentDocument;
+      try{ parentDocument = window.parent?.document; }catch(error){}
+      const device = String(value || target || '').toLowerCase() === 'mobile'
+        ? 'phone'
+        : String(value || target || '').toLowerCase();
+      const button = [...(parentDocument?.querySelectorAll('.hv-device-btn') || [])]
+        .find(item => item.dataset.device === device);
+      if(!button || !['phone','tablet','desktop'].includes(device)) return false;
+      button.click();
+      aiVoiceShowCaption(
+        'assistant',
+        'Switched Live Preview to ' + device.charAt(0).toUpperCase() + device.slice(1) + ' view.',
+        false
+      );
       return true;
     }
     if(action === 'VALIDATE_CODE'){
@@ -18389,8 +18513,20 @@ if(textFilePreviewRemove){
     const publishButton = parentDocument?.getElementById('hvGithubPublishButton');
     if(!publishButton) throw new Error('The GitHub Publish control is unavailable.');
     publishButton.click();
-    for(let attempt = 0;attempt < 20;attempt += 1){
+    for(let attempt = 0;attempt < 50;attempt += 1){
       await new Promise(resolve => setTimeout(resolve,50));
+      const savePopup = parentDocument.getElementById('hvSavePopup');
+      const saveInput = parentDocument.getElementById('hvSaveInput');
+      const saveConfirm = parentDocument.getElementById('hvSaveConfirm');
+      if(
+        savePopup?.classList.contains('show') &&
+        aiVoiceElementIsVisible(saveInput) &&
+        aiVoiceElementIsVisible(saveConfirm)
+      ){
+        aiVoiceSetFieldValue(saveInput,'ONYX Generated');
+        saveConfirm.click();
+        continue;
+      }
       const confirm = parentDocument.getElementById('hvGithubPublishConfirm');
       if(aiVoiceElementIsVisible(confirm)){
         if(confirm.disabled){
@@ -18496,6 +18632,13 @@ if(textFilePreviewRemove){
     ].join('\n');
   }
 
+  function aiVoiceCleanImplementationPrompt(value){
+    return String(value || '')
+      .replace(/```(?:html|htm|css|javascript|js|xml)?[ \t]*\r?\n?/gi,'')
+      .replace(/```/g,'')
+      .trim();
+  }
+
   async function aiVoiceRunAutonomousCodingWorkflow(requestText){
     const clean = String(requestText || '').trim();
     if(!clean) return false;
@@ -18509,7 +18652,12 @@ if(textFilePreviewRemove){
     await aiVoiceSpeakWorkflowUpdate('I’m preparing the implementation now.');
 
     const promptThinkingStartedAt = Date.now();
-    const improvedPrompt = await aiVoiceBuildImplementationPrompt(clean);
+    const improvedPrompt = aiVoiceCleanImplementationPrompt(
+      await aiVoiceBuildImplementationPrompt(clean)
+    );
+    if(!improvedPrompt){
+      throw new Error('The improved implementation prompt was empty.');
+    }
     const promptThoughtSec = (Date.now() - promptThinkingStartedAt) / 1000;
     aiVoiceSyncToNormalChat(
       'assistant',
@@ -18729,6 +18877,7 @@ if(textFilePreviewRemove){
         voice:voicePreferences.voice || AI_DEFAULT_VOICE,
         language:voicePreferences.language || 'auto',
         hasIntroduced:chats[currentChatId]?.voiceIntroduced === true,
+        introductionVariant:aiVoiceGetIntroductionVariant(),
         editorContext:aiVoiceGetEditorContext()
       })
     });
@@ -19741,6 +19890,20 @@ if(textFilePreviewRemove){
     }
     if(event.data?.type === 'hv-ai-voice-host-geometry'){
       aiVoiceSetHostGeometry(event.data.rect);
+      return;
+    }
+    if(event.data?.type === 'hv-ai-voice-forward-click'){
+      if(!voiceModeEl?.classList.contains('active')) return;
+      const x = Number(event.data.clientX);
+      const y = Number(event.data.clientY);
+      if(!Number.isFinite(x) || !Number.isFinite(y)) return;
+      const target = document.elementFromPoint(x,y)?.closest(
+        'button,[role="button"],input,textarea,select'
+      );
+      if(target && voiceModeEl.contains(target) && !target.disabled){
+        target.focus?.({ preventScroll:true });
+        target.click();
+      }
     }
   });
   document.addEventListener('pointermove',event => {
@@ -26199,6 +26362,8 @@ if(document.readyState === 'loading'){
       return normalized;
     }
 
+    window.hvLoadSavedVersions = loadSaved;
+
     function storeSaved(list){
       localStorage.setItem(LS_SAVED, JSON.stringify(list.slice(0, 8)));
       if(typeof window.hvStorageChanged === 'function') window.hvStorageChanged();
@@ -27057,6 +27222,7 @@ window.hvRenderPreview =
 window.hvForcePreviewRender = () => renderPreview(true);
 
 let hvTabPreviewFitFrame = 0;
+let hvTabPreviewManualDevice = null;
 
 function hvSyncTabPreviewViewport(){
   if(hvTabPreviewFitFrame) cancelAnimationFrame(hvTabPreviewFitFrame);
@@ -27071,17 +27237,29 @@ function hvSyncTabPreviewViewport(){
       frameWrap.style.removeProperty('--hv-tab-preview-width');
       frameWrap.style.removeProperty('--hv-tab-preview-height');
       frameWrap.style.removeProperty('--hv-tab-preview-scale');
+      frameWrap.removeAttribute('data-hv-tab-device');
       return;
     }
-    document.querySelectorAll('.hv-device-btn').forEach(button => {
-      button.classList.toggle('active',button.dataset.device === 'phone');
-    });
-    const viewport = { width:390,height:844 };
     const availableWidth = Math.max(1,frameWrap.clientWidth);
     const availableHeight = Math.max(1,frameWrap.clientHeight);
-    const scale = Math.max(.35,availableWidth / viewport.width);
+    const automaticDevice =
+      availableWidth < 480
+        ? 'phone'
+        : 'tablet';
+    const device = hvTabPreviewManualDevice || automaticDevice;
+    const viewports = {
+      phone:{ width:390,height:844 },
+      tablet:{ width:768,height:1024 },
+      desktop:{ width:1280,height:720 }
+    };
+    const viewport = viewports[device];
+    document.querySelectorAll('.hv-device-btn').forEach(button => {
+      button.classList.toggle('active',button.dataset.device === device);
+    });
+    const scale = Math.max(.28,Math.min(1,availableWidth / viewport.width));
     const fittedViewportHeight = Math.max(320,availableHeight / scale);
     frameWrap.classList.add('hv-tab-preview-fit');
+    frameWrap.dataset.hvTabDevice = device;
     frameWrap.style.setProperty('--hv-tab-preview-width',viewport.width + 'px');
     frameWrap.style.setProperty('--hv-tab-preview-height',fittedViewportHeight + 'px');
     frameWrap.style.setProperty('--hv-tab-preview-scale',String(scale));
@@ -27089,6 +27267,16 @@ function hvSyncTabPreviewViewport(){
 }
 
 window.hvSyncTabPreviewViewport = hvSyncTabPreviewViewport;
+window.hvSetTabPreviewDevice = device => {
+  hvTabPreviewManualDevice = ['phone','tablet'].includes(device)
+    ? device
+    : 'tablet';
+  window.hvResizeTabPreviewPanelForDevice?.(hvTabPreviewManualDevice);
+  hvSyncTabPreviewViewport();
+};
+window.hvClearTabPreviewDeviceOverride = () => {
+  hvTabPreviewManualDevice = null;
+};
 window.addEventListener('resize',hvSyncTabPreviewViewport);
 if(typeof ResizeObserver === 'function'){
   const hvTabPreviewObserver = new ResizeObserver(hvSyncTabPreviewViewport);
@@ -27962,7 +28150,17 @@ if(typeof ResizeObserver === 'function'){
       }
     }
 
-function setCode(text, name){
+let hvActiveSavedCodeId = null;
+let hvPendingGithubAfterSave = false;
+window.hvGetActiveSavedCodeId = () => hvActiveSavedCodeId;
+window.hvSetActiveSavedCodeId = value => {
+  hvActiveSavedCodeId = value || null;
+};
+window.hvSetPendingGithubAfterSave = value => {
+  hvPendingGithubAfterSave = value === true;
+};
+
+function setCode(text, name, options = {}){
 
   els.code.value =
     text || '';
@@ -27972,7 +28170,10 @@ function setCode(text, name){
       name || 'Untitled';
   }
 
+  hvActiveSavedCodeId = options.savedId || null;
+
   hvHandleEditorContentChange();
+  window.hvSyncGithubPublishButton?.();
 
 }
 
@@ -28260,7 +28461,7 @@ if(hvSavedSearch){
       const saved = loadSaved();
       const existing = saved.find(item => item && item.name === name);
       const list = saved.filter(item => item && item.name !== name);
-      list.unshift({
+      const entry = {
         id:existing && existing.id
           ? existing.id
           : hvMakeLocalId('saved'),
@@ -28269,13 +28470,18 @@ if(hvSavedSearch){
         version:'1.0',
         pinned:Boolean(existing && existing.pinned),
         ts:Date.now()
-      });
+      };
+      list.unshift(entry);
       storeSaved(list);
+      hvActiveSavedCodeId = entry.id;
+      els.fileName.textContent = name || 'Untitled';
       renderSavedMenu();
+      window.hvSyncGithubPublishButton?.();
 
       if(typeof window.hvNotify === 'function'){
         window.hvNotify('save', 'Saved "' + name + '" locally.');
       }
+      return entry;
     }
 
     function loadSavedVersion(index){
@@ -28292,7 +28498,8 @@ if(hvSavedSearch){
 
   setCode(
     item.text || '',
-    item.name || 'Saved'
+    item.name || 'Saved',
+    { savedId:item.id }
   );
 
 }
@@ -28335,6 +28542,10 @@ function deleteSavedVersion(index){
 
   list.splice(index, 1);
 
+  if(item.id === hvActiveSavedCodeId){
+    hvActiveSavedCodeId = null;
+  }
+
   storeSaved(list);
 
   const projects = loadSavedProjects();
@@ -28353,6 +28564,7 @@ function deleteSavedVersion(index){
   }
 
   renderSavedMenu();
+  window.hvSyncGithubPublishButton?.();
 
   if(typeof window.hvNotify === 'function'){
     window.hvNotify(
@@ -28387,7 +28599,10 @@ function updateSavedVersion(index){
     Date.now();
 
   storeSaved(list);
+  hvActiveSavedCodeId = item.id;
+  els.fileName.textContent = item.name || 'Saved';
   renderSavedMenu();
+  window.hvSyncGithubPublishButton?.();
 
   if(typeof hvShowCodeActionOverlay === 'function'){
     hvShowCodeActionOverlay(
@@ -29904,6 +30119,7 @@ document
   .getElementById('hvSaveCancel')
   .addEventListener('click', () => {
 
+    hvPendingGithubAfterSave = false;
     hvSavePopup.classList.remove('show');
 
 });
@@ -29919,12 +30135,17 @@ document
       return;
     }
 
-    addSavedVersion(
+    const savedEntry = addSavedVersion(
       name,
       currentText()
     );
 
     hvSavePopup.classList.remove('show');
+
+    if(savedEntry && hvPendingGithubAfterSave){
+      hvPendingGithubAfterSave = false;
+      requestAnimationFrame(() => window.hvOpenGithubForCurrentCode?.());
+    }
 
 });
 
@@ -29957,6 +30178,7 @@ document
       hvDeletePopup.classList.remove('show');
 
 hvSavePopup.classList.remove('show');
+hvPendingGithubAfterSave = false;
 
 hvDownloadPopup.classList.remove('show');
 
@@ -32664,6 +32886,11 @@ function hvApplyUiSettings(refreshPreview = false){
     typeof window.hvSyncAiEditorTabMode === 'function'
   ){
     window.hvSyncAiEditorTabMode(hvUiSettings.aiEditorTabMode);
+    if(hvUiSettings.aiEditorTabMode){
+      requestAnimationFrame(() => {
+        window.hvSetTabPreviewDevice?.('tablet');
+      });
+    }
   }
 
   if(
@@ -33878,9 +34105,76 @@ function hvLoadGithubConfig(){
   };
 }
 
-function hvLoadGithubPublication(){
+function hvLoadGithubPublicationRegistry(){
   const stored = hvReadLocalConfig(HV_GITHUB_PUBLICATION_KEY,null);
-  return stored && stored.owner && stored.repo ? stored : null;
+  if(stored?.version === 2 && stored.bySavedId && typeof stored.bySavedId === 'object'){
+    return stored;
+  }
+  return {
+    version:2,
+    bySavedId:{},
+    legacy:stored && stored.owner && stored.repo ? stored : null
+  };
+}
+
+function hvFindCurrentSavedEntry(){
+  const saved = window.hvLoadSavedVersions?.() || [];
+  let entry = saved.find(item => item.id === window.hvGetActiveSavedCodeId?.()) || null;
+  if(!entry){
+    const code = hvGithubCurrentCode();
+    const title = String(document.getElementById('hvFileName')?.textContent || '');
+    entry = saved.find(item => (
+      String(item.text || '') === code &&
+      String(item.name || '') === title
+    )) || null;
+    if(entry) window.hvSetActiveSavedCodeId?.(entry.id);
+  }
+  return entry;
+}
+
+function hvStoreGithubPublication(publication,savedId){
+  const id = savedId || hvFindCurrentSavedEntry()?.id;
+  if(!id) return false;
+  const registry = hvLoadGithubPublicationRegistry();
+  registry.bySavedId[id] = {
+    ...publication,
+    savedId:id,
+    savedName:hvFindCurrentSavedEntry()?.name || publication.savedName || ''
+  };
+  registry.legacy = null;
+  hvWriteLocalConfig(HV_GITHUB_PUBLICATION_KEY,registry);
+  return true;
+}
+
+function hvRemoveGithubPublication(savedId){
+  const id = savedId || hvFindCurrentSavedEntry()?.id;
+  if(!id) return;
+  const registry = hvLoadGithubPublicationRegistry();
+  delete registry.bySavedId[id];
+  hvWriteLocalConfig(HV_GITHUB_PUBLICATION_KEY,registry);
+}
+
+function hvLoadGithubPublication(savedId){
+  const entry = hvFindCurrentSavedEntry();
+  const id = savedId || entry?.id;
+  if(!id) return null;
+  const registry = hvLoadGithubPublicationRegistry();
+  const publication = registry.bySavedId[id];
+  if(publication?.owner && publication?.repo) return publication;
+
+  const legacy = registry.legacy;
+  const canClaimLegacy = Boolean(
+    legacy?.owner &&
+    legacy?.repo &&
+    entry &&
+    (
+      legacy.repo === hvGithubSuggestedRepoName(entry) ||
+      (window.hvLoadSavedVersions?.() || []).length === 1
+    )
+  );
+  if(!canClaimLegacy) return null;
+  hvStoreGithubPublication(legacy,id);
+  return { ...legacy,savedId:id,savedName:entry.name || '' };
 }
 
 function hvSanitizeGithubName(value,fallback){
@@ -33926,6 +34220,8 @@ function hvSyncGithubPublishButton(){
     Boolean(hvLoadGithubPublication())
   );
 }
+
+window.hvSyncGithubPublishButton = hvSyncGithubPublishButton;
 
 function hvPopulateGithubConfig(){
   const config = hvLoadGithubConfig();
@@ -34044,12 +34340,12 @@ function hvGithubCurrentCode(){
   return document.getElementById('hvCode')?.value || '';
 }
 
-function hvGithubSuggestedRepoName(){
+function hvGithubSuggestedRepoName(savedEntry = hvFindCurrentSavedEntry()){
   const config = hvLoadGithubConfig();
-  const title = document.getElementById('hvFileName')?.textContent || 'website';
+  const title = savedEntry?.name || document.getElementById('hvFileName')?.textContent || 'code';
   return hvSanitizeGithubName(
     config.repoPrefix + '-' + title.replace(/\.[^.]+$/,''),
-    config.repoPrefix + '-website'
+    config.repoPrefix + '-code'
   );
 }
 
@@ -34150,12 +34446,19 @@ async function hvGithubEnablePages(owner,repo,branch){
 
 async function hvPublishGithubRepository(){
   const config = hvLoadGithubConfig();
+  const savedEntry = hvFindCurrentSavedEntry();
   const repoInput = document.getElementById('hvGithubPublishRepoName');
   const errorBox = document.getElementById('hvGithubPublishError');
   const repo = hvSanitizeGithubName(repoInput?.value,hvGithubSuggestedRepoName());
   const code = hvGithubCurrentCode();
   if(!code.trim()){
     hvSetConnectionStatus(errorBox,'Add HTML to the code editor before publishing.','error');
+    return;
+  }
+  if(!savedEntry){
+    hvCloseGithubModal(hvGithubPublishModal);
+    window.hvSetPendingGithubAfterSave?.(true);
+    document.getElementById('hvSaveCurrent')?.click();
     return;
   }
   if(!config.connected || !config.token || !config.owner){
@@ -34198,10 +34501,12 @@ async function hvPublishGithubRepository(){
       repo,
       branch,
       url,
+      savedId:savedEntry.id,
+      savedName:savedEntry.name || '',
       createdAt:Date.now(),
       updatedAt:Date.now()
     };
-    hvWriteLocalConfig(HV_GITHUB_PUBLICATION_KEY,publication);
+    hvStoreGithubPublication(publication,savedEntry.id);
     hvSetGithubProgress('live',repo + ' is live','The repository is connected and GitHub Pages is deploying.',100);
     hvSyncGithubPublishButton();
     window.hvNotify?.('download','Website published to GitHub Pages.');
@@ -34273,6 +34578,11 @@ async function hvOpenGithubManager(){
 }
 
 function hvOpenGithubPublishConfirm(){
+  if(!hvFindCurrentSavedEntry()){
+    window.hvSetPendingGithubAfterSave?.(true);
+    document.getElementById('hvSaveCurrent')?.click();
+    return;
+  }
   const errorBox = document.getElementById('hvGithubPublishError');
   const repoInput = document.getElementById('hvGithubPublishRepoName');
   hvSetConnectionStatus(errorBox,'','');
@@ -34299,7 +34609,7 @@ async function hvCommitLatestGithubBuild(){
       message
     );
     publication.updatedAt = Date.now();
-    hvWriteLocalConfig(HV_GITHUB_PUBLICATION_KEY,publication);
+    hvStoreGithubPublication(publication,publication.savedId);
     hvSetGithubProgress('live','Latest build committed','GitHub Pages is deploying the new commit.',100);
     window.hvNotify?.('save','Latest code committed to GitHub.');
     await new Promise(resolve => setTimeout(resolve,650));
@@ -34329,8 +34639,7 @@ async function hvDeleteGithubRepository(){
       encodeURIComponent(publication.repo),
       { method:'DELETE' }
     );
-    localStorage.removeItem(HV_GITHUB_PUBLICATION_KEY);
-    window.hvStorageChanged?.();
+    hvRemoveGithubPublication(publication.savedId);
     hvSetGithubProgress('live','Repository deleted','The local publishing connection has been cleared.',100,'delete');
     hvSyncGithubPublishButton();
     window.hvNotify?.('delete','GitHub repository deleted.');
@@ -34344,10 +34653,17 @@ async function hvDeleteGithubRepository(){
 }
 
 hvGithubFields.connect?.addEventListener('click',hvConnectGithub);
-hvGithubPublishButton?.addEventListener('click',() => {
+function hvOpenGithubForCurrentCode(){
+  if(!hvFindCurrentSavedEntry()){
+    window.hvSetPendingGithubAfterSave?.(true);
+    document.getElementById('hvSaveCurrent')?.click();
+    return;
+  }
   if(hvLoadGithubPublication()) hvOpenGithubManager();
   else hvOpenGithubPublishConfirm();
-});
+}
+window.hvOpenGithubForCurrentCode = hvOpenGithubForCurrentCode;
+hvGithubPublishButton?.addEventListener('click',hvOpenGithubForCurrentCode);
 document.getElementById('hvGithubPublishConfirm')?.addEventListener('click',hvPublishGithubRepository);
 document.getElementById('hvGithubCommitLatest')?.addEventListener('click',hvCommitLatestGithubBuild);
 document.getElementById('hvGithubDeleteRepository')?.addEventListener('click',() => {
@@ -36173,10 +36489,7 @@ window.hvStorageChanged();
     }
 
     if(hvLayout.classList.contains('hv-ai-tab-mode')){
-      hvDeviceBtns.forEach(btn => {
-        btn.classList.toggle('active',btn.dataset.device === device);
-      });
-      window.hvSyncTabPreviewViewport?.();
+      window.hvSetTabPreviewDevice?.(device);
       return;
     }
 
@@ -36363,6 +36676,12 @@ window.hvStorageChanged();
 
   window.addEventListener('resize', () => {
 
+    if(hvLayout.classList.contains('hv-ai-tab-mode')){
+      window.hvClearTabPreviewDeviceOverride?.();
+      window.hvSyncTabPreviewViewport?.();
+      return;
+    }
+
     const active =
       document.querySelector('.hv-device-btn.active');
 
@@ -36373,7 +36692,12 @@ window.hvStorageChanged();
 
   });
 
-  hvSetPreviewDevice('desktop', false);
+  if(hvLayout.classList.contains('hv-ai-tab-mode')){
+    window.hvClearTabPreviewDeviceOverride?.();
+    window.hvSyncTabPreviewViewport?.();
+  }else{
+    hvSetPreviewDevice('desktop', false);
+  }
 
 })();
 
@@ -36801,6 +37125,36 @@ function hvPanelDragMinimumWidth(panel,type){
     });
   }
 
+  function resizePreviewPanelForDevice(device){
+    if(
+      window.innerWidth <= 1024 ||
+      !layout.classList.contains('hv-ai-tab-mode')
+    ) return;
+
+    const normalizedDevice = device === 'phone' ? 'phone' : 'tablet';
+    const usable = contentWidth() - first.offsetWidth - second.offsetWidth;
+    const minCode = Math.max(260,hvPanelDragMinimumWidth(code,'code'));
+    const minPreview = Math.max(330,hvPanelDragMinimumWidth(preview,'preview'));
+    const minAi = Math.max(320,hvPanelDragMinimumWidth(ai,'ai'));
+    const desiredPreview = normalizedDevice === 'phone' ? 390 : 620;
+
+    let nextCode = Math.max(minCode,code.getBoundingClientRect().width);
+    if(usable - nextCode - minAi < desiredPreview){
+      nextCode = Math.max(minCode,usable - desiredPreview - minAi);
+    }
+
+    const maxPreview = Math.max(minPreview,usable - nextCode - minAi);
+    const nextPreview = Math.max(
+      minPreview,
+      Math.min(desiredPreview,maxPreview)
+    );
+    const nextAi = Math.max(minAi,usable - nextCode - nextPreview);
+
+    queueColumns(nextCode,nextPreview,nextAi);
+  }
+
+  window.hvResizeTabPreviewPanelForDevice = resizePreviewPanelForDevice;
+
   function startResize(event,kind){
     if(
       event.button !== 0 ||
@@ -36838,6 +37192,7 @@ function hvPanelDragMinimumWidth(panel,type){
       const delta = moveEvent.clientX - startX;
       if(!moved && Math.abs(delta) < 2) return;
       moved = true;
+      window.hvClearTabPreviewDeviceOverride?.();
       if(kind === 'code'){
         if(layout.classList.contains('hv-code-preview-disabled')) return;
         const nextCode = Math.max(
@@ -37500,7 +37855,9 @@ if(hvSubmitPresetSend){
     );
   }
 
-  document.addEventListener('pointermove',event => {
+  let hvVoiceForwardPointer = null;
+
+  function hvRecoverVoicePointer(event){
     if(!aiFrame.classList.contains('hv-ai-voice-floating')) return;
     if(
       hvVoicePointInsideCard(event.clientX,event.clientY) ||
@@ -37508,6 +37865,35 @@ if(hvSubmitPresetSend){
     ){
       aiFrame.classList.remove('hv-ai-voice-pass-through');
     }
+  }
+
+  document.addEventListener('pointermove',hvRecoverVoicePointer,true);
+  document.addEventListener('mousemove',hvRecoverVoicePointer,true);
+  document.addEventListener('pointerdown',event => {
+    if(!aiFrame.classList.contains('hv-ai-voice-floating')) return;
+    const wasPassThrough = aiFrame.classList.contains('hv-ai-voice-pass-through');
+    const insideCard = hvVoicePointInsideCard(event.clientX,event.clientY);
+    hvRecoverVoicePointer(event);
+    hvVoiceForwardPointer = wasPassThrough && insideCard
+      ? { x:event.clientX,y:event.clientY,pointerId:event.pointerId }
+      : null;
+  },true);
+
+  document.addEventListener('pointerup',event => {
+    const pending = hvVoiceForwardPointer;
+    hvVoiceForwardPointer = null;
+    if(
+      !pending ||
+      pending.pointerId !== event.pointerId ||
+      Math.hypot(event.clientX - pending.x,event.clientY - pending.y) > 6
+    ) return;
+    try{
+      aiFrame.contentWindow?.postMessage({
+        type:'hv-ai-voice-forward-click',
+        clientX:event.clientX,
+        clientY:event.clientY
+      },'*');
+    }catch(error){}
   },true);
 
   document.addEventListener('click',() => {
@@ -37632,6 +38018,7 @@ if(hvSubmitPresetSend){
     const active = enabled === true;
     if(active){
       hvEnsureAiInitialized();
+      window.hvClearTabPreviewDeviceOverride?.();
       hvPlaceAiFrameForCurrentMode();
       frameWrap.classList.remove('hv-ai-mode','hv-ai-visible');
       if(previewPanel) previewPanel.classList.remove('hv-ai-active');

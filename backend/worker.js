@@ -21,7 +21,9 @@ const GEMINI_VOICE_UI_ACTIONS = new Set([
   'FILL_CONTROL',
   'SAVE_CODE',
   'SAVED_VERSION_ACTION',
-  'GENERATE_IMAGE'
+  'GENERATE_IMAGE',
+  'OPEN_DOWNLOAD',
+  'SET_PREVIEW_DEVICE'
 ]);
 const GEMINI_LIVE_VOICES = new Set([
   'Zephyr', 'Puck', 'Charon', 'Kore', 'Fenrir', 'Leda', 'Orus', 'Aoede',
@@ -126,10 +128,14 @@ async function createGeminiLiveToken(request, env, origin){
     ? body.language.trim().slice(0, 20)
     : 'auto';
   const hasIntroduced = body.hasIntroduced === true;
+  const introductionVariant = Number.isFinite(Number(body.introductionVariant))
+    ? Math.max(0, Math.trunc(Number(body.introductionVariant)))
+    : 0;
   const systemInstruction = createVoiceSystemInstruction(
     editorContext,
     language,
-    hasIntroduced
+    hasIntroduced,
+    introductionVariant
   );
   const liveConfig = {
     generationConfig:{
@@ -203,19 +209,28 @@ async function createGeminiLiveToken(request, env, origin){
   }, 200, origin);
 }
 
-function createVoiceSystemInstruction(editorContext, language, hasIntroduced){
+function createVoiceSystemInstruction(editorContext, language, hasIntroduced, introductionVariant = 0){
   const context = editorContext
     ? '\n\nCURRENT EDITOR CONTEXT:\n' + editorContext
     : '';
   const languageInstruction = language && language !== 'auto'
     ? ' Prefer spoken language ' + language + ' unless the user asks to switch.'
     : '';
+  const introductions = [
+    'ONYX online. I can inspect your current code, build new features, modify the latest edit, debug problems, or recommend the strongest next upgrade.',
+    'ONYX is ready. I can work through your current code, implement polished changes, solve errors, and help choose the best next improvement.',
+    'ONYX connected. I am ready to analyze this project, make precise code changes, troubleshoot issues, or help shape the next feature.',
+    'ONYX at your service. I can review what is loaded, build or refine features, correct problems, and guide the project toward its strongest version.',
+    'ONYX is active. Tell me what you want to build, change, validate, publish, or improve, and I will help drive the work forward.'
+  ];
+  const selectedIntroduction = introductions[
+    Math.abs(Number(introductionVariant) || 0) % introductions.length
+  ];
   const introductionInstruction = hasIntroduced
     ? 'You have already introduced yourself in this chat. Do not introduce yourself again.'
     : (
       'On your first response after the user speaks, introduce yourself once with: ' +
-      '"ONYX online. I can inspect your current code, build new features, modify ' +
-      'the latest edit, debug problems, or recommend the strongest next upgrade." ' +
+      '"' + selectedIntroduction + '" ' +
       'Then respond directly to what the user said. Do not repeat this introduction later.'
     );
 
@@ -285,7 +300,10 @@ async function classifyVoiceIntent(request, env, origin){
     'open, select, validate, download, or activate a website or AI-editor control.',
     'Use a dedicated action for New Chat, Projects, Library, Chat History, Add Image,',
     'and Attach Code File. Use SEARCH_CODE when the user asks to find text in the code',
-    'editor, with the search text in value. Use FILL_CONTROL when the user explicitly',
+    'editor. Use SET_PREVIEW_DEVICE when the user asks to switch Live Preview to phone,',
+    'tablet, or desktop view, and put phone, tablet, or desktop in value. Use OPEN_DOWNLOAD',
+    'when the user asks to open or show the Download section without downloading yet.',
+    'For SEARCH_CODE, put the search text in value. Use FILL_CONTROL when the user explicitly',
     'asks to enter a value in a named visible field, with its accessible name in target',
     'and the requested contents in value. Use SAVE_CODE when the user asks to save the',
     'current code with a specific name; put that name in value. Use SAVED_VERSION_ACTION',
@@ -343,7 +361,9 @@ async function classifyVoiceIntent(request, env, origin){
                   'FILL_CONTROL',
                   'SAVE_CODE',
                   'SAVED_VERSION_ACTION',
-                  'GENERATE_IMAGE'
+                  'GENERATE_IMAGE',
+                  'OPEN_DOWNLOAD',
+                  'SET_PREVIEW_DEVICE'
                 ]
               },
               target:{ type:'STRING' },
@@ -406,7 +426,8 @@ async function classifyVoiceIntent(request, env, origin){
     requestedAction === 'FILL_CONTROL' ||
     requestedAction === 'SAVE_CODE' ||
     requestedAction === 'SAVED_VERSION_ACTION' ||
-    requestedAction === 'GENERATE_IMAGE'
+    requestedAction === 'GENERATE_IMAGE' ||
+    requestedAction === 'SET_PREVIEW_DEVICE'
   ) && typeof result.value === 'string'
     ? result.value.slice(0, 4000)
     : null;
@@ -417,7 +438,8 @@ async function classifyVoiceIntent(request, env, origin){
     (requestedAction !== 'FILL_CONTROL' || (uiTarget && uiValue !== null)) &&
     (requestedAction !== 'SAVE_CODE' || uiValue) &&
     (requestedAction !== 'SAVED_VERSION_ACTION' || (uiTarget && uiValue)) &&
-    (requestedAction !== 'GENERATE_IMAGE' || uiValue)
+    (requestedAction !== 'GENERATE_IMAGE' || uiValue) &&
+    (requestedAction !== 'SET_PREVIEW_DEVICE' || ['phone','tablet','desktop'].includes(uiValue))
     ? requestedAction
     : null;
   const confidence = Number.isFinite(Number(result.confidence))
