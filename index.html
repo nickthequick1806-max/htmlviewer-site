@@ -14202,16 +14202,6 @@ html.hv-site-viewer-enter #html-viewer-app{
     <div class="input-wrap">
   <div class="input-row">
 
-    <div class="voice-entry-wrap" id="voiceEntryWrap">
-      <button id="mic-btn" class="icon-btn ai-tip" aria-label="Voice options" aria-haspopup="menu" aria-expanded="false" type="button">
-        <i class="fa-solid fa-microphone"></i>
-      </button>
-      <div class="voice-entry-menu" id="voiceEntryMenu" role="menu">
-        <button id="voiceToTextBtn" type="button" role="menuitem"><i class="fa-solid fa-microphone-lines"></i>Voice to text</button>
-        <button id="voiceToVoiceBtn" type="button" role="menuitem"><i class="fa-solid fa-wave-square"></i>Voice to voice</button>
-      </div>
-    </div>
-
     <button id="image-btn" class="icon-btn ai-tip" aria-label="Add image" type="button">
       <i class="fa-solid fa-image"></i>
       <span class="ai-hover-tooltip">Add image</span>
@@ -14226,6 +14216,16 @@ html.hv-site-viewer-enter #html-viewer-app{
       <i class="fa-solid fa-headphones"></i>
       <span class="ai-hover-tooltip">Attach audio</span>
     </button>
+
+    <div class="voice-entry-wrap" id="voiceEntryWrap">
+      <button id="mic-btn" class="icon-btn ai-tip" aria-label="Voice options" aria-haspopup="menu" aria-expanded="false" type="button">
+        <i class="fa-solid fa-microphone"></i>
+      </button>
+      <div class="voice-entry-menu" id="voiceEntryMenu" role="menu">
+        <button id="voiceToTextBtn" type="button" role="menuitem"><i class="fa-solid fa-microphone-lines"></i>Voice to text</button>
+        <button id="voiceToVoiceBtn" type="button" role="menuitem"><i class="fa-solid fa-wave-square"></i>Voice to voice</button>
+      </div>
+    </div>
 
     <div id="listening" class="listening" style="display:none;">
       <i class="fa-solid fa-circle-notch fa-spin"></i> Listening…
@@ -21978,7 +21978,11 @@ function aiEditUserMessage(card,message){
     if(action === 'cancel'){ editor.remove(); card.classList.remove('ai-editing'); if(original) original.hidden = false; if(tools) tools.hidden = false; }
     if(action === 'send'){
       const value = textarea.value.trim(); if(!value) return;
-      createNewChat(); inputEl.value = value; editor.remove(); card.classList.remove('ai-editing'); sendMessage();
+      inputEl.value = value;
+      inputEl.dispatchEvent(new Event('input',{bubbles:true}));
+      editor.remove();
+      card.classList.remove('ai-editing');
+      sendMessage();
     }
   });
   card.appendChild(editor); textarea.focus();
