@@ -8323,6 +8323,34 @@ html.hv-site-viewer-enter #html-viewer-app{
     </div>
   </section>
 </div>
+<div class="hv-modal hv-analytics-modal" id="hvAnalyticsModal" aria-hidden="true">
+  <div class="hv-modal-backdrop" id="hvAnalyticsBackdrop"></div>
+  <section class="hv-analytics-panel" role="dialog" aria-modal="true" aria-labelledby="hvAnalyticsTitle">
+    <header class="hv-analytics-head">
+      <div class="hv-analytics-heading-icon"><i class="fa-solid fa-chart-line"></i></div>
+      <div><h2 id="hvAnalyticsTitle">Website Analytics</h2><p>Live and historical traffic reported by the connected analytics service.</p></div>
+      <button id="hvAnalyticsClose" type="button" aria-label="Close analytics"><i class="fa-solid fa-xmark"></i></button>
+    </header>
+    <div class="hv-analytics-loading" id="hvAnalyticsLoading"><span class="hv-spinner"></span><strong>Loading analytics</strong><small>Retrieving the latest measured traffic…</small></div>
+    <div class="hv-analytics-content" id="hvAnalyticsContent" hidden>
+      <div class="hv-analytics-kpis" id="hvAnalyticsKpis"></div>
+      <section class="hv-analytics-chart-card"><div class="hv-analytics-section-head"><div><strong>Recent traffic</strong><span id="hvAnalyticsChartRange">Available measured period</span></div></div><div class="hv-analytics-chart" id="hvAnalyticsChart"></div></section>
+      <div class="hv-analytics-grid">
+        <section class="hv-analytics-list-card"><h3><i class="fa-solid fa-file-lines"></i> Top pages</h3><div id="hvAnalyticsPages"></div></section>
+        <section class="hv-analytics-list-card"><h3><i class="fa-solid fa-arrow-up-right-dots"></i> Traffic sources</h3><div id="hvAnalyticsSources"></div></section>
+        <section class="hv-analytics-list-card"><h3><i class="fa-solid fa-mobile-screen"></i> Devices</h3><div id="hvAnalyticsDevices"></div></section>
+        <section class="hv-analytics-list-card"><h3><i class="fa-brands fa-chrome"></i> Browsers</h3><div id="hvAnalyticsBrowsers"></div></section>
+        <section class="hv-analytics-list-card"><h3><i class="fa-solid fa-earth-americas"></i> Countries</h3><div id="hvAnalyticsCountries"></div></section>
+      </div>
+    </div>
+    <div class="hv-analytics-empty" id="hvAnalyticsEmpty" hidden><i class="fa-solid fa-chart-simple"></i><strong>No detailed analytics available</strong><span>The connected service did not return measured dashboard data yet.</span></div>
+  </section>
+</div>
+<style>
+.hv-analytics-loading[hidden],.hv-analytics-content[hidden],.hv-analytics-empty[hidden]{display:none!important}
+.hv-nav-stat-card{cursor:pointer;transition:transform .15s ease,border-color .15s ease,background .15s ease}.hv-nav-stat-card:hover,.hv-nav-stat-card:focus-visible{transform:translateY(-2px);border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.06);outline:none}
+.hv-analytics-modal{z-index:13000}.hv-analytics-panel{position:relative;z-index:2;width:min(1120px,calc(100vw - 28px));max-height:min(90vh,880px);overflow:auto;border:1px solid rgba(255,255,255,.12);border-radius:20px;background:linear-gradient(180deg,#161616,#0b0b0b);box-shadow:0 36px 110px rgba(0,0,0,.78);color:#f5f5f5}.hv-analytics-head{position:sticky;top:0;z-index:3;min-height:84px;padding:16px 18px;display:flex;align-items:center;gap:12px;background:rgba(18,18,18,.94);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.09)}.hv-analytics-heading-icon{width:42px;height:42px;border:1px solid rgba(255,255,255,.13);border-radius:12px;display:grid;place-items:center;background:#202020}.hv-analytics-head h2{margin:0;font-size:19px}.hv-analytics-head p{margin:4px 0 0;color:#8c8c96;font-size:11px}.hv-analytics-head button{margin-left:auto;width:38px;height:38px;border:1px solid rgba(255,255,255,.11);border-radius:11px;background:#202020;color:#fff;cursor:pointer}.hv-analytics-content{padding:16px}.hv-analytics-loading,.hv-analytics-empty{min-height:360px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;color:#aaa}.hv-analytics-loading strong,.hv-analytics-empty strong{color:#fff;font-size:15px}.hv-analytics-loading small,.hv-analytics-empty span{font-size:11px}.hv-analytics-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.hv-analytics-kpi,.hv-analytics-chart-card,.hv-analytics-list-card{border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(255,255,255,.025)}.hv-analytics-kpi{padding:13px}.hv-analytics-kpi span{display:block;color:#8b8b95;font-size:10px;font-weight:750}.hv-analytics-kpi strong{display:block;margin-top:6px;font-size:20px}.hv-analytics-chart-card{margin-top:10px;padding:14px}.hv-analytics-section-head strong{display:block}.hv-analytics-section-head span{display:block;margin-top:3px;color:#777;font-size:10px}.hv-analytics-chart{height:190px;margin-top:15px;display:flex;align-items:flex-end;gap:4px;border-bottom:1px solid rgba(255,255,255,.09)}.hv-analytics-chart-bar{flex:1;min-width:4px;border-radius:4px 4px 0 0;background:linear-gradient(180deg,#f4f4f5,#555);position:relative;transition:.15s ease}.hv-analytics-chart-bar:hover{filter:brightness(1.3)}.hv-analytics-chart-bar span{position:absolute;left:50%;bottom:calc(100% + 7px);transform:translateX(-50%);padding:5px 7px;border-radius:7px;background:#282828;border:1px solid rgba(255,255,255,.11);font-size:9px;white-space:nowrap;opacity:0;pointer-events:none}.hv-analytics-chart-bar:hover span{opacity:1}.hv-analytics-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}.hv-analytics-list-card{padding:13px;min-height:140px}.hv-analytics-list-card h3{margin:0 0 10px;display:flex;align-items:center;gap:8px;font-size:13px}.hv-analytics-list-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,.06);font-size:11px}.hv-analytics-list-row span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#bbb}.hv-analytics-list-row b{color:#fff}.hv-analytics-list-empty{padding:22px 0;color:#707078;font-size:11px;text-align:center}.hv-spinner{width:28px;height:28px;border:3px solid rgba(255,255,255,.12);border-top-color:#fff;border-radius:50%;animation:hvSpin .75s linear infinite}@media(max-width:760px){.hv-analytics-panel{max-height:94vh}.hv-analytics-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.hv-analytics-grid{grid-template-columns:1fr}.hv-analytics-head p{display:none}.hv-analytics-content{padding:11px}}
+</style>
 <a class="hv-skip-link" href="#html-viewer-app">Skip to HTML editor</a>
 <main id="html-viewer-app" aria-label="HTML editor workspace">
 
@@ -8948,6 +8976,7 @@ html.hv-site-viewer-enter #html-viewer-app{
 
     .input-row > #image-btn .ai-hover-tooltip,
     .input-row > #text-file-btn .ai-hover-tooltip,
+    .input-row > #audio-file-btn .ai-hover-tooltip,
     .input-row > #mic-btn .ai-hover-tooltip {
       top: auto;
       bottom: calc(100% + 8px);
@@ -8958,6 +8987,8 @@ html.hv-site-viewer-enter #html-viewer-app{
     .input-row > #image-btn:focus-visible .ai-hover-tooltip,
     .input-row > #text-file-btn:hover .ai-hover-tooltip,
     .input-row > #text-file-btn:focus-visible .ai-hover-tooltip,
+    .input-row > #audio-file-btn:hover .ai-hover-tooltip,
+    .input-row > #audio-file-btn:focus-visible .ai-hover-tooltip,
     .input-row > #mic-btn:hover .ai-hover-tooltip,
     .input-row > #mic-btn:focus-visible .ai-hover-tooltip {
       transform: translate(-50%, 0);
@@ -9769,9 +9800,9 @@ html.hv-site-viewer-enter #html-viewer-app{
 }
 
 .ai-message-action-btn{
-  width:30px;
-  height:30px;
-  border-radius:8px;
+  width:26px;
+  height:26px;
+  border-radius:7px;
   border:1px solid rgba(255,255,255,.08);
   background:rgba(255,255,255,.035);
   color:#d4d4d8;
@@ -9780,6 +9811,8 @@ html.hv-site-viewer-enter #html-viewer-app{
   cursor:pointer;
   transition:.15s ease;
 }
+
+.ai-message-action-btn i{font-size:11px}
 
 .ai-message-action-btn:hover{
   background:rgba(255,255,255,.09);
@@ -12016,7 +12049,7 @@ html.hv-site-viewer-enter #html-viewer-app{
     display:grid;
     grid-template-columns:minmax(0,1fr) 40px 40px 40px 44px;
     grid-template-areas:
-      "model image file mic blank"
+      "model mic image file audio"
       "input input input input send";
     gap:7px;
     align-items:center;
@@ -12030,8 +12063,12 @@ html.hv-site-viewer-enter #html-viewer-app{
     grid-area:file;
   }
 
-  .input-row > #mic-btn{
+  .input-row > .voice-entry-wrap{
     grid-area:mic;
+  }
+
+  .input-row > #audio-file-btn{
+    grid-area:audio;
   }
 
   .input-row > .ai-model-picker{
@@ -13418,14 +13455,15 @@ html.hv-site-viewer-enter #html-viewer-app{
       display:grid;
       grid-template-columns:minmax(0,1fr) 40px 40px 40px 44px;
       grid-template-areas:
-        "model image file mic blank"
+        "model mic image file audio"
         "input input input input send";
       gap:7px;
       align-items:center;
     }
     .input-row > #image-btn{grid-area:image}
     .input-row > #text-file-btn{grid-area:file}
-    .input-row > #mic-btn{grid-area:mic}
+    .input-row > .voice-entry-wrap{grid-area:mic}
+    .input-row > #audio-file-btn{grid-area:audio}
     .input-row > .ai-model-picker{
       grid-area:model;
       width:100%;
@@ -13571,6 +13609,106 @@ html.hv-site-viewer-enter #html-viewer-app{
     background:#94a3b8 !important;
     border-color:#f8fafc !important;
   }
+
+  /* AI message tools, sources, audio, and inline editing */
+  .message{position:relative}
+  .message.system{padding-bottom:10px}
+  .ai-response-tools,.ai-user-tools{
+    display:flex;align-items:center;gap:4px;margin-top:9px
+  }
+  .message.ai-thinking .thought-meta{display:inline-block;color:transparent;background:linear-gradient(100deg,#8f8f98 0%,#8f8f98 38%,#fff 49%,#8f8f98 60%,#8f8f98 100%);background-size:260% 100%;background-position:115% 0;background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:aiThinkingGlare 3s ease-in-out infinite}
+  @keyframes aiThinkingGlare{0%,58%{background-position:115% 0}88%,100%{background-position:-115% 0}}
+  @media(prefers-reduced-motion:reduce){.message.ai-thinking .thought-meta{animation:none;background:none;color:#a1a1aa;-webkit-text-fill-color:currentColor}}
+  .message.user{margin-bottom:34px}
+  .ai-user-tools{position:absolute;right:0;top:calc(100% + 3px);z-index:3;justify-content:flex-end;opacity:0;visibility:hidden;transition:.14s ease}
+  .message.user:hover .ai-user-tools,.message.user:focus-within .ai-user-tools{
+    opacity:1;visibility:visible
+  }
+  .ai-tool-button{
+    width:29px;height:29px;border:0;border-radius:8px;background:transparent;
+    color:#a1a1aa;display:grid;place-items:center;cursor:pointer;transition:.14s ease
+  }
+  .ai-tool-button:hover,.ai-tool-button:focus-visible,.ai-tool-button.active{
+    color:#fff;background:rgba(255,255,255,.08);outline:none
+  }
+  .ai-tool-button.active.like{color:#86efac}
+  .ai-tool-button.active.dislike{color:#fca5a5}
+  .ai-tool-button.copied{color:#86efac;background:rgba(74,222,128,.1)}
+  .ai-tool-button.loading{pointer-events:none;color:#fff;background:rgba(255,255,255,.08)}
+  .ai-tool-button.loading i{animation:aiResponseToolSpin .72s linear infinite}
+  @keyframes aiResponseToolSpin{to{transform:rotate(360deg)}}
+  .ai-response-more-menu{
+    position:fixed;z-index:100005;width:214px;padding:7px;border-radius:12px;
+    background:linear-gradient(180deg,#252525,#171717);border:1px solid rgba(255,255,255,.13);
+    box-shadow:0 20px 58px rgba(0,0,0,.7);display:none
+  }
+  .ai-response-more-menu.open{display:block;animation:aiLibraryMenuPop .14s ease}
+  .ai-response-menu-date{padding:7px 10px 8px;color:#a1a1aa;font-size:11px;font-weight:700}
+  .ai-response-more-menu button{
+    width:100%;height:37px;border:0;border-radius:8px;background:transparent;color:#f5f5f5;
+    display:flex;align-items:center;gap:10px;padding:0 10px;font-size:12px;font-weight:750;cursor:pointer
+  }
+  .ai-response-more-menu button:hover,.ai-response-more-menu button:focus-visible{
+    background:rgba(255,255,255,.08);outline:none
+  }
+  .ai-response-more-menu button[hidden]{display:none}
+  .ai-sources-panel{
+    position:absolute;z-index:80;left:0;top:58px;bottom:0;width:min(360px,92%);
+    background:#0c0c0c;border-right:1px solid rgba(255,255,255,.11);
+    box-shadow:22px 0 55px rgba(0,0,0,.5);transform:translateX(-104%);opacity:0;
+    visibility:hidden;transition:transform .2s ease,opacity .2s ease,visibility .2s ease;
+    display:flex;flex-direction:column
+  }
+  .ai-sources-panel.open{transform:translateX(0);opacity:1;visibility:visible}
+  .ai-sources-head{padding:15px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .ai-sources-title{display:flex;align-items:center;gap:8px;color:#fff;font-size:15px;font-weight:900}
+  .ai-sources-count{min-width:24px;height:21px;padding:0 7px;border:1px solid var(--border);border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
+  .ai-sources-list{padding:12px;overflow:auto;display:flex;flex-direction:column;gap:9px}
+  .ai-source-card{padding:12px;border-radius:12px;border:1px solid var(--border);background:#131313;color:inherit;text-decoration:none;display:block;transition:.14s ease}
+  .ai-source-card:hover{background:#191919;border-color:rgba(255,255,255,.22)}
+  .ai-source-top{display:flex;align-items:center;gap:9px}
+  .ai-source-top img{width:25px;height:25px;border-radius:7px;background:#fff;object-fit:contain;padding:3px;flex:0 0 auto}
+  .ai-source-top>div{min-width:0;flex:1}.ai-source-top strong{display:block;color:#f5f5f5;font-size:12px;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ai-source-top span{display:block;margin-top:2px;color:#8b8b95;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ai-source-card p{margin:9px 0 0;color:#b7b7bf;font-size:11px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .ai-sources-empty{min-height:180px;padding:24px 18px;display:grid;place-items:center;text-align:center;color:#8b8b95;font-size:12px;line-height:1.55}.ai-sources-empty i{display:block;margin-bottom:10px;color:#d4d4d8;font-size:22px}.ai-sources-empty strong{display:block;margin-bottom:5px;color:#f4f4f5;font-size:13px}
+  .ai-source-favicon{width:25px;height:25px;border-radius:7px;background:#fff;object-fit:contain;padding:3px;flex:0 0 auto}
+  .ai-source-copy{min-width:0;flex:1}
+  .ai-source-title{color:#f5f5f5;font-size:12px;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ai-source-domain{margin-top:2px;color:#8b8b95;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ai-source-excerpt{margin:9px 0 0;color:#b7b7bf;font-size:11px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .message.user.ai-editing{width:min(680px,84%)}
+  .ai-edit-card{width:100%;display:flex;flex-direction:column;gap:10px}
+  .ai-edit-card textarea{width:100%;min-height:126px;max-height:300px;resize:vertical;padding:14px 15px;border-radius:13px;border:1px solid rgba(255,255,255,.15);background:#292929;color:#fff;font:inherit;line-height:1.5;outline:none}
+  .ai-edit-card>div{display:flex;justify-content:flex-end;gap:8px}.ai-edit-card button{height:35px;padding:0 15px;border-radius:999px;border:1px solid rgba(255,255,255,.15);background:#171717;color:#fff;font-weight:800;cursor:pointer}.ai-edit-card button.primary{background:#f4f4f5;color:#080808;border-color:#f4f4f5}
+  .ai-edit-textarea{width:100%;min-height:112px;max-height:260px;resize:vertical;padding:13px;border-radius:13px;border:1px solid rgba(255,255,255,.15);background:#292929;color:#fff;font:inherit;line-height:1.5;outline:none}
+  .ai-edit-textarea:focus{border-color:rgba(255,255,255,.36)}
+  .ai-edit-actions{display:flex;justify-content:flex-end;gap:8px}
+  .ai-edit-actions button{height:35px;padding:0 15px;border-radius:999px;border:1px solid rgba(255,255,255,.15);background:#171717;color:#fff;font-weight:800;cursor:pointer}
+  .ai-edit-actions .send{background:#f4f4f5;color:#080808;border-color:#f4f4f5}
+  .ai-audio-loading-card{width:min(430px,100%);height:116px;margin-top:10px;border-radius:14px;background:#050505;border:1px solid #252525;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+  .ai-audio-loading-card::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent,rgba(255,255,255,.06),transparent);transform:translateX(-100%);animation:aiAudioSweep 1.6s infinite}
+  @keyframes aiAudioSweep{to{transform:translateX(100%)}}
+  .ai-audio-message{width:min(460px,100%);margin-top:10px;padding:11px;border:1px solid rgba(255,255,255,.1);border-radius:13px;background:#0b0b0b}
+  .ai-audio-message-head{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+  .ai-audio-message-head>i{width:34px;height:34px;border:1px solid var(--border);border-radius:10px;display:grid;place-items:center;color:#fff;background:#171717;flex:0 0 auto}.ai-audio-message-head>div{min-width:0;flex:1}.ai-audio-message-head strong{display:block;color:#fff;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ai-audio-message-head span{display:block;margin-top:2px;color:#82828c;font-size:10px}
+  .ai-audio-message-icon{width:34px;height:34px;border:1px solid var(--border);border-radius:10px;display:grid;place-items:center;color:#fff;background:#171717;flex:0 0 auto}
+  .ai-audio-message-meta{min-width:0;flex:1}.ai-audio-message-meta strong{display:block;color:#fff;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ai-audio-message-meta span{display:block;margin-top:2px;color:#82828c;font-size:10px}
+  .ai-audio-message audio{width:100%;height:36px;display:block}
+  .ai-audio-retry{display:inline-flex;align-items:center;gap:7px;margin-top:10px;padding:8px 12px;border:1px solid rgba(255,255,255,.14);border-radius:9px;background:#181818;color:#f4f4f5;font-weight:750;cursor:pointer}
+  .ai-audio-retry:hover{background:#222;border-color:rgba(255,255,255,.24)}
+  .ai-audio-attachment-preview{height:36px;max-width:190px;padding:0 7px;border:1px solid var(--border);border-radius:9px;background:#111;display:none;align-items:center;gap:7px;pointer-events:auto}
+  .ai-audio-attachment-preview strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;color:#fff}
+  .ai-audio-attachment-preview button{width:20px;height:20px;border:0;border-radius:6px;background:#222;color:#fff;cursor:pointer}
+  .ai-audio-preview-modal{width:min(560px,calc(100vw - 28px));padding:18px;border-radius:17px;background:#111;border:1px solid var(--border);box-shadow:0 30px 90px rgba(0,0,0,.75)}
+  .ai-audio-preview-modal audio{width:100%;margin-top:18px}
+  .ai-message-download-modal{width:min(470px,calc(100vw - 28px));padding:18px;border-radius:17px;background:linear-gradient(180deg,#171717,#0d0d0d);border:1px solid var(--border);box-shadow:0 30px 90px rgba(0,0,0,.78)}
+  .ai-message-download-card{margin:17px 0 12px;padding:14px;border:1px solid rgba(255,255,255,.1);border-radius:13px;background:#0c0c0c;display:flex;align-items:center;gap:12px}.ai-message-download-card>i{width:40px;height:40px;border:1px solid var(--border);border-radius:11px;background:#191919;display:grid;place-items:center}.ai-message-download-card strong,.ai-message-download-card span{display:block}.ai-message-download-card strong{font-size:13px}.ai-message-download-card span{margin-top:3px;color:#8b8b95;font-size:10px}
+  .ai-message-download-confirm{width:100%;height:42px;border:1px solid #f4f4f5;border-radius:11px;background:#f4f4f5;color:#090909;font-weight:850;cursor:pointer}.ai-message-download-confirm:hover{background:#fff}.ai-message-download-confirm:disabled{cursor:wait;opacity:.62}
+  .ai-library-audio-actions{display:flex;align-items:center;gap:5px}
+  .ai-library-play{width:30px;height:30px;border:1px solid var(--border);border-radius:8px;background:#191919;color:#fff;cursor:pointer}
+  html.hv-ai-light-mode :is(.ai-response-more-menu,.ai-sources-panel,.ai-source-card,.ai-audio-message,.ai-audio-preview-modal,.ai-message-download-modal,.ai-message-download-card,.ai-edit-textarea){background:#fff!important;color:#111827!important;border-color:#cbd5e1!important}
+  html.hv-ai-light-mode :is(.ai-source-title,.ai-audio-message-meta strong,.ai-edit-textarea){color:#111827!important}
+  @media(max-width:620px){.ai-sources-panel{top:52px;width:100%}.ai-response-tools,.ai-user-tools{gap:2px}.ai-tool-button{width:28px;height:28px}.message.user.ai-editing{width:94%;max-width:94%}}
 
   </style>
 
@@ -13758,6 +13896,7 @@ html.hv-site-viewer-enter #html-viewer-app{
         <button class="ai-library-filter active" type="button" data-library-filter="all">All</button>
         <button class="ai-library-filter" type="button" data-library-filter="image">Images</button>
         <button class="ai-library-filter" type="button" data-library-filter="file">Files</button>
+        <button class="ai-library-filter" type="button" data-library-filter="audio">Audio</button>
       </div>
     </div>
 
@@ -13796,15 +13935,66 @@ html.hv-site-viewer-enter #html-viewer-app{
   </div>
 
   <div id="library-card-menu" class="ai-library-card-menu">
+    <button type="button" data-library-menu-action="play">
+      <i class="fa-solid fa-play"></i>
+      Play / Preview
+    </button>
     <button type="button" data-library-menu-action="download">
       <i class="fa-solid fa-download"></i>
       Download
+    </button>
+
+    <button type="button" data-library-menu-action="rename">
+      <i class="fa-solid fa-pen"></i>
+      Rename
     </button>
 
     <button type="button" data-library-menu-action="delete">
       <i class="fa-solid fa-trash"></i>
       Delete
     </button>
+  </div>
+</div>
+
+<div id="audio-preview-overlay" class="modal-overlay ai-text-file-modal-overlay" aria-hidden="true">
+  <div class="ai-audio-preview-modal" role="dialog" aria-modal="true" aria-labelledby="audio-preview-title">
+    <div class="ai-library-top">
+      <div>
+        <div class="ai-library-title" id="audio-preview-title">Audio preview</div>
+        <div class="ai-library-kind" id="audio-preview-meta">Saved audio</div>
+      </div>
+      <button id="audio-preview-close" class="ai-library-close" type="button" aria-label="Close audio preview"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <audio id="audio-preview-player" controls preload="metadata"></audio>
+  </div>
+</div>
+
+<aside class="ai-sources-panel" id="aiSourcesPanel" aria-hidden="true" aria-label="Response sources">
+  <div class="ai-sources-head">
+    <div class="ai-sources-title"><i class="fa-solid fa-book-open"></i> Sources <span class="ai-sources-count" id="aiSourcesCount">0</span></div>
+    <button class="ai-library-close" id="aiSourcesClose" type="button" aria-label="Close sources"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="ai-sources-list" id="aiSourcesList"></div>
+</aside>
+
+<div class="ai-response-more-menu" id="aiResponseMoreMenu" role="menu" aria-hidden="true">
+  <div class="ai-response-menu-date" id="aiResponseMenuDate"></div>
+  <button type="button" data-ai-menu-action="sources"><i class="fa-regular fa-map"></i> View Sources</button>
+  <button type="button" data-ai-menu-action="branch"><i class="fa-solid fa-code-branch"></i> Branch in New Chat</button>
+  <button type="button" data-ai-menu-action="read"><i class="fa-solid fa-volume-high"></i> <span>Read Aloud</span></button>
+</div>
+
+<div id="ai-message-download-overlay" class="modal-overlay ai-text-file-modal-overlay" aria-hidden="true">
+  <div class="ai-message-download-modal" role="dialog" aria-modal="true" aria-labelledby="ai-message-download-title">
+    <div class="ai-library-top">
+      <div>
+        <div class="ai-library-title" id="ai-message-download-title">Download response</div>
+        <div class="ai-library-kind" id="ai-message-download-summary">Prepare this chat response for download.</div>
+      </div>
+      <button id="ai-message-download-close" class="ai-library-close" type="button" aria-label="Close response download"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="ai-message-download-card"><i class="fa-solid fa-file-arrow-down"></i><div><strong id="ai-message-download-name">AI response</strong><span id="ai-message-download-detail">Text document</span></div></div>
+    <button id="ai-message-download-confirm" class="ai-message-download-confirm" type="button"><i class="fa-solid fa-download"></i> Download response</button>
   </div>
 </div>
 
@@ -14011,6 +14201,16 @@ html.hv-site-viewer-enter #html-viewer-app{
     <div class="input-wrap">
   <div class="input-row">
 
+    <div class="voice-entry-wrap" id="voiceEntryWrap">
+      <button id="mic-btn" class="icon-btn ai-tip" aria-label="Voice options" aria-haspopup="menu" aria-expanded="false" type="button">
+        <i class="fa-solid fa-microphone"></i>
+      </button>
+      <div class="voice-entry-menu" id="voiceEntryMenu" role="menu">
+        <button id="voiceToTextBtn" type="button" role="menuitem"><i class="fa-solid fa-microphone-lines"></i>Voice to text</button>
+        <button id="voiceToVoiceBtn" type="button" role="menuitem"><i class="fa-solid fa-wave-square"></i>Voice to voice</button>
+      </div>
+    </div>
+
     <button id="image-btn" class="icon-btn ai-tip" aria-label="Add image" type="button">
       <i class="fa-solid fa-image"></i>
       <span class="ai-hover-tooltip">Add image</span>
@@ -14021,15 +14221,10 @@ html.hv-site-viewer-enter #html-viewer-app{
       <span class="ai-hover-tooltip">Attach code file</span>
     </button>
 
-    <div class="voice-entry-wrap" id="voiceEntryWrap">
-      <button id="mic-btn" class="icon-btn ai-tip" aria-label="Voice options" aria-haspopup="menu" aria-expanded="false" type="button">
-        <i class="fa-solid fa-microphone"></i>
-      </button>
-      <div class="voice-entry-menu" id="voiceEntryMenu" role="menu">
-        <button id="voiceToTextBtn" type="button" role="menuitem"><i class="fa-solid fa-microphone-lines"></i>Voice to text</button>
-        <button id="voiceToVoiceBtn" type="button" role="menuitem"><i class="fa-solid fa-wave-square"></i>Voice to voice</button>
-      </div>
-    </div>
+    <button id="audio-file-btn" class="icon-btn ai-tip" aria-label="Attach audio file" type="button">
+      <i class="fa-solid fa-headphones"></i>
+      <span class="ai-hover-tooltip">Attach audio</span>
+    </button>
 
     <div id="listening" class="listening" style="display:none;">
       <i class="fa-solid fa-circle-notch fa-spin"></i> Listening…
@@ -14114,6 +14309,12 @@ html.hv-site-viewer-enter #html-viewer-app{
 
       </div>
 
+      <div id="audio-file-preview" class="ai-audio-attachment-preview">
+        <i class="fa-solid fa-wave-square"></i>
+        <strong id="audio-file-preview-name">Audio</strong>
+        <button id="audio-file-preview-remove" type="button" aria-label="Remove audio attachment"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
     </div>
 
     <button id="send-btn" class="send-btn" title="Send" type="button">
@@ -14127,6 +14328,8 @@ html.hv-site-viewer-enter #html-viewer-app{
   type="file"
   accept=".html,htm,css,js,jsx,ts,tsx,txt,text/html,text/css,text/javascript,text/plain"
 >
+
+<input id="audio-file-input" type="file" hidden accept="audio/mpeg,audio/wav,audio/x-wav,audio/mp4,audio/aac,audio/ogg,audio/webm,audio/flac,.mp3,.wav,.m4a,.aac,.ogg,.webm,.flac">
 
   </div>
 </div>
@@ -14383,6 +14586,28 @@ const aiModelLearnMore = document.getElementById('aiModelLearnMore');
   const libraryCardMenu = document.getElementById('library-card-menu');
   const librarySortDateBtn = document.getElementById('library-sort-date');
   const librarySortSizeBtn = document.getElementById('library-sort-size');
+  const audioFileBtn = document.getElementById('audio-file-btn');
+  const audioFileInput = document.getElementById('audio-file-input');
+  const audioFilePreview = document.getElementById('audio-file-preview');
+  const audioFilePreviewName = document.getElementById('audio-file-preview-name');
+  const audioFilePreviewRemove = document.getElementById('audio-file-preview-remove');
+  const audioPreviewOverlay = document.getElementById('audio-preview-overlay');
+  const audioPreviewClose = document.getElementById('audio-preview-close');
+  const audioPreviewPlayer = document.getElementById('audio-preview-player');
+  const audioPreviewTitle = document.getElementById('audio-preview-title');
+  const audioPreviewMeta = document.getElementById('audio-preview-meta');
+  const aiSourcesPanel = document.getElementById('aiSourcesPanel');
+  const aiSourcesClose = document.getElementById('aiSourcesClose');
+  const aiSourcesCount = document.getElementById('aiSourcesCount');
+  const aiSourcesList = document.getElementById('aiSourcesList');
+  const aiResponseMoreMenu = document.getElementById('aiResponseMoreMenu');
+  const aiResponseMenuDate = document.getElementById('aiResponseMenuDate');
+  const aiMessageDownloadOverlay = document.getElementById('ai-message-download-overlay');
+  const aiMessageDownloadClose = document.getElementById('ai-message-download-close');
+  const aiMessageDownloadSummary = document.getElementById('ai-message-download-summary');
+  const aiMessageDownloadName = document.getElementById('ai-message-download-name');
+  const aiMessageDownloadDetail = document.getElementById('ai-message-download-detail');
+  const aiMessageDownloadConfirm = document.getElementById('ai-message-download-confirm');
 
   const shareHistoryBtn = document.getElementById('share-history-btn');
   const newChatBtn = document.getElementById('new-chat-btn');
@@ -14431,6 +14656,9 @@ const textFileModalContent = document.getElementById('text-file-modal-content');
   let selectedImageLibraryPromise = null;
   
   let selectedTextFile = null;
+  let selectedAudioFile = null;
+  let aiResponseMenuMessageId = null;
+  let aiReadingMessageId = null;
 let pendingDeleteChatId = null;
 let pendingRenameChatId = null;
 let aiTextFileCardId = 0;
@@ -14549,7 +14777,9 @@ function aiLibraryLoadFallback(){
     const parsed =
       raw ? JSON.parse(raw) : [];
 
-    return Array.isArray(parsed) ? parsed : [];
+    return Array.isArray(parsed)
+      ? parsed.filter(item => item && item.kind !== 'audio')
+      : [];
 
   }catch(e){
 
@@ -14569,7 +14799,7 @@ function aiLibrarySaveFallback(){
 
     localStorage.setItem(
       AI_LIBRARY_FALLBACK_KEY,
-      JSON.stringify(aiLibraryItems)
+      JSON.stringify(aiLibraryItems.filter(item => item && item.kind !== 'audio'))
     );
 
   }catch(e){
@@ -14722,7 +14952,7 @@ async function aiLibraryLoadItems(){
 
   aiLibraryItems =
     aiLibraryItems
-      .filter(item => item && item.id && (item.kind === 'image' || item.kind === 'file'))
+      .filter(item => item && item.id && (item.kind === 'image' || item.kind === 'file' || item.kind === 'audio'))
       .sort((a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
 
   await aiLibraryMigrateGeneratedNames();
@@ -14785,6 +15015,13 @@ function aiLibraryExtensionFromMime(mime){
   if(type.includes('webp')) return 'webp';
   if(type.includes('gif')) return 'gif';
   if(type.includes('svg')) return 'svg';
+  if(type.includes('mpeg') || type.includes('mp3')) return 'mp3';
+  if(type.includes('wav')) return 'wav';
+  if(type.includes('mp4') || type.includes('m4a')) return 'm4a';
+  if(type.includes('aac')) return 'aac';
+  if(type.includes('ogg')) return 'ogg';
+  if(type.includes('webm')) return 'webm';
+  if(type.includes('flac')) return 'flac';
 
   return 'png';
 
@@ -14839,7 +15076,14 @@ function aiLibraryMimeFromExtension(extension){
     xml:'application/xml',
     md:'text/markdown',
     py:'text/x-python',
-    txt:'text/plain'
+    txt:'text/plain',
+    mp3:'audio/mpeg',
+    wav:'audio/wav',
+    m4a:'audio/mp4',
+    aac:'audio/aac',
+    ogg:'audio/ogg',
+    webm:'audio/webm',
+    flac:'audio/flac'
   };
 
   return map[ext] || 'text/plain';
@@ -14901,31 +15145,48 @@ async function aiLibraryAddItem(data){
     await aiLibraryReady.catch(() => null);
   }
 
-  const kind =
-    data && data.kind === 'image' ? 'image' : 'file';
+  const requestedKind = String(data?.kind || 'file');
+  const kind = requestedKind === 'image' || requestedKind === 'audio'
+    ? requestedKind
+    : 'file';
 
   const item = {
     id:aiLibraryCreateId(),
     kind:kind,
-    name:String(data?.name || (kind === 'image' ? 'Image.png' : 'File.txt')),
-    mime:String(data?.mime || (kind === 'image' ? 'image/png' : 'text/plain')),
+    name:String(data?.name || (kind === 'image' ? 'Image.png' : kind === 'audio' ? 'Audio.wav' : 'File.txt')),
+    mime:String(data?.mime || (kind === 'image' ? 'image/png' : kind === 'audio' ? 'audio/wav' : 'text/plain')),
     size:Number(data?.size || 0),
     createdAt:Number(data?.createdAt || Date.now()),
     source:String(data?.source || 'user'),
     chatId:String(data?.chatId || currentChatId || ''),
     base64:kind === 'image' ? String(data?.base64 || '') : '',
     content:kind === 'file' ? String(data?.content || '') : '',
-    language:kind === 'file' ? String(data?.language || 'text') : ''
+    language:kind === 'file' ? String(data?.language || 'text') : '',
+    blob:kind === 'audio' && data?.blob instanceof Blob ? data.blob : null,
+    duration:kind === 'audio' ? Math.max(0,Number(data?.duration || 0)) : 0,
+    ttsInput:kind === 'audio' ? String(data?.ttsInput || '') : '',
+    ttsVoice:kind === 'audio' ? String(data?.ttsVoice || '') : '',
+    speakers:kind === 'audio' && Array.isArray(data?.speakers) ? data.speakers.slice(0,2) : []
   };
 
   if(!item.size){
     item.size = kind === 'image'
       ? aiLibraryBase64Size(item.base64)
-      : aiLibraryTextSize(item.content);
+      : kind === 'audio'
+        ? Number(item.blob?.size || 0)
+        : aiLibraryTextSize(item.content);
   }
 
   if(kind === 'image' && !item.base64){
     return null;
+  }
+
+  if(kind === 'audio' && !(item.blob instanceof Blob)){
+    throw new Error('Audio must be stored as a Blob in IndexedDB.');
+  }
+
+  if(kind === 'audio' && !aiLibraryDb){
+    throw new Error('IndexedDB is required to save audio without using localStorage.');
   }
 
   try{
@@ -14936,6 +15197,9 @@ async function aiLibraryAddItem(data){
 
   }catch(e){
 
+    if(kind === 'audio'){
+      throw new Error('The browser could not store this audio in IndexedDB.');
+    }
     console.warn('IndexedDB library save failed. Using local fallback.', e);
     aiLibraryUsesFallback = true;
 
@@ -14947,7 +15211,9 @@ async function aiLibraryAddItem(data){
     (a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0)
   );
 
-  aiLibrarySaveFallback();
+  if(kind !== 'audio'){
+    aiLibrarySaveFallback();
+  }
   aiRenderLibrary();
   aiNotifyStorageChanged();
 
@@ -15026,8 +15292,8 @@ async function aiLibraryDeleteItem(itemId,options){
   if(item && !settings.silent){
     aiNotifyParent(
       'delete',
-      item.kind === 'image' ? 'Library image deleted' : 'Library file deleted',
-      'Deleted "' + (item.name || (item.kind === 'image' ? 'image' : 'file')) + '" from the AI library.'
+      item.kind === 'image' ? 'Library image deleted' : item.kind === 'audio' ? 'Library audio deleted' : 'Library file deleted',
+      'Deleted "' + (item.name || (item.kind === 'image' ? 'image' : item.kind === 'audio' ? 'audio' : 'file')) + '" from the AI library.'
     );
   }
 
@@ -15066,6 +15332,10 @@ function aiLibraryFileIcon(name){
 
   const extension =
     String(name || '').split('.').pop().toLowerCase();
+
+  if(['mp3','wav','m4a','aac','ogg','webm','flac'].includes(extension)){
+    return 'fa-solid fa-wave-square';
+  }
 
   if(extension === 'html' || extension === 'htm'){
     return 'fa-solid fa-globe';
@@ -15264,7 +15534,7 @@ function aiRenderLibrary(){
         thumbnail +
         '<div class="ai-library-name-wrap">' +
           '<div class="ai-library-name" title="' + escapeHtml(item.name) + '">' + escapeHtml(item.name) + '</div>' +
-          '<div class="ai-library-kind">' + (item.kind === 'image' ? 'Image' : 'File') + '</div>' +
+          '<div class="ai-library-kind">' + (item.kind === 'image' ? 'Image' : item.kind === 'audio' ? 'Audio' : 'File') + '</div>' +
           '<div class="ai-library-mobile-meta">' + escapeHtml(dateText + ' • ' + sizeText) + '</div>' +
         '</div>' +
       '</div>' +
@@ -15325,6 +15595,11 @@ function aiLibraryOpenItem(item){
 
   }
 
+  if(item.kind === 'audio'){
+    aiOpenAudioPreview(item);
+    return;
+  }
+
   aiOpenTextFileModal({
     name:item.name,
     type:item.mime,
@@ -15383,7 +15658,9 @@ function aiLibraryDownloadItem(item){
     const blob =
       item.kind === 'image'
         ? aiLibraryBase64ToBlob(item.base64, item.mime)
-        : new Blob(
+        : item.kind === 'audio' && item.blob instanceof Blob
+          ? item.blob
+          : new Blob(
             [String(item.content || '')],
             { type:item.mime || 'text/plain;charset=utf-8' }
           );
@@ -15391,13 +15668,13 @@ function aiLibraryDownloadItem(item){
     const fileName =
       String(
         item.name ||
-        (item.kind === 'image' ? 'image.png' : 'file.txt')
+        (item.kind === 'image' ? 'image.png' : item.kind === 'audio' ? 'audio.wav' : 'file.txt')
       );
 
     const notifyDownload = () => {
       aiNotifyParent(
         'download',
-        item.kind === 'image' ? 'Library image downloaded' : 'Library file downloaded',
+        item.kind === 'image' ? 'Library image downloaded' : item.kind === 'audio' ? 'Library audio downloaded' : 'Library file downloaded',
         'Downloaded "' + fileName + '" from the AI library.'
       );
     };
@@ -15460,6 +15737,78 @@ function aiLibraryDownloadItem(item){
 
   aiLibraryHideMenu();
 
+}
+
+function aiFormatAudioDuration(seconds){
+  const value = Math.max(0,Math.round(Number(seconds || 0)));
+  return Math.floor(value / 60) + ':' + String(value % 60).padStart(2,'0');
+}
+
+function aiAudioDurationFromBlob(blob){
+  return new Promise(resolve => {
+    if(!(blob instanceof Blob)) return resolve(0);
+    const url = URL.createObjectURL(blob);
+    const audio = document.createElement('audio');
+    const done = value => {
+      URL.revokeObjectURL(url);
+      resolve(Number.isFinite(value) ? value : 0);
+    };
+    audio.preload = 'metadata';
+    audio.onloadedmetadata = () => done(audio.duration);
+    audio.onerror = () => done(0);
+    audio.src = url;
+  });
+}
+
+let aiAudioPreviewUrl = '';
+
+function aiCloseAudioPreview(){
+  if(audioPreviewPlayer){
+    audioPreviewPlayer.pause();
+    audioPreviewPlayer.removeAttribute('src');
+    audioPreviewPlayer.load();
+  }
+  if(aiAudioPreviewUrl){
+    URL.revokeObjectURL(aiAudioPreviewUrl);
+    aiActiveObjectUrls.delete(aiAudioPreviewUrl);
+    aiAudioPreviewUrl = '';
+  }
+  audioPreviewOverlay?.classList.remove('active');
+  audioPreviewOverlay?.setAttribute('aria-hidden','true');
+}
+
+function aiOpenAudioPreview(item){
+  if(!item || item.kind !== 'audio' || !(item.blob instanceof Blob) || !audioPreviewPlayer) return;
+  aiCloseAudioPreview();
+  aiAudioPreviewUrl = URL.createObjectURL(item.blob);
+  aiActiveObjectUrls.add(aiAudioPreviewUrl);
+  audioPreviewPlayer.src = aiAudioPreviewUrl;
+  if(audioPreviewTitle) audioPreviewTitle.textContent = item.name || 'Audio preview';
+  if(audioPreviewMeta){
+    audioPreviewMeta.textContent = [
+      aiFormatAudioDuration(item.duration),
+      item.mime || 'audio',
+      aiLibraryFormatBytes(item.size),
+      item.source === 'ai' ? 'AI generated' : 'Uploaded'
+    ].join(' · ');
+  }
+  audioPreviewOverlay.classList.add('active');
+  audioPreviewOverlay.setAttribute('aria-hidden','false');
+  audioPreviewPlayer.play().catch(() => null);
+}
+
+async function aiRenameLibraryItem(item){
+  if(!item) return;
+  const nextName = window.prompt('Rename library item',item.name || '');
+  if(nextName === null) return;
+  const clean = String(nextName).trim().replace(/[\\/:*?"<>|]+/g,'_').slice(0,160);
+  if(!clean || clean === item.name) return;
+  item.name = clean;
+  if(aiLibraryDb) await aiLibraryPutInDb(item);
+  else if(item.kind !== 'audio') aiLibrarySaveFallback();
+  aiLibraryHideMenu();
+  aiRenderLibrary();
+  aiNotifyStorageChanged();
 }
 
 function aiLibraryShowMenu(itemId, button){
@@ -15702,6 +16051,14 @@ function aiInitLibraryUi(){
         aiLibraryDownloadItem(item);
       }
 
+      if(actionButton.dataset.libraryMenuAction === 'play'){
+        aiLibraryOpenItem(item);
+      }
+
+      if(actionButton.dataset.libraryMenuAction === 'rename'){
+        aiRenameLibraryItem(item).catch(error => console.warn('Library rename failed.',error));
+      }
+
       if(actionButton.dataset.libraryMenuAction === 'delete'){
         aiLibraryDeleteItem(aiLibraryMenuItemId);
       }
@@ -15725,10 +16082,48 @@ function aiInitLibraryUi(){
 
   window.addEventListener('resize', aiLibraryHideMenu);
 
+  audioPreviewClose?.addEventListener('click',aiCloseAudioPreview);
+  audioPreviewOverlay?.addEventListener('click',event => {
+    if(event.target === audioPreviewOverlay) aiCloseAudioPreview();
+  });
+
+  audioFileBtn?.addEventListener('click',() => audioFileInput?.click());
+  audioFileInput?.addEventListener('change',async event => {
+    const file = event.target.files?.[0];
+    if(!file) return;
+    const allowed = /^(audio\/(?:mpeg|wav|x-wav|mp4|aac|ogg|webm|flac))$/i.test(file.type) ||
+      /\.(?:mp3|wav|m4a|aac|ogg|webm|flac)$/i.test(file.name);
+    if(!allowed){
+      aiNotifyParent('error','Unsupported audio file','Choose MP3, WAV, M4A, AAC, OGG, WebM, or FLAC audio.');
+      event.target.value = '';
+      return;
+    }
+    try{
+      const duration = await aiAudioDurationFromBlob(file);
+      const item = await aiLibraryAddItem({
+        kind:'audio',name:file.name,mime:file.type || aiLibraryMimeFromExtension(file.name.split('.').pop()),
+        size:file.size,blob:file,duration,source:'user'
+      });
+      selectedAudioFile = item;
+      if(audioFilePreviewName) audioFilePreviewName.textContent = item.name;
+      if(audioFilePreview) audioFilePreview.style.display = 'flex';
+    }catch(error){
+      aiNotifyParent('error','Audio not attached',error.message || 'The audio file could not be stored.');
+    }finally{
+      event.target.value = '';
+    }
+  });
+  audioFilePreviewRemove?.addEventListener('click',() => {
+    selectedAudioFile = null;
+    if(audioFilePreview) audioFilePreview.style.display = 'none';
+    if(audioFilePreviewName) audioFilePreviewName.textContent = '';
+  });
+
   document.addEventListener('keydown', e => {
 
-    if(e.key === 'Escape' && libraryModalOverlay?.classList.contains('active')){
-      aiCloseLibraryModal();
+    if(e.key === 'Escape'){
+      if(audioPreviewOverlay?.classList.contains('active')) aiCloseAudioPreview();
+      else if(libraryModalOverlay?.classList.contains('active')) aiCloseLibraryModal();
     }
 
   });
@@ -16004,6 +16399,16 @@ function aiInitModelPicker(){
       
       chat.history.forEach(msg => {
 
+  if(msg.role === 'assistant') msg.role = 'model';
+
+  msg.messageId = msg.messageId || aiCreateMessageId(msg.role || 'message');
+  msg.createdAt = Number(msg.createdAt || chat.updatedAt || chat.createdAt || Date.now());
+  if(msg.role === 'model'){
+    msg.model = msg.model || chat.model || AI_DEFAULT_MODEL_ID;
+    msg.citations = Array.isArray(msg.citations) ? msg.citations : [];
+    msg.rating = msg.rating === 'like' || msg.rating === 'dislike' ? msg.rating : '';
+  }
+
   if(msg.role === 'model' && msg.thoughtSec === undefined){
     msg.thoughtSec = null;
   }
@@ -16196,6 +16601,13 @@ async function deleteChat(chatId,options){
 
 }
 
+function aiCreateMessageId(prefix){
+  if(window.crypto && typeof window.crypto.randomUUID === 'function'){
+    return String(prefix || 'message') + '-' + window.crypto.randomUUID();
+  }
+  return String(prefix || 'message') + '-' + Date.now() + '-' + Math.random().toString(36).slice(2,10);
+}
+
 window.aiRevokeAllBlobUrls = function(){
   [...aiActiveObjectUrls].forEach(url => {
     try{ URL.revokeObjectURL(url); }catch(error){}
@@ -16218,6 +16630,9 @@ window.aiPrepareForStorageClear = function(scope){
     selectedImageLibraryId = null;
     selectedImageLibraryPromise = null;
     selectedTextFile = null;
+    selectedAudioFile = null;
+    aiCloseAudioPreview();
+    if(audioFilePreview) audioFilePreview.style.display = 'none';
     aiRenderLibrary();
   }
 
@@ -16529,7 +16944,7 @@ function aiBuildPromptWithTextFileContext(promptText){
 
 }
 
-function aiBuildVisibleUserParts(text, imageBase64, imageMime, fileData){
+function aiBuildVisibleUserParts(text, imageBase64, imageMime, fileData, audioData){
 
   const parts = [];
 
@@ -16556,6 +16971,14 @@ function aiBuildVisibleUserParts(text, imageBase64, imageMime, fileData){
       }
     });
 
+  }
+
+  if(audioData && audioData.id){
+    parts.push({
+      audio_data:{name:audioData.name || 'Audio',mime_type:audioData.mime || 'audio/wav',size:Number(audioData.size || 0),
+        duration:Number(audioData.duration || 0),source:audioData.source || 'user',library_id:audioData.id},
+      _libraryId:audioData.id
+    });
   }
 
   if(text){
@@ -16887,6 +17310,9 @@ const textPart =
 const filePart =
   msg.parts.find(part => part.file_data);
 
+const audioPart =
+  msg.parts.find(part => part.audio_data);
+
       addMessageUI(
   isUser ? 'user' : 'system',
   textPart ? textPart.text : '',
@@ -16897,7 +17323,9 @@ const filePart =
   false,
   msg.thoughtSec !== undefined ? msg.thoughtSec : null,
   filePart ? filePart.file_data : null,
-  msg.reply || null
+  msg.reply || null,
+  msg,
+  audioPart ? audioPart.audio_data : null
 );
 
     });
@@ -18840,6 +19268,16 @@ if(textFilePreviewRemove){
     if(Date.now() - processedAt < 5000) return;
     voiceProcessedUsers.set(clean,Date.now());
     try{
+      if(aiShouldUseTtsModel(clean)){
+        voiceIntentOutcomes.set(clean,'audio-generation');
+        aiVoiceSyncToNormalChat('user',clean);
+        aiVoiceShowCaption('assistant','Creating that voice audio now.',false);
+        await aiSendTtsGenerationMessage(clean);
+        if(voiceSessionWanted){
+          aiVoiceSetState(voiceMuted ? 'muted' : 'listening',voiceMuted ? 'Muted' : 'Listening');
+        }
+        return;
+      }
       const fallbackAction = aiVoiceFallbackUiAction(clean);
       if(!fallbackAction && aiVoiceIsExplicitCodingRequest(clean)){
         await aiVoiceRunAutonomousCodingWorkflow(clean);
@@ -20638,14 +21076,18 @@ async function aiSendImageGenerationMessage(text){
     null
   );
 
-  chat.history.push({
+  const imageUserMessage = {
     role:'user',
+    messageId:aiCreateMessageId('user'),
+    createdAt:Date.now(),
     parts:[
       {
         text:text
       }
     ]
-  });
+  };
+  chat.history.push(imageUserMessage);
+  aiEnhanceRenderedMessage(chatEl.lastElementChild,imageUserMessage);
 
   chat.model =
     AI_IMAGE_MODEL_ID;
@@ -20710,8 +21152,14 @@ const timerInterval =
       durationSec
     );
 
-    chat.history.push({
+    const imageAssistantMessage = {
       role:'model',
+      messageId:aiCreateMessageId('assistant'),
+      createdAt:Date.now(),
+      model:AI_IMAGE_MODEL_ID,
+      originalPrompt:text,
+      citations:[],
+      rating:'',
       modelType:'image-generation',
       parts:[
         {
@@ -20726,7 +21174,10 @@ const timerInterval =
         }
       ],
       thoughtSec:durationSec
-    });
+    };
+    chat.history.push(imageAssistantMessage);
+    const imageMessageNode = document.getElementById(systemId);
+    if(imageMessageNode) aiEnhanceRenderedMessage(imageMessageNode,imageAssistantMessage);
 
     chat.updatedAt =
       Date.now();
@@ -20773,7 +21224,12 @@ if(aiShouldUseImageModel(text, model)){
   return;
 }
 
-    if(!text && !selectedImageBase64 && !selectedTextFile){
+if(aiShouldUseTtsModel(text)){
+  await aiSendTtsGenerationMessage(text);
+  return;
+}
+
+    if(!text && !selectedImageBase64 && !selectedTextFile && !selectedAudioFile){
   return;
 }
 
@@ -20791,11 +21247,17 @@ if(aiShouldUseImageModel(text, model)){
       if(item && selectedTextFile) selectedTextFile.libraryId = item.id;
     }
 
+    const audioInline = selectedAudioFile?.blob instanceof Blob
+      ? await aiBlobToBase64(selectedAudioFile.blob)
+      : '';
+
     const userParts =
   buildUserParts(
     promptText,
     selectedImageBase64,
-    selectedImageMime
+    selectedImageMime,
+    selectedAudioFile,
+    audioInline
   );
 
 const visibleUserParts =
@@ -20803,7 +21265,8 @@ const visibleUserParts =
     text,
     selectedImageBase64,
     selectedImageMime,
-    selectedTextFile
+    selectedTextFile,
+    selectedAudioFile
   );
 
   const visibleImagePart =
@@ -20833,6 +21296,11 @@ const visibleUserParts =
       welcomeEl.style.display = 'none';
     }
 
+    const userMessageData = {
+      role:'user',messageId:aiCreateMessageId('user'),createdAt:Date.now(),
+      parts:visibleUserParts,reply:sentReplyContext || null,model
+    };
+
     addMessageUI(
   'user',
   text || '',
@@ -20843,7 +21311,9 @@ const visibleUserParts =
   true,
   null,
   selectedTextFile,
-  sentReplyContext
+  sentReplyContext,
+  userMessageData,
+  selectedAudioFile ? visibleUserParts.find(part => part.audio_data)?.audio_data : null
 );
 
     conversationHistory.push({
@@ -20854,10 +21324,7 @@ const visibleUserParts =
     const chat =
       chats[currentChatId];
 
-    const visibleUserHistoryItem = {
-  role:'user',
-  parts:visibleUserParts
-};
+    const visibleUserHistoryItem = userMessageData;
 
 if(sentReplyContext){
   visibleUserHistoryItem.reply = sentReplyContext;
@@ -20887,6 +21354,10 @@ renderHistoryList();
 
 aiClearTextFileAttachment();
 
+selectedAudioFile = null;
+if(audioFilePreview) audioFilePreview.style.display = 'none';
+if(audioFilePreviewName) audioFilePreviewName.textContent = '';
+
 aiClearReplyContext();
 
     const systemId =
@@ -20914,11 +21385,12 @@ const timerInterval =
 
     try{
 
-      const resText =
-        await callGeminiWithHistory(
+      const geminiResult =
+        await callGeminiResultWithHistory(
           model,
           conversationHistory
         );
+      const resText = geminiResult.text;
 
       const durationSec =
         Math.round((Date.now() - startTime) / 1000);
@@ -20936,12 +21408,22 @@ const timerInterval =
         parts:[{ text:resText }]
       });
 
-      chat.history.push({
+      const assistantMessage = {
   role:'model',
   parts:[{ text:resText }],
   _libraryIds:generatedCodeItems.map(item => item.id),
-  thoughtSec:durationSec
-});
+  thoughtSec:durationSec,
+  messageId:aiCreateMessageId('assistant'),
+  createdAt:Date.now(),
+  model,
+  originalPrompt:text,
+  citations:geminiResult.citations,
+  rating:''
+};
+      chat.history.push(assistantMessage);
+
+      const renderedMessage = document.getElementById(systemId);
+      if(renderedMessage) aiEnhanceRenderedMessage(renderedMessage,assistantMessage);
 
 chat.updatedAt =
   Date.now();
@@ -20960,10 +21442,49 @@ aiNotifyParent(
 
       clearInterval(timerInterval);
 
+      const durationSec =
+        Math.max(0, Math.round((Date.now() - startTime) / 1000));
+
+      const failureText = aiFormatGeminiFailure(err);
+
+      const failedMessage = document.getElementById(systemId);
+      failedMessage?.classList.remove('ai-thinking');
+      const failedMeta = failedMessage?.querySelector('.thought-meta');
+      if(failedMeta){
+        failedMeta.textContent = aiFormatThoughtDuration(
+          durationSec,
+          false
+        );
+      }
+
       updateMessageUI(
         systemId,
-        aiFormatGeminiFailure(err)
+        failureText
       );
+
+      const failedAssistantMessage = {
+        role:'model',
+        parts:[{ text:failureText }],
+        thoughtSec:durationSec,
+        messageId:aiCreateMessageId('assistant'),
+        createdAt:Date.now(),
+        model,
+        originalPrompt:text,
+        citations:[],
+        rating:'',
+        error:true
+      };
+
+      chat.history.push(failedAssistantMessage);
+      chat.updatedAt = Date.now();
+      saveChats();
+      renderHistoryList();
+
+      const renderedFailure = document.getElementById(systemId);
+      if(renderedFailure){
+        aiEnhanceRenderedMessage(renderedFailure,failedAssistantMessage);
+      }
+
       return '';
 
     }
@@ -20982,7 +21503,7 @@ aiNotifyParent(
       );
   }
 
-  function buildUserParts(text, imageBase64, imageMime){
+  function buildUserParts(text, imageBase64, imageMime, audioItem, audioBase64){
 
   const parts = [];
 
@@ -21013,15 +21534,48 @@ aiNotifyParent(
 
   }
 
-  if(text){
-    parts.push({ text:text });
+  if(audioItem && audioBase64){
+    parts.push({ inline_data:{ mime_type:audioItem.mime || 'audio/wav', data:audioBase64 } });
   }
+
+  if(text){ parts.push({ text:text }); }
 
   return parts;
 
 }
 
-  async function callGeminiWithHistory(model, history){
+  function aiExtractGeminiCitations(groundingMetadata){
+    const chunks = Array.isArray(groundingMetadata?.groundingChunks)
+      ? groundingMetadata.groundingChunks
+      : [];
+    const supports = Array.isArray(groundingMetadata?.groundingSupports)
+      ? groundingMetadata.groundingSupports
+      : [];
+    const excerpts = new Map();
+    supports.forEach(support => {
+      const excerpt = String(support?.segment?.text || '').trim();
+      (support?.groundingChunkIndices || []).forEach(index => {
+        if(excerpt && !excerpts.has(index)) excerpts.set(index,excerpt);
+      });
+    });
+    const seen = new Set();
+    return chunks.map((chunk,index) => {
+      const web = chunk?.web;
+      const url = String(web?.uri || '').trim();
+      if(!url || seen.has(url)) return null;
+      seen.add(url);
+      let domain = '';
+      try{ domain = new URL(url).hostname.replace(/^www\./,''); }catch(error){}
+      return {
+        title:String(web?.title || domain || 'Source'),
+        url,
+        domain,
+        excerpt:excerpts.get(index) || ''
+      };
+    }).filter(Boolean);
+  }
+
+  async function callGeminiResultWithHistory(model, history){
     let customConfig = null;
     try{
       customConfig = JSON.parse(
@@ -21043,7 +21597,10 @@ aiNotifyParent(
             'Content-Type':'application/json',
             'x-goog-api-key':apiKey
           },
-          body:JSON.stringify({ contents:history })
+          body:JSON.stringify({
+            contents:history,
+            tools:[{ googleSearch:{} }]
+          })
         }
       );
       if(!response.ok){
@@ -21088,7 +21645,8 @@ aiNotifyParent(
         },
         body:JSON.stringify({
           model,
-          contents:history
+          contents:history,
+          grounding:true
         })
       });
 
@@ -21112,10 +21670,16 @@ aiNotifyParent(
       throw new Error('No valid response from Gemini.');
     }
 
-    return candidate.content.parts
-      .map(part => part.text || '')
-      .join(' ');
+    return {
+      text:candidate.content.parts.map(part => part.text || '').join(' '),
+      citations:aiExtractGeminiCitations(candidate.groundingMetadata)
+    };
 
+  }
+
+  async function callGeminiWithHistory(model,history){
+    const result = await callGeminiResultWithHistory(model,history);
+    return result.text;
   }
 
   function startThinkingTimer(systemId){
@@ -21218,7 +21782,381 @@ chatEl.scrollTop =
 
   }
 
-  function addMessageUI(role, text, hasImage, imageBase64, imageMime, id, isLive, thoughtSec, fileData, replyData){
+function aiBlobToBase64(blob){
+  return new Promise((resolve,reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || '').split(',')[1] || '');
+    reader.onerror = () => reject(reader.error || new Error('Unable to read audio.'));
+    reader.readAsDataURL(blob);
+  });
+}
+
+function aiFindMessage(messageId){
+  for(const chat of Object.values(chats)){
+    const message = chat?.history?.find(item => item?.messageId === messageId);
+    if(message) return {chat,message};
+  }
+  return null;
+}
+
+function aiMessageText(message){
+  return (message?.parts || []).filter(part => part?.text).map(part => part.text).join('\n');
+}
+
+function aiDownloadBlob(blob,name){
+  const url = URL.createObjectURL(blob);
+  aiActiveObjectUrls.add(url);
+  const anchor = document.createElement('a');
+  anchor.href = url; anchor.download = name; anchor.style.display = 'none';
+  document.body.appendChild(anchor); anchor.click();
+  setTimeout(() => { anchor.remove(); URL.revokeObjectURL(url); aiActiveObjectUrls.delete(url); },1500);
+}
+
+async function aiDownloadMessage(message){
+  const audioPart = message?.parts?.find(part => part?.audio_data);
+  if(audioPart){
+    const item = aiLibraryItems.find(entry => entry.id === audioPart.audio_data.library_id);
+    if(item) return aiLibraryDownloadItem(item);
+  }
+  const text = aiMessageText(message);
+  const blocks = [...text.matchAll(/```([^\n`]*)\n?([\s\S]*?)```/g)].map(match => ({
+    language:String(match[1] || 'text').trim(), code:String(match[2] || '').replace(/^\n+|\n+$/g,'')
+  })).filter(block => block.code);
+  if(blocks.length <= 1){
+    const block = blocks[0];
+    const extension = block ? aiLibraryCodeExtension(block.language) : 'txt';
+    aiDownloadBlob(new Blob([block ? block.code : text],{type:aiLibraryMimeFromExtension(extension)}),'ai-response.' + extension);
+    return;
+  }
+  const loader = window.parent?.hvLoadZipLibrary;
+  if(typeof loader !== 'function') throw new Error('ZIP support is unavailable.');
+  await loader();
+  const Zip = window.parent?.JSZip;
+  if(!Zip) throw new Error('ZIP support is unavailable.');
+  const zip = new Zip();
+  blocks.forEach((block,index) => {
+    const ext = aiLibraryCodeExtension(block.language);
+    zip.file('code-' + (index + 1) + '.' + ext,block.code);
+  });
+  aiDownloadBlob(await zip.generateAsync({type:'blob'}),'ai-response-code.zip');
+}
+
+let aiPendingDownloadMessage = null;
+
+function aiOpenMessageDownload(message){
+  if(!message || !aiMessageDownloadOverlay) return;
+  aiPendingDownloadMessage = message;
+  const text = aiMessageText(message);
+  const blocks = [...text.matchAll(/```([^\n`]*)\n?([\s\S]*?)```/g)].filter(match => String(match[2] || '').trim());
+  const audioPart = message.parts?.find(part => part?.audio_data);
+  const kind = audioPart ? 'Audio file' : blocks.length > 1 ? 'ZIP archive' : blocks.length === 1 ? 'Code file' : 'Text document';
+  if(aiMessageDownloadSummary) aiMessageDownloadSummary.textContent = audioPart
+    ? 'Download the generated audio attached to this response.'
+    : blocks.length
+      ? 'Download ' + blocks.length + ' code block' + (blocks.length === 1 ? '' : 's') + ' from this response.'
+      : 'Download the complete response as a readable text document.';
+  if(aiMessageDownloadName) aiMessageDownloadName.textContent = audioPart?.audio_data?.name || (blocks.length > 1 ? 'ai-response-code.zip' : 'AI response');
+  if(aiMessageDownloadDetail) aiMessageDownloadDetail.textContent = kind;
+  aiMessageDownloadOverlay.classList.add('active');
+  aiMessageDownloadOverlay.setAttribute('aria-hidden','false');
+  aiMessageDownloadConfirm?.focus();
+}
+
+function aiCloseMessageDownload(){
+  aiMessageDownloadOverlay?.classList.remove('active');
+  aiMessageDownloadOverlay?.setAttribute('aria-hidden','true');
+  aiPendingDownloadMessage = null;
+}
+
+async function aiSendFeedback(message,rating){
+  const found = aiFindMessage(message.messageId);
+  const history = found?.chat?.history || [];
+  const index = history.indexOf(message);
+  const prompt = [...history.slice(0,index)].reverse().find(item => item.role === 'user');
+  const nextRating = message.rating === rating ? '' : rating;
+  message.rating = nextRating;
+  saveChats();
+  renderChat();
+  if(!nextRating) return;
+  const response = await fetch(aiBackendEndpoint('/api/ai/feedback'),{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({prompt:aiMessageText(prompt),response:aiMessageText(message),model:message.model || found?.chat?.model || '',rating:nextRating,
+      date:new Date(message.createdAt || Date.now()).toISOString(),chatId:found?.chat?.id || currentChatId || '',messageId:message.messageId})
+  });
+  if(!response.ok) throw new Error(await aiReadBackendError(response,'Feedback could not be sent.'));
+}
+
+function aiRenderSources(message){
+  const sources = Array.isArray(message?.citations) ? message.citations : [];
+  aiSourcesList.innerHTML = '';
+  if(!sources.length){
+    aiSourcesList.innerHTML = '<div class="ai-sources-empty"><div><i class="fa-regular fa-map"></i><strong>No sources returned</strong>This response did not include Gemini citation metadata.</div></div>';
+  }
+  sources.forEach(source => {
+    const card = document.createElement('a');
+    card.className = 'ai-source-card'; card.href = source.url; card.target = '_blank'; card.rel = 'noopener noreferrer';
+    const favicon = source.domain ? 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(source.domain) + '&sz=32' : '';
+    card.innerHTML = '<div class="ai-source-top">' + (favicon ? '<img src="' + escapeHtml(favicon) + '" alt="">' : '<i class="fa-solid fa-globe"></i>') +
+      '<div><strong>' + escapeHtml(source.title || source.domain || 'Source') + '</strong><span>' + escapeHtml(source.domain || '') + '</span></div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>' +
+      (source.excerpt ? '<p>' + escapeHtml(source.excerpt) + '</p>' : '');
+    aiSourcesList.appendChild(card);
+  });
+  aiSourcesCount.textContent = String(sources.length);
+  aiSourcesPanel.classList.add('open'); aiSourcesPanel.setAttribute('aria-hidden','false');
+}
+
+function aiCloseSources(){ aiSourcesPanel?.classList.remove('open'); aiSourcesPanel?.setAttribute('aria-hidden','true'); }
+
+function aiUpdateReadMenu(messageId){
+  const button = aiResponseMoreMenu?.querySelector('[data-ai-menu-action="read"]');
+  if(!button) return;
+  const active = aiReadingMessageId === messageId && window.speechSynthesis?.speaking;
+  button.innerHTML = active ? '<i class="fa-solid fa-stop"></i> <span>Stop Reading</span>' : '<i class="fa-solid fa-volume-high"></i> <span>Read Aloud</span>';
+}
+
+function aiStopReading(){
+  window.speechSynthesis?.cancel(); aiReadingMessageId = null; aiUpdateReadMenu(aiResponseMenuMessageId);
+}
+
+function aiToggleReadMessage(message){
+  if(!('speechSynthesis' in window)) return;
+  if(aiReadingMessageId === message.messageId && speechSynthesis.speaking){ aiStopReading(); return; }
+  aiStopReading();
+  const utterance = new SpeechSynthesisUtterance(aiMessageText(message));
+  aiReadingMessageId = message.messageId;
+  utterance.onend = utterance.onerror = () => {
+    if(aiReadingMessageId === message.messageId) aiReadingMessageId = null;
+    aiUpdateReadMenu(aiResponseMenuMessageId);
+  };
+  speechSynthesis.speak(utterance); aiUpdateReadMenu(message.messageId);
+}
+
+function aiOpenResponseMenu(message,button){
+  aiResponseMenuMessageId = message.messageId;
+  aiResponseMenuDate.textContent = new Date(message.createdAt || Date.now()).toLocaleString([], {weekday:'long',hour:'numeric',minute:'2-digit',month:'short',day:'numeric'});
+  const sourceButton = aiResponseMoreMenu.querySelector('[data-ai-menu-action="sources"]');
+  sourceButton.hidden = false;
+  aiUpdateReadMenu(message.messageId);
+  aiResponseMoreMenu.classList.add('open'); aiResponseMoreMenu.setAttribute('aria-hidden','false');
+  const rect = button.getBoundingClientRect(); const width = aiResponseMoreMenu.offsetWidth || 200;
+  aiResponseMoreMenu.style.left = Math.max(8,Math.min(innerWidth - width - 8,rect.left)) + 'px';
+  aiResponseMoreMenu.style.top = Math.max(8,rect.bottom + 7) + 'px';
+}
+
+function aiCloseResponseMenu(){ aiResponseMoreMenu?.classList.remove('open'); aiResponseMoreMenu?.setAttribute('aria-hidden','true'); }
+
+function aiBranchMessage(message){
+  createNewChat(); inputEl.value = aiMessageText(message); inputEl.dispatchEvent(new Event('input',{bubbles:true})); inputEl.focus();
+}
+
+function aiEditUserMessage(card,message){
+  if(card.querySelector('.ai-edit-card')) return;
+  card.classList.add('ai-editing');
+  const original = card.querySelector('.message-text'); const tools = card.querySelector('.ai-user-tools');
+  if(original) original.hidden = true; if(tools) tools.hidden = true;
+  const editor = document.createElement('div'); editor.className = 'ai-edit-card';
+  editor.innerHTML = '<textarea aria-label="Edit message"></textarea><div><button type="button" data-edit-action="cancel">Cancel</button><button class="primary" type="button" data-edit-action="send">Send</button></div>';
+  const textarea = editor.querySelector('textarea'); textarea.value = aiMessageText(message);
+  editor.addEventListener('click',event => {
+    const action = event.target.closest('[data-edit-action]')?.dataset.editAction;
+    if(action === 'cancel'){ editor.remove(); card.classList.remove('ai-editing'); if(original) original.hidden = false; if(tools) tools.hidden = false; }
+    if(action === 'send'){
+      const value = textarea.value.trim(); if(!value) return;
+      createNewChat(); inputEl.value = value; editor.remove(); card.classList.remove('ai-editing'); sendMessage();
+    }
+  });
+  card.appendChild(editor); textarea.focus();
+}
+
+function aiShowCopiedState(button){
+  if(!button) return;
+  const icon = button.querySelector('i');
+  if(!icon) return;
+  const originalClass = icon.className;
+  icon.className = 'fa-solid fa-check';
+  button.classList.add('copied');
+  button.title = 'Copied'; button.setAttribute('aria-label','Copied');
+  window.setTimeout(() => {
+    icon.className = originalClass;
+    button.classList.remove('copied');
+    button.title = 'Copy'; button.setAttribute('aria-label','Copy');
+  },2200);
+}
+
+function aiEnhanceRenderedMessage(msg,message){
+  if(!msg || !message?.messageId) return;
+  msg.dataset.messageId = message.messageId;
+  if(message.role === 'model'){
+    let tools = msg.querySelector('.ai-response-tools');
+    if(!tools){
+      tools = document.createElement('div'); tools.className = 'ai-response-tools';
+      tools.innerHTML = [['copy','fa-regular fa-copy','Copy'],['like','fa-regular fa-thumbs-up','Like'],['dislike','fa-regular fa-thumbs-down','Dislike'],['download','fa-solid fa-download','Download'],['regenerate','fa-solid fa-rotate','Regenerate'],['more','fa-solid fa-ellipsis','More']]
+        .map(item => '<button class="ai-tool-button" type="button" data-message-action="' + item[0] + '" title="' + item[2] + '" aria-label="' + item[2] + '"><i class="' + item[1] + '"></i></button>').join('');
+      msg.appendChild(tools);
+    }
+    const likeButton = tools.querySelector('[data-message-action="like"]');
+    const dislikeButton = tools.querySelector('[data-message-action="dislike"]');
+    const likeActive = message.rating === 'like';
+    const dislikeActive = message.rating === 'dislike';
+    likeButton?.classList.toggle('active',likeActive);
+    dislikeButton?.classList.toggle('active',dislikeActive);
+    likeButton?.classList.toggle('like',likeActive);
+    dislikeButton?.classList.toggle('dislike',dislikeActive);
+    likeButton?.setAttribute('aria-pressed',String(likeActive));
+    dislikeButton?.setAttribute('aria-pressed',String(dislikeActive));
+    const likeIcon = likeButton?.querySelector('i');
+    const dislikeIcon = dislikeButton?.querySelector('i');
+    if(likeIcon) likeIcon.className = (likeActive ? 'fa-solid' : 'fa-regular') + ' fa-thumbs-up';
+    if(dislikeIcon) dislikeIcon.className = (dislikeActive ? 'fa-solid' : 'fa-regular') + ' fa-thumbs-down';
+    tools.onclick = async event => {
+      const button = event.target.closest('[data-message-action]'); if(!button) return;
+      const action = button.dataset.messageAction;
+      try{
+        if(action === 'copy'){
+          await navigator.clipboard.writeText(aiMessageText(message));
+          aiShowCopiedState(button);
+        }
+        if(action === 'like' || action === 'dislike') await aiSendFeedback(message,action);
+        if(action === 'download') aiOpenMessageDownload(message);
+        if(action === 'regenerate'){
+          button.classList.add('loading');
+          button.disabled = true;
+          window.setTimeout(() => {
+            if(!button.isConnected) return;
+            button.classList.remove('loading');
+            button.disabled = false;
+          },2000);
+          inputEl.value = message.originalPrompt || '';
+          await sendMessage();
+        }
+        if(action === 'more') aiOpenResponseMenu(message,button);
+      }catch(error){ aiNotifyParent('error','Message action failed',error.message || 'Please try again.'); }
+    };
+  }else if(message.role === 'user'){
+    let tools = msg.querySelector('.ai-user-tools');
+    if(!tools){
+      tools = document.createElement('div'); tools.className = 'ai-user-tools';
+      tools.innerHTML = '<button class="ai-tool-button" type="button" data-user-action="copy" title="Copy"><i class="fa-regular fa-copy"></i></button><button class="ai-tool-button" type="button" data-user-action="download" title="Download"><i class="fa-solid fa-download"></i></button><button class="ai-tool-button" type="button" data-user-action="edit" title="Edit"><i class="fa-solid fa-pen"></i></button>';
+      msg.appendChild(tools);
+    }
+    tools.onclick = async event => {
+      const button = event.target.closest('[data-user-action]');
+      const action = button?.dataset.userAction;
+      if(action === 'copy'){
+        await navigator.clipboard.writeText(aiMessageText(message));
+        aiShowCopiedState(button);
+      }
+      if(action === 'download') aiOpenMessageDownload(message);
+      if(action === 'edit') aiEditUserMessage(msg,message);
+    };
+  }
+}
+
+function aiCreateAudioMessageCard(audioData){
+  const item = aiLibraryItems.find(entry => entry.id === audioData?.library_id);
+  if(!item?.blob) return null;
+  const card = document.createElement('div'); card.className = 'ai-audio-message';
+  const url = URL.createObjectURL(item.blob); aiActiveObjectUrls.add(url);
+  card.innerHTML = '<div class="ai-audio-message-head"><i class="fa-solid fa-wave-square"></i><div><strong>' + escapeHtml(item.name) + '</strong><span>' + escapeHtml(aiFormatAudioDuration(item.duration) + ' · ' + aiLibraryFormatBytes(item.size)) + '</span></div><button class="ai-tool-button" type="button" title="Download"><i class="fa-solid fa-download"></i></button></div><audio controls preload="metadata" src="' + escapeHtml(url) + '"></audio>';
+  card.querySelector('button').onclick = () => aiLibraryDownloadItem(item);
+  return card;
+}
+
+function aiShouldUseTtsModel(text){
+  const value = String(text || '').trim();
+  return /\b(?:generate|create|make|produce|read|narrate)\b[\s\S]{0,60}\b(?:voice\s*over|voiceover|speech|spoken audio|audio narration|tts)\b/i.test(value) ||
+    (/\b(?:slower|deeper|calmer|more pauses|faster)\b/i.test(value) && aiLibraryItems.some(item => item.kind === 'audio' && item.source === 'ai'));
+}
+
+function aiTtsTextFromPrompt(prompt){
+  const value = String(prompt || '').trim(); const quoted = value.match(/["“]([\s\S]+?)["”]/);
+  if(quoted?.[1]) return quoted[1].trim();
+  const previous = aiLibraryItems.find(item => item.kind === 'audio' && item.source === 'ai' && item.ttsInput);
+  if(/\b(?:slower|deeper|calmer|more pauses|faster)\b/i.test(value) && previous) return 'Direction: ' + value + '\n\nText to speak:\n' + previous.ttsInput;
+  return value.replace(/^.*?\b(?:voice\s*over|voiceover|speech|audio narration|tts)\b\s*(?:of|for|using|with|:)?\s*/i,'').trim() || value;
+}
+
+function aiTtsSpeakersFromInput(input){
+  const names = [...String(input || '').matchAll(/^\s*([A-Za-z][A-Za-z0-9 _-]{0,30})\s*:/gm)]
+    .map(match => match[1].trim())
+    .filter((name,index,list) => list.findIndex(item => item.toLowerCase() === name.toLowerCase()) === index)
+    .slice(0,2);
+  if(names.length < 2) return [];
+  return [
+    {name:names[0],voice:'Charon'},
+    {name:names[1],voice:'Kore'}
+  ];
+}
+
+function aiPcm16ToWav(bytes,sampleRate,channels){
+  const wav = new ArrayBuffer(44 + bytes.byteLength); const view = new DataView(wav);
+  const write = (offset,text) => [...text].forEach((char,index) => view.setUint8(offset + index,char.charCodeAt(0)));
+  write(0,'RIFF'); view.setUint32(4,36 + bytes.byteLength,true); write(8,'WAVE'); write(12,'fmt '); view.setUint32(16,16,true);
+  view.setUint16(20,1,true); view.setUint16(22,channels,true); view.setUint32(24,sampleRate,true); view.setUint32(28,sampleRate*channels*2,true);
+  view.setUint16(32,channels*2,true); view.setUint16(34,16,true); write(36,'data'); view.setUint32(40,bytes.byteLength,true); new Uint8Array(wav,44).set(bytes);
+  return new Blob([wav],{type:'audio/wav'});
+}
+
+async function aiSendTtsGenerationMessage(prompt){
+  if(!currentChatId) createNewChat();
+  const chat = chats[currentChatId];
+  const userMessage = {role:'user',messageId:aiCreateMessageId('user'),createdAt:Date.now(),parts:[{text:prompt}],model:'gemini-3.1-flash-tts-preview'};
+  chat.history.push(userMessage); addMessageUI('user',prompt,false,null,null,null,true,null,null,null,userMessage,null);
+  chat.model = 'gemini-3.1-flash-tts-preview'; chat.updatedAt = Date.now(); saveChats(); renderHistoryList();
+  inputEl.value = ''; inputEl.style.height = 'auto';
+  const systemId = 'system-' + Date.now(); addMessageUI('system','Generating audio…',false,null,null,systemId,true,null,null,null,null,null);
+  const target = document.getElementById(systemId); const loader = document.createElement('div'); loader.className = 'ai-audio-loading-card';
+  loader.innerHTML = '<div class="ai-image-loading-orb"><i class="fa-solid fa-wave-square"></i></div><div><strong>Creating voice audio</strong><span>Gemini Flash TTS is preparing playback…</span></div>'; target?.appendChild(loader);
+  const startedAt = Date.now();
+  try{
+    const input = aiTtsTextFromPrompt(prompt);
+    const speakers = aiTtsSpeakersFromInput(input);
+    const response = await fetch(aiBackendEndpoint('/api/ai/tts'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({input,voice:'Charon',speakers})});
+    if(!response.ok) throw new Error(await aiReadBackendError(response,'Audio generation failed.'));
+    const result = await response.json(); const raw = aiLibraryBase64ToBlob(result.audio.data,result.audio.mimeType || 'audio/L16');
+    const blob = /(?:l16|pcm)/i.test(result.audio.mimeType || '') ? aiPcm16ToWav(new Uint8Array(await raw.arrayBuffer()),Number(result.audio.sampleRate || 24000),Number(result.audio.channels || 1)) : raw;
+    const duration = await aiAudioDurationFromBlob(blob);
+    const item = await aiLibraryAddItem({kind:'audio',name:aiLibraryGeneratedName('AI_Audio','wav','voice'),mime:blob.type || 'audio/wav',size:blob.size,blob,duration,source:'ai',chatId:currentChatId,ttsInput:input,ttsVoice:'Charon',speakers});
+    const message = {role:'model',messageId:aiCreateMessageId('assistant'),createdAt:Date.now(),model:'gemini-3.1-flash-tts-preview',originalPrompt:prompt,thoughtSec:Math.max(0,Math.round((Date.now()-startedAt)/1000)),citations:[],parts:[{text:'Generated voice audio.'},{audio_data:{name:item.name,mime_type:item.mime,size:item.size,duration:item.duration,source:'ai',library_id:item.id},_libraryId:item.id}],_libraryIds:[item.id],rating:''};
+    chat.history.push(message); chat.updatedAt = Date.now(); saveChats(); renderChat(); renderHistoryList();
+  }catch(error){
+    loader.remove();
+    const failedMessage = document.getElementById(systemId);
+    failedMessage?.classList.remove('ai-thinking');
+    updateMessageUI(systemId,'Error: ' + (error.message || 'Audio generation failed.'));
+    const retry = document.createElement('button');
+    retry.type = 'button'; retry.className = 'ai-audio-retry'; retry.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Retry';
+    retry.addEventListener('click',() => aiSendTtsGenerationMessage(prompt));
+    failedMessage?.appendChild(retry);
+  }
+}
+
+function aiInitMessageTools(){
+  aiSourcesClose?.addEventListener('click',aiCloseSources);
+  aiResponseMoreMenu?.addEventListener('click',event => {
+    const action = event.target.closest('[data-ai-menu-action]')?.dataset.aiMenuAction; if(!action) return;
+    const found = aiFindMessage(aiResponseMenuMessageId); if(!found) return;
+    if(action === 'sources') aiRenderSources(found.message);
+    if(action === 'branch') aiBranchMessage(found.message);
+    if(action === 'read') aiToggleReadMessage(found.message);
+    if(action !== 'read') aiCloseResponseMenu();
+  });
+  document.addEventListener('click',event => {
+    if(!event.target.closest('#aiResponseMoreMenu') && !event.target.closest('[data-message-action="more"]')) aiCloseResponseMenu();
+  });
+  aiMessageDownloadClose?.addEventListener('click',aiCloseMessageDownload);
+  aiMessageDownloadOverlay?.addEventListener('click',event => { if(event.target === aiMessageDownloadOverlay) aiCloseMessageDownload(); });
+  aiMessageDownloadConfirm?.addEventListener('click',async() => {
+    const message = aiPendingDownloadMessage; if(!message) return;
+    aiMessageDownloadConfirm.disabled = true;
+    try{ await aiDownloadMessage(message); aiCloseMessageDownload(); }
+    catch(error){ aiNotifyParent('error','Download failed',error.message || 'Please try again.'); }
+    finally{ aiMessageDownloadConfirm.disabled = false; }
+  });
+  document.addEventListener('keydown',event => { if(event.key === 'Escape'){ aiCloseResponseMenu(); aiCloseSources(); aiCloseMessageDownload(); } });
+}
+
+  function addMessageUI(role, text, hasImage, imageBase64, imageMime, id, isLive, thoughtSec, fileData, replyData, messageData, audioData){
 
   text = aiNormalizeDisplayText(text);
 
@@ -21296,6 +22234,13 @@ chatEl.scrollTop =
 
   }
 
+  if(audioData){
+    const audioCard = aiCreateAudioMessageCard(audioData);
+    if(audioCard){
+      msg.appendChild(audioCard);
+    }
+  }
+
   if(text){
 
     const textEl =
@@ -21323,6 +22268,10 @@ chatEl.scrollTop =
   }
 
   chatEl.appendChild(msg);
+
+  if(messageData){
+    aiEnhanceRenderedMessage(msg,messageData);
+  }
 
   if(isLive){
     chatEl.scrollTop = chatEl.scrollHeight;
@@ -23167,6 +24116,7 @@ function aiInitProjects(){
 
   aiInitModelPicker();
   aiInitLibraryUi();
+  aiInitMessageTools();
   aiInitProjects();
 
   aiLibraryReady =
@@ -35254,8 +36204,8 @@ function hvExtensionForMime(mime){
     'text/plain':'txt','text/markdown':'md','text/xml':'xml',
     'application/xml':'xml','image/png':'png','image/jpeg':'jpg',
     'image/webp':'webp','image/gif':'gif','image/svg+xml':'svg',
-    'audio/mpeg':'mp3','audio/wav':'wav','audio/ogg':'ogg',
-    'audio/mp4':'m4a','application/pdf':'pdf'
+    'audio/mpeg':'mp3','audio/wav':'wav','audio/x-wav':'wav','audio/ogg':'ogg',
+    'audio/mp4':'m4a','audio/aac':'aac','audio/webm':'webm','audio/flac':'flac','application/pdf':'pdf'
   };
   return map[type] || 'bin';
 }
@@ -35311,6 +36261,17 @@ function hvDescriptorFromRecord(record, source, path){
   }
 
   if(!record || typeof record !== 'object') return null;
+
+  if(record.kind === 'audio' && record.blob instanceof Blob){
+    const mime = String(record.mime || record.blob.type || 'audio/wav');
+    return {
+      name:hvSafeExportName(record.name,'audio.' + hvExtensionForMime(mime)),
+      mime,
+      size:Number(record.size) || record.blob.size,
+      createdAt:record.createdAt ? new Date(Number(record.createdAt)).toISOString() : null,
+      source,path,blob:record.blob
+    };
+  }
 
   if(record.inline_data && typeof record.inline_data.data === 'string'){
     const mime = String(record.inline_data.mime_type || 'application/octet-stream');
@@ -38220,6 +39181,8 @@ const HV_ANALYTICS_API =
 let hvAnalyticsStarted =
   false;
 
+let hvAnalyticsData = null;
+
 function hvFormatAnalyticsValue(value){
 
   const number =
@@ -38231,6 +39194,94 @@ function hvFormatAnalyticsValue(value){
 
   return value || '—';
 
+}
+
+function hvAnalyticsFirst(data,names){
+  for(const name of names){
+    const value = data?.[name];
+    if(value !== undefined && value !== null && value !== '') return value;
+  }
+  return null;
+}
+
+function hvAnalyticsList(data,names){
+  const value = hvAnalyticsFirst(data,names);
+  if(Array.isArray(value)) return value;
+  if(value && typeof value === 'object') return Object.entries(value).map(([label,count]) => ({label,count}));
+  return [];
+}
+
+function hvAnalyticsMetricCard(label,value,icon,format){
+  const display = value === null || value === undefined || value === '' ? '—' :
+    format === 'duration' ? String(value) :
+    format === 'percent' ? (String(value).includes('%') ? String(value) : Number(value).toLocaleString(undefined,{maximumFractionDigits:1}) + '%') :
+    hvFormatAnalyticsValue(value);
+  return '<article class="hv-analytics-kpi"><span><i class="' + icon + '"></i> ' + label + '</span><strong>' + display + '</strong></article>';
+}
+
+function hvRenderAnalyticsList(container,items){
+  if(!container) return;
+  container.innerHTML = '';
+  if(!items.length){ container.innerHTML = '<div class="hv-analytics-list-empty">No measured data returned.</div>'; return; }
+  items.slice(0,8).forEach(item => {
+    const label = item?.label ?? item?.name ?? item?.title ?? item?.path ?? item?.country ?? item?.source ?? item?.device ?? item?.browser ?? 'Unknown';
+    const value = item?.value ?? item?.count ?? item?.views ?? item?.visitors ?? item?.sessions ?? item?.percentage ?? '';
+    const row = document.createElement('div'); row.className = 'hv-analytics-list-row';
+    const labelNode = document.createElement('span'); labelNode.textContent = String(label);
+    const valueNode = document.createElement('b'); valueNode.textContent = value === '' ? '—' : hvFormatAnalyticsValue(value);
+    row.append(labelNode,valueNode); container.appendChild(row);
+  });
+}
+
+function hvRenderAnalyticsChart(data){
+  const container = document.getElementById('hvAnalyticsChart'); if(!container) return;
+  const points = hvAnalyticsList(data,['recentTraffic','trafficSeries','timeseries','chart','dailyTraffic']);
+  container.innerHTML = '';
+  if(!points.length){ container.innerHTML = '<div class="hv-analytics-list-empty" style="margin:auto">No recent traffic series returned.</div>'; return; }
+  const visible = points.slice(-60); const values = visible.map(point => Math.max(0,Number(point?.value ?? point?.count ?? point?.views ?? point?.visitors ?? 0))); const max = Math.max(1,...values);
+  visible.forEach((point,index) => {
+    const value = values[index]; const bar = document.createElement('div'); bar.className = 'hv-analytics-chart-bar'; bar.style.height = Math.max(2,(value/max)*100) + '%';
+    const label = point?.label ?? point?.date ?? point?.time ?? ''; const tip = document.createElement('span'); tip.textContent = (label ? label + ': ' : '') + hvFormatAnalyticsValue(value);
+    bar.appendChild(tip); container.appendChild(bar);
+  });
+}
+
+function hvRenderAnalyticsDashboard(data){
+  const kpis = document.getElementById('hvAnalyticsKpis'); if(!kpis || !data || typeof data !== 'object') return false;
+  kpis.innerHTML = [
+    hvAnalyticsMetricCard('Visitors',hvAnalyticsFirst(data,['liveVisitors','visitors','currentVisitors']),'fa-solid fa-users'),
+    hvAnalyticsMetricCard('Views',hvAnalyticsFirst(data,['totalViews','views','pageViews']),'fa-solid fa-eye'),
+    hvAnalyticsMetricCard('Top country',hvAnalyticsFirst(data,['topCountry']),'fa-solid fa-globe'),
+    hvAnalyticsMetricCard('All-time visitors',hvAnalyticsFirst(data,['allTimeVisitors','totalVisitors']),'fa-solid fa-chart-line'),
+    hvAnalyticsMetricCard('Unique visitors',hvAnalyticsFirst(data,['uniqueVisitors','unique']),'fa-solid fa-user-check'),
+    hvAnalyticsMetricCard('Today',hvAnalyticsFirst(data,['todayTraffic','today','visitorsToday']),'fa-solid fa-calendar-day'),
+    hvAnalyticsMetricCard('Last 7 days',hvAnalyticsFirst(data,['sevenDayTraffic','last7Days','visitors7d']),'fa-solid fa-calendar-week'),
+    hvAnalyticsMetricCard('Last 30 days',hvAnalyticsFirst(data,['thirtyDayTraffic','last30Days','visitors30d']),'fa-solid fa-calendar'),
+    hvAnalyticsMetricCard('Average session',hvAnalyticsFirst(data,['averageSessionTime','avgSessionDuration','sessionTime']),'fa-solid fa-stopwatch','duration'),
+    hvAnalyticsMetricCard('Bounce rate',hvAnalyticsFirst(data,['bounceRate']),'fa-solid fa-arrow-right-from-bracket','percent')
+  ].join('');
+  hvRenderAnalyticsChart(data);
+  hvRenderAnalyticsList(document.getElementById('hvAnalyticsPages'),hvAnalyticsList(data,['topPages','pages']));
+  hvRenderAnalyticsList(document.getElementById('hvAnalyticsSources'),hvAnalyticsList(data,['trafficSources','sources','referrers']));
+  hvRenderAnalyticsList(document.getElementById('hvAnalyticsDevices'),hvAnalyticsList(data,['devices','deviceTypes']));
+  hvRenderAnalyticsList(document.getElementById('hvAnalyticsBrowsers'),hvAnalyticsList(data,['browsers']));
+  hvRenderAnalyticsList(document.getElementById('hvAnalyticsCountries'),hvAnalyticsList(data,['countries','topCountries']));
+  return true;
+}
+
+async function hvOpenAnalyticsModal(){
+  const modal = document.getElementById('hvAnalyticsModal'); const loading = document.getElementById('hvAnalyticsLoading'); const content = document.getElementById('hvAnalyticsContent'); const empty = document.getElementById('hvAnalyticsEmpty');
+  if(!modal) return;
+  modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); loading.hidden = false; content.hidden = true; empty.hidden = true;
+  try{
+    if(!hvAnalyticsData) await hvUpdateAnalyticsCards();
+    if(!hvAnalyticsData || !hvRenderAnalyticsDashboard(hvAnalyticsData)) throw new Error('No analytics returned.');
+    loading.hidden = true; content.hidden = false;
+  }catch(error){ loading.hidden = true; empty.hidden = false; }
+}
+
+function hvCloseAnalyticsModal(){
+  const modal = document.getElementById('hvAnalyticsModal'); modal?.classList.remove('open'); modal?.setAttribute('aria-hidden','true');
 }
 
 async function hvUpdateAnalyticsCards(){
@@ -38262,6 +39313,8 @@ async function hvUpdateAnalyticsCards(){
 
     const data =
       await response.json();
+
+    hvAnalyticsData = data;
 
     liveUsers.textContent =
       hvFormatAnalyticsValue(data.liveVisitors);
@@ -38296,6 +39349,27 @@ function hvStartAnalyticsCards(){
   }
 
   hvAnalyticsStarted = true;
+
+  document.querySelectorAll('.hv-nav-stat-card').forEach(card => {
+    card.tabIndex = 0;
+    card.setAttribute('role','button');
+    card.setAttribute('aria-label','Open website analytics');
+    card.addEventListener('click',hvOpenAnalyticsModal);
+    card.addEventListener('keydown',event => {
+      if(event.key === 'Enter' || event.key === ' '){
+        event.preventDefault();
+        hvOpenAnalyticsModal();
+      }
+    });
+  });
+
+  document.getElementById('hvAnalyticsClose')?.addEventListener('click',hvCloseAnalyticsModal);
+  document.getElementById('hvAnalyticsBackdrop')?.addEventListener('click',hvCloseAnalyticsModal);
+  document.addEventListener('keydown',event => {
+    if(event.key === 'Escape' && document.getElementById('hvAnalyticsModal')?.classList.contains('open')){
+      hvCloseAnalyticsModal();
+    }
+  });
 
   hvUpdateAnalyticsCards();
 

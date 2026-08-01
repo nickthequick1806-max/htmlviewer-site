@@ -65,6 +65,72 @@ test('returns Gemini responses from the upstream API', async t => {
   assert.equal((await response.json()).candidates[0].content.parts[0].text, 'OK');
 });
 
+test('forwards Google Search grounding only when requested', async t => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  globalThis.fetch = async (url,init) => {
+    const payload = JSON.parse(init.body);
+    assert.deepEqual(payload.tools,[{ googleSearch:{} }]);
+    return Response.json({ candidates:[{ content:{ parts:[{ text:'Grounded' }] } }] });
+  };
+  const request = createGeminiRequest();
+  const payload = await request.json();
+  payload.grounding = true;
+  const response = await worker.fetch(createJsonRequest('/api/ai/gemini',payload),TEST_ENV);
+  assert.equal(response.status,200);
+});
+
+test('generates Gemini Flash TTS audio with Charon and retries a server failure', async t => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  let attempts = 0;
+  globalThis.fetch = async (url,init) => {
+    attempts += 1;
+    assert.equal(String(url),'https://generativelanguage.googleapis.com/v1beta/interactions');
+    assert.equal(init.headers['Api-Revision'],'2026-05-20');
+    const payload = JSON.parse(init.body);
+    assert.equal(payload.model,'gemini-3.1-flash-tts-preview');
+    assert.equal(payload.generation_config.speech_config[0].voice,'Charon');
+    if(attempts === 1) return Response.json({error:{message:'temporary'}},{status:500});
+    return Response.json({ output:{ audio:{ data:'AAECAw==', mime_type:'audio/L16', sample_rate:24000, channels:1 } } });
+  };
+  const response = await worker.fetch(createJsonRequest('/api/ai/tts',{input:'Hello',voice:'Charon'}),TEST_ENV);
+  const data = await response.json();
+  assert.equal(response.status,200);
+  assert.equal(attempts,2);
+  assert.equal(data.audio.data,'AAECAw==');
+  assert.equal(data.audio.sampleRate,24000);
+});
+
+test('sends AI feedback to the private Discord webhook', async t => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  let discordPayload;
+  globalThis.fetch = async (url,init) => {
+    assert.match(String(url),/^https:\/\/discord\.com\/api\/webhooks\/test\/token\?wait=true$/);
+    discordPayload = JSON.parse(init.body);
+    return new Response(null,{status:204});
+  };
+  const response = await worker.fetch(createJsonRequest('/api/ai/feedback',{
+    prompt:'Prompt',response:'Response',model:'gemini-3.6-flash',rating:'like',
+    date:'2026-08-01T10:00:00.000Z',chatId:'chat-1',messageId:'message-1'
+  }),{...TEST_ENV,DISCORD_WEBHOOK_URL:'https://discord.com/api/webhooks/test/token'});
+  assert.equal(response.status,200);
+  assert.match(discordPayload.embeds[0].title,/liked/i);
+  assert.equal(discordPayload.embeds[0].fields.find(field => field.name === 'Message ID').value,'message-1');
+});
+
+test('rejects invalid AI feedback ratings before Discord', async t => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  globalThis.fetch = async () => { throw new Error('Discord should not be called.'); };
+  const response = await worker.fetch(createJsonRequest('/api/ai/feedback',{
+    prompt:'Prompt',response:'Response',model:'gemini-3.6-flash',rating:'neutral',
+    date:'2026-08-01T10:00:00.000Z',chatId:'chat-1',messageId:'message-1'
+  }),{...TEST_ENV,DISCORD_WEBHOOK_URL:'https://discord.com/api/webhooks/test/token'});
+  assert.equal(response.status,400);
+});
+
 test('allows Gemini 3.5 Flash-Lite and forwards its model ID', async t => {
   const originalFetch = globalThis.fetch;
   t.after(() => {

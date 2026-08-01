@@ -7,6 +7,15 @@ const MAX_AI_BODY_BYTES = 8 * 1024 * 1024;
 const MAX_FORM_BODY_BYTES = 160 * 1024;
 const FLUX_IMAGE_MODEL = '@cf/black-forest-labs/flux-2-klein-4b';
 const FLUX_IMAGE_SIZE = 1024;
+const GEMINI_TTS_MODEL = 'gemini-3.1-flash-tts-preview';
+const GEMINI_TTS_API_REVISION = '2026-05-20';
+const GEMINI_TTS_VOICES = new Set([
+  'Zephyr', 'Puck', 'Charon', 'Kore', 'Fenrir', 'Leda', 'Orus', 'Aoede',
+  'Callirrhoe', 'Autonoe', 'Enceladus', 'Iapetus', 'Umbriel', 'Algieba',
+  'Despina', 'Erinome', 'Algenib', 'Rasalgethi', 'Laomedeia', 'Achernar',
+  'Alnilam', 'Schedar', 'Gacrux', 'Pulcherrima', 'Achird',
+  'Zubenelgenubi', 'Vindemiatrix', 'Sadachbia', 'Sadaltager', 'Sulafat'
+]);
 const GEMINI_LIVE_MODEL = 'gemini-3.1-flash-live-preview';
 const GEMINI_VOICE_INTENT_MODEL = 'gemini-3.5-flash-lite';
 const GEMINI_VOICE_UI_ACTIONS = new Set([
@@ -74,6 +83,16 @@ export default {
       if(request.method === 'POST' && url.pathname === '/api/ai/gemini'){
         await enforceRateLimit(env.AI_RATE_LIMITER, request, 'ai');
         return await generateGeminiResponse(request, env, origin);
+      }
+
+      if(request.method === 'POST' && url.pathname === '/api/ai/tts'){
+        await enforceRateLimit(env.AI_RATE_LIMITER, request, 'tts');
+        return await generateGeminiSpeech(request, env, origin);
+      }
+
+      if(request.method === 'POST' && url.pathname === '/api/ai/feedback'){
+        await enforceRateLimit(env.FORM_RATE_LIMITER, request, 'feedback');
+        return await sendAiFeedback(request, env, origin);
       }
 
       if(request.method === 'POST' && url.pathname === '/api/ai/live-token'){
@@ -853,7 +872,10 @@ async function generateGeminiResponse(request, env, origin){
         'Content-Type':'application/json',
         'x-goog-api-key':apiKey
       },
-      body:JSON.stringify({ contents:body.contents })
+      body:JSON.stringify({
+        contents:body.contents,
+        ...(body.grounding === true ? { tools:[{ googleSearch:{} }] } : {})
+      })
     }
   );
 
@@ -874,6 +896,189 @@ async function generateGeminiResponse(request, env, origin){
   }
 
   return jsonResponse(data, 200, origin);
+}
+
+async function generateGeminiSpeech(request, env, origin){
+  const apiKey = requireSecret(env, 'GEMINI_API_KEY');
+  const body = await readJson(request, 96 * 1024);
+  const input = requireText(body.input, 'input', 32000);
+  const voice = requireTtsVoice(body.voice || 'Charon');
+  const speakers = normalizeTtsSpeakers(body.speakers, voice);
+  const speechConfig = speakers.length > 1
+    ? speakers.map(speaker => ({
+        speaker:speaker.name,
+        voice:speaker.voice
+      }))
+    : [{ voice }];
+
+  let upstream;
+  for(let attempt = 0; attempt < 2; attempt += 1){
+    upstream = await fetch(
+      'https://generativelanguage.googleapis.com/v1beta/interactions',
+      {
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'x-goog-api-key':apiKey,
+          'Api-Revision':GEMINI_TTS_API_REVISION
+        },
+        body:JSON.stringify({
+          model:GEMINI_TTS_MODEL,
+          input,
+          response_format:{ type:'audio' },
+          generation_config:{ speech_config:speechConfig }
+        })
+      }
+    );
+    if(upstream.ok || attempt === 1 || upstream.status < 500){
+      break;
+    }
+  }
+
+  const rawText = await upstream.text();
+  if(!upstream.ok){
+    throw new PublicError(
+      normalizeUpstreamStatus(upstream.status),
+      getGeminiUpstreamMessage(upstream.status, rawText)
+    );
+  }
+
+  let data;
+  try{
+    data = rawText ? JSON.parse(rawText) : null;
+  }catch(error){
+    throw new PublicError(502, 'Gemini returned an invalid TTS response.');
+  }
+
+  const audio = findAudioContent(data);
+  if(!audio?.data){
+    throw new PublicError(502, 'Gemini returned no generated audio.');
+  }
+
+  return jsonResponse({
+    ok:true,
+    model:GEMINI_TTS_MODEL,
+    audio:{
+      data:audio.data,
+      mimeType:audio.mimeType,
+      sampleRate:audio.sampleRate,
+      channels:audio.channels
+    }
+  }, 200, origin);
+}
+
+function requireTtsVoice(value){
+  const voice = requireText(value, 'voice', 40);
+  if(!GEMINI_TTS_VOICES.has(voice)){
+    throw new PublicError(400, 'The selected Gemini TTS voice is not allowed.');
+  }
+  return voice;
+}
+
+function normalizeTtsSpeakers(value, fallbackVoice){
+  if(!Array.isArray(value) || value.length < 2){
+    return [{ name:'Narrator', voice:fallbackVoice }];
+  }
+  const speakers = value.slice(0, 2).map((speaker, index) => ({
+    name:requireText(speaker?.name, 'speaker name', 60),
+    voice:requireTtsVoice(speaker?.voice || (index === 0 ? fallbackVoice : 'Kore'))
+  }));
+  if(speakers[0].name.toLowerCase() === speakers[1].name.toLowerCase()){
+    throw new PublicError(400, 'Multi-speaker names must be unique.');
+  }
+  return speakers;
+}
+
+function findAudioContent(value, seen = new Set()){
+  if(!value || typeof value !== 'object' || seen.has(value)){
+    return null;
+  }
+  seen.add(value);
+  const mimeType = String(value.mime_type || value.mimeType || '');
+  if(
+    typeof value.data === 'string' &&
+    value.data &&
+    (mimeType.startsWith('audio/') || value.type === 'audio')
+  ){
+    return {
+      data:value.data,
+      mimeType:mimeType || 'audio/l16',
+      sampleRate:Math.max(8000, Math.min(192000, Number(value.sample_rate || value.sampleRate || 24000))),
+      channels:Math.max(1, Math.min(2, Number(value.channels || 1)))
+    };
+  }
+  for(const child of Object.values(value)){
+    if(!child || (typeof child !== 'object' && !Array.isArray(child))){
+      continue;
+    }
+    const match = findAudioContent(child, seen);
+    if(match){
+      return match;
+    }
+  }
+  return null;
+}
+
+async function sendAiFeedback(request, env, origin){
+  const body = await readJson(request, MAX_FORM_BODY_BYTES);
+  const rating = requireText(body.rating, 'rating', 12).toLowerCase();
+  if(!['like','dislike'].includes(rating)){
+    throw new PublicError(400, 'The AI response rating is not allowed.');
+  }
+  const prompt = requireText(body.prompt, 'prompt', 4000);
+  const response = requireText(body.response, 'response', 8000);
+  const model = requireText(body.model, 'model', 100);
+  const chatId = requireText(body.chatId, 'chatId', 160);
+  const messageId = requireText(body.messageId, 'messageId', 160);
+  const submittedAt = normalizeFeedbackDate(body.date);
+  const payload = {
+    username:'HTML Viewer AI Feedback',
+    allowed_mentions:{ parse:[] },
+    embeds:[{
+      title:rating === 'like' ? 'AI response liked' : 'AI response disliked',
+      color:rating === 'like' ? 5763719 : 15548997,
+      fields:[
+        { name:'Rating', value:rating, inline:true },
+        { name:'Model', value:safeDiscordText(model, 100), inline:true },
+        { name:'Date', value:submittedAt, inline:false },
+        { name:'Chat ID', value:safeDiscordText(chatId, 160), inline:true },
+        { name:'Message ID', value:safeDiscordText(messageId, 160), inline:true },
+        { name:'Prompt', value:safeDiscordText(prompt, 1000), inline:false },
+        ...discordChunkFields('Response', response, 1024, 3)
+      ],
+      footer:{ text:'HTML Viewer AI response feedback' },
+      timestamp:submittedAt
+    }]
+  };
+  await postDiscordWebhook(env, JSON.stringify(payload), {
+    'Content-Type':'application/json'
+  });
+  return jsonResponse({ ok:true, rating }, 200, origin);
+}
+
+function normalizeFeedbackDate(value){
+  const timestamp = Date.parse(value);
+  return Number.isFinite(timestamp)
+    ? new Date(timestamp).toISOString()
+    : new Date().toISOString();
+}
+
+function safeDiscordText(value, maxLength){
+  const text = String(value || '').trim().slice(0, maxLength);
+  return text || 'Not provided';
+}
+
+function discordChunkFields(label, value, chunkSize = 1024, maxChunks = 3){
+  const text = safeDiscordText(value, chunkSize * maxChunks);
+  const fields = [];
+  for(let offset = 0; offset < text.length && fields.length < maxChunks; offset += chunkSize){
+    fields.push({
+      name:fields.length ? `${label} (${fields.length + 1})` : label,
+      value:text.slice(offset, offset + chunkSize),
+      inline:false
+    });
+  }
+  return fields;
 }
 
 async function generateFluxImage(request, env, origin){
