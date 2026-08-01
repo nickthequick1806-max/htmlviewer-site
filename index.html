@@ -8350,6 +8350,21 @@ html.hv-site-viewer-enter #html-viewer-app{
 .hv-analytics-loading[hidden],.hv-analytics-content[hidden],.hv-analytics-empty[hidden]{display:none!important}
 .hv-nav-stat-card{cursor:pointer;transition:transform .15s ease,border-color .15s ease,background .15s ease}.hv-nav-stat-card:hover,.hv-nav-stat-card:focus-visible{transform:translateY(-2px);border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.06);outline:none}
 .hv-analytics-modal{z-index:13000}.hv-analytics-panel{position:relative;z-index:2;width:min(1120px,calc(100vw - 28px));max-height:min(90vh,880px);overflow:auto;border:1px solid rgba(255,255,255,.12);border-radius:20px;background:linear-gradient(180deg,#161616,#0b0b0b);box-shadow:0 36px 110px rgba(0,0,0,.78);color:#f5f5f5}.hv-analytics-head{position:sticky;top:0;z-index:3;min-height:84px;padding:16px 18px;display:flex;align-items:center;gap:12px;background:rgba(18,18,18,.94);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.09)}.hv-analytics-heading-icon{width:42px;height:42px;border:1px solid rgba(255,255,255,.13);border-radius:12px;display:grid;place-items:center;background:#202020}.hv-analytics-head h2{margin:0;font-size:19px}.hv-analytics-head p{margin:4px 0 0;color:#8c8c96;font-size:11px}.hv-analytics-head button{margin-left:auto;width:38px;height:38px;border:1px solid rgba(255,255,255,.11);border-radius:11px;background:#202020;color:#fff;cursor:pointer}.hv-analytics-content{padding:16px}.hv-analytics-loading,.hv-analytics-empty{min-height:360px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;color:#aaa}.hv-analytics-loading strong,.hv-analytics-empty strong{color:#fff;font-size:15px}.hv-analytics-loading small,.hv-analytics-empty span{font-size:11px}.hv-analytics-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.hv-analytics-kpi,.hv-analytics-chart-card,.hv-analytics-list-card{border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(255,255,255,.025)}.hv-analytics-kpi{padding:13px}.hv-analytics-kpi span{display:block;color:#8b8b95;font-size:10px;font-weight:750}.hv-analytics-kpi strong{display:block;margin-top:6px;font-size:20px}.hv-analytics-chart-card{margin-top:10px;padding:14px}.hv-analytics-section-head strong{display:block}.hv-analytics-section-head span{display:block;margin-top:3px;color:#777;font-size:10px}.hv-analytics-chart{height:190px;margin-top:15px;display:flex;align-items:flex-end;gap:4px;border-bottom:1px solid rgba(255,255,255,.09)}.hv-analytics-chart-bar{flex:1;min-width:4px;border-radius:4px 4px 0 0;background:linear-gradient(180deg,#f4f4f5,#555);position:relative;transition:.15s ease}.hv-analytics-chart-bar:hover{filter:brightness(1.3)}.hv-analytics-chart-bar span{position:absolute;left:50%;bottom:calc(100% + 7px);transform:translateX(-50%);padding:5px 7px;border-radius:7px;background:#282828;border:1px solid rgba(255,255,255,.11);font-size:9px;white-space:nowrap;opacity:0;pointer-events:none}.hv-analytics-chart-bar:hover span{opacity:1}.hv-analytics-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}.hv-analytics-list-card{padding:13px;min-height:140px}.hv-analytics-list-card h3{margin:0 0 10px;display:flex;align-items:center;gap:8px;font-size:13px}.hv-analytics-list-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,.06);font-size:11px}.hv-analytics-list-row span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#bbb}.hv-analytics-list-row b{color:#fff}.hv-analytics-list-empty{padding:22px 0;color:#707078;font-size:11px;text-align:center}.hv-spinner{width:28px;height:28px;border:3px solid rgba(255,255,255,.12);border-top-color:#fff;border-radius:50%;animation:hvSpin .75s linear infinite}@media(max-width:760px){.hv-analytics-panel{max-height:94vh}.hv-analytics-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.hv-analytics-grid{grid-template-columns:1fr}.hv-analytics-head p{display:none}.hv-analytics-content{padding:11px}}
+.hv-analytics-modal{display:grid!important;place-items:center;padding:14px}
+.hv-analytics-panel{width:min(1400px,calc(100vw - 28px));max-height:none;overflow:hidden;margin:0;display:flex;flex-direction:column}
+.hv-analytics-head{position:relative;min-height:72px;padding:12px 16px;flex:0 0 auto}
+.hv-analytics-content{padding:12px;min-height:0}
+.hv-analytics-kpis{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.hv-analytics-kpi{padding:9px 11px;min-height:58px}
+.hv-analytics-kpi strong{margin-top:4px;font-size:17px}
+.hv-analytics-chart-card{margin-top:8px;padding:10px 12px}
+.hv-analytics-chart{height:105px;margin-top:8px}
+.hv-analytics-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:8px}
+.hv-analytics-list-card{padding:10px;min-height:128px}
+.hv-analytics-list-card h3{margin-bottom:7px;font-size:12px}
+.hv-analytics-list-row{padding:5px 0;font-size:10px}
+.hv-analytics-list-empty{padding:18px 0}
+@media(max-width:980px){.hv-analytics-modal{padding:8px}.hv-analytics-panel{width:calc(100vw - 16px)}.hv-analytics-head{min-height:62px}.hv-analytics-content{padding:8px}.hv-analytics-kpis{grid-template-columns:repeat(5,minmax(0,1fr))}.hv-analytics-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.hv-analytics-kpi{padding:7px}.hv-analytics-kpi span,.hv-analytics-list-row{font-size:9px}.hv-analytics-kpi strong{font-size:15px}.hv-analytics-list-card{padding:8px;min-height:112px}.hv-analytics-chart{height:82px}}
 </style>
 <a class="hv-skip-link" href="#html-viewer-app">Skip to HTML editor</a>
 <main id="html-viewer-app" aria-label="HTML editor workspace">
@@ -9179,7 +9194,7 @@ html.hv-site-viewer-enter #html-viewer-app{
       outline: none;
       min-height: 38px;
       max-height: 120px;
-      overflow-y: auto;
+      overflow-y: hidden;
       resize: none;
       line-height: 1.35;
     }
@@ -13638,6 +13653,32 @@ html.hv-site-viewer-enter #html-viewer-app{
   .ai-tool-button.loading{pointer-events:none;color:#fff;background:rgba(255,255,255,.08)}
   .ai-tool-button.loading i{animation:aiResponseToolSpin .72s linear infinite}
   @keyframes aiResponseToolSpin{to{transform:rotate(360deg)}}
+  .ai-tool-button[data-tooltip],.ai-message-action-btn[data-tooltip],.ai-code-tool[data-tooltip]{position:relative}
+  .ai-tool-button[data-tooltip]::after,.ai-message-action-btn[data-tooltip]::after,.ai-code-tool[data-tooltip]::after{
+    content:attr(data-tooltip);position:absolute;z-index:20;left:50%;top:calc(100% + 7px);
+    transform:translate(-50%,-3px);padding:6px 8px;border:1px solid rgba(255,255,255,.1);
+    border-radius:7px;background:#242424;color:#f5f5f5;box-shadow:0 10px 26px rgba(0,0,0,.48);
+    font-size:10px;font-weight:750;line-height:1;white-space:nowrap;pointer-events:none;
+    opacity:0;visibility:hidden;transition:opacity .13s ease,transform .13s ease
+  }
+  .ai-tool-button[data-tooltip]:hover::after,.ai-tool-button[data-tooltip]:focus-visible::after,
+  .ai-message-action-btn[data-tooltip]:hover::after,.ai-message-action-btn[data-tooltip]:focus-visible::after,
+  .ai-code-tool[data-tooltip]:hover::after,.ai-code-tool[data-tooltip]:focus-visible::after{
+    opacity:1;visibility:visible;transform:translate(-50%,0)
+  }
+  .ai-regenerate-button{position:relative}
+  .ai-regenerate-tooltip{
+    position:absolute;z-index:20;left:50%;top:calc(100% + 8px);min-width:158px;padding:8px 10px;
+    transform:translate(-50%,-3px);border:1px solid rgba(255,255,255,.12);border-radius:9px;
+    background:#202020;box-shadow:0 12px 34px rgba(0,0,0,.56);text-align:left;pointer-events:none;
+    opacity:0;visibility:hidden;transition:opacity .14s ease,transform .14s ease
+  }
+  .ai-regenerate-tooltip strong,.ai-regenerate-tooltip span{display:block;white-space:nowrap}
+  .ai-regenerate-tooltip strong{color:#f5f5f5;font-size:11px;font-weight:850}
+  .ai-regenerate-tooltip span{margin-top:3px;color:#a1a1aa;font-size:10px;font-weight:650}
+  .ai-regenerate-button:hover .ai-regenerate-tooltip,.ai-regenerate-button:focus-visible .ai-regenerate-tooltip{
+    opacity:1;visibility:visible;transform:translate(-50%,0)
+  }
   .ai-response-more-menu{
     position:fixed;z-index:100005;width:214px;padding:7px;border-radius:12px;
     background:linear-gradient(180deg,#252525,#171717);border:1px solid rgba(255,255,255,.13);
@@ -17342,6 +17383,9 @@ const audioPart =
 
     inputEl.style.height =
       Math.min(inputEl.scrollHeight, 120) + 'px';
+
+    inputEl.style.overflowY =
+      inputEl.scrollHeight > 120 ? 'auto' : 'hidden';
 
   });
 
@@ -21105,6 +21149,7 @@ async function aiSendImageGenerationMessage(text){
 
   inputEl.value = '';
   inputEl.style.height = 'auto';
+  inputEl.style.overflowY = 'hidden';
 
   aiClearImageAttachment();
   aiClearTextFileAttachment();
@@ -21207,7 +21252,7 @@ const timerInterval =
 
 }
 
-  async function sendMessage(){
+  async function sendMessage(options = {}){
 
     const text =
   inputEl.value.trim();
@@ -21218,7 +21263,7 @@ const promptText =
   );
 
 // Get selected model
-const model = modelSelect.value;
+const model = options.model || modelSelect.value;
 
 if(aiShouldUseImageModel(text, model)){
   await aiSendImageGenerationMessage(text);
@@ -21350,6 +21395,7 @@ renderHistoryList();
 
     inputEl.value = '';
     inputEl.style.height = 'auto';
+    inputEl.style.overflowY = 'hidden';
 
     aiClearImageAttachment();
 
@@ -21729,7 +21775,7 @@ aiNotifyParent(
     }
     return Number.isFinite(numeric) && numeric >= 1
       ? 'Thought for ' + Math.round(numeric) + 's'
-      : 'Thought for <1s';
+      : 'Thought for 1s';
   }
 
   async function updateMessageWithThought(systemId, text, durationSec){
@@ -21982,6 +22028,8 @@ function aiEditUserMessage(card,message){
       inputEl.dispatchEvent(new Event('input',{bubbles:true}));
       editor.remove();
       card.classList.remove('ai-editing');
+      if(original) original.hidden = false;
+      if(tools) tools.hidden = false;
       sendMessage();
     }
   });
@@ -22010,9 +22058,15 @@ function aiEnhanceRenderedMessage(msg,message){
     let tools = msg.querySelector('.ai-response-tools');
     if(!tools){
       tools = document.createElement('div'); tools.className = 'ai-response-tools';
-      tools.innerHTML = [['copy','fa-regular fa-copy','Copy'],['like','fa-regular fa-thumbs-up','Like'],['dislike','fa-regular fa-thumbs-down','Dislike'],['download','fa-solid fa-download','Download'],['regenerate','fa-solid fa-rotate','Regenerate'],['more','fa-solid fa-ellipsis','More']]
-        .map(item => '<button class="ai-tool-button" type="button" data-message-action="' + item[0] + '" title="' + item[2] + '" aria-label="' + item[2] + '"><i class="' + item[1] + '"></i></button>').join('');
+      tools.innerHTML = [['copy','fa-regular fa-copy','Copy','Copy response'],['like','fa-regular fa-thumbs-up','Like','Good response'],['dislike','fa-regular fa-thumbs-down','Dislike','Bad response'],['download','fa-solid fa-download','Download','Download response'],['regenerate','fa-solid fa-rotate','Regenerate',''],['more','fa-solid fa-ellipsis','More','More options']]
+        .map(item => '<button class="ai-tool-button" type="button" data-message-action="' + item[0] + '"' + (item[3] ? ' data-tooltip="' + item[3] + '"' : '') + ' aria-label="' + item[2] + '"><i class="' + item[1] + '"></i></button>').join('');
       msg.appendChild(tools);
+    }
+    const regenerateButton = tools.querySelector('[data-message-action="regenerate"]');
+    if(regenerateButton && !regenerateButton.querySelector('.ai-regenerate-tooltip')){
+      regenerateButton.classList.add('ai-regenerate-button');
+      regenerateButton.removeAttribute('title');
+      regenerateButton.insertAdjacentHTML('beforeend','<span class="ai-regenerate-tooltip" role="tooltip"><strong>Try again…</strong><span>Gemini 3.5 Flash-Lite</span></span>');
     }
     const likeButton = tools.querySelector('[data-message-action="like"]');
     const dislikeButton = tools.querySelector('[data-message-action="dislike"]');
@@ -22047,7 +22101,7 @@ function aiEnhanceRenderedMessage(msg,message){
             button.disabled = false;
           },2000);
           inputEl.value = message.originalPrompt || '';
-          await sendMessage();
+          await sendMessage({model:'gemini-3.5-flash-lite'});
         }
         if(action === 'more') aiOpenResponseMenu(message,button);
       }catch(error){ aiNotifyParent('error','Message action failed',error.message || 'Please try again.'); }
@@ -22056,7 +22110,7 @@ function aiEnhanceRenderedMessage(msg,message){
     let tools = msg.querySelector('.ai-user-tools');
     if(!tools){
       tools = document.createElement('div'); tools.className = 'ai-user-tools';
-      tools.innerHTML = '<button class="ai-tool-button" type="button" data-user-action="copy" title="Copy"><i class="fa-regular fa-copy"></i></button><button class="ai-tool-button" type="button" data-user-action="download" title="Download"><i class="fa-solid fa-download"></i></button><button class="ai-tool-button" type="button" data-user-action="edit" title="Edit"><i class="fa-solid fa-pen"></i></button>';
+      tools.innerHTML = '<button class="ai-tool-button" type="button" data-user-action="copy" data-tooltip="Copy message" aria-label="Copy"><i class="fa-regular fa-copy"></i></button><button class="ai-tool-button" type="button" data-user-action="download" data-tooltip="Download message" aria-label="Download"><i class="fa-solid fa-download"></i></button><button class="ai-tool-button" type="button" data-user-action="edit" data-tooltip="Edit message" aria-label="Edit"><i class="fa-solid fa-pen"></i></button>';
       msg.appendChild(tools);
     }
     tools.onclick = async event => {
@@ -22123,7 +22177,7 @@ async function aiSendTtsGenerationMessage(prompt){
   const userMessage = {role:'user',messageId:aiCreateMessageId('user'),createdAt:Date.now(),parts:[{text:prompt}],model:'gemini-3.1-flash-tts-preview'};
   chat.history.push(userMessage); addMessageUI('user',prompt,false,null,null,null,true,null,null,null,userMessage,null);
   chat.model = 'gemini-3.1-flash-tts-preview'; chat.updatedAt = Date.now(); saveChats(); renderHistoryList();
-  inputEl.value = ''; inputEl.style.height = 'auto';
+  inputEl.value = ''; inputEl.style.height = 'auto'; inputEl.style.overflowY = 'hidden';
   const systemId = 'system-' + Date.now(); addMessageUI('system','Generating audio…',false,null,null,systemId,true,null,null,null,null,null);
   const target = document.getElementById(systemId); const loader = document.createElement('div'); loader.className = 'ai-audio-loading-card';
   loader.innerHTML = '<div class="ai-image-loading-orb"><i class="fa-solid fa-wave-square"></i></div><div><strong>Creating voice audio</strong><span>Gemini Flash TTS is preparing playback…</span></div>'; target?.appendChild(loader);
@@ -22719,10 +22773,10 @@ function aiCreateCodeBlockHtml(code, lang){
       '<div class="ai-code-head">' +
         '<div class="ai-code-lang">' + escapeHtml(safeLang) + '</div>' +
         '<div class="ai-code-actions">' +
-          '<button class="ai-code-tool" type="button" data-ai-action="reply-code" data-code-id="' + id + '" title="Reply to this code">' +
+          '<button class="ai-code-tool" type="button" data-ai-action="reply-code" data-code-id="' + id + '" data-tooltip="Reply with this code" aria-label="Reply with this code">' +
             '<i class="fa-solid fa-reply"></i>' +
           '</button>' +
-          '<button class="ai-code-tool" type="button" data-ai-action="copy-code" data-code-id="' + id + '" title="Copy code">' +
+          '<button class="ai-code-tool" type="button" data-ai-action="copy-code" data-code-id="' + id + '" data-tooltip="Copy code" aria-label="Copy code">' +
   '<i class="fa-solid fa-copy"></i>' +
 '</button>' +
         '</div>' +
@@ -22816,7 +22870,7 @@ function aiEnsureMessageReplyButton(msg, text, imageBase64, imageMime){
     'ai-message-actions';
 
   actions.innerHTML =
-    '<button class="ai-message-action-btn" type="button" data-ai-action="reply-message" data-reply-id="' + replyId + '" title="Reply to this AI message">' +
+    '<button class="ai-message-action-btn" type="button" data-ai-action="reply-message" data-reply-id="' + replyId + '" data-tooltip="Reply to this message" aria-label="Reply to this message">' +
       '<i class="fa-solid fa-reply"></i>' +
     '</button>';
 
@@ -39249,7 +39303,7 @@ function hvRenderAnalyticsList(container,items){
   if(!container) return;
   container.innerHTML = '';
   if(!items.length){ container.innerHTML = '<div class="hv-analytics-list-empty">No measured data returned.</div>'; return; }
-  items.slice(0,8).forEach(item => {
+  items.slice(0,4).forEach(item => {
     const label = item?.label ?? item?.name ?? item?.title ?? item?.path ?? item?.country ?? item?.source ?? item?.device ?? item?.browser ?? 'Unknown';
     const value = item?.value ?? item?.count ?? item?.views ?? item?.visitors ?? item?.sessions ?? item?.percentage ?? '';
     const row = document.createElement('div'); row.className = 'hv-analytics-list-row';
